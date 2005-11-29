@@ -1,0 +1,299 @@
+LCANET, 4
+PWR, 1, VCC
+PWR, 0, GND
+PROG, fpgac, 4.1, "Tue Nov  1 18:59:06 2005"
+PART, xcv2000ebg560-8
+SYM, CLK-AA, BUFGS
+PIN, I, I, CLKin
+PIN, O, O, CLK
+END
+SYM, FFin-0_1_0Running, INV
+PIN, I, I, 0_1_0Zero
+PIN, O, O, FFin-0_1_0Running
+END
+SYM, 0_1_0Running, DFF
+PIN, D, I, FFin-0_1_0Running
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_1_0Running
+END
+SYM, FFin-0_1_0Zero, BUF
+PIN, I, I, 0_1_0Zero
+PIN, O, O, FFin-0_1_0Zero
+END
+SYM, 0_1_0Zero, DFF
+PIN, D, I, FFin-0_1_0Zero
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_1_0Zero
+END
+SYM, 0_10__lights_0-OBUF, OBUF
+PIN, I, I, 0_10__lights_0
+PIN, O, O, lights_v0
+END
+EXT, lights_v0, O,, LOC=P60
+SYM, FFin-0_10__lights_0, BUF
+PIN, I, I, 0_10__count_0
+PIN, O, O, FFin-0_10__lights_0
+END
+SYM, 0_10__lights_0, DFF
+PIN, D, I, FFin-0_10__lights_0
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_0
+END
+SYM, 0_10__lights_1-OBUF, OBUF
+PIN, I, I, 0_10__lights_1
+PIN, O, O, lights_v1
+END
+EXT, lights_v1, O,, LOC=P59
+SYM, FFin-0_10__lights_1, EQN, EQN=((~I0*~I1)+(I0*I1))
+PIN, I1, I, 0_10__count_1
+PIN, I0, I, 0_10__count_0
+PIN, O, O, FFin-0_10__lights_1
+END
+SYM, 0_10__lights_1, DFF
+PIN, D, I, FFin-0_10__lights_1
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_1
+END
+SYM, 0_10__lights_2-OBUF, OBUF
+PIN, I, I, 0_10__lights_2
+PIN, O, O, lights_v2
+END
+EXT, lights_v2, O,, LOC=P58
+SYM, FFin-0_10__lights_2, EQN, EQN=((I0*I1*I2)+(~I0*~I2)+(~I0*~I1))
+PIN, I2, I, 0_10__count_1
+PIN, I1, I, 0_10__count_0
+PIN, I0, I, 0_10__count_2
+PIN, O, O, FFin-0_10__lights_2
+END
+SYM, 0_10__lights_2, DFF
+PIN, D, I, FFin-0_10__lights_2
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_2
+END
+SYM, 0_10__lights_3-OBUF, OBUF
+PIN, I, I, 0_10__lights_3
+PIN, O, O, lights_v3
+END
+EXT, lights_v3, O,, LOC=P57
+SYM, FFin-0_10__lights_3, BUF
+PIN, I, I, T0_18L79_0_10__lights_3
+PIN, O, O, FFin-0_10__lights_3
+END
+SYM, 0_10__lights_3, DFF
+PIN, D, I, FFin-0_10__lights_3
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_3
+END
+SYM, 0_10__lights_4-OBUF, OBUF
+PIN, I, I, 0_10__lights_4
+PIN, O, O, lights_v4
+END
+EXT, lights_v4, O,, LOC=P66
+SYM, FFin-0_10__lights_4, EQN, EQN=((~I0*~I1)+(I0*I1))
+PIN, I1, I, 0_10__count_4
+PIN, I0, I, 0_16_L35car_4
+PIN, O, O, FFin-0_10__lights_4
+END
+SYM, 0_10__lights_4, DFF
+PIN, D, I, FFin-0_10__lights_4
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_4
+END
+SYM, 0_10__lights_5-OBUF, OBUF
+PIN, I, I, 0_10__lights_5
+PIN, O, O, lights_v5
+END
+EXT, lights_v5, O,, LOC=P65
+SYM, FFin-0_10__lights_5, EQN, EQN=((I0*I1*I2)+(~I1*~I2)+(~I0*~I2))
+PIN, I2, I, 0_10__count_5
+PIN, I1, I, 0_10__count_4
+PIN, I0, I, 0_16_L35car_4
+PIN, O, O, FFin-0_10__lights_5
+END
+SYM, 0_10__lights_5, DFF
+PIN, D, I, FFin-0_10__lights_5
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_5
+END
+SYM, 0_10__lights_6-OBUF, OBUF
+PIN, I, I, 0_10__lights_6
+PIN, O, O, lights_v6
+END
+EXT, lights_v6, O,, LOC=P62
+SYM, FFin-0_10__lights_6, BUF
+PIN, I, I, T0_18L80_0_10__lights_6
+PIN, O, O, FFin-0_10__lights_6
+END
+SYM, 0_10__lights_6, DFF
+PIN, D, I, FFin-0_10__lights_6
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_6
+END
+SYM, 0_10__lights_7-OBUF, OBUF
+PIN, I, I, 0_10__lights_7
+PIN, O, O, lights_v7
+END
+EXT, lights_v7, O,, LOC=P61
+SYM, FFin-0_10__lights_7, EQN, EQN=((~I0*~I2)+(~I0*~I1)+(I1*~I2))
+PIN, I2, I, 0_16_L46add_3
+PIN, I1, I, 0_16_L35car_4
+PIN, I0, I, 0_10__count_7
+PIN, O, O, FFin-0_10__lights_7
+END
+SYM, 0_10__lights_7, DFF
+PIN, D, I, FFin-0_10__lights_7
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__lights_7
+END
+SYM, FFin-0_10__count_0, INV
+PIN, I, I, 0_10__count_0
+PIN, O, O, FFin-0_10__count_0
+END
+SYM, 0_10__count_0, DFF
+PIN, D, I, FFin-0_10__count_0
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_0
+END
+SYM, FFin-0_10__count_1, EQN, EQN=((I0*~I1)+(~I0*I1))
+PIN, I1, I, 0_10__count_1
+PIN, I0, I, 0_10__count_0
+PIN, O, O, FFin-0_10__count_1
+END
+SYM, 0_10__count_1, DFF
+PIN, D, I, FFin-0_10__count_1
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_1
+END
+SYM, FFin-0_10__count_2, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1))
+PIN, I2, I, 0_10__count_1
+PIN, I1, I, 0_10__count_0
+PIN, I0, I, 0_10__count_2
+PIN, O, O, FFin-0_10__count_2
+END
+SYM, 0_10__count_2, DFF
+PIN, D, I, FFin-0_10__count_2
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_2
+END
+SYM, FFin-0_10__count_3, BUF
+PIN, I, I, T0_18L83_0_10__count_3
+PIN, O, O, FFin-0_10__count_3
+END
+SYM, 0_10__count_3, DFF
+PIN, D, I, FFin-0_10__count_3
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_3
+END
+SYM, FFin-0_10__count_4, EQN, EQN=((I0*~I1)+(~I0*I1))
+PIN, I1, I, 0_10__count_4
+PIN, I0, I, 0_16_L35car_4
+PIN, O, O, FFin-0_10__count_4
+END
+SYM, 0_10__count_4, DFF
+PIN, D, I, FFin-0_10__count_4
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_4
+END
+SYM, FFin-0_10__count_5, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2))
+PIN, I2, I, 0_10__count_5
+PIN, I1, I, 0_10__count_4
+PIN, I0, I, 0_16_L35car_4
+PIN, O, O, FFin-0_10__count_5
+END
+SYM, 0_10__count_5, DFF
+PIN, D, I, FFin-0_10__count_5
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_5
+END
+SYM, FFin-0_10__count_6, BUF
+PIN, I, I, T0_18L84_0_10__count_6
+PIN, O, O, FFin-0_10__count_6
+END
+SYM, 0_10__count_6, DFF
+PIN, D, I, FFin-0_10__count_6
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_6
+END
+SYM, FFin-0_10__count_7, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, 0_16_L46add_3
+PIN, I1, I, 0_16_L35car_4
+PIN, I0, I, 0_10__count_7
+PIN, O, O, FFin-0_10__count_7
+END
+SYM, 0_10__count_7, DFF
+PIN, D, I, FFin-0_10__count_7
+PIN, C, I, CLK
+PIN, CE, I, 0_15_L25looptop
+PIN, Q, O, 0_10__count_7
+END
+SYM, FFin-0_15_L25looptop, EQN, EQN=((~I1)+(I0))
+PIN, I1, I, 0_1_0Running
+PIN, I0, I, 0_15_L25looptop
+PIN, O, O, FFin-0_15_L25looptop
+END
+SYM, 0_15_L25looptop, DFF
+PIN, D, I, FFin-0_15_L25looptop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_15_L25looptop
+END
+SYM, SYM0_16_L35car_4, EQN, EQN=((I0*I1*I2*I3))
+PIN, I3, I, 0_10__count_1
+PIN, I2, I, 0_10__count_0
+PIN, I1, I, 0_10__count_2
+PIN, I0, I, 0_10__count_3
+PIN, O, O, 0_16_L35car_4
+END
+SYM, SYM0_16_L46add_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, 0_10__count_5
+PIN, I2, I, 0_10__count_4
+PIN, I1, I, 0_10__count_6
+PIN, I0, I, 0_10__count_7
+PIN, O, O, 0_16_L46add_3
+END
+SYM, SYMT0_18L79_0_10__lights_3, EQN, EQN=((I0*I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))
+PIN, I3, I, 0_10__count_1
+PIN, I2, I, 0_10__count_0
+PIN, I1, I, 0_10__count_2
+PIN, I0, I, 0_10__count_3
+PIN, O, O, T0_18L79_0_10__lights_3
+END
+SYM, SYMT0_18L80_0_10__lights_6, EQN, EQN=((I0*I1*I2*I3)+(~I1*~I3)+(~I1*~I2)+(~I0*~I1))
+PIN, I3, I, 0_10__count_5
+PIN, I2, I, 0_10__count_4
+PIN, I1, I, 0_10__count_6
+PIN, I0, I, 0_16_L35car_4
+PIN, O, O, T0_18L80_0_10__lights_6
+END
+SYM, SYMT0_18L83_0_10__count_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, 0_10__count_1
+PIN, I2, I, 0_10__count_0
+PIN, I1, I, 0_10__count_2
+PIN, I0, I, 0_10__count_3
+PIN, O, O, T0_18L83_0_10__count_3
+END
+SYM, SYMT0_18L84_0_10__count_6, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+PIN, I3, I, 0_10__count_5
+PIN, I2, I, 0_10__count_4
+PIN, I1, I, 0_10__count_6
+PIN, I0, I, 0_16_L35car_4
+PIN, O, O, T0_18L84_0_10__count_6
+END
+EOF

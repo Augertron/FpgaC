@@ -1,0 +1,10 @@
+This is a small collection of Transmogrifier C programs, along with the
+xnf netlist files that the compiler produces with the -S option.
+
+counter.c	Makes the 8 LEDS on the Xilinx XC4000 demo board count up.
+
+countup.c	Makes the two 7 segment displays on the Xilinx XC4000 demo
+		board count from 00 to 99.
+
+lcd		A directory containing a larger, multi-threaded circuit
+		that runs a Seiko LCD display.  Fits in a 4010.
