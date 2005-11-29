@@ -1,0 +1,65 @@
+HOW TO COMPILE
+
+
+By default "make install" installs into /usr/local/{bin,lib,man/man1}
+Edit the makefile to change the HOME, BIN, LIB and MAN variables to
+change
+
+The fpgac.skel script must be edited for the vendor tool chain requirements of your site.
+
+fpgac.skel, which is used to produce fpgac.sh, the shell file
+that gets installed as $(BIN)/fpgac.  Change the part after the
+comment "The rest of the script..." so that it runs the Xilinx software at
+your site, and converts $file.xnf to $file.bit.  The commands that are there
+now do what is necessary to run ppr and friends at our site, but it will need
+changing to run at your site.  If you decide not to do this, then the compiler
+will still produce an XNF file, but will not be able to convert it into
+a .bit file.
+
+Finally, type "make install".
+
+If everything seemed to go ok, cd ../examples, and type "make" to see if
+the compiler is working.
+
+FILES
+
+README		this file
+fpgac.skel	Source for the fpgac.sh shell file
+fpgac.sh		Shell file driver for the compiler, installed as
+			the fpgac command.  Created by the makefile.
+fpgac.compiler	The compiler that the fpgac shell file runs.
+patchlevel.h	File to make patch easier to use
+makefile	Edit this to set the correct paths.
+
+Compiler source files:
+
+adders.c	Code that handles adders and counters
+minimize_lut.c	Produces a simplified Boolean version of a lookup table
+names.h		Data structures and defines used in the compiler
+output_xilinx.c	Produces the output XNF file
+outputvars.h	Data structures and defines used in the output stage
+syntax.l	Lex scanner for the compiler
+fpgac.y		Yacc grammar, and almost all of the code for the compiler
+
+TODO
+
+There are lots of things that could be done to improve fpgac:
+
+- Rewrite it from scratch, using gcc as a front end.  The code has evolved
+from a small hack into a bigger one, and it shows.
+
+- If not a drastic rewrite, then break fpgac.y up into a bunch of source
+files, to make it easier to understand and fix.
+
+- More comments.
+
+- Improve the generated circuits:
+
+	- Use logic synthesis techniques.  Perhaps pass small bits of
+	  the circuit to sis or Exemplar's fpga program.
+
+- Speed up the compiler, and reduce its RAM requirements.
+
+- Extend the language to handle more of C.  Tell the compiler how to 
+	access the RAM in a target FPGA based system, so that it can
+	implement pointers and arrays.
