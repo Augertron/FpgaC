@@ -1,0 +1,133 @@
+.TH FpgaC L "Jan. 9, 1996" "Univ. of Toronto"
+.SH NAME
+fpgac \- a hardware description language based on C (v4.2)
+.SH SYNOPSIS
+fpgac
+[
+-S
+]
+[
+-O
+]
+[
+-p parttype
+]
+[
+-c[CLOCKNAME]
+]
+[
+-Uxxxx
+]
+[
+-Dxxxx
+]
+[
+-dverbose
+]
+[
+-Tnnn
+]
+[
+-fno-carry-select
+]
+[
+-fcarry-select
+]
+[
+-target netlist_format
+]
+[
+-v
+]
+file1.c
+[
+file2.xnf
+] ...
+.SH DESCRIPTION
+FPGA C (fpgac) is a compiler for a simple
+hardware description language.
+It takes a program written in a subset of the C programming language,
+and produces a circuit
+that implements the program in a field-programmable gate array (FPGA).
+.PP
+The compiler will compile the given file1.c
+file and any .xnf files into a single
+output file named file1.xnf.
+If you want it to stop there, use the -S flag.
+Without the -S flag,
+the compiler will attempt to run the FPGA vendor tool chain programs to
+produce a bitsrtream output that can be downloaded into an FPGA chip.
+As part of installation this needs to be customized for your site.
+.PP
+The compiler tells ppr to place and route as quickly as possible, without
+doing any optimization.
+If you want the standard ppr optimizations to occur, use the -O option.
+.PP
+The -p parttype option can be used to specify which FPGA part to use. 
+.PP
+The default clock for the output circuit will be generated from the
+slowest internal oscillator on the Xilinx chip, which runs at only 15 Hz.
+If you want a more useful clock, define a signal called CLK in an xnf
+file, and compile the program like this:
+.sp
+	fpgac file1.c myclock.xnf
+.sp
+or use the -c option, which suppresses the generation of the default clock
+circuit:
+.sp
+	fpgac -c -S file1.c
+.PP
+The -cYOURCLOCKNAME option
+will suppress the default clock circuit and
+use YOURCLOCKNAME as the name of the clock signal instead of CLK.
+.PP
+The compiler accepts these normal C compiler flags: -U and -D.
+.PP
+The -dverbose flag will print an estimate of the circuit's size and speed on
+the standard error output.
+It will include the number of lookup tables and flipflops needed, and the
+number of lookup tables encountered in the longest combinational path.
+The estimate may be incorrect, as ppr may find a different way of implementing
+the circuit.
+.PP
+The compiler has support for multiple threads of control.
+Each thread is a complete FPGA C program, with its own main() routine.
+The threads can communicate through shared variables.
+See the FPGA C programming manual for more details.
+The -Tnnn flag must be used to specify the thread number of a particular
+compilation.
+.PP
+By default, the compiler produces "carry select" adders and counters, for
+reasonably fast, compact circuits.
+The \%-fno-carry-select flag will make the compiler use "ripple carry"
+adders and counters which are smaller, but usually slower.
+.PP
+The -target flag will set the output format.
+The default -target xnf-gates
+will generate a simple form of XNF (Xilinx Netlist
+Format) using AND, OR and INV gates that can be understood by many FPGA CAD
+tools.
+The -target xnf-roms flag will use a more compact output format with each
+lookup table expressed as a 16x1 bit ROM.
+The -target xnf-eqns flag will use a more readable compact format with each
+lookup table expressed as a Boolean equation.
+The -target flex8000 will generate an XNF file using AND, OR and INV gates
+that can be read by the Altera MaxPlus software.
+.PP
+All of the extra ppr output files will be thrown away.
+If you want to save them, use the -v option.
+.PP
+Each FPGA C program must be in a single source file.
+All cpp directives are supported, so #include files may be used.
+.SH "SEE ALSO"
+The FPGA C programming manual.
+.PP
+The FPGA C Web page:
+.br
+http://fpgac.sourceforge.net/
+.PP
+The most recent version of this software in:
+http://sourceforge.net/projects/fpgac
+.SH AUTHORS
+Dave Galloway, University of Toronto
+John Bass, DMS Design
