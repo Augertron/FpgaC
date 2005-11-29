@@ -1,0 +1,184 @@
+WHAT IS THIS ?
+
+FpgaC is a compiler for a simple hardware description language.  It takes
+a program written in a restricted subset of the C programming language,
+and produces a sequential circuit that implements the program in an FPGA.
+
+FpgaC is a direct derivative of TMCC by Dave Galloway at eecg.toronto.edu
+
+The most up to date version of FpgaC can be found on
+
+     http://sourceforge.net/projects/fpgac
+
+You will need your own copy of the FPGA vendors tool chain to reduce the
+XNF netlist to a loadable bit file to load into the FPGA. You will need
+to edit the fpgac shell script to invoke that tool chain for your site.
+
+The source for the FpgaC compiler is in the src sub-directory.  The makefile
+in that directory can be used to compile and install the software and manual
+page.  Read src/README.
+
+The doc subdirectory contains a 9 page programming manual in troff and
+postscript form, along with a UNIX-style manual page.
+
+The examples subdirectory contains some sample FpgaC programs and the output
+from FpgaC, so you can test your installation.
+
+WHO DID THIS ?
+
+The original work was done by Dave Galloway for the Transmogrifier 1 (TM-1)
+field-programmable system consisting of FPGAs, RAMs and programmable interconnect
+chips.  It was designed and built at the Department of Electrical and Computer
+Engineering, University of Toronto, by Dave Karchmer under the supervision of
+Jonathan Rose, Paul Chow, David Lewis, and Dave Galloway.
+
+TMCC was extended to accept more common C syntax by John Bass (jbass@dmsd.com)
+to aid in the porting of existing C code, renamed FpgaC and released on
+sourceforge.net.
+
+IS THIS USEFUL ?
+
+The compiler has been used by a handful of people.  The original TMCC was used
+in the summers of 1994/95 to produce several circuits that did graphics on LCD
+screens.  The largest circuit was about 1200 lines of tmcc code, and fit
+into four XC4010s.  The circuits work.
+
+As FpgaC several demonstration for reconfigurable computing projects have
+been completed, and the algorithms as circuits work. There are known bugs,
+which have work arounds.
+
+FpgaC is not a replacement for VHDL or Verilog for people who are serious
+about producing a circuit design on time, and under budget.  FpgaC in it's
+current form does have a few bugs, but is largely functional in this beta
+release.
+
+FpgaC is interesting to someone who does know C, and wants to throw together
+a circuit in a couple of days to investigate its properties, or get an upper
+limit on the size or cycle time of a proposed design for a reconfigurable
+computing platform.
+
+KNOWN BUGS
+
+There are currently script problems with using preprocessor on some systems.
+
+There are some rare cases where the compiler does not properly see logic which
+affects the outputs, and deletes it.
+
+There are still references to TMCC that need to be renamed to FpgaC.
+
+The language subset is not proper C in several areas, variable scoping
+rules are one.
+
+There are some undocumented features, which may or may not yet work, such as
+arrays.
+
+BUG FIXES
+
+We are interested in getting feedback from people who try FpgaC.  If you
+find a problem, fix a bug, or improve FpgaC, please post your changes to
+the sourceforge.net forums.
+
+Dave is currently very busy with other work, and has request that he
+NOT be contacted for support.
+
+WEB PAGE
+
+The FpgaC World Wide Web page has the URL: http://fpgac.sourceforge.net/
+
+CHANGES FROM 4.1 to 4.2
+
+Expanded the language subset plus cleanup (John):
+
+- Added initial support for arrays with limited functionality. (BROKEN)
+        This is testing only, as it doesn't always do the right thing.
+
+CHANGES FROM 4.0 to 4.1
+
+Expanded the language subset plus cleanup (John):
+
+- Added Syntax support for additional variable types, such as long long
+        to improve portability of traditional C code.
+
+CHANGES FROM 3.1 to 4.0
+
+Added VHDL as an output type (Dave)
+
+Expanded the language subset plus cleanup (John):
+
+- Added Handle-C bit width form of "<type> <width> <name>" form so that
+	"int 12 myvariable;" works.
+- Added bit field width specification form to include vars outside struct.
+	"int myvariable:12; as an alternative to Handle-C syntax.
+- Added void, register, char (8 bits), short (16 bits), long (32 bits)
+
+	NOTE: The forms "register varname" and "register int varname"
+	      both produce an "int" variable. Other uses of register
+	      are not defined. Added to improve portability.
+
+        NOTE: #pragma intbits only sets the default width for int.
+
+- Added void and unsigned to the syntax, but it doesn't do anything yet.
+
+	NOTE: void is pretty much ignored, but improves portability. 
+
+        NOTE: The internal implementation still adds 1 bit for sign, this
+	will be depreciated in a future release when unsigned is implemented.
+
+- Added function parameter declaration form so that
+	"short myfunction(int 12 myvariable, int myothervar:12, short lastvar)"
+	all work as expected.
+- Updated the code in the examples directory to remove all pragma intbits.
+- Updated the examples outputs, as the above changes altered the sequence
+	of temp names. The new references's are identical in gate function as
+	before, just different function/pin names were generated.
+- Changed -dverbose to be -s, to decouple it from debugging output.
+- Fixed integer constants to be proper C.
+        Octal's are now properly recognized (were being converted as decimal).
+        Added the 0X hex constant form (previously only 0x form accepted).
+	Added both the 0b and 0B binary constant forms, as found in Intel and
+	other C/C++ compilers, but not UNIX PCC or GNU GCC.
+- Reduced VHDL output by converting words to std_logic_vectors.
+- Updated docs to use groff and -ms for portability and completness
+
+CHANGES FROM 3.0 to 3.1
+
+Implemented more of the C language, and expanded the language definition:
+
+- Implement these operators: +=, -=, <<=, >>=, &=, |= and ^=, ++, --
+- Allow assignments in local variable declarations
+- Allow declaration of function types and widths
+- Allow portflags bits to be or-ed together
+- Add PORT_PULLUP and PORT_PULLDOWN.
+
+Produces smaller, faster circuits.  The 3 circuits in the examples directory
+are now 15-29% faster, and 16-36% smaller than tmcc 3.0 could do:
+
+- Use the clock enable input on XC4000 flip flops
+- Use carry select adders and subtractors, unless -fno-carry-select
+- Output circuit as simple gates, to give ppr and optimization tools more scope
+- Improve multiplexor construction
+- Assume that XC4000 flip flops start at 0
+- Improve implementation of function return values
+
+A number of bug fixes, many due to John Forrest of UMIST in Manchester, UK
+and Michael Barnett of the University of Idaho:
+
+- Fix syntax of return statement.
+- Fix scope of enable input on busports
+- Fix XNF output for busports
+- Pre-define PORT_* with cpp
+- Fix memory allocation bugs in makeffinputs()
+- Fix order of include files in syntax.l
+- Make makefile more portable
+- Save the lca file, so that xdelay can be used
+- Fix shift right when shift is greater than variable width
+- Check width of function return values
+- Check number of function arguments
+- Check for assignments to input ports
+- Fix output format so that XACT 5.X doesn't complain about it
+- Fix usage message
+
+Other changes:
+
+- Add -dverbose, to give some information on the size and speed of the circuit
+- Some support for the Altera Flex 8000 parts
