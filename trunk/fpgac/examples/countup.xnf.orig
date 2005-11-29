@@ -1,0 +1,1340 @@
+LCANET, 4
+PWR, 1, VCC
+PWR, 0, GND
+PROG, fpgac, 4.1, "Tue Nov  1 18:59:06 2005"
+PART, xcv2000ebg560-8
+SYM, CLK-AA, BUFGS
+PIN, I, I, CLKin
+PIN, O, O, CLK
+END
+SYM, FFin-0_1_0Running, INV
+PIN, I, I, 0_1_0Zero
+PIN, O, O, FFin-0_1_0Running
+END
+SYM, 0_1_0Running, DFF
+PIN, D, I, FFin-0_1_0Running
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_1_0Running
+END
+SYM, FFin-0_1_0Zero, BUF
+PIN, I, I, 0_1_0Zero
+PIN, O, O, FFin-0_1_0Zero
+END
+SYM, 0_1_0Zero, DFF
+PIN, D, I, FFin-0_1_0Zero
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_1_0Zero
+END
+SYM, FFin-0_8_L8init, EQN, EQN=((I1*I2)+(I0))
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_51_L729endloop
+PIN, O, O, FFin-0_8_L8init
+END
+SYM, 0_8_L8init, DFF
+PIN, D, I, FFin-0_8_L8init
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_8_L8init
+END
+SYM, 0_8_L9retval_0, INV
+PIN, I, I, GND
+PIN, O, O, 0_8_L9retval_0
+END
+SYM, SYM0_8_L9retval_1, EQN, EQN=((I0*I1*~I2*~I3)+(~I0*I1*I2*I3)+(~I0*~I1*~I2))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_1
+END
+SYM, SYM0_8_L9retval_2, EQN, EQN=((I0*I1*~I2*I3)+(~I0*~I1*I2)+(~I0*~I1*I3)+(~I0*I2*I3))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_2
+END
+SYM, SYM0_8_L9retval_3, EQN, EQN=((~I0*I1*~I2)+(~I1*~I2*I3)+(~I0*I3))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_3
+END
+SYM, SYM0_8_L9retval_4, EQN, EQN=((~I0*I1*~I2*~I3)+(I0*~I1*I2*~I3)+(~I0*~I1*~I2*I3)+(I1*I2*I3))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_4
+END
+SYM, SYM0_8_L9retval_5, EQN, EQN=((~I0*~I1*I2*~I3)+(I0*I1*~I3)+(I0*I1*I2))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_5
+END
+SYM, SYM0_8_L9retval_6, EQN, EQN=((~I0*I1*~I2*I3)+(I0*I1*~I3)+(I1*I2*~I3)+(I0*I1*I2)+(I0*I2*I3))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_6
+END
+SYM, SYM0_8_L9retval_7, EQN, EQN=((~I0*I1*~I2*~I3)+(~I0*~I1*~I2*I3)+(I0*I1*~I2*I3)+(I0*~I1*I2*I3))
+PIN, I3, I, 0_8__x_0
+PIN, I2, I, 0_8__x_1
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_8__x_3
+PIN, O, O, 0_8_L9retval_7
+END
+SYM, 0_8_L10final, BUF
+PIN, I, I, 0_8_L8init
+PIN, O, O, 0_8_L10final
+END
+SYM, FFin-0_8__x_0, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1116twoop
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_42__y_0
+PIN, O, O, FFin-0_8__x_0
+END
+SYM, 0_8__x_0, DFF
+PIN, D, I, FFin-0_8__x_0
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_8__x_0
+END
+SYM, FFin-0_8__x_1, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1126twoop
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_42__y_1
+PIN, O, O, FFin-0_8__x_1
+END
+SYM, 0_8__x_1, DFF
+PIN, D, I, FFin-0_8__x_1
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_8__x_1
+END
+SYM, FFin-0_8__x_2, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1136twoop
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_42__y_2
+PIN, O, O, FFin-0_8__x_2
+END
+SYM, 0_8__x_2, DFF
+PIN, D, I, FFin-0_8__x_2
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_8__x_2
+END
+SYM, FFin-0_8__x_3, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1146twoop
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_42__y_3
+PIN, O, O, FFin-0_8__x_3
+END
+SYM, 0_8__x_3, DFF
+PIN, D, I, FFin-0_8__x_3
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_8__x_3
+END
+SYM, FFin-0_34_L553init, EQN, EQN=((I0*I1))
+PIN, I1, I, 0_70_L946calling
+PIN, I0, I, 0_42_L661final
+PIN, O, O, FFin-0_34_L553init
+END
+SYM, 0_34_L553init, DFF
+PIN, D, I, FFin-0_34_L553init
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34_L553init
+END
+SYM, 0_34_L555final, BUF
+PIN, I, I, 0_36_L575endloop
+PIN, O, O, 0_34_L555final
+END
+SYM, FFin-0_34__n_0, EQN, EQN=((I0*I1*I2)+(I3))
+PIN, I3, I, 0_77_L1158twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_0
+PIN, O, O, FFin-0_34__n_0
+END
+SYM, 0_34__n_0, DFF
+PIN, D, I, FFin-0_34__n_0
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_0
+END
+SYM, FFin-0_34__n_1, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1166twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_1
+PIN, O, O, FFin-0_34__n_1
+END
+SYM, 0_34__n_1, DFF
+PIN, D, I, FFin-0_34__n_1
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_1
+END
+SYM, FFin-0_34__n_2, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1176twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_2
+PIN, O, O, FFin-0_34__n_2
+END
+SYM, 0_34__n_2, DFF
+PIN, D, I, FFin-0_34__n_2
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_2
+END
+SYM, FFin-0_34__n_3, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1186twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_3
+PIN, O, O, FFin-0_34__n_3
+END
+SYM, 0_34__n_3, DFF
+PIN, D, I, FFin-0_34__n_3
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_3
+END
+SYM, FFin-0_34__n_4, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1196twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_4
+PIN, O, O, FFin-0_34__n_4
+END
+SYM, 0_34__n_4, DFF
+PIN, D, I, FFin-0_34__n_4
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_4
+END
+SYM, FFin-0_34__n_5, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1206twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_5
+PIN, O, O, FFin-0_34__n_5
+END
+SYM, 0_34__n_5, DFF
+PIN, D, I, FFin-0_34__n_5
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_5
+END
+SYM, FFin-0_34__n_6, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1216twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_6
+PIN, O, O, FFin-0_34__n_6
+END
+SYM, 0_34__n_6, DFF
+PIN, D, I, FFin-0_34__n_6
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_6
+END
+SYM, FFin-0_34__n_7, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3))
+PIN, I3, I, 0_77_L1226twoop
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_64__switches_7
+PIN, O, O, FFin-0_34__n_7
+END
+SYM, 0_34__n_7, DFF
+PIN, D, I, FFin-0_34__n_7
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_34__n_7
+END
+SYM, SYM0_36_L562word_1, EQN, EQN=((I0)+(I1)+(I2)+(I3))
+PIN, I3, I, 0_34__n_4
+PIN, I2, I, 0_34__n_5
+PIN, I1, I, 0_34__n_6
+PIN, I0, I, 0_34__n_7
+PIN, O, O, 0_36_L562word_1
+END
+SYM, SYM0_36_L566tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3))
+PIN, I3, I, 0_34__n_0
+PIN, I2, I, 0_34__n_1
+PIN, I1, I, 0_34__n_2
+PIN, I0, I, 0_34__n_3
+PIN, O, O, 0_36_L566tree2_0
+END
+SYM, FFin-0_36_L572looptop, EQN, EQN=((I0*I1)+(I0*I2)+(I3))
+PIN, I3, I, 0_37_L646twoop
+PIN, I2, I, 0_36_L566tree2_0
+PIN, I1, I, 0_36_L562word_1
+PIN, I0, I, 0_34_L553init
+PIN, O, O, FFin-0_36_L572looptop
+END
+SYM, 0_36_L572looptop, DFF
+PIN, D, I, FFin-0_36_L572looptop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_36_L572looptop
+END
+SYM, FFin-0_36_L575endloop, EQN, EQN=((I0*~I1*~I2)+(I3))
+PIN, I3, I, 0_37_L652twoop
+PIN, I2, I, 0_36_L566tree2_0
+PIN, I1, I, 0_36_L562word_1
+PIN, I0, I, 0_34_L553init
+PIN, O, O, FFin-0_36_L575endloop
+END
+SYM, 0_36_L575endloop, DFF
+PIN, D, I, FFin-0_36_L575endloop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_36_L575endloop
+END
+SYM, SYM0_37_L582car_4, EQN, EQN=((~I0*~I1*~I2*~I3))
+PIN, I3, I, 0_34__n_1
+PIN, I2, I, 0_34__n_0
+PIN, I1, I, 0_34__n_2
+PIN, I0, I, 0_34__n_3
+PIN, O, O, 0_37_L582car_4
+END
+SYM, SYM0_37_L597sub_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+PIN, I3, I, 0_34__n_5
+PIN, I2, I, 0_34__n_4
+PIN, I1, I, 0_34__n_6
+PIN, I0, I, 0_34__n_7
+PIN, O, O, 0_37_L597sub_3
+END
+SYM, SYM0_37_L616word_1, EQN, EQN=((I0*~I2)+(~I0*I2)+(I1)+(I3))
+PIN, I3, I, 0_34__n_5
+PIN, I2, I, 0_34__n_4
+PIN, I1, I, 0_34__n_6
+PIN, I0, I, 0_37_L582car_4
+PIN, O, O, 0_37_L616word_1
+END
+SYM, SYM0_37_L616word_2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, 0_37_L597sub_3
+PIN, I1, I, 0_37_L582car_4
+PIN, I0, I, 0_34__n_7
+PIN, O, O, 0_37_L616word_2
+END
+SYM, SYM0_37_L620tree2_0, EQN, EQN=((~I2)+(I0)+(I1)+(I3))
+PIN, I3, I, 0_34__n_1
+PIN, I2, I, 0_34__n_0
+PIN, I1, I, 0_34__n_2
+PIN, I0, I, 0_34__n_3
+PIN, O, O, 0_37_L620tree2_0
+END
+SYM, SYMT0_37L641_0_34__n_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+PIN, I3, I, 0_34__n_1
+PIN, I2, I, 0_34__n_0
+PIN, I1, I, 0_34__n_2
+PIN, I0, I, 0_34__n_3
+PIN, O, O, T0_37L641_0_34__n_3
+END
+SYM, SYMT0_37L642_0_34__n_6, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+PIN, I3, I, 0_34__n_5
+PIN, I2, I, 0_34__n_4
+PIN, I1, I, 0_34__n_6
+PIN, I0, I, 0_37_L582car_4
+PIN, O, O, T0_37L642_0_34__n_6
+END
+SYM, SYM0_37_L646twoop, EQN, EQN=((I0*I1)+(I0*I2)+(I0*I3))
+PIN, I3, I, 0_37_L620tree2_0
+PIN, I2, I, 0_37_L616word_1
+PIN, I1, I, 0_37_L616word_2
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_37_L646twoop
+END
+SYM, SYM0_37_L652twoop, EQN, EQN=((I0*~I1*~I2*~I3))
+PIN, I3, I, 0_37_L620tree2_0
+PIN, I2, I, 0_37_L616word_1
+PIN, I1, I, 0_37_L616word_2
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_37_L652twoop
+END
+SYM, FFin-0_42_L659init, BUF
+PIN, I, I, 0_69_L938looptop
+PIN, O, O, FFin-0_42_L659init
+END
+SYM, 0_42_L659init, DFF
+PIN, D, I, FFin-0_42_L659init
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42_L659init
+END
+SYM, SYM0_42_L661final, EQN, EQN=((I0*I1))
+PIN, I1, I, 0_56_L907calling
+PIN, I0, I, 0_8_L10final
+PIN, O, O, 0_42_L661final
+END
+SYM, FFin-0_42__y_0, BUF
+PIN, I, I, 0_63__count_0
+PIN, O, O, FFin-0_42__y_0
+END
+SYM, 0_42__y_0, DFF
+PIN, D, I, FFin-0_42__y_0
+PIN, C, I, CLK
+PIN, CE, I, 0_69_L938looptop
+PIN, Q, O, 0_42__y_0
+END
+SYM, FFin-0_42__y_1, EQN, EQN=((~I1*I2*~I3)+(I0*I2*~I3)+(~I1*~I2*I3)+(I0*~I2*I3)+(I0*I1))
+PIN, I3, I, 0_51_L726looptop
+PIN, I2, I, 0_42__y_1
+PIN, I1, I, 0_69_L938looptop
+PIN, I0, I, 0_63__count_1
+PIN, O, O, FFin-0_42__y_1
+END
+SYM, 0_42__y_1, DFF
+PIN, D, I, FFin-0_42__y_1
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_1
+END
+SYM, FFin-0_42__y_2, EQN, EQN=((I0*I1)+(I2))
+PIN, I2, I, 0_77_L1247twoop
+PIN, I1, I, 0_63__count_2
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, FFin-0_42__y_2
+END
+SYM, 0_42__y_2, DFF
+PIN, D, I, FFin-0_42__y_2
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_2
+END
+SYM, FFin-0_42__y_3, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2))
+PIN, I2, I, 0_77_L1255twoop
+PIN, I1, I, 0_69_L938looptop
+PIN, I0, I, 0_63__count_3
+PIN, O, O, FFin-0_42__y_3
+END
+SYM, 0_42__y_3, DFF
+PIN, D, I, FFin-0_42__y_3
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_3
+END
+SYM, FFin-0_42__y_4, EQN, EQN=((I0*I1)+(I2))
+PIN, I2, I, 0_77_L1267twoop
+PIN, I1, I, 0_63__count_4
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, FFin-0_42__y_4
+END
+SYM, 0_42__y_4, DFF
+PIN, D, I, FFin-0_42__y_4
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_4
+END
+SYM, FFin-0_42__y_5, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2))
+PIN, I2, I, 0_77_L1275twoop
+PIN, I1, I, 0_69_L938looptop
+PIN, I0, I, 0_63__count_5
+PIN, O, O, FFin-0_42__y_5
+END
+SYM, 0_42__y_5, DFF
+PIN, D, I, FFin-0_42__y_5
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_5
+END
+SYM, FFin-0_42__y_6, EQN, EQN=((I0*I1)+(I2))
+PIN, I2, I, 0_77_L1287twoop
+PIN, I1, I, 0_63__count_6
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, FFin-0_42__y_6
+END
+SYM, 0_42__y_6, DFF
+PIN, D, I, FFin-0_42__y_6
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_6
+END
+SYM, FFin-0_42__y_7, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2))
+PIN, I2, I, 0_77_L1295twoop
+PIN, I1, I, 0_69_L938looptop
+PIN, I0, I, 0_63__count_7
+PIN, O, O, FFin-0_42__y_7
+END
+SYM, 0_42__y_7, DFF
+PIN, D, I, FFin-0_42__y_7
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_42__y_7
+END
+SYM, FFin-0_44__tens_0, EQN, EQN=((~I0*I1*~I2)+(I0*~I1))
+PIN, I2, I, 0_42_L659init
+PIN, I1, I, 0_44__tens_0
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, FFin-0_44__tens_0
+END
+SYM, 0_44__tens_0, DFF
+PIN, D, I, FFin-0_44__tens_0
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_44__tens_0
+END
+SYM, FFin-0_44__tens_1, EQN, EQN=((I0*I1*~I2)+(~I1*I2*~I3)+(~I0*I2*~I3)+(~I0*I1*I2))
+PIN, I3, I, 0_42_L659init
+PIN, I2, I, 0_44__tens_1
+PIN, I1, I, 0_51_L726looptop
+PIN, I0, I, 0_44__tens_0
+PIN, O, O, FFin-0_44__tens_1
+END
+SYM, 0_44__tens_1, DFF
+PIN, D, I, FFin-0_44__tens_1
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_44__tens_1
+END
+SYM, FFin-0_44__tens_2, EQN, EQN=((~I0*I1*~I2)+(I3))
+PIN, I3, I, 0_54_L864twoop_2
+PIN, I2, I, 0_42_L659init
+PIN, I1, I, 0_44__tens_2
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, FFin-0_44__tens_2
+END
+SYM, 0_44__tens_2, DFF
+PIN, D, I, FFin-0_44__tens_2
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_44__tens_2
+END
+SYM, FFin-0_44__tens_3, EQN, EQN=((~I1*I2*~I3)+(I0*I2*~I3)+(I0*I1))
+PIN, I3, I, 0_42_L659init
+PIN, I2, I, 0_44__tens_3
+PIN, I1, I, 0_51_L726looptop
+PIN, I0, I, T0_54L865_0_44__tens_3
+PIN, O, O, FFin-0_44__tens_3
+END
+SYM, 0_44__tens_3, DFF
+PIN, D, I, FFin-0_44__tens_3
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_44__tens_3
+END
+SYM, 0_45__leftdigit_0-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_0
+PIN, O, O, leftdigit_v0
+END
+EXT, leftdigit_v0, O,, LOC=P37
+SYM, FFin-0_45__leftdigit_0, BUF
+PIN, I, I, 0_8_L9retval_0
+PIN, O, O, FFin-0_45__leftdigit_0
+END
+SYM, 0_45__leftdigit_0, DFF
+PIN, D, I, FFin-0_45__leftdigit_0
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_0
+END
+SYM, 0_45__leftdigit_1-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_1
+PIN, O, O, leftdigit_v1
+END
+EXT, leftdigit_v1, O,, LOC=P44
+SYM, FFin-0_45__leftdigit_1, BUF
+PIN, I, I, 0_8_L9retval_1
+PIN, O, O, FFin-0_45__leftdigit_1
+END
+SYM, 0_45__leftdigit_1, DFF
+PIN, D, I, FFin-0_45__leftdigit_1
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_1
+END
+SYM, 0_45__leftdigit_2-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_2
+PIN, O, O, leftdigit_v2
+END
+EXT, leftdigit_v2, O,, LOC=P40
+SYM, FFin-0_45__leftdigit_2, BUF
+PIN, I, I, 0_8_L9retval_2
+PIN, O, O, FFin-0_45__leftdigit_2
+END
+SYM, 0_45__leftdigit_2, DFF
+PIN, D, I, FFin-0_45__leftdigit_2
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_2
+END
+SYM, 0_45__leftdigit_3-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_3
+PIN, O, O, leftdigit_v3
+END
+EXT, leftdigit_v3, O,, LOC=P29
+SYM, FFin-0_45__leftdigit_3, BUF
+PIN, I, I, 0_8_L9retval_3
+PIN, O, O, FFin-0_45__leftdigit_3
+END
+SYM, 0_45__leftdigit_3, DFF
+PIN, D, I, FFin-0_45__leftdigit_3
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_3
+END
+SYM, 0_45__leftdigit_4-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_4
+PIN, O, O, leftdigit_v4
+END
+EXT, leftdigit_v4, O,, LOC=P35
+SYM, FFin-0_45__leftdigit_4, BUF
+PIN, I, I, 0_8_L9retval_4
+PIN, O, O, FFin-0_45__leftdigit_4
+END
+SYM, 0_45__leftdigit_4, DFF
+PIN, D, I, FFin-0_45__leftdigit_4
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_4
+END
+SYM, 0_45__leftdigit_5-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_5
+PIN, O, O, leftdigit_v5
+END
+EXT, leftdigit_v5, O,, LOC=P36
+SYM, FFin-0_45__leftdigit_5, BUF
+PIN, I, I, 0_8_L9retval_5
+PIN, O, O, FFin-0_45__leftdigit_5
+END
+SYM, 0_45__leftdigit_5, DFF
+PIN, D, I, FFin-0_45__leftdigit_5
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_5
+END
+SYM, 0_45__leftdigit_6-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_6
+PIN, O, O, leftdigit_v6
+END
+EXT, leftdigit_v6, O,, LOC=P38
+SYM, FFin-0_45__leftdigit_6, BUF
+PIN, I, I, 0_8_L9retval_6
+PIN, O, O, FFin-0_45__leftdigit_6
+END
+SYM, 0_45__leftdigit_6, DFF
+PIN, D, I, FFin-0_45__leftdigit_6
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_6
+END
+SYM, 0_45__leftdigit_7-OBUF, OBUF
+PIN, I, I, 0_45__leftdigit_7
+PIN, O, O, leftdigit_v7
+END
+EXT, leftdigit_v7, O,, LOC=P39
+SYM, FFin-0_45__leftdigit_7, BUF
+PIN, I, I, 0_8_L9retval_7
+PIN, O, O, FFin-0_45__leftdigit_7
+END
+SYM, 0_45__leftdigit_7, DFF
+PIN, D, I, FFin-0_45__leftdigit_7
+PIN, C, I, CLK
+PIN, CE, I, 0_55_L897_curstate
+PIN, Q, O, 0_45__leftdigit_7
+END
+SYM, 0_45__rightdigit_0-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_0
+PIN, O, O, rightdigit_v0
+END
+EXT, rightdigit_v0, O,, LOC=P41
+SYM, FFin-0_45__rightdigit_0, BUF
+PIN, I, I, 0_8_L9retval_0
+PIN, O, O, FFin-0_45__rightdigit_0
+END
+SYM, 0_45__rightdigit_0, DFF
+PIN, D, I, FFin-0_45__rightdigit_0
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_0
+END
+SYM, 0_45__rightdigit_1-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_1
+PIN, O, O, rightdigit_v1
+END
+EXT, rightdigit_v1, O,, LOC=P51
+SYM, FFin-0_45__rightdigit_1, BUF
+PIN, I, I, 0_8_L9retval_1
+PIN, O, O, FFin-0_45__rightdigit_1
+END
+SYM, 0_45__rightdigit_1, DFF
+PIN, D, I, FFin-0_45__rightdigit_1
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_1
+END
+SYM, 0_45__rightdigit_2-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_2
+PIN, O, O, rightdigit_v2
+END
+EXT, rightdigit_v2, O,, LOC=P50
+SYM, FFin-0_45__rightdigit_2, BUF
+PIN, I, I, 0_8_L9retval_2
+PIN, O, O, FFin-0_45__rightdigit_2
+END
+SYM, 0_45__rightdigit_2, DFF
+PIN, D, I, FFin-0_45__rightdigit_2
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_2
+END
+SYM, 0_45__rightdigit_3-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_3
+PIN, O, O, rightdigit_v3
+END
+EXT, rightdigit_v3, O,, LOC=P45
+SYM, FFin-0_45__rightdigit_3, BUF
+PIN, I, I, 0_8_L9retval_3
+PIN, O, O, FFin-0_45__rightdigit_3
+END
+SYM, 0_45__rightdigit_3, DFF
+PIN, D, I, FFin-0_45__rightdigit_3
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_3
+END
+SYM, 0_45__rightdigit_4-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_4
+PIN, O, O, rightdigit_v4
+END
+EXT, rightdigit_v4, O,, LOC=P46
+SYM, FFin-0_45__rightdigit_4, BUF
+PIN, I, I, 0_8_L9retval_4
+PIN, O, O, FFin-0_45__rightdigit_4
+END
+SYM, 0_45__rightdigit_4, DFF
+PIN, D, I, FFin-0_45__rightdigit_4
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_4
+END
+SYM, 0_45__rightdigit_5-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_5
+PIN, O, O, rightdigit_v5
+END
+EXT, rightdigit_v5, O,, LOC=P47
+SYM, FFin-0_45__rightdigit_5, BUF
+PIN, I, I, 0_8_L9retval_5
+PIN, O, O, FFin-0_45__rightdigit_5
+END
+SYM, 0_45__rightdigit_5, DFF
+PIN, D, I, FFin-0_45__rightdigit_5
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_5
+END
+SYM, 0_45__rightdigit_6-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_6
+PIN, O, O, rightdigit_v6
+END
+EXT, rightdigit_v6, O,, LOC=P48
+SYM, FFin-0_45__rightdigit_6, BUF
+PIN, I, I, 0_8_L9retval_6
+PIN, O, O, FFin-0_45__rightdigit_6
+END
+SYM, 0_45__rightdigit_6, DFF
+PIN, D, I, FFin-0_45__rightdigit_6
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_6
+END
+SYM, 0_45__rightdigit_7-OBUF, OBUF
+PIN, I, I, 0_45__rightdigit_7
+PIN, O, O, rightdigit_v7
+END
+EXT, rightdigit_v7, O,, LOC=P49
+SYM, FFin-0_45__rightdigit_7, BUF
+PIN, I, I, 0_8_L9retval_7
+PIN, O, O, FFin-0_45__rightdigit_7
+END
+SYM, 0_45__rightdigit_7, DFF
+PIN, D, I, FFin-0_45__rightdigit_7
+PIN, C, I, CLK
+PIN, CE, I, 0_56_L915_curstate
+PIN, Q, O, 0_45__rightdigit_7
+END
+SYM, FFin-0_51_L726looptop, EQN, EQN=((I0)+(I1))
+PIN, I1, I, 0_54_L869twoop
+PIN, I0, I, 0_54_L870twoop
+PIN, O, O, FFin-0_51_L726looptop
+END
+SYM, 0_51_L726looptop, DFF
+PIN, D, I, FFin-0_51_L726looptop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_51_L726looptop
+END
+SYM, FFin-0_51_L729endloop, EQN, EQN=((I0)+(I1))
+PIN, I1, I, 0_54_L875twoop
+PIN, I0, I, 0_54_L877twoop
+PIN, O, O, FFin-0_51_L729endloop
+END
+SYM, 0_51_L729endloop, DFF
+PIN, D, I, FFin-0_51_L729endloop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_51_L729endloop
+END
+SYM, SYM0_53_L768car_4, EQN, EQN=((~I1*~I2)+(~I0))
+PIN, I2, I, 0_42__y_2
+PIN, I1, I, 0_42__y_1
+PIN, I0, I, 0_42__y_3
+PIN, O, O, 0_53_L768car_4
+END
+SYM, SYM0_53_L783sub_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+PIN, I3, I, 0_42__y_5
+PIN, I2, I, 0_42__y_4
+PIN, I1, I, 0_42__y_6
+PIN, I0, I, 0_42__y_7
+PIN, O, O, 0_53_L783sub_3
+END
+SYM, SYM0_54_L802car_4, EQN, EQN=((~I0*~I2)+(I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_42__y_2
+PIN, I1, I, 0_42__y_1
+PIN, I0, I, 0_42__y_3
+PIN, O, O, 0_54_L802car_4
+END
+SYM, SYM0_54_L817sub_3, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2))
+PIN, I2, I, 0_54_L819twoop_3
+PIN, I1, I, 0_54_L820comp_2
+PIN, I0, I, 0_54_L818car_2
+PIN, O, O, 0_54_L817sub_3
+END
+SYM, SYM0_54_L818car_1, EQN, EQN=((I0*~I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)+(I0*~I1))
+PIN, I3, I, 0_42__y_2
+PIN, I2, I, 0_42__y_1
+PIN, I1, I, 0_42__y_3
+PIN, I0, I, 0_42__y_4
+PIN, O, O, 0_54_L818car_1
+END
+SYM, SYM0_54_L818car_2, EQN, EQN=((I0*~I1*I2*I3)+(~I0*~I2*I3)+(I1*~I2*I3))
+PIN, I3, I, 0_54_L818car_1
+PIN, I2, I, 0_42__y_5
+PIN, I1, I, 0_42__y_4
+PIN, I0, I, 0_53_L768car_4
+PIN, O, O, 0_54_L818car_2
+END
+SYM, SYM0_54_L819twoop_3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, 0_53_L783sub_3
+PIN, I1, I, 0_53_L768car_4
+PIN, I0, I, 0_42__y_7
+PIN, O, O, 0_54_L819twoop_3
+END
+SYM, SYM0_54_L820comp_2, EQN, EQN=((I0*I1*~I2*~I3)+(~I0*~I1)+(~I1*I2)+(~I1*I3))
+PIN, I3, I, 0_42__y_5
+PIN, I2, I, 0_42__y_4
+PIN, I1, I, 0_42__y_6
+PIN, I0, I, 0_53_L768car_4
+PIN, O, O, 0_54_L820comp_2
+END
+SYM, SYMT0_54L861_0_42__y_4, EQN, EQN=((~I0*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)+(~I0*~I1))
+PIN, I3, I, 0_42__y_2
+PIN, I2, I, 0_42__y_1
+PIN, I1, I, 0_42__y_3
+PIN, I0, I, 0_42__y_4
+PIN, O, O, T0_54L861_0_42__y_4
+END
+SYM, SYMT0_54L862_0_42__y_6, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+PIN, I3, I, 0_42__y_5
+PIN, I2, I, 0_42__y_4
+PIN, I1, I, 0_42__y_6
+PIN, I0, I, 0_53_L768car_4
+PIN, O, O, T0_54L862_0_42__y_6
+END
+SYM, SYM0_54_L864twoop_2, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2))
+PIN, I3, I, 0_44__tens_1
+PIN, I2, I, 0_44__tens_0
+PIN, I1, I, 0_44__tens_2
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, 0_54_L864twoop_2
+END
+SYM, SYMT0_54L865_0_44__tens_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, 0_44__tens_1
+PIN, I2, I, 0_44__tens_0
+PIN, I1, I, 0_44__tens_2
+PIN, I0, I, 0_44__tens_3
+PIN, O, O, T0_54L865_0_44__tens_3
+END
+SYM, SYM0_54_L869twoop, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(I0*I2*~I3))
+PIN, I3, I, 0_53_L783sub_3
+PIN, I2, I, 0_53_L768car_4
+PIN, I1, I, 0_42__y_7
+PIN, I0, I, 0_42_L659init
+PIN, O, O, 0_54_L869twoop
+END
+SYM, SYM0_54_L870twoop, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(I0*I2*~I3))
+PIN, I3, I, 0_54_L817sub_3
+PIN, I2, I, 0_54_L802car_4
+PIN, I1, I, 0_54_L819twoop_3
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, 0_54_L870twoop
+END
+SYM, SYM0_54_L875twoop, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3))
+PIN, I3, I, 0_53_L783sub_3
+PIN, I2, I, 0_53_L768car_4
+PIN, I1, I, 0_42__y_7
+PIN, I0, I, 0_42_L659init
+PIN, O, O, 0_54_L875twoop
+END
+SYM, SYM0_54_L877twoop, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3))
+PIN, I3, I, 0_54_L817sub_3
+PIN, I2, I, 0_54_L802car_4
+PIN, I1, I, 0_54_L819twoop_3
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, 0_54_L877twoop
+END
+SYM, FFin-0_55_L889calling, EQN, EQN=((~I1*I2)+(I0))
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_51_L729endloop
+PIN, O, O, FFin-0_55_L889calling
+END
+SYM, 0_55_L889calling, DFF
+PIN, D, I, FFin-0_55_L889calling
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_55_L889calling
+END
+SYM, SYM0_55_L897_curstate, EQN, EQN=((I0*I1))
+PIN, I1, I, 0_55_L889calling
+PIN, I0, I, 0_8_L10final
+PIN, O, O, 0_55_L897_curstate
+END
+SYM, FFin-0_56_L907calling, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, 0_55_L889calling
+PIN, I1, I, 0_8_L10final
+PIN, I0, I, 0_56_L907calling
+PIN, O, O, FFin-0_56_L907calling
+END
+SYM, 0_56_L907calling, DFF
+PIN, D, I, FFin-0_56_L907calling
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_56_L907calling
+END
+SYM, SYM0_56_L915_curstate, EQN, EQN=((I0*I1))
+PIN, I1, I, 0_56_L907calling
+PIN, I0, I, 0_8_L10final
+PIN, O, O, 0_56_L915_curstate
+END
+SYM, FFin-0_63__count_0, BUF
+PIN, I, I, T0_74L1064_0_63__count_0
+PIN, O, O, FFin-0_63__count_0
+END
+SYM, 0_63__count_0, DFF
+PIN, D, I, FFin-0_63__count_0
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_0
+END
+SYM, FFin-0_63__count_1, BUF
+PIN, I, I, T0_74L1065_0_63__count_1
+PIN, O, O, FFin-0_63__count_1
+END
+SYM, 0_63__count_1, DFF
+PIN, D, I, FFin-0_63__count_1
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_1
+END
+SYM, FFin-0_63__count_2, BUF
+PIN, I, I, T0_74L1066_0_63__count_2
+PIN, O, O, FFin-0_63__count_2
+END
+SYM, 0_63__count_2, DFF
+PIN, D, I, FFin-0_63__count_2
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_2
+END
+SYM, FFin-0_63__count_3, BUF
+PIN, I, I, T0_74L1067_0_63__count_3
+PIN, O, O, FFin-0_63__count_3
+END
+SYM, 0_63__count_3, DFF
+PIN, D, I, FFin-0_63__count_3
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_3
+END
+SYM, FFin-0_63__count_4, BUF
+PIN, I, I, T0_74L1068_0_63__count_4
+PIN, O, O, FFin-0_63__count_4
+END
+SYM, 0_63__count_4, DFF
+PIN, D, I, FFin-0_63__count_4
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_4
+END
+SYM, FFin-0_63__count_5, BUF
+PIN, I, I, T0_74L1069_0_63__count_5
+PIN, O, O, FFin-0_63__count_5
+END
+SYM, 0_63__count_5, DFF
+PIN, D, I, FFin-0_63__count_5
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_5
+END
+SYM, FFin-0_63__count_6, BUF
+PIN, I, I, T0_74L1070_0_63__count_6
+PIN, O, O, FFin-0_63__count_6
+END
+SYM, 0_63__count_6, DFF
+PIN, D, I, FFin-0_63__count_6
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_6
+END
+SYM, FFin-0_63__count_7, BUF
+PIN, I, I, T0_74L1071_0_63__count_7
+PIN, O, O, FFin-0_63__count_7
+END
+SYM, 0_63__count_7, DFF
+PIN, D, I, FFin-0_63__count_7
+PIN, C, I, CLK
+PIN, CE, I, 0_74_L1046_curstate
+PIN, Q, O, 0_63__count_7
+END
+SYM, 0_64__switches_0, IBUF
+PIN, I, I, switches_v0
+PIN, O, O, 0_64__switches_0
+END
+EXT, switches_v0, I,, LOC=P28
+SYM, 0_64__switches_1, IBUF
+PIN, I, I, switches_v1
+PIN, O, O, 0_64__switches_1
+END
+EXT, switches_v1, I,, LOC=P27
+SYM, 0_64__switches_2, IBUF
+PIN, I, I, switches_v2
+PIN, O, O, 0_64__switches_2
+END
+EXT, switches_v2, I,, LOC=P26
+SYM, 0_64__switches_3, IBUF
+PIN, I, I, switches_v3
+PIN, O, O, 0_64__switches_3
+END
+EXT, switches_v3, I,, LOC=P25
+SYM, 0_64__switches_4, IBUF
+PIN, I, I, switches_v4
+PIN, O, O, 0_64__switches_4
+END
+EXT, switches_v4, I,, LOC=P24
+SYM, 0_64__switches_5, IBUF
+PIN, I, I, switches_v5
+PIN, O, O, 0_64__switches_5
+END
+EXT, switches_v5, I,, LOC=P23
+SYM, 0_64__switches_6, IBUF
+PIN, I, I, switches_v6
+PIN, O, O, 0_64__switches_6
+END
+EXT, switches_v6, I,, LOC=P20
+SYM, 0_64__switches_7, IBUF
+PIN, I, I, switches_v7
+PIN, O, O, 0_64__switches_7
+END
+EXT, switches_v7, I,, LOC=P19
+SYM, FFin-0_69_L938looptop, EQN, EQN=((I1*I2)+(~I0))
+PIN, I2, I, 0_74_L1074calling
+PIN, I1, I, 0_34_L555final
+PIN, I0, I, 0_1_0Running
+PIN, O, O, FFin-0_69_L938looptop
+END
+SYM, 0_69_L938looptop, DFF
+PIN, D, I, FFin-0_69_L938looptop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_69_L938looptop
+END
+SYM, FFin-0_70_L946calling, EQN, EQN=((~I1*I2)+(I0))
+PIN, I2, I, 0_70_L946calling
+PIN, I1, I, 0_42_L661final
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, FFin-0_70_L946calling
+END
+SYM, 0_70_L946calling, DFF
+PIN, D, I, FFin-0_70_L946calling
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_70_L946calling
+END
+SYM, SYM0_71_L962car_4, EQN, EQN=((I0*I1*I2*I3))
+PIN, I3, I, 0_63__count_1
+PIN, I2, I, 0_63__count_0
+PIN, I1, I, 0_63__count_2
+PIN, I0, I, 0_63__count_3
+PIN, O, O, 0_71_L962car_4
+END
+SYM, SYM0_71_L973add_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, 0_63__count_5
+PIN, I2, I, 0_63__count_4
+PIN, I1, I, 0_63__count_6
+PIN, I0, I, 0_63__count_7
+PIN, O, O, 0_71_L973add_3
+END
+SYM, SYM0_72_L991car_4, EQN, EQN=((I0*I1*I2*I3)+(~I0*~I1*~I3)+(~I0*~I1*~I2))
+PIN, I3, I, 0_63__count_1
+PIN, I2, I, 0_63__count_0
+PIN, I1, I, 0_63__count_2
+PIN, I0, I, 0_63__count_3
+PIN, O, O, 0_72_L991car_4
+END
+SYM, SYM0_72_L999sub_3, EQN, EQN=((I0*~I1*~I3)+(I0*I2*~I3)+(I1*I2*~I3)+(~I0*~I2*I3)+(~I0*~I1*I3)+(I1*~I2*I3))
+PIN, I3, I, 0_72_L1000car_3
+PIN, I2, I, 0_71_L973add_3
+PIN, I1, I, 0_71_L962car_4
+PIN, I0, I, 0_63__count_7
+PIN, O, O, 0_72_L999sub_3
+END
+SYM, SYM0_72_L1000car_3, EQN, EQN=((I0*I2*I3)+(~I2*~I3)+(~I0*~I3)+(~I1))
+PIN, I3, I, 0_63__count_5
+PIN, I2, I, 0_63__count_4
+PIN, I1, I, 0_63__count_6
+PIN, I0, I, 0_71_L962car_4
+PIN, O, O, 0_72_L1000car_3
+END
+SYM, SYM0_72_L1008sub_3, EQN, EQN=((I0*~I1*~I3)+(I0*I2*~I3)+(I1*I2*~I3)+(~I0*~I2*I3)+(~I0*~I1*I3)+(I1*~I2*I3))
+PIN, I3, I, 0_72_L1009car_3
+PIN, I2, I, 0_71_L973add_3
+PIN, I1, I, 0_71_L962car_4
+PIN, I0, I, 0_63__count_7
+PIN, O, O, 0_72_L1008sub_3
+END
+SYM, SYM0_72_L1009car_3, EQN, EQN=((~I0*~I2)+(I0*I2)+(~I3)+(~I1))
+PIN, I3, I, 0_63__count_5
+PIN, I2, I, 0_63__count_4
+PIN, I1, I, 0_63__count_6
+PIN, I0, I, 0_71_L962car_4
+PIN, O, O, 0_72_L1009car_3
+END
+SYM, SYM0_72_L1035tree2, EQN, EQN=((~I0*~I2)+(~I0*~I1)+(I1*~I2))
+PIN, I2, I, 0_72_L1008sub_3
+PIN, I1, I, 0_72_L991car_4
+PIN, I0, I, 0_72_L999sub_3
+PIN, O, O, 0_72_L1035tree2
+END
+SYM, SYM0_74_L1046_curstate, EQN, EQN=((I0*I1))
+PIN, I1, I, 0_70_L946calling
+PIN, I0, I, 0_42_L661final
+PIN, O, O, 0_74_L1046_curstate
+END
+SYM, SYMT0_74L1054_0_63__count_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, 0_63__count_1
+PIN, I2, I, 0_63__count_0
+PIN, I1, I, 0_63__count_2
+PIN, I0, I, 0_63__count_3
+PIN, O, O, T0_74L1054_0_63__count_3
+END
+SYM, SYMT0_74L1057_0_63__count_6, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+PIN, I3, I, 0_63__count_5
+PIN, I2, I, 0_63__count_4
+PIN, I1, I, 0_63__count_6
+PIN, I0, I, 0_71_L962car_4
+PIN, O, O, T0_74L1057_0_63__count_6
+END
+SYM, SYMT0_74L1064_0_63__count_0, EQN, EQN=((~I0*I1*~I2)+(~I0*I1*I3)+(~I0*I2*I3))
+PIN, I3, I, 0_72_L1008sub_3
+PIN, I2, I, 0_72_L991car_4
+PIN, I1, I, 0_72_L999sub_3
+PIN, I0, I, 0_63__count_0
+PIN, O, O, T0_74L1064_0_63__count_0
+END
+SYM, SYMT0_74L1065_0_63__count_1, EQN, EQN=((~I0*I1*~I2)+(~I0*~I1*I2))
+PIN, I2, I, 0_63__count_1
+PIN, I1, I, 0_63__count_0
+PIN, I0, I, 0_72_L1035tree2
+PIN, O, O, T0_74L1065_0_63__count_1
+END
+SYM, SYMT0_74L1066_0_63__count_2, EQN, EQN=((~I0*~I1*I2*I3)+(~I0*I1*~I3)+(~I0*I1*~I2))
+PIN, I3, I, 0_63__count_1
+PIN, I2, I, 0_63__count_0
+PIN, I1, I, 0_63__count_2
+PIN, I0, I, 0_72_L1035tree2
+PIN, O, O, T0_74L1066_0_63__count_2
+END
+SYM, SYMT0_74L1067_0_63__count_3, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3))
+PIN, I3, I, 0_72_L1008sub_3
+PIN, I2, I, 0_72_L991car_4
+PIN, I1, I, 0_72_L999sub_3
+PIN, I0, I, T0_74L1054_0_63__count_3
+PIN, O, O, T0_74L1067_0_63__count_3
+END
+SYM, SYMT0_74L1068_0_63__count_4, EQN, EQN=((~I0*I1*~I2)+(~I0*~I1*I2))
+PIN, I2, I, 0_63__count_4
+PIN, I1, I, 0_71_L962car_4
+PIN, I0, I, 0_72_L1035tree2
+PIN, O, O, T0_74L1068_0_63__count_4
+END
+SYM, SYMT0_74L1069_0_63__count_5, EQN, EQN=((~I0*I1*I2*~I3)+(~I0*~I2*I3)+(~I0*~I1*I3))
+PIN, I3, I, 0_63__count_5
+PIN, I2, I, 0_63__count_4
+PIN, I1, I, 0_71_L962car_4
+PIN, I0, I, 0_72_L1035tree2
+PIN, O, O, T0_74L1069_0_63__count_5
+END
+SYM, SYMT0_74L1070_0_63__count_6, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3))
+PIN, I3, I, 0_72_L1008sub_3
+PIN, I2, I, 0_72_L991car_4
+PIN, I1, I, 0_72_L999sub_3
+PIN, I0, I, T0_74L1057_0_63__count_6
+PIN, O, O, T0_74L1070_0_63__count_6
+END
+SYM, SYMT0_74L1071_0_63__count_7, EQN, EQN=((~I0*I1*~I2)+(~I0*I1*I3)+(~I0*I2*I3))
+PIN, I3, I, 0_71_L973add_3
+PIN, I2, I, 0_71_L962car_4
+PIN, I1, I, 0_63__count_7
+PIN, I0, I, 0_72_L1035tree2
+PIN, O, O, T0_74L1071_0_63__count_7
+END
+SYM, FFin-0_74_L1074calling, EQN, EQN=((~I0*I1)+(I2*I3))
+PIN, I3, I, 0_70_L946calling
+PIN, I2, I, 0_42_L661final
+PIN, I1, I, 0_74_L1074calling
+PIN, I0, I, 0_34_L555final
+PIN, O, O, FFin-0_74_L1074calling
+END
+SYM, 0_74_L1074calling, DFF
+PIN, D, I, FFin-0_74_L1074calling
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 0_74_L1074calling
+END
+SYM, SYM0_77_L1116twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_51_L729endloop
+PIN, I1, I, 0_8__x_0
+PIN, I0, I, 0_44__tens_0
+PIN, O, O, 0_77_L1116twoop
+END
+SYM, SYM0_77_L1126twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_51_L729endloop
+PIN, I1, I, 0_8__x_1
+PIN, I0, I, 0_44__tens_1
+PIN, O, O, 0_77_L1126twoop
+END
+SYM, SYM0_77_L1136twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_51_L729endloop
+PIN, I1, I, 0_8__x_2
+PIN, I0, I, 0_44__tens_2
+PIN, O, O, 0_77_L1136twoop
+END
+SYM, SYM0_77_L1146twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_51_L729endloop
+PIN, I1, I, 0_8__x_3
+PIN, I0, I, 0_44__tens_3
+PIN, O, O, 0_77_L1146twoop
+END
+SYM, SYM0_77_L1158twoop, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(~I0*I1*~I3)+(~I0*I1*~I2))
+PIN, I3, I, 0_70_L946calling
+PIN, I2, I, 0_42_L661final
+PIN, I1, I, 0_36_L572looptop
+PIN, I0, I, 0_34__n_0
+PIN, O, O, 0_77_L1158twoop
+END
+SYM, SYM0_77_L1166twoop, EQN, EQN=((I0*~I1*~I2)+(~I0*I2)+(I1*I2))
+PIN, I2, I, 0_34__n_1
+PIN, I1, I, 0_34__n_0
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_77_L1166twoop
+END
+SYM, SYM0_77_L1176twoop, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+PIN, I3, I, 0_34__n_1
+PIN, I2, I, 0_34__n_0
+PIN, I1, I, 0_34__n_2
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_77_L1176twoop
+END
+SYM, SYM0_77_L1186twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_36_L572looptop
+PIN, I1, I, 0_34__n_3
+PIN, I0, I, T0_37L641_0_34__n_3
+PIN, O, O, 0_77_L1186twoop
+END
+SYM, SYM0_77_L1196twoop, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2))
+PIN, I2, I, 0_34__n_4
+PIN, I1, I, 0_37_L582car_4
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_77_L1196twoop
+END
+SYM, SYM0_77_L1206twoop, EQN, EQN=((I0*I1*~I2*~I3)+(~I1*I3)+(~I0*I3)+(I2*I3))
+PIN, I3, I, 0_34__n_5
+PIN, I2, I, 0_34__n_4
+PIN, I1, I, 0_37_L582car_4
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_77_L1206twoop
+END
+SYM, SYM0_77_L1216twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
+PIN, I2, I, 0_36_L572looptop
+PIN, I1, I, 0_34__n_6
+PIN, I0, I, T0_37L642_0_34__n_6
+PIN, O, O, 0_77_L1216twoop
+END
+SYM, SYM0_77_L1226twoop, EQN, EQN=((I0*I2*I3)+(I1*~I2)+(~I0*I1)+(I1*I3))
+PIN, I3, I, 0_37_L597sub_3
+PIN, I2, I, 0_37_L582car_4
+PIN, I1, I, 0_34__n_7
+PIN, I0, I, 0_36_L572looptop
+PIN, O, O, 0_77_L1226twoop
+END
+SYM, SYM0_77_L1247twoop, EQN, EQN=((~I0*I1*~I2*~I3)+(~I0*~I1*I3)+(~I0*I2*I3))
+PIN, I3, I, 0_42__y_2
+PIN, I2, I, 0_42__y_1
+PIN, I1, I, 0_51_L726looptop
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, 0_77_L1247twoop
+END
+SYM, SYM0_77_L1255twoop, EQN, EQN=((I1*~I2*~I3)+(I0*~I1*I2)+(I0*~I1*I3)+(~I0*I1))
+PIN, I3, I, 0_42__y_2
+PIN, I2, I, 0_42__y_1
+PIN, I1, I, 0_42__y_3
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, 0_77_L1255twoop
+END
+SYM, SYM0_77_L1267twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3))
+PIN, I3, I, 0_51_L726looptop
+PIN, I2, I, 0_42__y_4
+PIN, I1, I, T0_54L861_0_42__y_4
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, 0_77_L1267twoop
+END
+SYM, SYM0_77_L1275twoop, EQN, EQN=((I0*I1*~I2*~I3)+(~I1*I3)+(~I0*I3)+(I2*I3))
+PIN, I3, I, 0_42__y_5
+PIN, I2, I, 0_42__y_4
+PIN, I1, I, 0_53_L768car_4
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, 0_77_L1275twoop
+END
+SYM, SYM0_77_L1287twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3))
+PIN, I3, I, 0_51_L726looptop
+PIN, I2, I, 0_42__y_6
+PIN, I1, I, T0_54L862_0_42__y_6
+PIN, I0, I, 0_69_L938looptop
+PIN, O, O, 0_77_L1287twoop
+END
+SYM, SYM0_77_L1295twoop, EQN, EQN=((I0*I2*I3)+(I1*~I2)+(~I0*I1)+(I1*I3))
+PIN, I3, I, 0_53_L783sub_3
+PIN, I2, I, 0_53_L768car_4
+PIN, I1, I, 0_42__y_7
+PIN, I0, I, 0_51_L726looptop
+PIN, O, O, 0_77_L1295twoop
+END
+EOF
