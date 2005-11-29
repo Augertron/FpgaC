@@ -1,0 +1,129 @@
+#!/bin/sh
+
+# remove or comment out after editing for your site
+echo You will need to edit the tool chain calls in the /usr/local/bin/fpgac script as part
+echo of installation for your site.
+exit
+
+
+# This is not a great solution, but uname -p does not work under Linux
+
+FPGAC=LIB_defined_in_the_makefile/fpgac.compiler
+#case `uname` in
+#
+#Linux)	FPGAC=LIB_defined_in_the_makefile/x86/fpgac.compiler
+#	;;
+#
+#SunOS)	FPGAC=LIB_defined_in_the_makefile/sun4/fpgac.compiler
+#	;;
+#esac
+
+toss=1
+parttype=4003pc84
+optimize=false
+format=vhd
+
+while true
+	do
+case $1 in
+
+-v)	toss=
+	shift
+	;;
+
+-O*)	optimize=force
+	args="$args $1"
+	shift
+	;;
+
+-S)	xnfonly=1
+	shift
+	;;
+
+-[acdfrFUDIT]*)	args="$args $1"
+		shift
+		;;
+
+-target)	args="$args $1 $2"
+		format=$2
+		shift
+		shift
+		;;
+
+-p)	parttype=$2
+	shift
+	shift
+	;;
+
+-*)	$FPGAC -usage
+	exit 1
+	;;
+
+*)	break
+	;;
+esac
+	done
+
+if test $# -gt 1; then
+	args="$args -c"
+fi
+	
+file=`basename $1 .c`
+
+case $format in
+	
+*vqm)
+	if $FPGAC -p $parttype $args $1 > /tmp/fpgac$$; then
+		sed -e '/Start of debug output/,$d' /tmp/fpgac$$ > $file.vqm
+		rm -f /tmp/fpgac$$
+	else
+		rm -f $file.vqm
+		exit 1
+	fi
+	;;
+	
+xnf*)
+	echo "LCANET, 4" > $file.xnf
+	while test $# -gt 0
+		do
+		case $1 in
+
+	*.xnf)          if test -f $1; then
+				sed -e '/EOF/,$d' -e '/^LCANET/d' -e '/^PART/d' -e '/^PWR/d' $1 >> $file.xnf
+			else
+				echo "fpgac: $1: can't open file"
+				rm -f $file.xnf
+				exit 1
+			fi
+			;;
+
+	*.c)            if $FPGAC -p $parttype $args $1 > /tmp/fpgac$$; then
+				sed -e '/EOF/,$d' -e '/^LCANET/d' /tmp/fpgac$$ >> $file.xnf
+				rm -f /tmp/fpgac$$
+			else
+				rm -f $file.xnf
+				exit 1
+			fi
+			;;
+		esac
+		shift
+		done
+	echo EOF >> $file.xnf
+	;;
+	
+vhd|vhdl)
+	if $FPGAC -p $parttype $args $1 > /tmp/fpgac$$; then
+		sed -e '/Start of debug output/,$d' /tmp/fpgac$$ > $file.vhd
+		rm -f /tmp/fpgac$$
+	else
+		rm -f $file.vhd
+		exit 1
+	fi
+	;;
+
+*)	$FPGAC -p $parttype $args $1
+	;;
+	
+esac
+
+exit 0
