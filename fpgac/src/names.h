@@ -40,6 +40,13 @@
  * seeing only one definition of each global variable
  */
 
+/* CHANGES:
+ *                                                                                                                                              
+ * MTP added MAXLONGNAMELENGTH to work with snprintf changes
+ *                                                                                                                                             
+*/
+
+
 #ifndef EXTERN
 #define EXTERN extern
 #endif
@@ -52,7 +59,8 @@ typedef enum {
     shiftright_op, sub_op, while_op, xor_op
 } op_types;
 
-#define MAXNAMELEN	128
+#define MAXNAMELEN	   128
+#define MAXLONGNAMELENGTH 1024
 
 #define NVARIABLES	20000
 
