@@ -39,6 +39,18 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+
+/* CHANGES:
+ *
+ *  MTP Changed all malloc calls to calloc as per patch 'patch.malloc' fix
+ *      submitted by John Bass
+ *
+ *  MTP converted sprintf to snprintf
+ *  MTP converted strcat to strncat  
+ *  MTP converted strcpy to strncpy  
+ *
+*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <malloc.h>
@@ -81,8 +93,8 @@
 %{
 
 extern FILE *yyin;
-char original_inputfilename[1024] = "";
-char inputfilename[1024] = "";
+char original_inputfilename[MAXLONGNAMELENGTH] = "";
+char inputfilename[MAXLONGNAMELENGTH] = "";
 
 char *possible_cpps[] = {
     "/usr/lib/cpp",
@@ -91,8 +103,8 @@ char *possible_cpps[] = {
     0
 };
 
-char cppname[1024];
-char cppargs[1024];
+char cppname[MAXLONGNAMELENGTH];
+char cppargs[MAXLONGNAMELENGTH];
 
 int nocpp;
 
@@ -137,7 +149,7 @@ char *external_bus_name_format = "%s_v%d";
 main(int argc, char *argv[]) {
     int i;
 
-    sprintf(cppargs,
+    snprintf(cppargs, MAXLONGNAMELENGTH,
 	    " -DPORT_REGISTERED=0x%x -DPORT_PIN=0x%x -DPORT_REGISTERED_AND_PIN=0x%x -DPORT_WIRE=0x0 -DPORT_PULLUP=0x%x -DPORT_PULLDOWN=0x%x",
 	    PORT_REGISTERED, PORT_PIN, (PORT_REGISTERED | PORT_PIN),
 	    PORT_PULLUP, PORT_PULLDOWN);
@@ -252,8 +264,8 @@ main(int argc, char *argv[]) {
 	exit(1);
     }
     if(argc == 2) {
-	strcat(original_inputfilename, argv[1]);
-	strcat(inputfilename, argv[1]);
+	strncat(original_inputfilename, argv[1], MAXLONGNAMELENGTH);
+	strncat(inputfilename, argv[1], MAXLONGNAMELENGTH);
 	if(freopen(inputfilename, "r", stdin) == (FILE *) NULL) {
 	    perror(inputfilename);
 	    exit(1);
@@ -388,7 +400,7 @@ char *bitname(struct bit *b) {
     if(b->name && !(b->flags & BIT_WORD))
 	return (b->name);
     if(!b->name)
-	b->name = (char *) malloc(MAXNAMELEN);
+	b->name = (char *) calloc(1, MAXNAMELEN);
     if(b->variable->width == 1) {
 	if(b->flags & SYM_VCC) {
 	    if(output_format == VHDL)
@@ -397,39 +409,39 @@ char *bitname(struct bit *b) {
 		strncpy(b->name, b->variable->name, MAXNAMELEN);
 	} else if(output_format == VHDL) {
 	    if(b->variable->name[0] == '_') {
-		sprintf(b->name, "T%d_%d%s", thread,
+		snprintf(b->name, MAXNAMELEN, "T%d_%d%s", thread,
 			b->variable->lineno, b->variable->name);
 	    } else {
-		sprintf(b->name, "T%d_%d_%s", thread,
+		snprintf(b->name, MAXNAMELEN, "T%d_%d_%s", thread,
 			b->variable->lineno, b->variable->name);
 	    }
 	} else
-	    sprintf(b->name, "%d_%d_%s", thread,
+	    snprintf(b->name, MAXNAMELEN, "%d_%d_%s", thread,
 		    b->variable->lineno, b->variable->name);
     } else if(output_format == VHDL) {
 	if(b->flags & BIT_WORD) {
 	    if(b->variable->name[0] == '_') {
-		sprintf(b->name, "T%d_%d%s(%d)", thread,
+		snprintf(b->name, MAXNAMELEN, "T%d_%d%s(%d)", thread,
 			b->variable->lineno,
 			b->variable->name, b->bitnumber);
 	    } else {
-		sprintf(b->name, "T%d_%d_%s(%d)", thread,
+		snprintf(b->name, MAXNAMELEN, "T%d_%d_%s(%d)", thread,
 			b->variable->lineno,
 			b->variable->name, b->bitnumber);
 	    }
 	} else {
 	    if(b->variable->name[0] == '_') {
-		sprintf(b->name, "T%d_%d%s_%d", thread,
+		snprintf(b->name, MAXNAMELEN, "T%d_%d%s_%d", thread,
 			b->variable->lineno,
 			b->variable->name, b->bitnumber);
 	    } else {
-		sprintf(b->name, "T%d_%d_%s_%d", thread,
+		snprintf(b->name, MAXNAMELEN, "T%d_%d_%s_%d", thread,
 			b->variable->lineno,
 			b->variable->name, b->bitnumber);
 	    }
 	}
     } else {
-	sprintf(b->name, "%d_%d_%s_%d", thread,
+	snprintf(b->name, MAXNAMELEN, "%d_%d_%s_%d", thread,
 		b->variable->lineno, b->variable->name, b->bitnumber);
     }
     return (b->name);
@@ -445,7 +457,7 @@ char *externalname(struct bit *b) {
     if(b->variable->width == 1)
 	strncpy(name, b->variable->name + 1, MAXNAMELEN);
     else
-	sprintf(name, external_bus_name_format, b->variable->name + 1, b->bitnumber);
+	snprintf(name, MAXNAMELEN, external_bus_name_format, b->variable->name + 1, b->bitnumber);
     return (name);
 }
 
@@ -618,7 +630,7 @@ struct variable *intconstant(int value) {
     /* Add one bit for the sign bit */
     width++;
 
-    sprintf(buf, "constant_%d", value);
+    snprintf(buf, MAXNAMELEN, "constant_%d", value);
     v = findvariable(buf, MAYEXIST, width);
     v->flags |= SYM_LITERAL;
     bl = v->bits;
@@ -655,7 +667,7 @@ addtolist(struct bitlist **listp, struct bit *b) {
 	    return;
     }
     list = *listp;
-    *listp = (struct bitlist *) malloc(sizeof(struct bitlist));
+    *listp = (struct bitlist *) calloc(1, sizeof(struct bitlist));
     (*listp)->bit = b;
     (*listp)->next = list;
 }
@@ -666,7 +678,7 @@ addtolistwithduplicates(struct bitlist **listp, struct bit *b) {
     for(; *listp; listp = &((*listp)->next)) {
     }
     list = *listp;
-    *listp = (struct bitlist *) malloc(sizeof(struct bitlist));
+    *listp = (struct bitlist *) calloc(1, sizeof(struct bitlist));
     (*listp)->bit = b;
     (*listp)->next = list;
 }
@@ -679,7 +691,7 @@ addtovlist(struct varlist **listp, struct variable *v) {
 	    return;
     }
     list = *listp;
-    *listp = (struct varlist *) malloc(sizeof(struct varlist));
+    *listp = (struct varlist *) calloc(1, sizeof(struct varlist));
     (*listp)->variable = v;
     (*listp)->next = list;
 }
@@ -689,7 +701,7 @@ addtovlistwithduplicates(struct varlist **listp, struct variable *v) {
 
     for(; *listp; listp = &((*listp)->next));
     list = *listp;
-    *listp = (struct varlist *) malloc(sizeof(struct varlist));
+    *listp = (struct varlist *) calloc(1, sizeof(struct varlist));
     (*listp)->variable = v;
     (*listp)->next = list;
 }
@@ -733,7 +745,7 @@ struct variable *newtempvar(char *s, int width) {
     struct variable *temp;
     struct bitlist *bl;
 
-    sprintf(buf, "L%d%s", tempchar++, s);
+    snprintf(buf, MAXNAMELEN, "L%d%s", tempchar++, s);
     temp = findvariable(buf, MUSTNOTEXIST, width);
     temp->flags |= SYM_TEMP;
     for(bl = temp->bits; bl; bl = bl->next)
@@ -746,7 +758,7 @@ struct variable *copyvar(struct variable *v) {
     struct variable *temp;
     struct bitlist *bl, *bl2;
 
-    sprintf(buf, "L%d_%s", tempchar++, v->copyof->name);
+    snprintf(buf, MAXNAMELEN, "L%d_%s", tempchar++, v->copyof->name);
     temp = findvariable(buf, MUSTNOTEXIST, v->width);
     temp->flags |= (v->flags & SYM_TEMP);
     temp->copyof = v->copyof;
@@ -791,8 +803,8 @@ struct bit *freezebit(struct bit *b) {
     int i;
 
     temp = newbit();
-    temp->name = (char *) malloc(MAXNAMELEN);
-    sprintf(temp->name, "T%d_%dL%d_%s", thread, inputlineno, tempchar++, bitname(b->copyof));
+    temp->name = (char *) calloc(1, MAXNAMELEN);
+    snprintf(temp->name, MAXNAMELEN, "T%d_%dL%d_%s", thread, inputlineno, tempchar++, bitname(b->copyof));
     if(b->flags & BIT_TEMP) {
 	addtolist(&temp->primaries, b);
 	temp->truth[0] = 0;
@@ -820,7 +832,7 @@ modifiedvar(struct variable *v) {
 	printf("   push modified ");
 	printbit(v->bits->bit);
     }
-    temp = (struct varlist *) malloc(sizeof(struct varlist));
+    temp = (struct varlist *) calloc(1, sizeof(struct varlist));
     temp->variable = v;
     temp->next = scopestack;
     scopestack = temp;
@@ -1069,9 +1081,9 @@ struct variable *twoop(struct variable *left, struct variable *right, int (*func
 char *intop(char *left, char *right, int (*func) ()) {
     char temp[32], *result;
 
-    sprintf(temp, "%d", func(atoi(left), atoi(right)));
-    result = malloc(strlen(temp) + 1);
-    strcpy(result, temp);
+    snprintf(temp, 32, "%d", func(atoi(left), atoi(right)));
+    result = calloc(1, strlen(temp) + 1);
+    strncpy(result, temp, strlen(temp) + 1);
     return (result);
 }
 
@@ -1770,17 +1782,17 @@ struct variable *initialstate, *loopstate, *endloopexpn;
 
 init() {
     struct variable *v, *running, *vcc, *myzeroff;
-    char buf[128];
+    char buf[MAXNAMELEN];
 
     /* Running is a FF whose output is 0 initially, and is 1 thereafter.
      * The initial state is the inverse of the FF output, so is 1 on the
      * first clock cycle, and 0 thereafter.
      */
 
-    sprintf(buf, "%dRunning", thread);
+    snprintf(buf, MAXNAMELEN, "%dRunning", thread);
     running = findvariable(buf, MUSTNOTEXIST, 1);
     makeff(running);
-    sprintf(buf, "%dZero", thread);
+    snprintf(buf, MAXNAMELEN, "%dZero", thread);
     myzeroff = findvariable(buf, MUSTNOTEXIST, 1);
     makeff(myzeroff);
     setvar(myzeroff, ffoutput(myzeroff));
@@ -2569,7 +2581,6 @@ optionaltype:	/* empty */
 		    $$.type = currenttype = 0;
 		    currentwidth = 0;
 		}
-
 		| typename
 
 typename:	VOID
@@ -2861,7 +2872,7 @@ whileloop:	WHILE
 		    endloop = newtempvar("endloop", 1);
 		    endloop->flags = SYM_STATE;
 		    makeff(endloop);
-		    vl = (struct varlist *) malloc(sizeof(struct varlist));
+		    vl = (struct varlist *) calloc(1, sizeof(struct varlist));
 		    vl->next = breakstack;
 		    breakstack = vl;
 		    breakstack->variable = endloop;

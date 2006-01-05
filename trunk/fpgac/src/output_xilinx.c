@@ -32,6 +32,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+/* CHANGES:
+ *
+ *  MTP converted strcpy to strncpy  
+ *
+*/
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -79,7 +84,7 @@ output_XNF() {
     datestring[strlen(datestring) - 1] = '\0';
     Revision[strlen(Revision) - 2] = '\0';
     if (((int) strlen(Revision)) <= 11)
-	strcpy(Revision, "Revision unknown");
+	strncpy(Revision, "Revision unknown", REVISIONLENGTH);
     fprintf(outputfile, "PROG, fpgac, %s, \"%s\"\n", &Revision[11], datestring);
     if (partname)
 	fprintf(outputfile, "PART, %s\n", partname);

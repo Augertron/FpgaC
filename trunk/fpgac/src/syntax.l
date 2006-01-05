@@ -36,6 +36,16 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+
+/* CHANGES:
+ *
+ * MTP Changed all malloc calls to calloc as per patch 'patch.malloc' fix
+ *     submitted by John Bass
+ *
+ * MTP converted sprintf to snprintf
+ *
+ */
+
 #include <stdio.h>
 #include "names.h"
 #include "y.tab.h"
@@ -74,9 +84,9 @@ newtoken(t)
 			yytext, saving, replaying);
 		}
 	if(saving) {
-		if((token = (struct token *) malloc(sizeof(struct token)))
+		if((token = (struct token *) calloc(1, sizeof(struct token)))
 			== (struct token *) NULL) {
-			fprintf(stderr, "fpgac: newtoken malloc failed\n");
+			fprintf(stderr, "fpgac: newtoken calloc failed\n");
 			exit(1);
 			}
 		token->t = t;
@@ -95,9 +105,9 @@ newtoken(t)
 
 saveinput() {
 	if(!tokenstack) {
-		if((tokenstack = (struct tokenlist *) malloc(sizeof(struct tokenlist)))
+		if((tokenstack = (struct tokenlist *) calloc(1, sizeof(struct tokenlist)))
 				== (struct tokenlist *) NULL) {
-			fprintf(stderr, "fpgac: saveinput malloc failed\n");
+			fprintf(stderr, "fpgac: saveinput calloc failed\n");
 			exit(1);
 			}
 		}
@@ -121,9 +131,9 @@ replayinput() {
 pushinputstream() {
 	struct tokenlist *tl;
 
-	if((tl = (struct tokenlist *) malloc(sizeof(struct tokenlist)))
+	if((tl = (struct tokenlist *) calloc(1, sizeof(struct tokenlist)))
 			== (struct tokenlist *) NULL) {
-		fprintf(stderr, "fpgac: saveinput malloc failed\n");
+		fprintf(stderr, "fpgac: saveinput calloc failed\n");
 		exit(1);
 		}
 	tl->next = tokenstack;
@@ -299,12 +309,12 @@ return				return(newtoken(RETURN));
 [A-Za-z_][A-Za-z0-9_]*	{
 				char *buf;
 
-				if((buf = (char *) malloc(strlen(yytext)+2))
+				if((buf = (char *) calloc(1, strlen(yytext)+2))
 					== (char *) NULL) {
-					fprintf(stderr, "fpgac: malloc returned NULL\n");
+					fprintf(stderr, "fpgac: calloc returned NULL\n");
 					exit(1);
 					}
-				sprintf(buf, "_%s", yytext);
+				snprintf(buf, strlen(yytext)+2, "_%s", yytext);
 				yylval.s = buf;
 				return(newtoken(IDENTIFIER));
 				}
@@ -312,12 +322,12 @@ return				return(newtoken(RETURN));
 0|[1-9][0-9]*				{
 				char *buf;
 
-				if((buf = (char *) malloc(strlen(yytext)+1))
+				if((buf = (char *) calloc(1, strlen(yytext)+1))
 					== (char *) NULL) {
-					fprintf(stderr, "fpgac: malloc returned NULL\n");
+					fprintf(stderr, "fpgac: calloc returned NULL\n");
 					exit(1);
 					}
-				sprintf(buf, "%s", yytext);
+				snprintf(buf, strlen(yytext)+1, "%s", yytext);
 				yylval.s = buf;
 				return(newtoken(INTEGER));
 				}
@@ -326,13 +336,13 @@ return				return(newtoken(RETURN));
 				char *buf;
 				int temp;
 
-				if((buf = (char *) malloc(strlen(yytext)*2+1))
+				if((buf = (char *) calloc(1, strlen(yytext)*2+1))
 					== (char *) NULL) {
-					fprintf(stderr, "fpgac: malloc returned NULL\n");
+					fprintf(stderr, "fpgac: calloc returned NULL\n");
 					exit(1);
 					}
 				sscanf(yytext, "%i", &temp);
-				sprintf(buf, "%d", temp);
+				snprintf(buf, strlen(yytext)*2+1, "%d", temp);
 				yylval.s = buf;
 				return(newtoken(INTEGER));
 				}
@@ -341,13 +351,13 @@ return				return(newtoken(RETURN));
 				char *buf,*ebuf;
 				int temp;
 
-				if((buf = (char *) malloc(strlen(yytext)*2+1))
+				if((buf = (char *) calloc(1, strlen(yytext)*2+1))
 					== (char *) NULL) {
-					fprintf(stderr, "fpgac: malloc returned NULL\n");
+					fprintf(stderr, "fpgac: calloc returned NULL\n");
 					exit(1);
 					}
 				temp = strtol(yytext+2,&ebuf,2);
-				sprintf(buf, "%d", temp);
+				snprintf(buf, strlen(yytext)*2+1,"%d", temp);
 				yylval.s = buf;
 				return(newtoken(INTEGER));
 				}
@@ -355,15 +365,15 @@ return				return(newtoken(RETURN));
 \"[^"]*\"			{
 				char *buf;
 
-				if((buf = (char *) malloc(strlen(yytext)+1))
+				if((buf = (char *) calloc(1, strlen(yytext)+1))
 					== (char *) NULL) {
-					fprintf(stderr, "fpgac: malloc returned NULL\n");
+					fprintf(stderr, "fpgac: calloc returned NULL\n");
 					exit(1);
 					}
 				/* Return the contents of the string, without
 				 * the quotes
 				 */
-				sprintf(buf, "%s", &yytext[1]);
+				snprintf(buf, strlen(yytext)+1, "%s", &yytext[1]);
 				buf[strlen(buf)-1] = '\0';
 				yylval.s = buf;
 				return(newtoken(STRING));

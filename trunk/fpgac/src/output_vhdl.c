@@ -32,6 +32,12 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+/* CHANGES:
+ *
+ *  MTP converted sprintf to snprintf
+ *  MTP converted strcpy to strncpy  
+ *
+*/
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -40,6 +46,7 @@
 
 #include "names.h"
 #include "outputvars.h"
+#include "patchlevel.h"
 
 extern char *get_designname(void);
 
@@ -73,7 +80,7 @@ void output_vhdl(void)
    datestring[strlen(datestring) - 1] = '\0';
    Revision[strlen(Revision) - 2] = '\0';
    if(((int) strlen(Revision)) <= 11) {
-      strcpy(Revision, "Revision unknown");
+      strncpy(Revision, "Revision unknown", REVISIONLENGTH);
    }
    fprintf(outputfile, "\n-- fpgac %s %s\n\n", &Revision[11], datestring);
 
@@ -95,12 +102,12 @@ void output_vhdl(void)
             continue;
          }
          if(b->variable->width == 1) {
-            sprintf(type, "std_logic");
+            snprintf(type, MAXNAMELEN, "std_logic");
          }
          else {
             struct bitlist *l;
             for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-            sprintf(type, "std_logic_vector(%d downto 0)",
+            snprintf(type, MAXNAMELEN, "std_logic_vector(%d downto 0)",
                                   b->variable->width - 1);
          }
       }
@@ -156,7 +163,7 @@ void output_vhdl(void)
              if(!l) {
                  // yes, then use in word form
                  for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-                 sprintf(buf, "%s", bitname(b));
+                 snprintf(buf, MAXNAMELEN, "%s", bitname(b));
                  for(c=buf;*c;c++);*--c=0;*--c=0;*--c=0;
                  fprintf(outputfile, "	signal %s : std_logic_vector(%d downto 0);\n", buf,b->variable->width-1);
                  continue;
@@ -188,7 +195,7 @@ void output_vhdl(void)
                 if(!l) {
                     // yes, then use in word form
                     for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-                    sprintf(buf, "%s", bitname(b));
+                    snprintf(buf, MAXNAMELEN, "%s", bitname(b));
                     for(c=buf;*c;c++);*--c=0;*--c=0;*--c=0;
                     fprintf(outputfile, "	signal %s : std_logic_vector(%d downto 0);\n", buf,b->variable->width-1);
                     continue;
@@ -226,7 +233,7 @@ void output_vhdl(void)
                 if(!l) {
                     // yes, then use in word form
                     for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-                    sprintf(buf, "%s", bitname(b));
+                    snprintf(buf, MAXNAMELEN, "%s", bitname(b));
                     for(c=buf;*c;c++);*--c=0;*--c=0;*--c=0;
                     fprintf(outputfile, "	signal FFin_%s : std_logic_vector(%d downto 0);\n", buf,b->variable->width-1);
                     continue;
