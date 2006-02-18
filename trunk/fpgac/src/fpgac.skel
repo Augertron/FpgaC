@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# remove or comment out after editing for your site
-echo You will need to edit the tool chain calls in the /usr/local/bin/fpgac script as part
-echo of installation for your site.
-exit
 
 
 # This is not a great solution, but uname -p does not work under Linux
@@ -21,7 +17,7 @@ FPGAC=LIB_defined_in_the_makefile/fpgac.compiler
 toss=1
 parttype=4003pc84
 optimize=false
-format=vhd
+format=xnf
 
 while true
 	do
@@ -40,7 +36,7 @@ case $1 in
 	shift
 	;;
 
--[acdfrFUDIT]*)	args="$args $1"
+-[acdfsmrFUDIT]*)	args="$args $1"
 		shift
 		;;
 
@@ -82,6 +78,34 @@ case $format in
 	fi
 	;;
 	
+cnf*)
+        rm -f $file.cnf
+	while test $# -gt 0
+		do
+		case $1 in
+
+	*.cnf)          if test -f $1; then
+				cat $1 >> $file.cnf
+			else
+				echo "fpgac: $1: can't open file"
+				rm -f $file.cnf
+				exit 1
+			fi
+			;;
+
+	*.c)            if $FPGAC -p $parttype $args $1 > /tmp/fpgac$$; then
+				cat  /tmp/fpgac$$ >> $file.cnf
+				rm -f /tmp/fpgac$$
+			else
+				rm -f $file.cnf
+				exit 1
+			fi
+			;;
+		esac
+		shift
+		done
+	;;
+	
 xnf*)
 	echo "LCANET, 4" > $file.xnf
 	while test $# -gt 0
@@ -99,11 +123,11 @@ xnf*)
 
 	*.c)            if $FPGAC -p $parttype $args $1 > /tmp/fpgac$$; then
 				sed -e '/EOF/,$d' -e '/^LCANET/d' /tmp/fpgac$$ >> $file.xnf
-				rm -f /tmp/fpgac$$
 			else
 				rm -f $file.xnf
 				exit 1
 			fi
+			rm -f /tmp/fpgac$$
 			;;
 		esac
 		shift

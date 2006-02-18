@@ -1,0 +1,215 @@
+#!/bin/sh
+
+#either use the makefile to update FPGAC_DIR or do it by hand. It is the directory of the FPGAC executable.
+FPGAC_DIR=LIB_defined_in_the_makefile/
+#FPGAC=${FPGAC_DIR}fpgac.compiler
+# Under Windows executables have a .exe extension
+FPGAC=${FPGAC_DIR}fpgac.exe
+
+if [ ! -f $FPGAC ] ; then
+    echo $FPGAC not found
+    exit 1
+fi
+
+toss=1
+parttype=4003pc84
+optimize=false
+format=xnf
+nocpp=0
+nocpp_found=0
+cppargs="-DFPGAC=FPGACv1.0 -DPORT_REGISTERED=0x%x -DPORT_PIN=0x%x -DPORT_REGISTERED_AND_PIN=0x%x -DPORT_WIRE=0x0 -DPORT_PULLUP=0x%x -DPORT_PULLDOWN=0x%x PORT_REGISTERED, PORT_PIN, (PORT_REGISTERED | PORT_PIN), PORT_PULLUP, PORT_PULLDOWN"
+if [ -f /lib/cpp ] ; then
+    cpp="/lib/cpp"
+elif [ -f /usr/lib/cpp ] ; then
+    cpp="/usr/lib/cpp"
+elif [ -f /usr/bin/cpp ] ; then
+    cpp="/usr/bin/cpp"
+else
+    cpp=`which cpp` ## hope its found on path
+    if [ $? -ne 0 ] ; then
+        nocpp_found=1
+    fi
+fi
+
+if [ $# -ne 0 ] ; then
+  while true ; do
+    case $1 in
+
+-v)	toss=
+	shift
+	;;
+
+-O*)	optimize=force
+	args="$args $1"
+	shift
+	;;
+
+-S)	xnfonly=1
+	shift
+	;;
+
+-a)	nocpp=1
+	shift
+	;;
+
+#-b)	realname=$1   # should not occur on script call
+#      shift
+#      ;;
+
+-[DUI]) cppargs="$cppargs $1"
+        shift
+        ;;
+
+-[cdfsmrFT]*)	args="$args $1"
+		shift
+		;;
+
+-target)	args="$args $1 $2"
+		format=$2
+		shift
+		shift
+		;;
+
+-p)	parttype=$2
+	shift
+	shift
+	;;
+
+-*)	$FPGAC -usage
+	exit 1
+	;;
+
+*)	break
+	;;
+    esac
+  done
+     ## what remains should be the filename(s)
+  if test $# -gt 1; then
+	args="$args -c"
+  fi
+else
+  echo "Missing filename"
+  $FPGAC -usage
+  exit 1
+fi
+	
+file=`basename $1 .c`
+tempout="/tmp/fpgac$$"
+
+function runFPGAC()
+{
+    realname=$1
+    if [ $nocpp -eq 0 ] ; then
+        if [ $nocpp_found -eq 0 ] ; then
+            tempfile="/tmp/fpgacin$$.c"
+            sed 's/^#pragma/$pragma/' $1 | $cpp "$cppargs" | sed 's/^$pragma/#pragma/' > $tempfile
+            if [ $? -ne 0 ] ; then
+                echo "sed or cpp failed"
+                exit 1
+            fi
+        else
+            echo "No cpp found"
+            tempfile=$1
+        fi
+    else
+        tempfile=$1
+    fi
+    $FPGAC -a -b$realname -p $parttype $args $tempfile > $tempout
+    if [ $? -eq 0 ] ; then
+        if [ "$realname" != "$tempfile" ] ; then
+            rm -f $tempfile
+        fi
+    else
+            # something went wrong, leave the source.
+        return 1
+    fi
+    ##returns $?
+}
+
+case $format in
+	
+*vqm)   runFPGAC $1
+	if [ $? -eq 0 ] ; then
+		sed -e '/Start of debug output/,$d' $tempout > $file.vqm
+		rm -f $tempout
+	else
+		rm -f $file.vqm
+		exit 1
+	fi
+	;;
+	
+cnf*)
+        rm -f $file.cnf
+	while test $# -gt 0
+		do
+		case $1 in
+
+	*.cnf)          if test -f $1; then
+				cat $1 >> $file.cnf
+			else
+				echo "fpgac: $1: can't open file"
+				rm -f $file.cnf
+				exit 1
+			fi
+			;;
+
+	*.c)            runFPGAC $1
+	                if [ $? -eq 0 ] ; then
+				cat  $tempout >> $file.cnf
+				rm -f $tempout
+			else
+				rm -f $file.cnf
+				exit 1
+			fi
+			;;
+		esac
+		shift
+		done
+	;;
+	
+xnf*)
+	echo "LCANET, 4" > $file.xnf
+	while test $# -gt 0
+		do
+		case $1 in
+
+	*.xnf)          if test -f $1; then
+				sed -e '/EOF/,$d' -e '/^LCANET/d' -e '/^PART/d' -e '/^PWR/d' $1 >> $file.xnf
+			else
+				echo "fpgac: $1: can't open file"
+				rm -f $file.xnf
+				exit 1
+			fi
+			;;
+
+	*.c)            runFPGAC $1
+	                if [ $? -eq 0 ] ; then
+				sed -e '/EOF/,$d' -e '/^LCANET/d' $tempout >> $file.xnf
+				rm -f $tempout
+			else
+				rm -f $file.xnf
+				exit 1
+			fi
+			;;
+		esac
+		shift
+		done
+	echo EOF >> $file.xnf
+	;;
+	
+vhd|vhdl) runFPGAC $1
+	if [ $? -eq 0 ] ; then
+		sed -e '/Start of debug output/,$d' $tempout > $file.vhd
+		rm -f $tempout
+	else
+		rm -f $file.vhd
+		exit 1
+	fi
+	;;
+
+*)	runFPGAC $1
+	;;
+	
+esac
+
+exit 0

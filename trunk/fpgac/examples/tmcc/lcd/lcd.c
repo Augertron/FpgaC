@@ -15,7 +15,7 @@
  * It is one thread of a multi-threaded program which copies data
  * to the LCD from the SRAM.  It gets data from the SRAM thread.
  *
- * LOCKED BY: $Locker$
+ * LOCKED BY: $Locker:  $
  *
  */
  
@@ -54,8 +54,6 @@
  * 
  *
  */
-
-#define PORT_REGISTERED	0x2
 
 /* The interface to the LCD and the power control board */
 
@@ -106,21 +104,21 @@ doscanline()
 	long scan_data, new_scan_data;
 
 	/* Connections to the LCD */
-#pragma	outputport(lcd_data);
-#pragma	outputport(lcd_cp);
+#pragma	fpgac_outputport(lcd_data)
+#pragma	fpgac_outputport(lcd_cp)
 
-	/* Connections to the SRAM thread.  Use portflags to turn off
+	/* Connections to the SRAM thread.  Use fpgac_portflags to turn off
 	 * PORT_PIN.  All communications are done through special port
 	 * variables that do not have pins.
 	 */
-#pragma	outputport(sram_lcd_address);
-#pragma	inputport(sram_tolcd);
-#pragma	outputport(sram_lcd_request);
-#pragma	inputport(sram_lcd_done);
-#pragma	portflags(sram_lcd_address, PORT_REGISTERED);
-#pragma	portflags(sram_lcd_request, PORT_REGISTERED);
-#pragma	portflags(sram_tolcd,	0);
-#pragma	portflags(sram_lcd_done,0);
+#pragma	fpgac_outputport(sram_lcd_address)
+#pragma	fpgac_inputport(sram_tolcd)
+#pragma	fpgac_outputport(sram_lcd_request)
+#pragma	fpgac_inputport(sram_lcd_done)
+#pragma	fpgac_portflags(sram_lcd_address, PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_lcd_request, PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_tolcd,	0)
+#pragma	fpgac_portflags(sram_lcd_done,0)
 
 	/* Read 32 bits from the RAMS to get the first set of pixels for
 	 * this line.
@@ -217,7 +215,7 @@ doframe()
 	int row:10;
 	int delay:9;
 
-#pragma	outputport(lcd_lp);
+#pragma	fpgac_outputport(lcd_lp)
 
 	/* Set memory address pointer */
 	scan_addr = 0;
@@ -274,19 +272,19 @@ main()
 	{
 	int count1:10, count2:10;
 
-#pragma	outputport(lcd_flm);
-#pragma	outputport(lcd_lp);
-#pragma	outputport(lcd_cp);
-#pragma	outputport(lcd_dispon);
+#pragma	fpgac_outputport(lcd_flm)
+#pragma	fpgac_outputport(lcd_lp)
+#pragma	fpgac_outputport(lcd_cp)
+#pragma	fpgac_outputport(lcd_dispon)
 
 	/* set up interface to power control board */
 
-#pragma	outputport(max716ev_on);
-#pragma	outputport(max716ev_v4on);
-#pragma	outputport(max716ev_v5on);
-#pragma	outputport(max716ev_v6on);
-#pragma	outputport(max716ev_v7on);
-#pragma	outputport(max716ev_v6step);
+#pragma	fpgac_outputport(max716ev_on)
+#pragma	fpgac_outputport(max716ev_v4on)
+#pragma	fpgac_outputport(max716ev_v5on)
+#pragma	fpgac_outputport(max716ev_v6on)
+#pragma	fpgac_outputport(max716ev_v7on)
+#pragma	fpgac_outputport(max716ev_v6step)
 
 	/* activate the board */
 	max716ev_on = 1;

@@ -1,23 +1,16 @@
-all:	testit testlcd
+all:	testit
 
 testit:
-	tmcc -target xnf -S counter.c
-	tmcc -target xnf -S countup.c
-	@echo 'Only the date should change in the following two diffs:'
-	-diff counter.xnf.orig counter.xnf
-	-diff countup.xnf.orig countup.xnf
-
-testlcd:
-	cd lcd; make
-
-bits:	countup.bit counter.bit
-
-counter.bit:	counter.c
-	tmcc counter.c
-
-countup.bit:	countup.c
-	tmcc countup.c
+	cd pipelines; make
+	cd tmcc; make
+	cd regression_tests; make
 
 clean:
-	rm -f *.xnf *.bit
-	cd lcd; make clean
+	cd pipelines; make clean
+	cd tmcc; make clean
+	cd regression_tests; make clean
+
+orig: testit
+	cd pipelines; make orig
+	cd tmcc; make orig
+	cd regression_tests; make orig

@@ -1,0 +1,410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+  <title>Setting up Fpgac to execute on Windows 2000 or XP</title>
+  <meta name="GENERATOR" content="OpenOffice.org 2.0-pre  (Linux)">
+  <meta name="AUTHOR" content="Pentinmaki, Isaac  ">
+  <meta name="CREATED" content="20051220;13080000">
+  <meta name="CHANGED" content="20060210;8213600">
+  <style>
+	<!--
+		@page { size: 8.5in 11in; margin-right: 0.5in; margin-top: 1in; margin-bottom: 1in }
+		P { margin-bottom: 0in; direction: ltr; color: #000000; text-align: left; widows: 2; orphans: 2 }
+		P.western { font-family: "Arial", sans-serif; font-size: 10pt; so-language: en-US }
+		P.cjk { font-family: "Times New Roman", serif; font-size: 10pt }
+		P.ctl { font-family: "Arial", sans-serif; font-size: 12pt; so-language: ar-SA }
+		P.list-western { font-family: "Arial", sans-serif; font-size: 10pt; so-language: en-US }
+		P.list-cjk { font-family: "Times New Roman", serif; font-size: 10pt }
+		P.list-ctl { font-family: "Lucidasans"; font-size: 12pt; so-language: ar-SA }
+		H1 { margin-top: 0in; margin-bottom: 0in; direction: ltr; color: #000000; text-align: left; widows: 2; orphans: 2 }
+		H1.western { font-family: "Arial", sans-serif; font-size: 10pt; so-language: en-US }
+		H1.cjk { font-family: "Times New Roman", serif; font-size: 10pt }
+		H1.ctl { font-family: "Arial", sans-serif; font-size: 12pt; so-language: ar-SA }
+		H2 { margin-top: 0in; margin-bottom: 0in; direction: ltr; color: #000000; text-align: left; widows: 2; orphans: 2; text-decoration: underline }
+		H2.western { font-family: "Arial", sans-serif; font-size: 10pt; so-language: en-US }
+		H2.cjk { font-family: "Times New Roman", serif; font-size: 10pt }
+		H2.ctl { font-family: "Arial", sans-serif; font-size: 12pt; so-language: ar-SA }
+		H3 { margin-top: 0in; margin-bottom: 0in; direction: ltr; color: #000000; text-align: left; widows: 2; orphans: 2; text-decoration: underline }
+		H3.western { font-family: "Arial", sans-serif; font-size: 10pt; so-language: en-US; font-weight: medium }
+		H3.cjk { font-family: "Times New Roman", serif; font-size: 10pt; font-weight: medium }
+		H3.ctl { font-family: "Arial", sans-serif; font-size: 12pt; so-language: ar-SA; font-weight: medium }
+		A:link { color: #0099cc; font-weight: medium; text-decoration: none }
+		A:visited { color: #800080 }
+	-->
+	</style>
+</head>
+<body dir="ltr" lang="en-US" link="#0099cc" text="#000000"
+ vlink="#800080">
+<font face="Arial, sans-serif"><font size="2"><b><span
+ style="font-weight: bold;"></span></b>The platform support for
+Microsoft windows platforms project is a <span
+ style="font-weight: bold;">work-in-progress</span>.&nbsp; Please bug
+report problems and post changes/fixes/updates for your</font></font>
+system at the <a
+ href="http://sourceforge.net/tracker/?group_id=152034&amp;atid=782956">FpgaC
+project bug tracker</a>.&nbsp; This is the initial work toward this
+project, with lots of work to go. All help appreciated.<br>
+<font face="Arial, sans-serif"><font size="2"></font></font>
+<p class="western"><font face="Arial, sans-serif"><font size="2"><b><br>
+Setting
+up FPGAC to execute on Windows 2000 or Windows XP (Probably also
+latter versions of Windows).</b></font></font></p>
+<ul>
+  <li>
+    <p class="list-western"><b>Compiling FPGAC</b></p>
+    <ul>
+      <li>
+        <p class="western"><font face="Arial, sans-serif"><font size="2"><b>Download
+and install unix tools for Windows</b></font></font></p>
+      </li>
+      <li>
+        <p class="western"><font face="Arial, sans-serif"><font size="2"><b>Download
+and install a C compiler</b></font></font></p>
+      </li>
+      <li>
+        <p class="western"><font face="Arial, sans-serif"><font size="2"><b>Download,
+install and configure FPGAC</b></font></font></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2"><b>Using
+FPGAC</b></font></font></p>
+    <ul>
+      <li>
+        <p class="western"><font face="Arial, sans-serif"><font size="2"><b>Download
+and install a shell</b></font></font></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p class="western"><br>
+</p>
+<h2 class="western">Compiling FPGAC</h2>
+<p class="western">Following are alternatives for compiling FPGAC.
+Currently FPGAC must be downloaded and compiled on each system before
+using.</p>
+<p class="western"><br>
+</p>
+<h1 class="western">Setting Windows Paths and Environment Variables</h1>
+<p class="western"><font face="Arial, sans-serif"><font size="2">The
+path and Environment variables can be set “globally” in the
+Windows Setting panel (like a unix users .profile) or you can create
+batch files to execute when you open a DOS prompt.</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">To
+access the Windows Setting Panel:</font></font></p>
+<ol>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">Right
+click on My Computer, choose Properties from the drop down list, choose
+the Advanced Tab, click on Environment Variables button, edit User
+Variables or System Variables as appropriate.</font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Times New Roman, serif"><font
+ size="3"><font size="2"><font face="Arial, sans-serif">Select "<b>Start</b>"
+| "<b>Settings</b>" | "<b>Control Panel</b>" | "<b>System</b>", choose
+the Advanced Tab, click on Environment Variables button, edit User
+Variables or System Variables as appropriate.</font></font></font></font></p>
+  </li>
+</ol>
+<p class="western"><br>
+</p>
+<h1 class="western">Unix Tools – Bison, Flex</h1>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Download
+a set of unix tools These tools need to include bison, flex, rm, cp,
+sed needed by the make files to create the c files from the grammar
+and lexical files as well as FPGAC.</font></font></p>
+<p class="western"><font face="Times New Roman, serif"><font size="3"><font
+ size="2"><font face="Arial, sans-serif">From
+</font></font><font color="#0099cc"><span style="text-decoration: none;"><span
+ style=""><a href="http://unxutils.sourceforge.net/"><font
+ face="Arial, sans-serif">http://unxutils.sourceforge.net/</font></a></span></span></font>,
+c<font size="2"><font face="Arial, sans-serif">urrently the programs
+provided (UnxUtils.Zip) are:</font></font></font></font></p>
+<multicol id="Section1" cols="4" gutter="47" dir="ltr"></multicol>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Bc</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">bison</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">bzip2</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">diffutils</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">fileutils</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">findutils</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">flex</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">gawk</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">grep</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">gsar</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">gzip</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">indent</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">jwhois</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">less</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">m</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">make</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">patch</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">recode</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">rman</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">sed</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">shellutils</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">tar</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">textutils</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">unrar</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">wget</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">which</font></font></p>
+<div id="Section2" dir="ltr">
+<p class="western"><font face="Arial, sans-serif"><font size="2">Installing
+will create a /usr directory structure.</font></font></p>
+<p class="western"><font face="Times New Roman, serif"><font size="3"><font
+ size="2"><font face="Arial, sans-serif">From </font></font><font
+ color="#0099cc"><span style="text-decoration: none;"><span style=""><a
+ href="http://www.cygwin.com/setup.exe"><font face="Arial, sans-serif">http://www.cygwin.com/setup.exe</font></a></span></span></font><font
+ size="2"><font face="Arial, sans-serif">, currently the programs
+include those needed by FPGAC.</font></font></font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">In
+order to use the tools we need to add the programs to the path, and the
+Bision libraries to the path for the link stage. Install in \usr of a
+drive and place the necessary directories on the path:
+\usr\local\wbin;\usr\local\lib; the drive need not be the Windows
+default C: if you partition your drive.</font></font></p>
+<p class="western"> <font face="Arial, sans-serif"><font size="2">set
+USR=c:\usr\local\wbin;c:\usr\local\lib;</font></font></p>
+<p class="western"> <font face="Arial, sans-serif"><font size="2">set
+PATH=%PATH%;%USR%</font></font></p>
+<p class="western">The two Bison support files, bison.hairy and
+bison.simple (/usr/local/share for example), should be somewhere
+sensible, and you'll need to set the environment variables BISON_SIMPLE
+and BISON_HAIRY to contain the full paths to each file, respectively: </p>
+<p class="western"> <font face="Arial, sans-serif"><font size="2">set
+BISON_SIMPLE=c:\usr\local\share\bison.simple</font></font></p>
+<p class="western"> <font face="Arial, sans-serif"><font size="2">set
+BISON_HAIRY=c:\usr\local\share\bison.hairy</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">for
+instance. </font></font> </p>
+<p class="western"><br>
+</p>
+<h1 class="western">Download and install a C compiler</h1>
+<p class="western"><font face="Arial, sans-serif"><font size="2">FPGAC
+will need to be compiled by a c compiler on your system, also FPGAC
+usage is typically dependent on using a c preprocessor that is provided
+by the system c compiler, which Windows does not provide currently.</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Setup
+and usage information is included here for the Mingw C/C++ compiler,
+which is based on gcc.</font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Once
+you have installed a c compiler you can either (a) copy the necessary
+file(s) to /usr/lib or (b) add the necessary path to where those files
+exist in order to use them. </font></font> </p>
+<p class="western"><br>
+</p>
+<ol>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">If
+not already done so, create /usr/lib (of the drive which you will
+execute fpgac from) and copy the necessary parts of the C preprocessor
+there for use by the FPGA executable. This path is hard coded in the
+source but does not include a drive name.</font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">Alter
+the path to include the path to where the necessary c preprocessor
+file(s) are located.<br>
+set PATH=%PATH%;%CPPDIR%</font></font></p>
+  </li>
+</ol>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Use
+setpath.bat as an example of the path commands to use.</font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Times New Roman, serif"><font size="3"><font
+ size="2"><font face="Arial, sans-serif"><b>Mingw C/C++</b> available
+from <font color="#3366ff">http://www.mingw.org</font></font></font></font></font></p>
+<p class="western"><font face="Times New Roman, serif"><font size="3"><font
+ size="2"><font face="Arial, sans-serif">Install the compiler
+somewhere. <i>Note that Mingw does not allow you to use a path name
+that has a space in it like ‘Program Files’.</i></font></font></font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">For
+example install the following into c:\mingw.</font></font></p>
+<p class="western" style="text-indent: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">gcc-core-3.4.2-20040916-1.tar.gz</font></font></p>
+<p class="western" style="text-indent: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">mingw-runtime-3.9.tar.gz</font></font></p>
+<p class="western" style="text-indent: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">binutils-2.15.91-20040904-1.tar.gz</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">or
+download MinGW-3.2.0-rc-3.exe.</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Use
+the makefile.mingw, which has the necessary mingw environment settings.
+You will need to set the path variable for where the compiler is
+located (c:\mingw\bin).</font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">The
+files to copy for Mingw are cpp.exe (located in bin directory of the
+compiler) and cc1.exe (located in libexec\gcc\mingw32\3.4.2 directory
+of the compiler), or set the path to include those two directories.</font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font color="#000000"><b>Bloodshed Dev-C++</b> </font>available
+from <font color="#0099cc"><span style="text-decoration: none;"><span
+ style=""><a href="http://www.bloodshed.net/devcpp.html">http://www.bloodshed.net/devcpp.html</a></span></span></font></p>
+<p class="western"><font face="Times New Roman, serif"><font size="3"><font
+ size="2"><font face="Arial, sans-serif"><font color="#000000">Bloodshed
+Dev-C++ is an IDE for C/C++. It uses Mingw as it's compiler. It can
+also be used in combination with Cygwin or any other GCC based
+compiler. <i>Note that like Mingw, DevCpp does not allow you to use a
+path name that has a space in it.</i> </font></font></font></font></font>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">If you
+wish to use Dev-C++ for other programming, the configuration of Dev-C++
+includes specifying qualified paths to the executables (see menu item
+Tools-&gt;Compiler Options).</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Use
+the makefile.mingw, which has the necessary Dev-C++ environment
+settings. If compiling from the prompt you will need to set the path
+variable for where the compiler is located (c:\devcpp\bin if installed
+into c:\devcpp).</font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">The
+files to copy for Dev-C++ (like Mingw) are cpp.exe (located in bin
+directory of the compiler) and cc1.exe (located in
+libexec\gcc\mingw32\3.4.2 directory of the compiler), or set the path
+to include those two directories.</font></font></p>
+<p><i><u><br>
+<b>GCC</b> available at http://gcc.gnu.org</u></i></p>
+<p class="western">The install and usage should be similar to Mingw.</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2"><u>Not
+tested.</u></font></font></p>
+<p class="western"><br>
+</p>
+<p class="western" style="page-break-before: always;"><font
+ face="Arial, sans-serif"><font size="2"><b>Download, install and
+configure FPGAC</b></font></font></p>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Once
+you have FPGAC downloaded as well as the c preprocessor and unix tools
+configured you can install and configure the FPGAC source for your
+system.</font></font></p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Once
+everything is unpacked and installed in your path, you should be able
+to run these commands from a command prompt and they should all be
+available: </font></font> </p>
+</div>
+<multicol id="Section3" cols="2" gutter="47" dir="ltr"></multicol>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">make</font></font></p>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">bison</font></font></p>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">flex</font></font></p>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">cpp</font></font></p>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">sed</font></font></p>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">rm</font></font></p>
+<p class="western" style="margin-left: 0.5in;"><font
+ face="Arial, sans-serif"><font size="2">cp</font></font></p>
+<div id="Section4" dir="ltr">
+<p class="western"><br>
+</p>
+<ol>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">Change
+to the directory where you have the FPGAC source files (fpgac/src where
+fpgac is the root install directory).</font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">Copy
+the contents of the mswin directory into the src directory (as
+distributed the src directory is for unix).<br>
+The distribution directory structure is:<br>
+/fpgac<br>
+/doc<br>
+/examples<br>
+/src<br>
+/mswin</font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">Compile
+the FPGAC source by executing make with the appropriate makefile.<br>
+Mingw/DevCpp/Gcc makefile.mingw</font></font></p>
+  </li>
+</ol>
+<p class="list-western"><br>
+</p>
+<h3 class="western"><b>Using FPGAC</b></h3>
+<p class="western">Now that you have compiled FPGAC into an executable
+you can start using it.</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Due to
+the limitations of the original scripting provided with Windows you
+have two methods that can be used to execute FPGAC.</font></font></p>
+<ol>
+  <li>
+    <p class="western"><font face="Times New Roman, serif"><font
+ size="3"><font size="2"><font face="Arial, sans-serif">Install a Unix
+type shell. Doing this you can use the same script as the unix platform
+(fpgac.skel).<br>
+Two of the alternatives are : <br>
+a) MYSYS from the Mingw website which makes sense if you are using
+Mingw or Bloodshed Dev-C++.<br>
+An implicit /tmp is created when you enter the shell.<br>
+b) Cygwin includes a sh which you can invoke.<br>
+You will need to insure a /tmp is created, otherwise the shell will
+complain when you enter.<br>
+    <i><span
+ style="background: rgb(255, 255, 0) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;"><u>At
+this time using the cygwin sh does not work as executing fpgac causes
+an assert failure at runtime</u>.</span><br>
+    </i>In both cases the path will need to include at least the unix
+commands sed and rm on the path when executing fpgac for the unix type
+shell.</font></font></font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">Insure
+you have Windows Scripting Host installed. If not download it from the
+Microsoft Internet site (at this time the latest version if 5.6). You
+can use the included fpgac_skel.vbs.</font></font></p>
+  </li>
+</ol>
+<p class="western"><br>
+</p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Alter
+the script you’have chosen as appropriate for your FPGA platform Tools.
+At the minimum you need to insure that FPGAC_DIR and FPGAC are set
+correctly. </font></font> </p>
+<p class="western"><font face="Arial, sans-serif"><font size="2">Three
+scripts are included for executing fpgac:</font></font></p>
+<ul>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">fpgac.skel
+– the unix shell script, which can be used on windows if you have a
+unix shell installed</font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Arial, sans-serif"><font size="2">fpgac.wskel
+– a partially windows adapted version of fpgac.skel On Windows FPGAC is
+an executable file, which ends with .exe, the directory where fpgac.exe
+is wherever you want to put it. fpgac.wskel has the FPGAC variable set
+correctly, but would require you to set FPGAC_DIR.</font></font></p>
+  </li>
+  <li>
+    <p class="western"><font face="Times New Roman, serif"><font
+ size="3"><font size="2"><font face="Arial, sans-serif">fpgac_skel.vbs
+– the windows scripting host (WSH) version for fpgac.wskel. Like
+fpgac.wskel you should edit the path to the fpgac.exe executable. <span
+ style="background: rgb(255, 255, 0) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;">As
+noted in the comments of this script the arguments to cpp used by the
+script are not complete as the WSH appears to not treat the last -D
+option correctly.</span></font></font></font></font></p>
+  </li>
+</ul>
+<p class="western"><br>
+</p>
+</div>
+</body>
+</html>

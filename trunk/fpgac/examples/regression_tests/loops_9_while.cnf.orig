@@ -1,0 +1,22 @@
+// fpgac, 1.0-beta-2F, "Fri Feb 17 20:11:33 2006"
+// part=4003pc84
+_test_Running^CLK = VCC;
+_test_main_S0_a_0^CLK = port(_test_main_S0_a_0,"a9");
+_test_main_S0_a_1^CLK = port(_test_main_S0_a_1);
+_test_main_S0_a_2^CLK = port(_test_main_S0_a_2);
+_test_main_S0_b_0^CLK = port(_test_main_S0_b_0,"a10");
+_test_main_S0_b_1^CLK = port(_test_main_S0_b_1);
+_test_main_S0_b_2^CLK = port(_test_main_S0_b_2);
+port(_test_main_S0_sum_of_products_0,"a11")^CLK = (_test_T9_twoop*_test_main_S0_b_0*_test_main_S0_loopvar_0)+(_test_main_S0_T32_endloop*_test_main_S0_b_0*_test_main_S0_loopvar_0)+(_test_T9_twoop*~_test_main_S0_T32_endloop);
+port(_test_main_S0_sum_of_products_1)^CLK = (_test_T18_twoop*_test_main_S0_b_1*_test_main_S0_loopvar_1)+(_test_main_S0_T32_endloop*_test_main_S0_b_1*_test_main_S0_loopvar_1)+(_test_T18_twoop*~_test_main_S0_T32_endloop);
+port(_test_main_S0_sum_of_products_2)^CLK = (_test_T27_twoop*_test_main_S0_b_2*_test_main_S0_loopvar_2)+(_test_main_S0_T32_endloop*_test_main_S0_b_2*_test_main_S0_loopvar_2)+(_test_T27_twoop*~_test_main_S0_T32_endloop);
+_test_main_S0_loopvar_0^CLK = (~_test_Running*~_test_main_S0_loopvar_0)+(~_test_main_S0_T13_endloop*~_test_Running)+(_test_main_S0_T13_endloop*~_test_main_S0_loopvar_0)+(~_test_main_S0_T13_endloop*_test_main_S0_loopvar_0);
+_test_main_S0_loopvar_1^(CLK*_test_main_S0_T13_endloop) = (_test_main_S0_loopvar_0*~_test_main_S0_loopvar_1)+(~_test_main_S0_loopvar_0*_test_main_S0_loopvar_1);
+_test_main_S0_loopvar_2^(CLK*_test_main_S0_T13_endloop) = (~_test_main_S0_loopvar_2*_test_main_S0_loopvar_0*_test_main_S0_loopvar_1)+(_test_main_S0_loopvar_2*~_test_main_S0_loopvar_1)+(_test_main_S0_loopvar_2*~_test_main_S0_loopvar_0);
+_test_main_S0_T12_looptop^CLK = GND;
+_test_main_S0_T13_endloop^CLK = (~_test_Running)+(_test_main_S0_T12_looptop);
+_test_main_S0_T31_looptop^CLK = GND;
+_test_main_S0_T32_endloop^CLK = (_test_main_S0_T31_looptop)+(_test_main_S0_T13_endloop);
+_test_T9_twoop = (_test_main_S0_sum_of_products_0*_test_main_S0_a_0*_test_main_S0_loopvar_0)+(_test_main_S0_T13_endloop*_test_main_S0_a_0*_test_main_S0_loopvar_0)+(_test_main_S0_sum_of_products_0*~_test_main_S0_T13_endloop);
+_test_T18_twoop = (_test_main_S0_sum_of_products_1*_test_main_S0_a_1*_test_main_S0_loopvar_1)+(_test_main_S0_T13_endloop*_test_main_S0_a_1*_test_main_S0_loopvar_1)+(_test_main_S0_sum_of_products_1*~_test_main_S0_T13_endloop);
+_test_T27_twoop = (_test_main_S0_sum_of_products_2*_test_main_S0_a_2*_test_main_S0_loopvar_2)+(_test_main_S0_T13_endloop*_test_main_S0_a_2*_test_main_S0_loopvar_2)+(_test_main_S0_sum_of_products_2*~_test_main_S0_T13_endloop);

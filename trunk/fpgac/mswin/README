@@ -1,0 +1,30 @@
+This directory is an initial collection of files useful for compiling FpgaC
+on Microsoft Windows platforms with several common development systems.
+
+We are actively looking for developers, maintainers, packagers and testers
+for MS Windows platforms.
+
+	WinSetup.html     Read this First!
+
+Makefiles and scripts for common platforms:
+
+	makefile.bcc
+	makefile.mingw
+	makefile.msvc
+	setpath.bat
+	fpgac_skel.vbs
+	fpgac.wskel
+
+Additional development files you may need for your platform to compile FpgaC:
+
+	basename.c
+	libgen.h
+	snprintf.c
+	snprintf.h
+	unistd.h
+
+Help getting native binary releases for these platforms would be greatly
+appreciated.
+
+Also getting scripting help for directly interfacing FpgaC to various FPGA/PLD
+vendors tools would be greatly appreciated as well.

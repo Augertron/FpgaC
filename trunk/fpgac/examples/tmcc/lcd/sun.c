@@ -16,7 +16,7 @@
  * the SUN, and allows it to read from and write to the frame buffer in
  * the sram.  The SRAM is managed by a different thread.
  *
- * LOCKED BY: $Locker$
+ * LOCKED BY: $Locker:  $
  *
  */
  
@@ -55,11 +55,10 @@
  *
  */
 
-/* Communication between the SRAM and sun threads is handled through port
+/*
+ * Communication between the SRAM and sun threads is handled through port
  * variables that have no pins, ie PORT_PIN is not set
  */
-#define PORT_REGISTERED_AND_PIN	0x3
-#define PORT_REGISTERED	0x2
 
 /* The interface from the SUN to this circuit */
 #include "sunlcd.h"
@@ -77,6 +76,24 @@ int sun_p0:12, sun_p1:12, sun_p2:12;
 
 
 #define TICK	while(0) {}
+
+/* Ask the sram thread to do a read or a write operation.  You must
+ * set sram_sun_write appropriately before calling this routine.
+ */
+
+do_sram_access()
+	{
+	sram_sun_request = 1;
+	sram_fromsun = (sun_p2 & P2_FROMSUNMASK);
+	while(!sram_sun_done)
+		;
+	sram_sun_request = 0;
+	/* increment the address automatically for fast */
+	/* SRAM writes/reads using the SUN. i.e. this   */
+	/* way we do not have to keep setting the       */
+	/* address for sequential multibyte accesses    */
+	sram_sun_address = sram_sun_address + 1;
+	}
 
 /*
  * FUNCTION: main()
@@ -100,26 +117,26 @@ main()
 	 * change at the same time.
 	 * Similarly for sun_p2, and the P2_HS_SUN and P2_STOP flags.
 	 */
-#pragma	outputport(sun_p0);
-#pragma	inputport(sun_p1);
-#pragma	inputport(sun_p2);
-#pragma	portflags(sun_p1, 0x3);
-#pragma	portflags(sun_p2, 0x3);
+#pragma	fpgac_outputport(sun_p0)
+#pragma	fpgac_inputport(sun_p1)
+#pragma	fpgac_inputport(sun_p2)
+#pragma	fpgac_portflags(sun_p1, PORT_REGISTERED_AND_PIN)
+#pragma	fpgac_portflags(sun_p2, PORT_REGISTERED_AND_PIN)
 
-	/* Connections to the SRAM thread - call portflags to turn off PORT_PIN
+	/* Connections to the SRAM thread - call fpgac_portflags to turn off PORT_PIN
 	 */
-#pragma	outputport(sram_sun_address);
-#pragma	outputport(sram_fromsun);
-#pragma	outputport(sram_sun_request);
-#pragma	outputport(sram_sun_write);
-#pragma	inputport(sram_tosun);
-#pragma	inputport(sram_sun_done);
-#pragma	portflags(sram_sun_address,	0x2);
-#pragma	portflags(sram_fromsun,		0x2);
-#pragma	portflags(sram_sun_request,	0x2);
-#pragma	portflags(sram_sun_write,	0x2);
-#pragma	portflags(sram_tosun,		0);
-#pragma	portflags(sram_sun_done,	0);
+#pragma	fpgac_outputport(sram_sun_address)
+#pragma	fpgac_outputport(sram_fromsun)
+#pragma	fpgac_outputport(sram_sun_request)
+#pragma	fpgac_outputport(sram_sun_write)
+#pragma	fpgac_inputport(sram_tosun)
+#pragma	fpgac_inputport(sram_sun_done)
+#pragma	fpgac_portflags(sram_sun_address,	PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_fromsun,		PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_sun_request,	PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_sun_write,	PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_tosun,		0)
+#pragma	fpgac_portflags(sram_sun_done,	0)
 
 	while(1) {
 		sun_p0 = P0_READY;
@@ -186,21 +203,3 @@ main()
 	}
 } /* end of main() */
 
-
-/* Ask the sram thread to do a read or a write operation.  You must
- * set sram_sun_write appropriately before calling this routine.
- */
-
-void do_sram_access()
-	{
-	sram_sun_request = 1;
-	sram_fromsun = (sun_p2 & P2_FROMSUNMASK);
-	while(!sram_sun_done)
-		;
-	sram_sun_request = 0;
-	/* increment the address automatically for fast */
-	/* SRAM writes/reads using the SUN. i.e. this   */
-	/* way we do not have to keep setting the       */
-	/* address for sequential multibyte accesses    */
-	sram_sun_address = sram_sun_address + 1;
-	}

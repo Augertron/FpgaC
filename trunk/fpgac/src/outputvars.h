@@ -35,27 +35,27 @@
  * SUCH DAMAGE.
  */
 
-/* The EXTERN dance is used to avoid complaints from compilers that insist on
+/* The EXTFIX dance is used to avoid complaints from compilers that insist on
  * seeing only one definition of each global variable
  */
 
-#ifndef EXTERN
-#define EXTERN extern
+#ifndef EXTFIX
+#define EXTFIX extern
 #endif
 
-EXTERN FILE *outputfile;
+EXTFIX FILE *outputfile;
 
-EXTERN int nerrors;
+EXTFIX int nerrors;
 
-EXTERN int genclock;
+EXTFIX int genclock;
 
-EXTERN char *partname;
+EXTFIX char *partname;
 
-EXTERN char *clockname;
-EXTERN char *resetname;
+EXTFIX char *clockname;
+EXTFIX char *resetname;
 
-EXTERN int nroms, nff, ninpins, noutpins, nbidirpins;
-EXTERN int inputcounts[5];
+EXTFIX int nroms, nff, ninpins, noutpins, nbidirpins;
+EXTFIX int inputcounts[5];
 
 /* Values for output_format */
 #define XNFROMS		0
@@ -63,5 +63,9 @@ EXTERN int inputcounts[5];
 #define XNFEQNS		2
 #define VHDL		3
 #define STRATIX_VQM	4
+#define CNFROMS         5
+#define CNFGATES        6
+#define CNFEQNS         7
 
-EXTERN int output_format;
+
+EXTFIX int output_format;

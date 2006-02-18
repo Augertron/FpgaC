@@ -1,0 +1,14 @@
+// fpgac, 1.0-beta-2F, "Fri Feb 17 20:11:32 2006"
+// part=4003pc84
+_test_Running^CLK = VCC;
+_test_main_S0_a_0^CLK = port(_test_main_S0_a_0,"a9");
+_test_main_S0_a_1^CLK = port(_test_main_S0_a_1);
+port(_test_main_S0_sum_of_products_0,"a11")^(CLK*_test_main_S0_T16_looptop) = (_test_main_S0_a_0*_test_main_S0_loopvar_0);
+port(_test_main_S0_sum_of_products_1)^(CLK*_test_main_S0_T16_looptop) = (_test_main_S0_a_1*_test_main_S0_loopvar_1);
+port(_test_main_S0_sum_of_products1_0,"a12")^(CLK*_test_main_S0_T16_looptop) = (_test_main_S0_a_0*_test_main_S0_loopvar1_0);
+port(_test_main_S0_sum_of_products1_1)^(CLK*_test_main_S0_T16_looptop) = (_test_main_S0_a_1*_test_main_S0_loopvar1_1);
+_test_main_S0_loopvar_0^(CLK*_test_main_S0_T16_looptop) = ~_test_main_S0_loopvar_0;
+_test_main_S0_loopvar_1^(CLK*_test_main_S0_T16_looptop) = (_test_main_S0_loopvar_0*~_test_main_S0_loopvar_1)+(~_test_main_S0_loopvar_0*_test_main_S0_loopvar_1);
+_test_main_S0_loopvar1_0^(CLK*_test_main_S0_T16_looptop) = ~_test_main_S0_loopvar1_0;
+_test_main_S0_loopvar1_1^(CLK*_test_main_S0_T16_looptop) = (_test_main_S0_loopvar1_0*~_test_main_S0_loopvar1_1)+(~_test_main_S0_loopvar1_0*_test_main_S0_loopvar1_1);
+_test_main_S0_T16_looptop^CLK = (~_test_Running)+(_test_main_S0_T16_looptop);
