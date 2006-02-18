@@ -105,18 +105,40 @@ WEB PAGE
 The FpgaC project Web page is at the URL: http://fpgac.sourceforge.net/
 
 
-CURRENT PROJECT SOURCES FROM SOURCEFORGE CVS
+CURRENT PROJECT SOURCES FROM SOURCEFORGE SVN
 
-This project's SourceForge.net CVS repository can be checked out through
-anonymous (pserver) CVS with the following commands:
+This project's SourceForge.net SVN repository can be checked out through
+SVN with the following commands:
 
-   cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/fpgac login
-   cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/fpgac co -P modulename
+   svn co https://svn.sourceforge.net/svnroot/fpgac/trunk/fpgac fpgac
 
 
-CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2D
+CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2F
+
+- A new html users manual has been updated for this release by John Bass.
+
+- Major changes to variable creation and naming have occured to implement
+  declaration scoping more properly. Variable names can now be reused per
+  Std C scoping rules. If you find problems, please bug report.
+
+- FOR loops and DO while loops have been added as alpha test by Rahul Menon
+  please report any suprises.
+
+- Integer Multiply, Divide, and Mod/Remainder have been added as alpha test
+  for this release by John Bass. See users manual for details.
+
+- Small LUT/BRAM based arrays and structures have been added as alpha test
+  for this release by John Bass. See users manual for details.
+
+- A new concurrent process type has been added for testing. Functions
+  declared with the type of fpgac_process will be started at load, and
+  will loop implictly. See users manual for details.
 
 - Changes to support building on MS Windows Platforms by Isaac Pentinmaki
+
+- FpgaC specific keywords have been prefixed with fpgac_ to prevent naming
+  conflicts. This was applied to all the #pragma names from the previous
+  release.
 
 - Bug fixes as found in the FpgaC project:
 
@@ -132,10 +154,14 @@ CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2D
     Request ID   Summary                                            Developer
     ----------   -------------------------------------------------- ---------
     1365833      Symbol mgr and scoping fixes                       totally_lost
+    1365881      Do { ...} while(...); project                      rahulmenon7
+    1365884      For(;;) loop project                               rahulmenon7
     1365895      CVS system setup                                   marktphillips
     1365896      variable array support                             totally_lost + rahulmenon7
     1373000      Minimize renaming of internal symbols              totally_lost
     1373018      Adding grammar for 'struct'                        totally_lost
+    1409682      Setup Subversion                                   marktphillips
+    1409768      Add multiply/divide/mod as intrinsic functions     totally_lost
     1412804      Processes ... declared function type               totally_lost
     1409657      Windows Borland C/C++,MS C/C++, Gcc/Mingw C/C++    pentinmaki
 
