@@ -3670,19 +3670,19 @@ expn:		term
 
 		| expn MULTIPLY expn
 		{
-		    $$.v = findvariable("_multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = findvariable("fpgac_multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v = IFuncTwoArgs($$.v, defaultwidth*2, $1.v, defaultwidth, $3.v, defaultwidth);
 		}
 
 		| expn DIVIDE expn
 		{
-		    $$.v = findvariable("_divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = findvariable("fpgac_divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v = IFuncTwoArgs($$.v, defaultwidth, $1.v, defaultwidth*2, $3.v, defaultwidth);
 		}
 
 		| expn REMAINDER expn
 		{
-		    $$.v = findvariable("_remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = findvariable("fpgac_remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v = IFuncTwoArgs($$.v, defaultwidth, $1.v, defaultwidth*2, $3.v, defaultwidth);
 		}
 
@@ -3765,7 +3765,7 @@ expn:		term
 		{ pushtargetwidth($1.v); }
 		expn
 		{
-		    $$.v = findvariable("multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = findvariable("fpgac_multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth, $4.v, defaultwidth));
 		}
 
@@ -3773,7 +3773,7 @@ expn:		term
 		{ pushtargetwidth($1.v); }
 		expn
 		{
-		    $$.v = findvariable("divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = findvariable("fpgac_divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth*2, $4.v, defaultwidth));
 		}
 
@@ -3781,7 +3781,7 @@ expn:		term
 		{ pushtargetwidth($1.v); }
 		expn
 		{
-		    $$.v = findvariable("remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = findvariable("fpgac_remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth*2, $4.v, defaultwidth));
 		}
 

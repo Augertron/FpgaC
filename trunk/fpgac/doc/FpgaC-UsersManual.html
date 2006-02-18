@@ -183,7 +183,7 @@ constants, expressions and assignment statements.&nbsp; It has <span
  style="font-weight: bold;">if</span> statements, <span
  style="font-weight: bold;">while</span> loops and function calls. You
 can also use any of the cpp # directives and macros. It
-does not currently have multiply, divide, or&nbsp;
+does not currently have switch/case, continue, or&nbsp;
 pointers. You can not use
 recursion.&nbsp; Structures are implemented, but structure assignments
 and structure arrays are not currently supported.<br>
@@ -199,6 +199,18 @@ replicated write functions.&nbsp; Larger arrays may be allocated from
 block rams, external memories, or other vendor specific solutions, and
 will require the user to provide macros to interface to them or changes
 to the netlist output function.<br>
+<br>
+Multiply, Divide, Mod/Remainder are implemented as intrinsic functions:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">A
+* B calls fpgac_multiply(A, B)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">A / B calls fpgac_divide(A, B)</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">A % B calls fpgac_remainder(A, B)</span><br>
+</div>
+<br>
+and may be implemented by users in the best way for their application
+and target hardware platform.<br>
 <br>
 Most of the simple omitted stuff will get
 added to FpgaC this year as developers are available to the
