@@ -7,9 +7,10 @@
  */
 
 main() {
-	char lights, count;
+	fpgac_output lights:8;
+	char count;
 
-#pragma	outputport(lights, 60, 59, 58, 57, 66, 65, 62, 61);
+//#pragma	fpgac_outputport(lights, 60, 59, 58, 57, 66, 65, 62, 61)
 
 	count = 0;
 	while(1) {

@@ -32,11 +32,6 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-/* CHANGES:
- *
- *  MTP converted sprintf to snprintf
- *
-*/
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -45,13 +40,36 @@
 
 #include "names.h"
 #include "outputvars.h"
-#include "patchlevel.h"
 
 #include "output_altera_vqm.h"
 
 extern char Revision[];
 
-#define TMP_64 64
+char *bitname_vqm(struct bit *b) {
+    char *n = b->variable->name;
+
+    if(*n == '_') n++;
+
+    if(b->variable->width == 1) {
+        if(b->flags & SYM_VCC) {
+            strncpy(b->name, b->variable->name, MAXNAMELEN);
+        } else {
+            if(b->variable->copyof->arraysize) {
+                sprintf(b->name, "%s_p%d", n, b->variable->port);
+            } else {
+                sprintf(b->name, "%s", n);
+            }
+        }
+    } else {
+        if(b->variable->copyof->arraysize) {
+            sprintf(b->name, "%s_p%d_%d", n , b->variable->port , b->bitnumber);
+        } else {
+            sprintf(b->name, "%s_%d", n, b->bitnumber);
+        }
+    }
+    return (b->name);
+}
+
 
 void output_vqm(char *familyname)
    {
@@ -61,7 +79,7 @@ void output_vqm(char *familyname)
    char *datestring;
    struct bit *b;
    struct bitlist *bl;
-   char size_string[TMP_64];
+   char size_string[64];
 
    if(nerrors > 0) {
       return;
@@ -74,7 +92,7 @@ void output_vqm(char *familyname)
    datestring[strlen(datestring) - 1] = '\0';
    Revision[strlen(Revision) - 2] = '\0';
    if(((int) strlen(Revision)) <= 11)
-      strncpy(Revision, "Revision unknown", REVISIONLENGTH);
+      strcpy(Revision, "Revision unknown");
    fprintf(outputfile, "// VERSION  \"%s, %s\"\n", &Revision[11],
          datestring);
    fprintf(outputfile, "\n");
@@ -84,9 +102,7 @@ void output_vqm(char *familyname)
 
    printed = 0;
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
-
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC")) {
          continue;
       }
@@ -117,9 +133,7 @@ void output_vqm(char *familyname)
    fprintf(outputfile, ");\n\n");
    fprintf(outputfile, "input \\%s ;\n", clockname);
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
-
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC")) {
          continue;
       }
@@ -129,10 +143,10 @@ void output_vqm(char *familyname)
       }
 
       if(b->variable && b->variable->width > 1) {
-         snprintf(size_string, TMP_64, "[%d:0] ", b->variable->width -1);
+         sprintf(size_string, "[%d:0] ", b->variable->width -1);
       }
       else {
-         snprintf(size_string, TMP_64, "");
+         sprintf(size_string, "");
       }
 
       switch(b->flags & (SYM_INPUTPORT|SYM_OUTPUTPORT|SYM_BUSPORT)) {
@@ -160,9 +174,7 @@ void output_vqm(char *familyname)
       }
    }
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
-
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC")) {
          continue;
       }
@@ -190,9 +202,7 @@ void output_vqm(char *familyname)
 
    fprintf(outputfile, "\n");
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
-
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC")) {
          continue;
       }
@@ -350,5 +360,3 @@ void output_vqm(char *familyname)
       warning2("compiler produced no output", "");
    }
 }
-#undef TMP_64
-

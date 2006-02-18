@@ -36,19 +36,12 @@
  * SUCH DAMAGE.
  */
 
-/* The EXTERN dance is used to avoid complaints from compilers that insist on
+/* The EXTFIX dance is used to avoid complaints from compilers that insist on
  * seeing only one definition of each global variable
  */
 
-/* CHANGES:
- *                                                                                                                                              
- * MTP added MAXLONGNAMELENGTH to work with snprintf changes
- *                                                                                                                                             
-*/
-
-
-#ifndef EXTERN
-#define EXTERN extern
+#ifndef EXTFIX
+#define EXTFIX extern
 #endif
 
 typedef enum {
@@ -59,12 +52,7 @@ typedef enum {
     shiftright_op, sub_op, while_op, xor_op
 } op_types;
 
-#define MAXNAMELEN	   128
-#define MAXLONGNAMELENGTH 1024
-
-#define NVARIABLES	20000
-
-#define NBITS		150000
+#define MAXNAMELEN	128
 
 #define SYM_KNOWNVALUE		0x1
 #define SYM_INPUTPORT		0x2
@@ -87,20 +75,28 @@ typedef enum {
 #define BIT_DEPTHVALID		0x80000
 #define SYM_FUNCTION_DECLARED	0x100000
 #define SYM_MULTIPLE_RETURNS	0x200000
+#define SYM_ARRAY               0x400000
+#define SYM_ARRAY_INDEX         0x800000
+#define SYM_STRUCT_MEMBER       0x1000000
+#define SYM_INTEGER             0x01000000
+#define SYM_ENUM                0x02000000
+#define SYM_STRUCT              0x04000000
+#define SYM_UNION               0x08000000
+#define SYM_TAG                 0x0E000000
 
-EXTERN struct variable {
+EXTFIX struct variable {
 	char name[MAXNAMELEN];
 	int lineno;
+	int temp;
+	int dscnt;
+	struct variable *next;
 	long int flags;
 	int width;
 	int type;
 	long value;
-        int arraysize;
-        int arrayaddrbits;
-        struct variable *arrayref;
-        struct variable *arraywrite;
 	struct bitlist *bits;
 	struct variable *scope;
+	struct variable *dscope;
 	struct variable *copyof;
 	struct variable *state;
 	struct varlist *junk;
@@ -112,17 +108,32 @@ EXTERN struct variable {
 	struct variable *finalstate;
 	struct variable *returnvalue;
 
+/* For Structures */
+        struct varlist *members;             // list of members in structure
+        int offset;                          // members bit offset in structure instance
+        struct variable *parent;             // parent for members
+
+/* For Arrays */
+        int arraysize;
+        int arrayaddrbits;
+        int port;
+        struct varlist *arrayref;
+        struct variable *index;
+        struct variable *arraywrite;
+        struct variable *arrayparent;
+
 /* For busports */
 	struct variable *enable;
-	} variables[NVARIABLES];
+} *variables;
 
 /* A start on separating the bit->flags from the variable->flags */
 
 #define BIT_TEMP		0x10
 #define BIT_WORD		0x400000
 
-EXTERN struct bit {
+EXTFIX struct bit {
 	char *name;
+	struct bit *next;
 	long int flags;
 	char *pin;
 	char truth[16];
@@ -144,27 +155,33 @@ EXTERN struct bit {
 
 /* For busports */
 	struct bit *enable;
-	} bits[NBITS];
+} *bits, *bitst;
 
-EXTERN int nvariables, nbits;
+EXTFIX int nvariables, nbits;
 
 struct bitlist {
 	struct bit *bit;
 	struct bitlist *next;
-	};
+};
 
 struct varlist {
 	struct variable *variable;
 	struct varlist *next;
-	};
+};
+
+struct scopelist {
+        struct varlist **scope;
+        struct scopelist *next;
+};
 
 #define YYSTYPE	yystype
 
 typedef union {
 	struct variable *v;
+	struct varlist *vl;
 	char *s;
 	int type;
-	} YYSTYPE;
+} YYSTYPE;
 
 #define MAX(a,b)	(((a) > (b)) ? (a) : (b))
 #define MIN(a,b)	(((a) < (b)) ? (a) : (b))
@@ -184,4 +201,6 @@ typedef struct {
 
 #define QMtabSize 128
 
-EXTERN int debug;
+#define IGNORE_FORLOOP 1
+
+EXTFIX int debug;

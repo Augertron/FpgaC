@@ -80,7 +80,7 @@ int simpleQM (table, top, max_tab_size, bits)
 	while (changed) {
 	    changed = 0;
 	    
-	    if (debug == 2)
+	    if (debug & 2)
 	        fprintf (stderr, "Curr=(%d,%d)\n", curr_bottom, curr_top);
 	    for (i=curr_bottom; i <= curr_top; i++) {
 	    	for (j=i+1; j <= curr_top; j++) {
@@ -103,7 +103,7 @@ int simpleQM (table, top, max_tab_size, bits)
 	    }
 	    curr_bottom = curr_top+1;
 	    curr_top = *top;
-	    if (debug == 2)
+	    if (debug & 2)
 	        printTab(table, top, bits);
 	}
 	return 0; 
@@ -126,6 +126,6 @@ QMtruthToTable (truth, table, top, bits)
             table[*top].dc = table[*top].covered = 0;
         }
     }
-    if (debug == 2)
+    if (debug & 2)
         printTab (table, top, bits);   
 }

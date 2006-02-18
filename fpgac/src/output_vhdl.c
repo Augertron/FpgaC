@@ -32,13 +32,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-/* CHANGES:
- *
- *  MTP converted sprintf to snprintf
- *  MTP converted strcpy to strncpy  
- *
-*/
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
 #include <malloc.h>
@@ -46,7 +41,6 @@
 
 #include "names.h"
 #include "outputvars.h"
-#include "patchlevel.h"
 
 extern char *get_designname(void);
 
@@ -55,11 +49,29 @@ static char *get_nth_name(struct bitlist *bl, int n);
 
 extern char Revision[];
 
-extern int thread;
+char *bitname_vhdl(struct bit *b) {
+    char *n = b->variable->name;
 
-void output_vhdl(void)
-   {
-   int n;
+    if(*n == '_') n++;
+
+    if(b->variable->width == 1) {
+        if(b->flags & SYM_VCC) {
+            asprintf(&b->name, "'1'");
+        } else {
+            asprintf(&b->name, "TT_%s", n);
+        }
+    } else {
+        if(b->flags & BIT_WORD) {
+            asprintf(&b->name, "TT%s(%d)", n, b->bitnumber);
+        } else {
+            asprintf(&b->name, "TT%s_%d", n, b->bitnumber);
+        }
+    }
+    return (b->name);
+}
+
+
+void output_vhdl(void) {
    int count;
    time_t now;
    int printed;
@@ -80,7 +92,7 @@ void output_vhdl(void)
    datestring[strlen(datestring) - 1] = '\0';
    Revision[strlen(Revision) - 2] = '\0';
    if(((int) strlen(Revision)) <= 11) {
-      strncpy(Revision, "Revision unknown", REVISIONLENGTH);
+      strcpy(Revision, "Revision unknown");
    }
    fprintf(outputfile, "\n-- fpgac %s %s\n\n", &Revision[11], datestring);
 
@@ -90,8 +102,7 @@ void output_vhdl(void)
 
    /* Print all of the input, output and bidir variables */
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
 
       if(b->variable && !strcmp(b->variable->name, "VCC")) {
          continue;
@@ -102,12 +113,12 @@ void output_vhdl(void)
             continue;
          }
          if(b->variable->width == 1) {
-            snprintf(type, MAXNAMELEN, "std_logic");
+            sprintf(type, "std_logic");
          }
          else {
             struct bitlist *l;
             for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-            snprintf(type, MAXNAMELEN, "std_logic_vector(%d downto 0)",
+            sprintf(type, "std_logic_vector(%d downto 0)",
                                   b->variable->width - 1);
          }
       }
@@ -146,8 +157,7 @@ void output_vhdl(void)
 
    /* Declare all of the variables we will use */
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC"))
          continue;
 
@@ -163,7 +173,7 @@ void output_vhdl(void)
              if(!l) {
                  // yes, then use in word form
                  for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-                 snprintf(buf, MAXNAMELEN, "%s", bitname(b));
+                 sprintf(buf, "%s", bitname(b));
                  for(c=buf;*c;c++);*--c=0;*--c=0;*--c=0;
                  fprintf(outputfile, "	signal %s : std_logic_vector(%d downto 0);\n", buf,b->variable->width-1);
                  continue;
@@ -174,8 +184,7 @@ void output_vhdl(void)
       }
    }
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC"))
          continue;
 
@@ -195,7 +204,7 @@ void output_vhdl(void)
                 if(!l) {
                     // yes, then use in word form
                     for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-                    snprintf(buf, MAXNAMELEN, "%s", bitname(b));
+                    sprintf(buf, "%s", bitname(b));
                     for(c=buf;*c;c++);*--c=0;*--c=0;*--c=0;
                     fprintf(outputfile, "	signal %s : std_logic_vector(%d downto 0);\n", buf,b->variable->width-1);
                     continue;
@@ -207,8 +216,7 @@ void output_vhdl(void)
       }
    }
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC"))
          continue;
 
@@ -233,7 +241,7 @@ void output_vhdl(void)
                 if(!l) {
                     // yes, then use in word form
                     for(l = b->variable->bits;l;l = l->next) l->bit->flags |= BIT_WORD;
-                    snprintf(buf, MAXNAMELEN, "%s", bitname(b));
+                    sprintf(buf, "%s", bitname(b));
                     for(c=buf;*c;c++);*--c=0;*--c=0;*--c=0;
                     fprintf(outputfile, "	signal FFin_%s : std_logic_vector(%d downto 0);\n", buf,b->variable->width-1);
                     continue;
@@ -249,8 +257,7 @@ void output_vhdl(void)
 
    /* Copy the internal names of the inputs and outputs to their real names */
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC"))
          continue;
 
@@ -259,9 +266,7 @@ void output_vhdl(void)
       case SYM_INPUTPORT :
          if(b->flags & BIT_WORD) {
              if(b->bitnumber == 0)
-                 fprintf(outputfile, "	T%d_%d%s <= %s;\n",
-                         thread, b->variable->lineno, b->variable->name,
-                         b->variable->name + 1);
+                 fprintf(outputfile, "	T%s <= %s;\n", b->variable->name, b->variable->name + 1);
          } else {
              fprintf(outputfile, "	%s <= %s;\n", bitname(b), externalname(b));
          }
@@ -271,12 +276,8 @@ void output_vhdl(void)
       case SYM_INPUTPORT|SYM_BUSPORT|BIT_HASFF :
          if(b->flags & BIT_WORD) {
              if(b->bitnumber == 0) {
-                 fprintf(outputfile, "	T%d_%d%s <= %s;\n",
-                         thread, b->variable->lineno, b->variable->name,
-                         b->variable->name + 1);
-                 fprintf(outputfile, "	%s <= outT%d_%d%s",
-                         b->variable->name + 1,
-                         thread, b->variable->lineno, b->variable->name);
+                 fprintf(outputfile, "	T%s <= %s;\n", b->variable->name, b->variable->name + 1);
+                 fprintf(outputfile, "	%s <= outT%s", b->variable->name + 1, b->variable->name);
                  fprintf(outputfile, " when %s = '1'", bitname(b->enable));
                  fprintf(outputfile, " else 'Z';\n");
              }
@@ -291,9 +292,7 @@ void output_vhdl(void)
       case SYM_INPUTPORT|BIT_HASFF :
          if(b->flags & BIT_WORD) {
              if(b->bitnumber == 0)
-                 fprintf(outputfile, "	FFin_T%d_%d%s <= %s;\n",
-                         thread, b->variable->lineno, b->variable->name,
-                         b->variable->name + 1);
+                 fprintf(outputfile, "	FFin_T%s <= %s;\n", b->variable->name, b->variable->name + 1);
          } else {
              fprintf(outputfile, "	FFin_%s <= %s;\n", bitname(b), externalname(b));
          }
@@ -303,8 +302,8 @@ void output_vhdl(void)
       case SYM_OUTPUTPORT|BIT_HASFF :
          if(b->flags & BIT_WORD) {
              if(b->bitnumber == 0)
-                 fprintf(outputfile, "	%s <= T%d_%d%s;\n", b->variable->name + 1,
-                         thread, b->variable->lineno, b->variable->name);
+                 fprintf(outputfile, "	%s <= T%s;\n", b->variable->name + 1,
+                         b->variable->name);
          } else {
              fprintf(outputfile, "	%s <= %s;\n", externalname(b), bitname(b));
          }
@@ -316,8 +315,7 @@ void output_vhdl(void)
 
    /* Print the combinational logic out */
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC"))
          continue;
 
@@ -377,8 +375,7 @@ void output_vhdl(void)
 
    /* Do all of the reset values */
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
 
       if(b->variable && !strcmp(b->variable->name, "VCC")) {
          continue;
@@ -392,10 +389,8 @@ void output_vhdl(void)
          if(b->flags & SYM_FF) {
             if(b->flags & BIT_WORD) {
                if(b->bitnumber == 0)
-                  fprintf(outputfile, "		%sT%d_%d%s <= \"%.*s\";\n",
-                          b->flags & SYM_BUSPORT?"out":"",
-                          thread, b->variable->lineno, b->variable->name,
-                          b->variable->width,
+                  fprintf(outputfile, "		%sT%s <= \"%.*s\";\n",
+                          b->flags & SYM_BUSPORT?"out":"", b->variable->name, b->variable->width,
                           "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
             } else {
                fprintf(outputfile, "		%s%s <= '0';\n",
@@ -409,8 +404,7 @@ void output_vhdl(void)
    fprintf(outputfile, "\n	elsif (%s'event and %s = '1') then\n\n",
 			clockname, clockname);
 
-   for(n=0; n<nbits; n++) {
-      b = &bits[n];
+   for(b=bits; b; b=b->next) {
       if(b->variable && !strcmp(b->variable->name, "VCC"))
          continue;
 
@@ -421,26 +415,19 @@ void output_vhdl(void)
       if(b->flags & SYM_AFFECTSOUTPUT) {
          if((b->flags & SYM_FF) && (!(b->flags & BIT_WORD) || ((b->flags & BIT_WORD) && b->bitnumber == 0))) {
             if(b->clock_enable) {
-               fprintf(outputfile, "\t\tif (%s = '1') then\n\t",
-                                 bitname(b->clock_enable));
+               fprintf(outputfile, "\t\tif (%s = '1') then\n\t", bitname(b->clock_enable));
             }
             if(b->flags & SYM_BUSPORT) {
                if((b->flags & BIT_WORD) && b->bitnumber == 0) {
-                  fprintf(outputfile, "\t\toutT%d_%d%s <= FFin_T%d_%d%s;\n",
-                          thread, b->variable->lineno, b->variable->name,
-                          thread, b->variable->lineno, b->variable->name);
+                  fprintf(outputfile, "\t\toutT%s <= FFin_T%s;\n", b->variable->name, b->variable->name);
                } else
-                  fprintf(outputfile, "\t\tout%s <= FFin_%s;\n",
-                                   bitname(b), bitname(b));
+                  fprintf(outputfile, "\t\tout%s <= FFin_%s;\n", bitname(b), bitname(b));
             }
             else {
                if((b->flags & BIT_WORD) && b->bitnumber == 0) {
-                  fprintf(outputfile, "\t\tT%d_%d%s <= FFin_T%d_%d%s;\n",
-                          thread, b->variable->lineno, b->variable->name,
-                          thread, b->variable->lineno, b->variable->name);
+                  fprintf(outputfile, "\t\tT%s <= FFin_T%s;\n", b->variable->name, b->variable->name);
                } else
-                  fprintf(outputfile, "\t\t%s <= FFin_%s;\n",
-                                   bitname(b), bitname(b));
+                  fprintf(outputfile, "\t\t%s <= FFin_%s;\n", bitname(b), bitname(b));
             }
             if(b->clock_enable) {
                fprintf(outputfile, "\t\tend if;\n");

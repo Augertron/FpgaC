@@ -15,7 +15,7 @@
  * It is one thread of a multi-threaded program.  This one talks to the
  * SRAM, and provides access to the SRAM to the sun and lcd threads
  *
- * LOCKED BY: $Locker$
+ * LOCKED BY: $Locker:  $
  *
  */
  
@@ -39,8 +39,6 @@
  * 
  *
  */
-
-#define PORT_REGISTERED	0x2
 
 #include "sramsun.h"
 #include "sramlcd.h"
@@ -87,41 +85,41 @@ main()
 	{
 	int doinglcd:1, write:1, lcd_has_acked:1, request:1;
 
-#pragma	outputport(sram_k);
-#pragma	outputport(sram_piebar);
-#pragma	outputport(sram_siebar);
-#pragma	outputport(sram_poebar);
-#pragma	outputport(sram_soebar);
-#pragma	outputport(sram_addr);
-#pragma	outputport(sram_toram);
-#pragma	inputport(sram_fromram);
-#pragma	outputport(sram_wbar);
+#pragma	fpgac_outputport(sram_k)
+#pragma	fpgac_outputport(sram_piebar)
+#pragma	fpgac_outputport(sram_siebar)
+#pragma	fpgac_outputport(sram_poebar)
+#pragma	fpgac_outputport(sram_soebar)
+#pragma	fpgac_outputport(sram_addr)
+#pragma	fpgac_outputport(sram_toram)
+#pragma	fpgac_inputport(sram_fromram)
+#pragma	fpgac_outputport(sram_wbar)
 
 	/* Interface to sun thread, using ports with PORT_PIN turned off */
 
-#pragma	inputport(sram_sun_address);
-#pragma	inputport(sram_fromsun);
-#pragma	outputport(sram_tosun);
-#pragma	inputport(sram_sun_request);
-#pragma	outputport(sram_sun_done);
-#pragma	inputport(sram_sun_write);
-#pragma	portflags(sram_sun_address,	0);
-#pragma	portflags(sram_sun_request,	0);
-#pragma	portflags(sram_sun_write,	0);
-#pragma	portflags(sram_fromsun,		0);
-#pragma	portflags(sram_tosun,		0x2);
-#pragma	portflags(sram_sun_done,	0x2);
+#pragma	fpgac_inputport(sram_sun_address)
+#pragma	fpgac_inputport(sram_fromsun)
+#pragma	fpgac_outputport(sram_tosun)
+#pragma	fpgac_inputport(sram_sun_request)
+#pragma	fpgac_outputport(sram_sun_done)
+#pragma	fpgac_inputport(sram_sun_write)
+#pragma	fpgac_portflags(sram_sun_address,	0)
+#pragma	fpgac_portflags(sram_sun_request,	0)
+#pragma	fpgac_portflags(sram_sun_write,		0)
+#pragma	fpgac_portflags(sram_fromsun,		0)
+#pragma	fpgac_portflags(sram_tosun,		PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_sun_done,		PORT_REGISTERED)
 
 	/* Interface to lcd thread, using ports with PORT_PIN turned off */
 
-#pragma	inputport(sram_lcd_address);
-#pragma	outputport(sram_tolcd);
-#pragma	inputport(sram_lcd_request);
-#pragma	outputport(sram_lcd_done);
-#pragma	portflags(sram_lcd_address,	0);
-#pragma	portflags(sram_lcd_request,	0);
-#pragma	portflags(sram_tolcd,		0x2);
-#pragma	portflags(sram_lcd_done,	0x2);
+#pragma	fpgac_inputport(sram_lcd_address)
+#pragma	fpgac_outputport(sram_tolcd)
+#pragma	fpgac_inputport(sram_lcd_request)
+#pragma	fpgac_outputport(sram_lcd_done)
+#pragma	fpgac_portflags(sram_lcd_address,	0)
+#pragma	fpgac_portflags(sram_lcd_request,	0)
+#pragma	fpgac_portflags(sram_tolcd,		PORT_REGISTERED)
+#pragma	fpgac_portflags(sram_lcd_done,		PORT_REGISTERED)
 
 	/* Read from "system" ports, and write to "processor" ports */
 	sram_k = 1;

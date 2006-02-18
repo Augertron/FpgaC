@@ -1,0 +1,292 @@
+LCANET, 4
+PWR, 1, VCC
+PWR, 0, GND
+PROG, fpgac, 1.0-beta-2F, "Fri Feb 17 19:35:00 2006"
+PART, 4003pc84
+SYM, OSC4, OSC4
+PIN, F15, O, CLKin
+END
+SYM, CLK-AA, BUFGS
+PIN, I, I, CLKin
+PIN, O, O, CLK
+END
+SYM, FFin-_counter_Running, INV
+PIN, I, I, GND
+PIN, O, O, FFin-_counter_Running
+END
+SYM, _counter_Running, DFF
+PIN, D, I, FFin-_counter_Running
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, _counter_Running
+END
+SYM, _counter_main_S0_lights_0-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_0
+PIN, O, O, lights_v0
+END
+EXT, lights_v0, O
+SYM, FFin-_counter_main_S0_lights_0, BUF
+PIN, I, I, _counter_main_S0_count_0
+PIN, O, O, FFin-_counter_main_S0_lights_0
+END
+SYM, _counter_main_S0_lights_0, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_0
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_0
+END
+SYM, _counter_main_S0_lights_1-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_1
+PIN, O, O, lights_v1
+END
+EXT, lights_v1, O
+SYM, FFin-_counter_main_S0_lights_1, EQN, EQN=((~I0*~I1)+(I0*I1))
+PIN, I1, I, _counter_main_S0_count_1
+PIN, I0, I, _counter_main_S0_count_0
+PIN, O, O, FFin-_counter_main_S0_lights_1
+END
+SYM, _counter_main_S0_lights_1, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_1
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_1
+END
+SYM, _counter_main_S0_lights_2-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_2
+PIN, O, O, lights_v2
+END
+EXT, lights_v2, O
+SYM, FFin-_counter_main_S0_lights_2, EQN, EQN=((I0*I1*I2)+(~I0*~I2)+(~I0*~I1))
+PIN, I2, I, _counter_main_S0_count_1
+PIN, I1, I, _counter_main_S0_count_0
+PIN, I0, I, _counter_main_S0_count_2
+PIN, O, O, FFin-_counter_main_S0_lights_2
+END
+SYM, _counter_main_S0_lights_2, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_2
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_2
+END
+SYM, _counter_main_S0_lights_3-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_3
+PIN, O, O, lights_v3
+END
+EXT, lights_v3, O
+SYM, FFin-_counter_main_S0_lights_3, BUF
+PIN, I, I, F_counter_main_S0_lights_3
+PIN, O, O, FFin-_counter_main_S0_lights_3
+END
+SYM, _counter_main_S0_lights_3, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_3
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_3
+END
+SYM, _counter_main_S0_lights_4-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_4
+PIN, O, O, lights_v4
+END
+EXT, lights_v4, O
+SYM, FFin-_counter_main_S0_lights_4, EQN, EQN=((~I0*~I1)+(I0*I1))
+PIN, I1, I, _counter_main_S0_count_4
+PIN, I0, I, _counter_main_S0_S0_T3_car_4
+PIN, O, O, FFin-_counter_main_S0_lights_4
+END
+SYM, _counter_main_S0_lights_4, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_4
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_4
+END
+SYM, _counter_main_S0_lights_5-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_5
+PIN, O, O, lights_v5
+END
+EXT, lights_v5, O
+SYM, FFin-_counter_main_S0_lights_5, EQN, EQN=((I0*I1*I2)+(~I1*~I2)+(~I0*~I2))
+PIN, I2, I, _counter_main_S0_count_5
+PIN, I1, I, _counter_main_S0_count_4
+PIN, I0, I, _counter_main_S0_S0_T3_car_4
+PIN, O, O, FFin-_counter_main_S0_lights_5
+END
+SYM, _counter_main_S0_lights_5, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_5
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_5
+END
+SYM, _counter_main_S0_lights_6-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_6
+PIN, O, O, lights_v6
+END
+EXT, lights_v6, O
+SYM, FFin-_counter_main_S0_lights_6, BUF
+PIN, I, I, F_counter_main_S0_lights_6
+PIN, O, O, FFin-_counter_main_S0_lights_6
+END
+SYM, _counter_main_S0_lights_6, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_6
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_6
+END
+SYM, _counter_main_S0_lights_7-OBUF, OBUF
+PIN, I, I, _counter_main_S0_lights_7
+PIN, O, O, lights_v7
+END
+EXT, lights_v7, O
+SYM, FFin-_counter_main_S0_lights_7, EQN, EQN=((~I0*~I2)+(~I0*~I1)+(I1*~I2))
+PIN, I2, I, _counter_main_S0_S0_T14_add_3
+PIN, I1, I, _counter_main_S0_S0_T3_car_4
+PIN, I0, I, _counter_main_S0_count_7
+PIN, O, O, FFin-_counter_main_S0_lights_7
+END
+SYM, _counter_main_S0_lights_7, DFF
+PIN, D, I, FFin-_counter_main_S0_lights_7
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_lights_7
+END
+SYM, FFin-_counter_main_S0_count_0, INV
+PIN, I, I, _counter_main_S0_count_0
+PIN, O, O, FFin-_counter_main_S0_count_0
+END
+SYM, _counter_main_S0_count_0, DFF
+PIN, D, I, FFin-_counter_main_S0_count_0
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_0
+END
+SYM, FFin-_counter_main_S0_count_1, EQN, EQN=((I0*~I1)+(~I0*I1))
+PIN, I1, I, _counter_main_S0_count_1
+PIN, I0, I, _counter_main_S0_count_0
+PIN, O, O, FFin-_counter_main_S0_count_1
+END
+SYM, _counter_main_S0_count_1, DFF
+PIN, D, I, FFin-_counter_main_S0_count_1
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_1
+END
+SYM, FFin-_counter_main_S0_count_2, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1))
+PIN, I2, I, _counter_main_S0_count_1
+PIN, I1, I, _counter_main_S0_count_0
+PIN, I0, I, _counter_main_S0_count_2
+PIN, O, O, FFin-_counter_main_S0_count_2
+END
+SYM, _counter_main_S0_count_2, DFF
+PIN, D, I, FFin-_counter_main_S0_count_2
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_2
+END
+SYM, FFin-_counter_main_S0_count_3, BUF
+PIN, I, I, F_counter_main_S0_count_3
+PIN, O, O, FFin-_counter_main_S0_count_3
+END
+SYM, _counter_main_S0_count_3, DFF
+PIN, D, I, FFin-_counter_main_S0_count_3
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_3
+END
+SYM, FFin-_counter_main_S0_count_4, EQN, EQN=((I0*~I1)+(~I0*I1))
+PIN, I1, I, _counter_main_S0_count_4
+PIN, I0, I, _counter_main_S0_S0_T3_car_4
+PIN, O, O, FFin-_counter_main_S0_count_4
+END
+SYM, _counter_main_S0_count_4, DFF
+PIN, D, I, FFin-_counter_main_S0_count_4
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_4
+END
+SYM, FFin-_counter_main_S0_count_5, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2))
+PIN, I2, I, _counter_main_S0_count_5
+PIN, I1, I, _counter_main_S0_count_4
+PIN, I0, I, _counter_main_S0_S0_T3_car_4
+PIN, O, O, FFin-_counter_main_S0_count_5
+END
+SYM, _counter_main_S0_count_5, DFF
+PIN, D, I, FFin-_counter_main_S0_count_5
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_5
+END
+SYM, FFin-_counter_main_S0_count_6, BUF
+PIN, I, I, F_counter_main_S0_count_6
+PIN, O, O, FFin-_counter_main_S0_count_6
+END
+SYM, _counter_main_S0_count_6, DFF
+PIN, D, I, FFin-_counter_main_S0_count_6
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_6
+END
+SYM, FFin-_counter_main_S0_count_7, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _counter_main_S0_S0_T14_add_3
+PIN, I1, I, _counter_main_S0_S0_T3_car_4
+PIN, I0, I, _counter_main_S0_count_7
+PIN, O, O, FFin-_counter_main_S0_count_7
+END
+SYM, _counter_main_S0_count_7, DFF
+PIN, D, I, FFin-_counter_main_S0_count_7
+PIN, C, I, CLK
+PIN, CE, I, _counter_main_S0_T1_looptop
+PIN, Q, O, _counter_main_S0_count_7
+END
+SYM, FFin-_counter_main_S0_T1_looptop, EQN, EQN=((~I1)+(I0))
+PIN, I1, I, _counter_Running
+PIN, I0, I, _counter_main_S0_T1_looptop
+PIN, O, O, FFin-_counter_main_S0_T1_looptop
+END
+SYM, _counter_main_S0_T1_looptop, DFF
+PIN, D, I, FFin-_counter_main_S0_T1_looptop
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, _counter_main_S0_T1_looptop
+END
+SYM, SYM_counter_main_S0_S0_T3_car_4, EQN, EQN=((I0*I1*I2*I3))
+PIN, I3, I, _counter_main_S0_count_1
+PIN, I2, I, _counter_main_S0_count_0
+PIN, I1, I, _counter_main_S0_count_2
+PIN, I0, I, _counter_main_S0_count_3
+PIN, O, O, _counter_main_S0_S0_T3_car_4
+END
+SYM, SYM_counter_main_S0_S0_T14_add_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, _counter_main_S0_count_5
+PIN, I2, I, _counter_main_S0_count_4
+PIN, I1, I, _counter_main_S0_count_6
+PIN, I0, I, _counter_main_S0_count_7
+PIN, O, O, _counter_main_S0_S0_T14_add_3
+END
+SYM, SYMF_counter_main_S0_lights_3, EQN, EQN=((I0*I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))
+PIN, I3, I, _counter_main_S0_count_1
+PIN, I2, I, _counter_main_S0_count_0
+PIN, I1, I, _counter_main_S0_count_2
+PIN, I0, I, _counter_main_S0_count_3
+PIN, O, O, F_counter_main_S0_lights_3
+END
+SYM, SYMF_counter_main_S0_lights_6, EQN, EQN=((I0*I1*I2*I3)+(~I1*~I3)+(~I1*~I2)+(~I0*~I1))
+PIN, I3, I, _counter_main_S0_count_5
+PIN, I2, I, _counter_main_S0_count_4
+PIN, I1, I, _counter_main_S0_count_6
+PIN, I0, I, _counter_main_S0_S0_T3_car_4
+PIN, O, O, F_counter_main_S0_lights_6
+END
+SYM, SYMF_counter_main_S0_count_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+PIN, I3, I, _counter_main_S0_count_1
+PIN, I2, I, _counter_main_S0_count_0
+PIN, I1, I, _counter_main_S0_count_2
+PIN, I0, I, _counter_main_S0_count_3
+PIN, O, O, F_counter_main_S0_count_3
+END
+SYM, SYMF_counter_main_S0_count_6, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+PIN, I3, I, _counter_main_S0_count_5
+PIN, I2, I, _counter_main_S0_count_4
+PIN, I1, I, _counter_main_S0_count_6
+PIN, I0, I, _counter_main_S0_S0_T3_car_4
+PIN, O, O, F_counter_main_S0_count_6
+END
+EOF

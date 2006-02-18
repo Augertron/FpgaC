@@ -1,0 +1,13 @@
+This directory contains regression tests for various compiler productions.
+
+These loop tests are expected to produce the same control functions in both
+the FOR loop and WHILE loop forms:
+
+	loops_4_for.c
+	loops_4_while.c
+	loops_7_for.c
+	loops_7_while.c
+	loops_8_for.c
+	loops_8_while.c
+	loops_9_for.c
+	loops_9_while.c

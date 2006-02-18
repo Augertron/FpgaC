@@ -32,12 +32,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-/* CHANGES:
- *
- *  MTP converted strcpy to strncpy  
- *
-*/
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
 #include <malloc.h>
@@ -47,10 +43,37 @@
 #include "outputvars.h"
 #include "patchlevel.h"
 
+/*
+ * Notes about XNF output format:
+ *
+ * EXT, T ==> tristatable output, no input path
+ * EXT, B ==> tristatable bidirectional output (pin does have an input path)
+ * 
+ * FPGA names for nets, buses, components, and pins must follow these conventions:
+ * 
+ * - Only A-Z, a-z, 0-9, _, and - are allowed in user-defined names. No other
+ *   characters should be included in names.
+ * 
+ * - No spaces are allowed.
+ * 
+ * - Names must contain at least one non-numeric character.
+ * 
+ * - Names cannot be more than 1024 characters long.
+ * 
+ * - Do not use reserved words such as:
+ *   CLB, IOB, CCLK, DP, GND, VCC, RT, PWRDN, RST, TDO, BSCAN, M0, M1, M2, STARTUP,
+ *   as well as package pin names (P1, P2, A4, B5, etc.), CLB names (AA, AB, R1C3, etc)
+ *   or Xilinx primitive names (FD, PULLUP, BUF, etc).
+ * 
+ * - Square brackets, [], are generally used for bus notation and should not be used
+ *   unless defining the bounds of a bus.
+ */
+
 static printROM(struct bit *b, int count);
 static printGates(struct bit *b, int count);
 static printEQN(struct bit *b, int count);
 static printAND(int i, QMtab table[], int count, struct bit *b);
+void printRam (struct bit *, struct varlist * , int ) ;
 
 static printExt(char *extname, char *type, char *pin) {
     if (pin) {
@@ -62,8 +85,32 @@ static printExt(char *extname, char *type, char *pin) {
 	fprintf(outputfile, "EXT, %s, %s\n", extname, type);
 }
 
-
 extern char Revision[];
+
+char *bitname_xnf(struct bit *b) {
+    char *n = b->variable->name;
+
+    if(*n == '_') n++;
+ 
+    if(b->variable->width == 1) {
+        if(b->flags & SYM_VCC) {
+            asprintf(&b->name, "%s", b->variable->name);
+        } else {
+            if(b->variable->copyof->arraysize) {
+                asprintf(&b->name, "%s_p%d", n, b->variable->port);
+            } else {
+                asprintf(&b->name, "%s", n);
+            }
+        }
+    } else {
+        if(b->variable->copyof->arraysize) {
+            asprintf(&b->name, "%s_p%d_%d", n , b->variable->port , b->bitnumber);
+        } else {
+            asprintf(&b->name, "%s_%d", n, b->bitnumber);
+        }
+    }
+    return (b->name);
+}
 
 output_XNF() {
     int n,i;
@@ -84,7 +131,7 @@ output_XNF() {
     datestring[strlen(datestring) - 1] = '\0';
     Revision[strlen(Revision) - 2] = '\0';
     if (((int) strlen(Revision)) <= 11)
-	strncpy(Revision, "Revision unknown", REVISIONLENGTH);
+	strcpy(Revision, "Revision unknown");
     fprintf(outputfile, "PROG, fpgac, %s, \"%s\"\n", &Revision[11], datestring);
     if (partname)
 	fprintf(outputfile, "PART, %s\n", partname);
@@ -98,8 +145,7 @@ output_XNF() {
 	fprintf(outputfile, "END\n");
     }
     printed = 0;
-    for (n = 0; n < nbits; n++) {
-	b = &bits[n];
+    for(b=bits; b; b=b->next) {
 	if (b->variable && !strcmp(b->variable->name, "VCC"))
 	    continue;
 
@@ -218,6 +264,9 @@ output_XNF() {
 	if ((b->flags & (SYM_OUTPUTPORT | SYM_BUSPORT)) && !(b->flags & BIT_HASFF))
 	    b->flags &= ~SYM_FF;
 
+	if ((b->flags & SYM_ARRAY))
+	    b->flags &= ~(SYM_FF | SYM_AFFECTSOUTPUT);
+
 	if (b->flags & SYM_AFFECTSOUTPUT) {
 	    printed = 1;
 	    count = countlist(b->primaries) - 1;
@@ -273,46 +322,112 @@ output_XNF() {
 	    fprintf(outputfile, "END\n");
 
             if (b->flags & SYM_FF && b->variable->arraysize) {
-                  if (b->variable->arraysize < 16) {
-                    fprintf(outputfile, "SYM, %s, ram16x1d\n", bitname(b));
-                  } else if (b->variable->arraysize <= 32) {
-                    fprintf(outputfile, "SYM, %s, ram32x1d\n", bitname(b));
-                  } else if (b->variable->arraysize <= 64) {
-                    fprintf(outputfile, "SYM, %s, ram64x1d\n", bitname(b));
-                  } else {
-                    fprintf(outputfile, "SYM, %s, blockram\n", bitname(b));
-                  }
-                fprintf(outputfile, "PIN, D, I, RAMin-%s\n", bitname(b));
-                fprintf(outputfile, "PIN, WCLK, I, CLK\n");
-                  if(bits[n].variable->arraywrite && bits[n].variable->arraywrite->bits) {
-                      for (i=0,bl = bits[n].variable->arraywrite->bits;i<bits[n].variable->arrayaddrbits;i++) {
-                          if (bl && bl->bit) {
-                              if (bl->bit->flags & SYM_AFFECTSOUTPUT) {
-                                    fprintf(outputfile, "PIN, A%d, I, %s\n", i, bitname(bl->bit));
-                              }
-                          } else
-                              fprintf(outputfile, "PIN, A%d, I, GND\n", i);
-                          if(bl) bl = bl->next;
-                      }
-                  }
-                  if(bits[n].variable->arrayref && bits[n].variable->arrayref->bits) {
-                      for (i=0,bl = bits[n].variable->arrayref->bits;i<bits[n].variable->arrayaddrbits;i++) {
-                          if (bl && bl->bit) {
-                              if (bl->bit->flags & SYM_AFFECTSOUTPUT) {
-                                    fprintf(outputfile, "PIN, DPRA%d, I, %s\n", i, bitname(bl->bit));
-                              }
-                          } else
-                              fprintf(outputfile, "PIN, DPRA%d, I, GND\n", i);
-                          if(bl) bl = bl->next;
-                      }
-                  }
-                if (b->clock_enable)
-                    fprintf(outputfile, "PIN, WE, I, %s\n", bitname(b->clock_enable));
-                  else
-                    fprintf(outputfile, "PIN, WE, I, VCC\n");
-                fprintf(outputfile, "PIN, SPO, O, RAMout%s\n", bitname(b));
-                fprintf(outputfile, "PIN, DPO, O, %s\n", bitname(b));
-                fprintf(outputfile, "END\n");
+                    // loop for number of read ports 
+                    // debug print 
+
+                    // for temp debug
+//                    for ( ;array_read_reference_list!=NULL ;array_read_reference_list = array_read_reference_list->next) { 
+//                            printf(" array _ref %s \n",array_read_reference_list->variable->name);
+//                    }
+//                    printf(" ---------\n");
+                    // => that there is only single port 
+                    // hence instance a signle port SRAM block
+                    if ( b->variable->arrayref->variable  == b->variable->arraywrite ) 
+                    {
+                            if (b->variable->arraysize <= 16) {
+                                    fprintf(outputfile, "SYM, %s, ram16x1s\n", bitname(b));
+                            } else if (b->variable->arraysize <= 32) {
+                                    fprintf(outputfile, "SYM, %s, ram32x1s\n", bitname(b));
+                            } else if (b->variable->arraysize <= 64) {
+                                    fprintf(outputfile, "SYM, %s, ram64x1s\n", bitname(b));
+                            } else {
+                                    fprintf(outputfile, "SYM, %s, blockram\n", bitname(b));
+                            }
+                            fprintf(outputfile, "PIN, D, I, RAMin-%s\n", bitname(b));
+                            fprintf(outputfile, "PIN, WCLK, I, CLK\n");
+                            if(b->variable->arraywrite && b->variable->arraywrite->index->bits) {
+                                    for (i=0,bl = b->variable->arraywrite->index->bits;i<b->variable->arrayaddrbits;i++) {
+                                            if (bl && bl->bit) {
+                                                    if (bl->bit->flags & SYM_AFFECTSOUTPUT) {
+                                                            fprintf(outputfile, "PIN, A%d, I, %s\n", i, bitname(bl->bit));
+                                                    }
+                                            } else
+                                                    fprintf(outputfile, "PIN, A%d, I, GND\n", i);
+                                            if(bl) bl = bl->next;
+                                    }
+                            }
+                            if (b->clock_enable)
+                                    fprintf(outputfile, "PIN, WE, I, %s\n", bitname(b->clock_enable));
+                            else
+                                    fprintf(outputfile, "PIN, WE, I, VCC\n");
+                            fprintf(outputfile, "PIN, SPO, O, %s\n", bitname(b));
+                            for (bl = b->variable->arrayref->variable->bits; bl; bl = bl->next) {
+                                    if(b->bitnumber == bl->bit->bitnumber) {
+                                            fprintf(outputfile, "PIN, O, O, %s\n", bitname(bl->bit));
+                                            break;
+                                    }
+                            }
+                            fprintf(outputfile, "END\n");
+                    }
+                    else 
+                    { 
+                            // else instance a dual port RAM 
+                            struct varlist  *array_read_reference_list = b->variable->arrayref;
+                            int ram_count = 0 ;
+                            // arrayref = list index to the dual port ram 
+                            // replicate dual port RAM for as many read indexes 
+                            // all of them will have a common/replicated write port and seperate read port
+                            for ( array_read_reference_list = b->variable->arrayref ;array_read_reference_list!=NULL ;array_read_reference_list = array_read_reference_list->next,ram_count++) { 
+                                    // a default read port is added  , ignore it 
+                                    if ( array_read_reference_list->variable  == b->variable->arraywrite ) break;
+                                    if (b->variable->arraysize <= 16) {
+                                            fprintf(outputfile, "SYM, %s_%d, ram16x1d\n", bitname(b),ram_count);
+                                    } else if (b->variable->arraysize <= 32) {
+                                            fprintf(outputfile, "SYM, %s_%d, ram32x1d\n", bitname(b),ram_count);
+                                    } else if (b->variable->arraysize <= 64) {
+                                            fprintf(outputfile, "SYM, %s_%d, ram64x1d\n", bitname(b),ram_count);
+                                    } else {
+                                            fprintf(outputfile, "SYM, %s_%d, blockram\n", bitname(b),ram_count);
+                                    }
+                                    fprintf(outputfile, "PIN, D, I, RAMin-%s\n", bitname(b));
+                                    fprintf(outputfile, "PIN, WCLK, I, CLK\n");
+                                    if(b->variable->arraywrite && b->variable->arraywrite->index->bits) {
+                                            for (i=0,bl = b->variable->arraywrite->index->bits;i<b->variable->arrayaddrbits;i++) {
+                                                    if (bl && bl->bit) {
+                                                            if (bl->bit->flags & SYM_AFFECTSOUTPUT) {
+                                                                    fprintf(outputfile, "PIN, A%d, I, %s\n", i, bitname(bl->bit));
+                                                            }
+                                                    } else
+                                                            fprintf(outputfile, "PIN, A%d, I, GND\n", i);
+                                                    if(bl) bl = bl->next;
+                                            }
+                                    }
+                                    if(b->variable->arrayref && array_read_reference_list->variable->bits)
+                                    {
+                                            for (i=0,bl =  array_read_reference_list->variable->index->bits ;i<b->variable->arrayaddrbits;i++) {
+                                                    if (bl && bl->bit) {
+                                                            if (bl->bit->flags & SYM_AFFECTSOUTPUT) {
+                                                                    fprintf(outputfile, "PIN, DPRA%d, I, %s\n", i, bitname(bl->bit));
+                                                            }
+                                                    } else
+                                                            fprintf(outputfile, "PIN, DPRA%d, I, GND\n", i);
+                                                    if(bl) bl = bl->next;
+                                            }
+                                    }
+                                    if (b->clock_enable)
+                                            fprintf(outputfile, "PIN, WE, I, %s\n", bitname(b->clock_enable));
+                                    else
+                                            fprintf(outputfile, "PIN, WE, I, VCC\n");
+                                    fprintf(outputfile, "PIN, SPO, O, %s\n", bitname(b));
+                                    for (bl = array_read_reference_list->variable->bits; bl; bl = bl->next) {
+                                            if(b->bitnumber == bl->bit->bitnumber) {
+                                                    fprintf(outputfile, "PIN, DPO, O, %s\n", bitname(bl->bit));
+                                                    break;
+                                            }
+                                    }
+                                    fprintf(outputfile, "END\n");
+                            }
+                    }
             } else if (b->flags & SYM_FF) {
 		if (b->flags & SYM_BUSPORT)
 		    fprintf(outputfile, "SYM, out%s, DFF\n", bitname(b));
@@ -337,6 +452,18 @@ output_XNF() {
 	warning2("compiler produced no output", "");
 }
 
+
+void printRam (struct bit *b, struct varlist * array_read_reference_list , int count) 
+{
+
+        struct bitlist *bl;
+        int i;
+        if ( array_read_reference_list == NULL ) return ;
+        else printRam ( b , array_read_reference_list->next,count+1 );
+}
+
+
+
 static printROM(struct bit *b, int count) {
     struct bitlist *bl;
     int i, hex;
@@ -353,6 +480,7 @@ static printROM(struct bit *b, int count) {
     fprintf(outputfile, "INIT=%04X\n", hex);
     for (i = 3; i > count; --i)
 	fprintf(outputfile, "PIN, A%d, I, GND\n", i);
+// TODO: tag array ports and flop here
     for (bl = b->primaries; bl; bl = bl->next) {
 	fprintf(outputfile, "PIN, A%d, I, %s\n", count, bitname(bl->bit));
 	--count;
@@ -406,6 +534,7 @@ static printEQN(struct bit *b, int count) {
     if (first)			/* no terms were true */
 	fprintf(outputfile, "GND");
     fprintf(outputfile, ")\n");
+// TODO: tag array ports and flop here
     for (bl = b->primaries; bl; bl = bl->next) {
 	fprintf(outputfile, "PIN, I%d, I, %s\n",
 		count--, bitname(bl->bit));

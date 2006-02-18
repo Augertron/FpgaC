@@ -1,3 +1,5 @@
+%option stack
+%x SAVETOKENS
 %{
 /* syntax.l -- the scanner for fpgac
  */
@@ -36,17 +38,9 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
-/* CHANGES:
- *
- * MTP Changed all malloc calls to calloc as per patch 'patch.malloc' fix
- *     submitted by John Bass
- *
- * MTP converted sprintf to snprintf
- *
- */
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "names.h"
 #include "y.tab.h"
 
@@ -59,114 +53,165 @@ extern char inputfilename[];
 static int saving, replaying;
 static int replaystarting;
 
+int number_br = 0;           // to get the last closing brace in the for loop
+int ignore_tokens = 0;       // To check if the token has to eb ignored
+int ignore_token_type =0;    // only FOR loop for now
+
+YY_BUFFER_STATE include_stack[2];
+
 struct token {
-	int t;
-	YYSTYPE yylval;
-	struct token *next;
-	};
+    int t;
+    YYSTYPE yylval;
+    struct token *next;
+};
 
 struct tokenlist {
-	struct token *first;
-	struct token *last;
-	struct tokenlist *next;
-	};
+    struct token *first;
+    struct token *last;
+    struct tokenlist *next;
+};
 
 struct tokenlist *tokenstack;
 
-newtoken(t)
-	int t;
-	{
-	struct token *token;
-	extern int debug;
+newtoken(int t) {
+    struct token *token;
+    extern int debug;
 
-	if(debug == 1) {
-		printf("newtoken %d '%s' saving %d replaying %d\n", t,
-			yytext, saving, replaying);
-		}
-	if(saving) {
-		if((token = (struct token *) calloc(1, sizeof(struct token)))
-			== (struct token *) NULL) {
-			fprintf(stderr, "fpgac: newtoken calloc failed\n");
-			exit(1);
-			}
-		token->t = t;
-		token->yylval = yylval;
-		token->next = (struct token *) NULL;
-		if(tokenstack->last)
-			tokenstack->last->next = token;
-		if(!tokenstack->first)
-			tokenstack->first = token;
-		tokenstack->last = token;
-		}
-	return(t);
-	}
+    if(debug & 1) {
+        printf("newtoken %d '%s' saving %d replaying %d ignore %d\n", t, yytext, saving, replaying ,ignore_tokens );
+    }
 
+    if(saving) {
+        if((token = (struct token *) malloc(sizeof(struct token))) == (struct token *) NULL) {
+            fprintf(stderr, "fpgac: newtoken malloc failed\n");
+            exit(1);
+        }
+        token->t = t;
+        token->yylval = yylval;
+        token->next = (struct token *) NULL;
+        if(tokenstack->last)
+            tokenstack->last->next = token;
+        if(!tokenstack->first)
+            tokenstack->first = token;
+        tokenstack->last = token;
+    }
 
+    /* ignore token */
+    if(ignore_tokens == 1 && saving == 1) {
+        switch (ignore_token_type) {
+        case IGNORE_FORLOOP:
+                             if(t == LEFTPAREN) number_br++ ;
+                             if(t == RIGHTPAREN) number_br--; 
+                             if(number_br == 0) {
+                                 ignore_tokens = 0;
+                                 saving = 0;
+                             }
+                             break;
+        }
+    }
+
+    if (ignore_tokens == 1)
+        return (IGNORETOKEN ) ;
+    else
+        return(t);
+}
 
 saveinput() {
-	if(!tokenstack) {
-		if((tokenstack = (struct tokenlist *) calloc(1, sizeof(struct tokenlist)))
-				== (struct tokenlist *) NULL) {
-			fprintf(stderr, "fpgac: saveinput calloc failed\n");
-			exit(1);
-			}
-		}
-	saving = 1;
-	}
 
-
+    if(!tokenstack) {
+        if((tokenstack = (struct tokenlist *) malloc(sizeof(struct tokenlist))) == (struct tokenlist *) NULL) {
+            fprintf(stderr, "fpgac: saveinput malloc failed\n");
+            exit(1);
+        }
+    }
+    saving = 1;
+}
 
 stopsavinginput() {
-	saving = 0;
-	}
+    saving = 0;
+}
 
-
+startsavinginput() {
+    saving = 1;
+}
 
 replayinput() {
-	replaystarting = 1;
-	replaying = 1;
-	}
-
+    replaystarting = 1;
+    replaying = 1;
+}
 
 pushinputstream() {
-	struct tokenlist *tl;
+    struct tokenlist *tl;
 
-	if((tl = (struct tokenlist *) calloc(1, sizeof(struct tokenlist)))
-			== (struct tokenlist *) NULL) {
-		fprintf(stderr, "fpgac: saveinput calloc failed\n");
-		exit(1);
-		}
-	tl->next = tokenstack;
-	tl->first = tl->last = (struct token *) NULL;
-	tokenstack = tl;
-	}
-
-
+    if((tl = (struct tokenlist *) malloc(sizeof(struct tokenlist))) == (struct tokenlist *) NULL) {
+        fprintf(stderr, "fpgac: saveinput malloc failed\n");
+        exit(1);
+    }
+    tl->next = tokenstack;
+    tl->first = tl->last = (struct token *) NULL;
+    tokenstack = tl;
+}
 
 popinputstream() {
-	if(tokenstack)
-		tokenstack = tokenstack->next;
-	}
+    if(tokenstack)
+        tokenstack = tokenstack->next;
+}
+
+/*
+ * function to pop off the nth element from the end of the list
+ * the list is a stack of tokens stored during lexing ( if the start bit is set)
+ * n >= 1 ( if n==1 ) the last element of the list is deleted
+ */
+pop_input_token(int n ) {
+    struct token *iterator_temp_current , * iterator_temp_prev=NULL;
+
+    // first current move n steps 
+    iterator_temp_current=tokenstack->first;
+    for(; ((iterator_temp_current != NULL) && (n>0)); n--) {
+        iterator_temp_current = iterator_temp_current->next;
+    }
+
+    // now move current and previous pointers ( now previous will be n steps behind current)
+    iterator_temp_prev = tokenstack->first;
+    while(iterator_temp_current != NULL) {
+        iterator_temp_prev  = iterator_temp_prev->next;
+        iterator_temp_current = iterator_temp_current->next;
+    }
+
+    // delete the previous->next element
+    if((iterator_temp_prev != NULL) && (iterator_temp_prev->next !=NULL)) {
+
+        iterator_temp_current = iterator_temp_prev->next;           // use current as temp pointer
+        iterator_temp_prev->next = iterator_temp_prev->next->next;
+
+        free(iterator_temp_current);                                // delete the nth element
+    }
+
+}
+
 %}
+
 
 %%
 %{
-	if(replaying && tokenstack && tokenstack->first) {
-		struct token *token;
+    if(replaying && tokenstack && tokenstack->first) {
+        struct token *token;
 
-		if(replaystarting) {
-			replaystarting = 0;
-			return(newtoken(REPLAYSTART));
-			}
-		yylval = tokenstack->first->yylval;
-		token = tokenstack->first;
-		tokenstack->first = tokenstack->first->next;
-		return(newtoken(token->t));
-		}
-	else if(replaying) {
-		replaying = 0;
-		return(newtoken(REPLAYEND));
-		}
+        if(replaystarting) {
+            replaystarting = 0;
+            return(newtoken(REPLAYSTART));
+        }
+        yylval = tokenstack->first->yylval;
+        token = tokenstack->first;
+        tokenstack->first = tokenstack->first->next;
+        return(newtoken(token->t));
+
+    } else if(replaying) {
+
+        replaying = 0;
+        return(newtoken(REPLAYEND));
+    }
+
 %}
 
 "("				return(newtoken(LEFTPAREN));
@@ -176,6 +221,8 @@ popinputstream() {
 "["				return(newtoken(LEFTBRACE));
 
 "]"				return(newtoken(RIGHTBRACE));
+
+"."				return(newtoken(PERIOD));
 
 ","				return(newtoken(COMMA));
 
@@ -197,6 +244,12 @@ popinputstream() {
 
 "-"				return(newtoken(SUB));
 
+"*"				return(newtoken(MULTIPLY));
+
+"/"				return(newtoken(DIVIDE));
+
+"%"				return(newtoken(REMAINDER));
+
 "~"				return(newtoken(TILDE));
 
 "--"				return(newtoken(MINUSMINUS));
@@ -212,6 +265,12 @@ popinputstream() {
 "+="				return(newtoken(PLUSEQUAL));
 
 "-="				return(newtoken(MINUSEQUAL));
+
+"*="				return(newtoken(MULTIPLYEQUAL));
+
+"/="				return(newtoken(DIVIDEEQUAL));
+
+"%="				return(newtoken(REMAINDEREQUAL));
 
 ">>="				return(newtoken(SHIFTRIGHTEQUAL));
 
@@ -249,134 +308,151 @@ long				return(newtoken(LONG));
 
 char				return(newtoken(CHAR));
 
+signed				return(newtoken(SIGNED));
+
 unsigned			return(newtoken(UNSIGNED));
 
 register			return(newtoken(REGISTER));
 
+extern				return(newtoken(EXTERN));
+
+fpgac_input			return(newtoken(INPUT));
+
+fpgac_output			return(newtoken(OUTPUT));
+
+fpgac_mailbox			return(newtoken(MAILBOX));
+
+fpgac_process			return(newtoken(PROCESS));
+
 void				return(newtoken(VOID));
+
+enum                            return(newtoken(ENUM));
+
+struct                          return(newtoken(STRUCT));
+
+union                           return(newtoken(UNION));
+
+typedef                         return(newtoken(TYPEDEF));
 
 if				return(newtoken(IF));
 
 else				return(newtoken(ELSE));
 
+do				return(newtoken(DO));
+
 while				return(newtoken(WHILE));
+
+for				return(newtoken(FOR));
 
 break				return(newtoken(BREAK));
 
 return				return(newtoken(RETURN));
 
-^#[ \t]*pragma[ \t]*inputport	return(newtoken(INPUTPORT));
+^#[ \t]*pragma[ \t]*fpgac_inputport	return(newtoken(INPUTPORT));
 
-^#[ \t]*pragma[ \t]*outputport	return(newtoken(OUTPUTPORT));
+^#[ \t]*pragma[ \t]*fpgac_outputport	return(newtoken(OUTPUTPORT));
 
-^#[ \t]*pragma[ \t]*bus_port	return(newtoken(BUS_PORT));
+^#[ \t]*pragma[ \t]*fpgac_bus_port	return(newtoken(BUS_PORT));
 
-^#[ \t]*pragma[ \t]*bus_idle	return(newtoken(BUS_IDLE));
+^#[ \t]*pragma[ \t]*fpgac_bus_idle	return(newtoken(BUS_IDLE));
 
-^#[ \t]*pragma[ \t]*portflags	return(newtoken(PORTFLAGS));
+^#[ \t]*pragma[ \t]*fpgac_portflags	return(newtoken(PORTFLAGS));
 
-^#[ \t]*pragma[ \t]*intbits	return(newtoken(INTBITS));
+^#[ \t]*pragma[ \t]*fpgac_intbits	return(newtoken(INTBITS));
 
-^#[ \t]+[0-9]+[ \t]+"$pragma"[ \t]+intbits	{
-				/* DEC and SGI cpps do this to #pragma */
-				sscanf(yytext, "# %d ", &inputlineno);
-				inputlineno -= 2;
-				return(newtoken(INTBITS));
+^#[ \t]+[0-9]+[ \t]+"$pragma"[ \t]+fpgac_intbits	{
+				    /* DEC and SGI cpps do this to #pragma */
+				    sscanf(yytext, "# %d ", &inputlineno);
+				    inputlineno -= 2;
+				    return(newtoken(INTBITS));
 				}
 
 ^#[ \t]*[0-9]+[ \t]+\"[^\"]*\".*\n	{
-				sscanf(yytext, "# %d \"%s\"", &inputlineno,
-						inputfilename);
-				inputfilename[strlen(inputfilename)-1] = '\0';
+				    sscanf(yytext, "# %d \"%s\"", &inputlineno, inputfilename);
+				    inputfilename[strlen(inputfilename)-1] = '\0';
 				}
 
 ^#[ \t]*line[ \t]*[0-9]+[ \t]+\"[^\"]*\".*\n	{
-				/* IBM cpp does this */
-				sscanf(yytext, "# line %d \"%s\"", &inputlineno,
-						inputfilename);
-				inputfilename[strlen(inputfilename)-1] = '\0';
+				    /* IBM cpp does this */
+				    sscanf(yytext, "# line %d \"%s\"", &inputlineno, inputfilename);
+				    inputfilename[strlen(inputfilename)-1] = '\0';
 				}
 
 ^#[ \t]*line[ \t]*[0-9]+\n	{
-				/* IBM cpp does this */
-				sscanf(yytext, "# line %d", &inputlineno);
+				    /* IBM cpp does this */
+				    sscanf(yytext, "# line %d", &inputlineno);
 				}
 
 ^#[ \t]+[^0-9].*$		/* Ignore all other cpp directives */;
 
 ^#[^p \t].*$			/* Ignore all other cpp directives */;
 
-[A-Za-z_][A-Za-z0-9_]*	{
-				char *buf;
+[A-Za-z_][A-Za-z0-9_]*		{
+				    char *buf;
 
-				if((buf = (char *) calloc(1, strlen(yytext)+2))
-					== (char *) NULL) {
-					fprintf(stderr, "fpgac: calloc returned NULL\n");
-					exit(1);
-					}
-				snprintf(buf, strlen(yytext)+2, "_%s", yytext);
-				yylval.s = buf;
-				return(newtoken(IDENTIFIER));
+				    if((buf = (char *) malloc(strlen(yytext)+2)) == (char *) NULL) {
+				        fprintf(stderr, "fpgac: malloc returned NULL\n");
+				        exit(1);
+				    }
+				    sprintf(buf, "_%s", yytext);
+				    yylval.s = buf;
+				    return(newtoken(IDENTIFIER));
 				}
 
-0|[1-9][0-9]*				{
-				char *buf;
+0|[1-9][0-9]*			{
+				    char *buf;
 
-				if((buf = (char *) calloc(1, strlen(yytext)+1))
-					== (char *) NULL) {
-					fprintf(stderr, "fpgac: calloc returned NULL\n");
-					exit(1);
-					}
-				snprintf(buf, strlen(yytext)+1, "%s", yytext);
-				yylval.s = buf;
-				return(newtoken(INTEGER));
+				    if((buf = (char *) malloc(strlen(yytext)+1)) == (char *) NULL) {
+				        fprintf(stderr, "fpgac: malloc returned NULL\n");
+				        exit(1);
+				    }
+				    sprintf(buf, "%s", yytext);
+				    yylval.s = buf;
+				    return(newtoken(INTEGER));
 				}
 
 0[0-7]+|0[xX][0-9a-fA-F]+	{
-				char *buf;
-				int temp;
+				    char *buf;
+				    int temp;
 
-				if((buf = (char *) calloc(1, strlen(yytext)*2+1))
-					== (char *) NULL) {
-					fprintf(stderr, "fpgac: calloc returned NULL\n");
+				    if((buf = (char *) malloc(strlen(yytext)*2+1)) == (char *) NULL) {
+					fprintf(stderr, "fpgac: malloc returned NULL\n");
 					exit(1);
-					}
-				sscanf(yytext, "%i", &temp);
-				snprintf(buf, strlen(yytext)*2+1, "%d", temp);
-				yylval.s = buf;
-				return(newtoken(INTEGER));
+				    }
+				    sscanf(yytext, "%i", &temp);
+				    sprintf(buf, "%d", temp);
+				    yylval.s = buf;
+				    return(newtoken(INTEGER));
 				}
 
 0[bB][0-1]+                     {
-				char *buf,*ebuf;
-				int temp;
+				    char *buf,*ebuf;
+				    int temp;
 
-				if((buf = (char *) calloc(1, strlen(yytext)*2+1))
-					== (char *) NULL) {
-					fprintf(stderr, "fpgac: calloc returned NULL\n");
+				    if((buf = (char *) malloc(strlen(yytext)*2+1)) == (char *) NULL) {
+					fprintf(stderr, "fpgac: malloc returned NULL\n");
 					exit(1);
-					}
-				temp = strtol(yytext+2,&ebuf,2);
-				snprintf(buf, strlen(yytext)*2+1,"%d", temp);
-				yylval.s = buf;
-				return(newtoken(INTEGER));
+				    }
+				    temp = strtol(yytext+2,&ebuf,2);
+				    sprintf(buf, "%d", temp);
+				    yylval.s = buf;
+				    return(newtoken(INTEGER));
 				}
 
 \"[^"]*\"			{
-				char *buf;
+				    char *buf;
 
-				if((buf = (char *) calloc(1, strlen(yytext)+1))
-					== (char *) NULL) {
-					fprintf(stderr, "fpgac: calloc returned NULL\n");
+				    if((buf = (char *) malloc(strlen(yytext)+1)) == (char *) NULL) {
+					fprintf(stderr, "fpgac: malloc returned NULL\n");
 					exit(1);
-					}
-				/* Return the contents of the string, without
-				 * the quotes
-				 */
-				snprintf(buf, strlen(yytext)+1, "%s", &yytext[1]);
-				buf[strlen(buf)-1] = '\0';
-				yylval.s = buf;
-				return(newtoken(STRING));
+				    }
+				    /* Return the contents of the string, without
+				     * the quotes
+				     */
+				    sprintf(buf, "%s", &yytext[1]);
+				    buf[strlen(buf)-1] = '\0';
+				    yylval.s = buf;
+				    return(newtoken(STRING));
 				}
 
 [ \t]				; /* Skip white space */
@@ -385,3 +461,17 @@ return				return(newtoken(RETURN));
 
 .				return(newtoken(ILLEGAL));
 %%
+
+/*
+ * Set lex to ignore tokens
+ */
+ignore_token(int ignore_type) {
+        ignore_token_type = ignore_type ;
+        ignore_tokens = 1;
+
+        switch (ignore_type) {
+        case IGNORE_FORLOOP: 
+              number_br = 1;
+              break;
+        }
+}

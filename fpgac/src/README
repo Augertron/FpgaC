@@ -37,6 +37,7 @@ adders.c	Code that handles adders and counters
 minimize_lut.c	Produces a simplified Boolean version of a lookup table
 names.h		Data structures and defines used in the compiler
 output_xilinx.c	Produces the output XNF file
+output_netlist.c Produces the output CNF file
 outputvars.h	Data structures and defines used in the output stage
 syntax.l	Lex scanner for the compiler
 fpgac.y		Yacc grammar, and almost all of the code for the compiler
@@ -45,11 +46,7 @@ TODO
 
 There are lots of things that could be done to improve fpgac:
 
-- Rewrite it from scratch, using gcc as a front end.  The code has evolved
-from a small hack into a bigger one, and it shows.
-
-- If not a drastic rewrite, then break fpgac.y up into a bunch of source
-files, to make it easier to understand and fix.
+- break fpgac.y up into a bunch of source files, to make it easier to understand and fix.
 
 - More comments.
 
@@ -62,4 +59,4 @@ files, to make it easier to understand and fix.
 
 - Extend the language to handle more of C.  Tell the compiler how to 
 	access the RAM in a target FPGA based system, so that it can
-	implement pointers and arrays.
+	implement pointers.

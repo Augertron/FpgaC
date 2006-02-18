@@ -5,8 +5,7 @@
  *	tmcc countup.c
  */
 
-char seven_seg(int x:4)
-	{
+char seven_seg(int x:4) {
 	char result;
 
 	x = x & 0xf; result = 0;
@@ -27,25 +26,23 @@ char seven_seg(int x:4)
 	if(x == 0xe) result = 0x9e;
 	if(x == 0xf) result = 0x8e;
 	return(~result);
-	}
+}
 
 
 
-void delay(char n)
-	{
+void delay(char n) {
 	while(n != 0)
 		n = n - 1;
-	}
+}
 
 
 
-void twodigit(char y)
-	{
+void twodigit(char y) {
 	char tens;
-	char leftdigit, rightdigit;
+	fpgac_output leftdigit:8, rightdigit:8;
 
-#pragma	outputport(leftdigit, 37, 44, 40, 29, 35, 36, 38, 39);
-#pragma	outputport(rightdigit, 41, 51, 50, 45, 46, 47, 48, 49);
+//#pragma	fpgac_outputport(leftdigit, 37, 44, 40, 29, 35, 36, 38, 39)
+//#pragma	fpgac_outputport(rightdigit, 41, 51, 50, 45, 46, 47, 48, 49)
 
 	tens = 0;
 	while(y >= 10) {
@@ -54,16 +51,15 @@ void twodigit(char y)
 		}
 	leftdigit = seven_seg(tens);
 	rightdigit = seven_seg(y);
-	}
+}
 
 
 
-void main()
-	{
+void main() {
 	char count;
-	char switches;
+	int switches:8;
 
-#pragma	inputport(switches, 28, 27, 26, 25, 24, 23, 20, 19);
+#pragma	fpgac_inputport(switches, 28, 27, 26, 25, 24, 23, 20, 19)
 
 	count = 0;
 	while(1) {
@@ -72,5 +68,5 @@ void main()
 		if(count >= 100)
 			count = 0;
 		delay(switches);
-		}
 	}
+}

@@ -1,8 +1,9 @@
 %{
-/* fpgac.y - FPGA C - A hardware description language
- *		based on a subset of C.
- *
- *	TMCC by Dave Galloway, CSRI, University of Toronto
+/*
+ * fpgac.y - FPGA C - A hardware description language
+ * based on a subset of C, derived from the work in
+ * TMCC by Dave Galloway, CSRI, University of Toronto
+ * by John L. Bass, DMS Design and other SF.NET developers.
  */
 
 /*
@@ -39,28 +40,23 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
-/* CHANGES:
- *
- *  MTP Changed all malloc calls to calloc as per patch 'patch.malloc' fix
- *      submitted by John Bass
- *
- *  MTP converted sprintf to snprintf
- *  MTP converted strcat to strncat  
- *  MTP converted strcpy to strncpy  
- *
-*/
-
 #include <stdio.h>
-#include <unistd.h>
 #include <malloc.h>
-#include <string.h>
 #include <stdlib.h>
-#include <libgen.h>
+#include <string.h>
+
+#ifdef MINGW
+#include "unistd.h"
+#include "libgen.h"  // hacked copy of future public domain gcc/mingw source January 2006
+                     // can remove once libgen.h is included with GCC/MINGW.
+#else                // unix
+#include <unistd.h>
+#include <libgen.h>  // basename
+#endif //unix or windows
+
 
 /* Actually define all the variables in the include files */
-#define EXTERN
-
+#define  EXTFIX
 #include "names.h"
 #include "outputvars.h"
 #include "output_vhdl.h"
@@ -68,17 +64,20 @@
 %}
 
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
-%token		INT COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
-%token		CHAR SHORT LONG UNSIGNED COLON VOID REGISTER
-%token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE WHILE BREAK RETURN
+%token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
+%token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID REGISTER EXTERN
+%token          INPUT OUTPUT MAILBOX PROCESS
+%token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
 %token		INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
-%token		REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
+%token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
 %token		ANDAND OROR BUS_PORT BUS_IDLE STRING PORTFLAGS PLUSEQUAL
 %token		MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL
-%token		OREQUAL LEFTBRACE RIGHTBRACE
+%token		MULTIPLY MULTIPLYEQUAL DIVIDE DIVIDEEQUAL REMAINDER REMAINDEREQUAL
+%token		OREQUAL LEFTBRACE RIGHTBRACE ENUM STRUCT UNION TYPEDEF
 
-%right	EQUAL PLUSEQUAL MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL OREQUAL
+%right	EQUAL PLUSEQUAL MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL OREQUAL MULTIPLYEQUAL DIVIDEEQUAL REMAINDEREQUAL
 
+%left   COMMA
 %left	OROR
 %left	ANDAND
 %left	OR
@@ -88,29 +87,34 @@
 %left	GREATEROREQUAL GREATER LESSTHAN LESSTHANOREQUAL
 %left	SHIFTRIGHT SHIFTLEFT
 %left	ADD SUB
+%left	MULTIPLY DIVIDE REMAINDER
 %left	TILDE UNARYMINUS NOT MINUSMINUS PLUSPLUS
 
 %{
 
 extern FILE *yyin;
-char original_inputfilename[MAXLONGNAMELENGTH] = "";
-char inputfilename[MAXLONGNAMELENGTH] = "";
+char real_filename[1024] = "";
+char inputfilename[1024] = "";
 
 char *possible_cpps[] = {
-    "/usr/lib/cpp",
-    "/usr/ccs/lib/cpp",
+#ifndef MINGW
     "/lib/cpp",
+    "/usr/lib/cpp",
+    "/usr/bin/cpp",
+#else
+    // path (/) character is only valid for POSIX, windows usually uses the search path
+#endif
     0
 };
 
-char cppname[MAXLONGNAMELENGTH];
-char cppargs[MAXLONGNAMELENGTH];
+char cppname[1024];
+char cppargs[1024];
 
 int nocpp;
 
 /* Architecture specific optimizations */
 
-char *target_arch = "xnf";
+char *target_arch = "cnf";
 int use_clock_enables = 0;
 int ffs_zero_at_powerup = 0;
 
@@ -123,6 +127,10 @@ char *legal_arch[] = {
     "vhdl",
     "vhd",
     "stratix_vqm",
+    "cnf",
+    "cnf-gates",
+    "cnf-roms",
+    "cnf-eqns",
     (char *) 0
 };
 
@@ -132,11 +140,18 @@ int optimization = 1;
 int use_carry_select_adders = 1;
 int use_dupcheck = 1;
 
-struct variable *powerup_state;
+struct variable *powerup_state, *running;
 
-int thread = 0;
-
+char *thread;
 int verbose = 0;
+int doprune = 1;
+
+struct varlist *ReferenceScopeStack;    // Reference stack for bit level objects in all scopes
+struct varlist *DeclarationScopeStack;  // Stack for user declarations in all scopes except struct and union elements
+struct varlist *TagScopeStack;          // Stack for user tag declarations in all scopes for struct, union, and enum
+struct varlist *ThreadScopeStack;       // Stack for compiler generated internal variables
+
+struct scopelist *ScopeStack;           // Stack of active declaration scopes
 
 char *external_bus_name_format = "%s_v%d";
 
@@ -149,14 +164,14 @@ char *external_bus_name_format = "%s_v%d";
 main(int argc, char *argv[]) {
     int i;
 
-    snprintf(cppargs, MAXLONGNAMELENGTH,
-	    " -DPORT_REGISTERED=0x%x -DPORT_PIN=0x%x -DPORT_REGISTERED_AND_PIN=0x%x -DPORT_WIRE=0x0 -DPORT_PULLUP=0x%x -DPORT_PULLDOWN=0x%x",
+    sprintf(cppargs,
+	    " -DFPGAC=FPGACv1.0 -DPORT_REGISTERED=0x%x -DPORT_PIN=0x%x -DPORT_REGISTERED_AND_PIN=0x%x -DPORT_WIRE=0x0 -DPORT_PULLUP=0x%x -DPORT_PULLDOWN=0x%x",
 	    PORT_REGISTERED, PORT_PIN, (PORT_REGISTERED | PORT_PIN),
 	    PORT_PULLUP, PORT_PULLDOWN);
 
     genclock = 1;
-    output_format = XNFEQNS;
-    debug = -1;
+    output_format = CNFEQNS;
+    debug = 0;
     clockname = "CLK";
     resetname = "RESET";
 
@@ -202,6 +217,15 @@ main(int argc, char *argv[]) {
 	    nocpp = 1;
 	    break;
 
+	case 'b':
+          strcat(real_filename, &argv[1][2]); // calling script replaced input file name with a temporary
+                                              // but designname, thread use the basename of the actual file name
+	    break;
+
+	case 'm':
+	    doprune = 0;
+	    break;
+
 	case 'c':
 	    genclock = 0;
 	    if(argv[1][2])
@@ -221,7 +245,7 @@ main(int argc, char *argv[]) {
 	    break;
 
 	case 'T':
-	    thread = atoi(&argv[1][2]);
+	    thread = &argv[1][2];
 	    break;
 
 	case 'O':
@@ -264,9 +288,12 @@ main(int argc, char *argv[]) {
 	exit(1);
     }
     if(argc == 2) {
-	strncat(original_inputfilename, argv[1], MAXLONGNAMELENGTH);
-	strncat(inputfilename, argv[1], MAXLONGNAMELENGTH);
-	if(freopen(inputfilename, "r", stdin) == (FILE *) NULL) {
+        if (real_filename[0] != '\0')
+            strcat(inputfilename, real_filename); // set for warnings, errors and threads
+        else
+            strcat(inputfilename, argv[1]);
+	    // do the fileopen with the name on the command line
+	if(freopen(argv[1], "r", stdin) == (FILE *) NULL) {
 	    perror(inputfilename);
 	    exit(1);
 	}
@@ -275,6 +302,7 @@ main(int argc, char *argv[]) {
     if(nocpp)
 	yyin = stdin;
     else {
+#ifndef MINGW
 	/* Find out where cpp is on this machine */
 	for(i = 0; possible_cpps[i]; i++) {
 	    if(access(possible_cpps[i], F_OK) == 0)
@@ -288,45 +316,74 @@ main(int argc, char *argv[]) {
 	/* Newer Linux cpps won't do substitutions on #pragma lines,
 	 * so hide them from cpp and put them back afterwards.
 	 */
-	strncat(cppname, "sed 's/^#pragma intbits/$pragma intbits/' |",
+	strncat(cppname, "sed 's/^#pragma/$pragma/' |",
 		sizeof(cppname));
 	strncat(cppname, possible_cpps[i], sizeof(cppname));
 	strncat(cppname, cppargs, sizeof(cppname));
-	strncat(cppname, " | sed 's/^$pragma intbits/#pragma intbits/'",
+	strncat(cppname, " | sed 's/^$pragma/#pragma/'",
 		sizeof(cppname));
 	yyin = popen(cppname, "r");
+#else
+	yyin = stdin; // above command syntax is POSIX specific
+#endif
     }
     outputfile = stdout;
 
-    if(!strcmp(target_arch, "xnf-gates")) {
-	output_format = XNFGATES;
-	target_arch = "xnf";
-    }
-    if(!strcmp(target_arch, "xnf-eqns")) {
-	output_format = XNFEQNS;
-	target_arch = "xnf";
-    }
-    if(!strcmp(target_arch, "xnf-roms")) {
-	output_format = XNFROMS;
-	target_arch = "xnf";
+    if(!strcmp(target_arch, "cnf")) {
+        output_format = CNFEQNS;
+        target_arch = "cnf";
     }
     if(!strcmp(target_arch, "xnf")) {
-	use_clock_enables = 1;
-	ffs_zero_at_powerup = 1;
-    } else if(!strcmp(target_arch, "flex8000")) {
-	use_clock_enables = 0;
-	ffs_zero_at_powerup = 1;
-    } else if(!strcmp(target_arch, "vhdl") || !strcmp(target_arch, "vhd")) {
-	output_format = VHDL;
-	external_bus_name_format = "%s(%d)";
-	use_clock_enables = 1;
-	ffs_zero_at_powerup = 0;
-    } else if(!strcmp(target_arch, "stratix_vqm")) {
-	output_format = STRATIX_VQM;
-	external_bus_name_format = "%s[%d]";
-	use_clock_enables = 1;
-	ffs_zero_at_powerup = 1;
+        output_format = XNFEQNS;
+        target_arch = "xnf";
     }
+    if(!strcmp(target_arch, "cnf-gates")) {
+        output_format = CNFGATES;
+        target_arch = "cnf";
+    }
+    if(!strcmp(target_arch, "cnf-eqns")) {
+        output_format = CNFEQNS;
+        target_arch = "cnf";
+    }
+    if(!strcmp(target_arch, "cnf-roms")) {
+        output_format = CNFROMS;
+        target_arch = "cnf";
+    }
+    if(!strcmp(target_arch, "xnf-gates")) {
+        output_format = XNFGATES;
+        target_arch = "xnf";
+    }
+    if(!strcmp(target_arch, "xnf-eqns")) {
+        output_format = XNFEQNS;
+        target_arch = "xnf";
+    }
+    if(!strcmp(target_arch, "xnf-roms")) {
+        output_format = XNFROMS;
+        target_arch = "xnf";
+    }
+    if(!strcmp(target_arch, "xnf")) {
+        use_clock_enables = 1;
+        ffs_zero_at_powerup = 1;
+    } else if(!strcmp(target_arch, "cnf")) {
+        use_clock_enables = 1;
+        ffs_zero_at_powerup = 1;
+    } else if(!strcmp(target_arch, "flex8000")) {
+        use_clock_enables = 0;
+        ffs_zero_at_powerup = 1;
+    } else if(!strcmp(target_arch, "vhdl") || !strcmp(target_arch, "vhd")) {
+        output_format = VHDL;
+        external_bus_name_format = "%s(%d)";
+        use_clock_enables = 1;
+        ffs_zero_at_powerup = 0;
+    } else if(!strcmp(target_arch, "stratix_vqm")) {
+        output_format = STRATIX_VQM;
+        external_bus_name_format = "%s[%d]";
+        use_clock_enables = 1;
+        ffs_zero_at_powerup = 1;
+    }
+
+    PushDeclarationScope(&DeclarationScopeStack);
+
     init();
     if(yyparse() || (nerrors > 0))
 	exit(1);
@@ -337,23 +394,26 @@ main(int argc, char *argv[]) {
 usage() {
     fprintf(stderr, "usage: fpgac [options] file.c [file2.xnf ...]\n");
     fprintf(stderr, "options:\n");
-    fprintf(stderr, "    %-20s %s\n", "-S",
-	    "produce XNF file, but don't run ppr");
-    fprintf(stderr, "    %-20s %s\n", "-O",
-	    "optimize circuit for speed and size");
-    fprintf(stderr, "    %-20s %s\n", "-p part",
-	    "specify Xilinx part name");
-    fprintf(stderr, "    %-20s %s\n", "-c",
-	    "don't generate 15 Hz clock from internal OSC");
     fprintf(stderr, "    %-20s %s\n", "-D/-U/-I", "cpp arguments");
-    fprintf(stderr, "    %-20s %s\n", "-s",
-	    "give estimate of circuit size and depth");
-    fprintf(stderr, "    %-20s %s\n", "-Tn",
-	    "unique name prefix (multi-threaded circuits only)");
     fprintf(stderr, "    %-20s %s\n", "-Fformatstring",
 	    "format string used for external bus names");
+    fprintf(stderr, "    %-20s %s\n", "-O",
+	    "optimize circuit for speed and size");
+    fprintf(stderr, "    %-20s %s\n", "-S",
+	    "produce XNF file, but don't run ppr");
+    fprintf(stderr, "    %-20s %s\n", "-Tstring",
+	    "unique name prefix (multi-threaded circuits only)");
+    fprintf(stderr, "    %-20s %s\n", "-p part",
+	    "specify Xilinx part name");
+    fprintf(stderr, "    %-20s %s\n", "-a", "don't run cpp");
+    fprintf(stderr, "    %-20s %s\n", "-b", "-b basefilename");
+    fprintf(stderr, "    %-20s %s\n", "-c",
+	    "don't generate 15 Hz clock from internal OSC");
+    fprintf(stderr, "    %-20s %s\n", "-dn", "set debug level");
     fprintf(stderr, "    %-20s %s\n", "-fno-carry-select",
 	    "use ripple carry adders and counters (smaller/slower)");
+    fprintf(stderr, "    %-20s %s\n", "-s",
+	    "give estimate of circuit size and depth");
     fprintf(stderr, "    %-20s %s\n", "-fcarry-select",
 	    "use carry select adders and counters (default)");
     fprintf(stderr, "    %-20s %s\n", "-target vhd",
@@ -368,84 +428,83 @@ usage() {
 	    "generate XNF EQN format (default)");
     fprintf(stderr, "    %-20s %s\n", "-target flex8000",
 	    "generate XNF AND/OR/INV format for Altera FLEX 8K");
-    fprintf(stderr, "    %-20s %s\n", "-a", "don't run cpp");
     fprintf(stderr, "    %-20s %s\n", "-v",
 	    "don't remove junk ppr output files");
-    fprintf(stderr, "    %-20s %s\n", "-dn", "set debug level");
 }
 
 extern int inputlineno;
 
 int tempchar = 0;
 
-struct varlist *scopestack;
-
-#define TICKMARK	"tm"
-#define CURRENTSTATE	"curstate"
+#define TICKMARK	"_tickmark"
+#define CURRENTSTATE	"__state"
 
 #define GLOBALSCOPE	((struct variable *) NULL)
 
-struct variable *currentscope = GLOBALSCOPE;
+struct variable *CurrentReferenceScope = GLOBALSCOPE;
+struct variable *CurrentDeclarationScope = GLOBALSCOPE;
+struct variable *CurrentTagScope = GLOBALSCOPE;
 
 struct varlist *breakstack;
 
 int defaultwidth = 16;
-int currentwidth = 1;
+int currentwidth = 16;
 
 #define TYPE_INTEGER    0x0001
-#define TYPE_SIGNED     0x0002
-int currenttype = TYPE_INTEGER|TYPE_SIGNED;
+#define TYPE_UNSIGNED   0x0002
+#define TYPE_INPUT      0x0004
+#define TYPE_OUTPUT     0x0008
+#define TYPE_BUS        0x0010
+#define TYPE_MAILBOX    0x0020
+
+#define TYPE_PROCESS    0x0100
+
+int currenttype = TYPE_INTEGER|TYPE_UNSIGNED;
+
+PushDeclarationScope(struct varlist **NextScopeStack) {
+    struct scopelist *NextScope;
+
+    NextScope = calloc(1, sizeof (struct scopelist));
+    NextScope->scope = NextScopeStack;
+    NextScope->next = ScopeStack;
+    ScopeStack = NextScope;
+}
+
+PopDeclarationScope() {
+    struct scopelist *FreeScope;
+
+    FreeScope = ScopeStack;
+    ScopeStack = ScopeStack->next;
+    free(FreeScope);
+}
 
 char *bitname(struct bit *b) {
-    if(b->name && !(b->flags & BIT_WORD))
-	return (b->name);
-    if(!b->name)
-	b->name = (char *) calloc(1, MAXNAMELEN);
-    if(b->variable->width == 1) {
-	if(b->flags & SYM_VCC) {
-	    if(output_format == VHDL)
-		strncpy(b->name, "'1'", MAXNAMELEN);
-	    else
-		strncpy(b->name, b->variable->name, MAXNAMELEN);
-	} else if(output_format == VHDL) {
-	    if(b->variable->name[0] == '_') {
-		snprintf(b->name, MAXNAMELEN, "T%d_%d%s", thread,
-			b->variable->lineno, b->variable->name);
-	    } else {
-		snprintf(b->name, MAXNAMELEN, "T%d_%d_%s", thread,
-			b->variable->lineno, b->variable->name);
-	    }
-	} else
-	    snprintf(b->name, MAXNAMELEN, "%d_%d_%s", thread,
-		    b->variable->lineno, b->variable->name);
-    } else if(output_format == VHDL) {
-	if(b->flags & BIT_WORD) {
-	    if(b->variable->name[0] == '_') {
-		snprintf(b->name, MAXNAMELEN, "T%d_%d%s(%d)", thread,
-			b->variable->lineno,
-			b->variable->name, b->bitnumber);
-	    } else {
-		snprintf(b->name, MAXNAMELEN, "T%d_%d_%s(%d)", thread,
-			b->variable->lineno,
-			b->variable->name, b->bitnumber);
-	    }
-	} else {
-	    if(b->variable->name[0] == '_') {
-		snprintf(b->name, MAXNAMELEN, "T%d_%d%s_%d", thread,
-			b->variable->lineno,
-			b->variable->name, b->bitnumber);
-	    } else {
-		snprintf(b->name, MAXNAMELEN, "T%d_%d_%s_%d", thread,
-			b->variable->lineno,
-			b->variable->name, b->bitnumber);
-	    }
-	}
-    } else {
-	snprintf(b->name, MAXNAMELEN, "%d_%d_%s_%d", thread,
-		b->variable->lineno, b->variable->name, b->bitnumber);
+
+    if(b->name && !(b->flags & BIT_WORD)) {
+        return (b->name);
     }
-    return (b->name);
+    if(!b->name) {
+        b->name = (char *) calloc(1,MAXNAMELEN);
+        if(!b->name) {
+            fprintf(stderr, "fpgac: Memory allocation error\n");
+            exit(1);
+        }
+    }
+    switch(output_format) {
+    case VHDL:		return((char *)bitname_vhdl(b)); break;
+
+    case STRATIX_VQM:	return((char *)bitname_vqm(b)); break;
+
+    case CNFEQNS:
+    case CNFROMS:
+    case CNFGATES:	return((char *)bitname_cnf(b)); break;
+
+    case XNFEQNS:
+    case XNFROMS:
+    case XNFGATES:	return((char *)bitname_xnf(b)); break;
+    }
 }
+
 
 /* Return the name of a port, to be used in the output file
  * Skip the "_" on the front of the name.
@@ -457,18 +516,24 @@ char *externalname(struct bit *b) {
     if(b->variable->width == 1)
 	strncpy(name, b->variable->name + 1, MAXNAMELEN);
     else
-	snprintf(name, MAXNAMELEN, external_bus_name_format, b->variable->name + 1, b->bitnumber);
+	sprintf(name, external_bus_name_format, b->variable->name + 1, b->bitnumber);
     return (name);
 }
 
 struct bit *newbit() {
     struct bit *b;
 
-    if(nbits >= NBITS) {
-	fprintf(stderr, "fpgac: more than %d bit names\n", NBITS);
-	exit(1);
+    b = (struct bit *) calloc(1, sizeof (struct bit));
+    if(!b) {
+        fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
     }
-    b = &bits[nbits];
+    if(!bits) {
+        bits = b;
+    } else {
+        bitst->next = b;
+    }
+    bitst = b;
     b->primaries = (struct bitlist *) NULL;
     b->copyof = b;
     nbits++;
@@ -477,104 +542,147 @@ struct bit *newbit() {
 
 struct variable *ffoutput();
 
-/* Flags for findvariable */
-#define MUSTNOTEXIST	0
-#define MUSTEXIST	1
-#define MAYEXIST	2
-
-struct variable *findvariable(char *s, int flag, int width) {
-    int i, ticked;
-    struct varlist *temp;
+struct variable *CreateVariable(char *s, int width, struct varlist **list, struct variable *currentscope, int noprefix) {
+    int i;
+    struct varlist *var;
     struct variable *v;
     struct bit *b;
+    char *buf;
 
-    ticked = 0;
-    for(temp = scopestack; temp; temp = temp->next) {
-	if(!strcmp(temp->variable->copyof->name, TICKMARK)) {
-	    /* All variables above this point have been
-	     * stored in flip flops
-	     */
-	    ticked = 1;
-	    continue;
-	}
-	if(!strcmp(temp->variable->copyof->name, s)) {
-	    if(flag == MUSTNOTEXIST)
-		error2(s, "previously declared in this scope");
-	    if(ticked) {
-
-		/* The most recent version of the variable
-		 * has been stored in a flipflop, and the
-		 * clock has since ticked.
-		 * Return a new version of the variable that
-		 * points at the output of the FF
-		 */
-
-		makeff(temp->variable->copyof);
-		v = ffoutput(temp->variable->copyof);
-		return (v);
-	    }
-	    return (temp->variable);
-	}
+    for(var = *list; s && var && var->variable && var->variable->scope == currentscope; var = var->next) {
+	if(!strcmp(var->variable->name, s)) {
+	    error2(s, "previously declared in this scope");
+        }
     }
-    for(i = nvariables - 1; i >= 0; --i) {
-	if(!strcmp(variables[i].name, s)) {
-	    if(flag == MUSTNOTEXIST) {
-		if(variables[i].scope == currentscope)
-		    error2(s, "previously declared in this scope");
-		else
-		    continue;
-	    }
-	    if((variables[i].scope == currentscope)
-		|| !variables[i].scope) {
-		v = &variables[i];
-		if(!(v->flags & SYM_FUNCTION)) {
-		    /* The variable is either global, or uninitialized,
-		     * and has not yet been modified in the routine
-		     * we are compiling.
-		     * Return a new version of the variable that
-		     * points at the output of the FF
-		     */
-
-		    makeff(&variables[i]);
-		    v = ffoutput(&variables[i]);
-		    if(v->copyof->flags & SYM_INPUTPORT) {
-			v->flags |= SYM_TEMP;
-			modifiedvar(v);
-		    }
-		}
-		return (v);
-	    }
-	}
+    v = calloc(1, sizeof (struct variable));  // allocate zero initialized memory
+    if(!v) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
     }
-
-    if(flag == MUSTEXIST)
-	error2(s, "has not been declared");
-
-    if(nvariables >= NVARIABLES) {
-	fprintf(stderr, "fpgac: more than %d variable names\n", NVARIABLES);
-	exit(1);
+    var = calloc(1, sizeof (struct varlist));
+    if(!var) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
     }
-    v = &variables[nvariables];
-    strncpy(v->name, s, MAXNAMELEN);
+    var->next = *list;
+    *list = var;
+    var->variable = v;
+    v->next = variables;
+    variables = v;
+    if(s) strncpy(v->name, s, MAXNAMELEN);
     v->width = width;
     v->lineno = inputlineno;
-    v->flags = 0;
-    v->type = 0;
-    v->arraysize = 0;
-    v->arrayaddrbits = 0;
-    v->arrayref = 0;
-    v->arraywrite = 0;
     v->scope = currentscope;
+    v->dscope = CurrentDeclarationScope;
     v->copyof = v;
-    nvariables++;
     v->bits = (struct bitlist *) NULL;
     for(i = 0; i < width; i++) {
 	b = newbit();
 	b->variable = v;
 	b->bitnumber = i;
 	addtolist(&v->bits, b);
+        if(!s)
+            continue;
+
+        if(noprefix || (list == &DeclarationScopeStack && CurrentDeclarationScope && CurrentDeclarationScope->parent == GLOBALSCOPE)) {
+          if(width > 1)
+              asprintf(&b->name, "%s_%d", s, i);
+          else
+              asprintf(&b->name, "%s", s);
+        } else {
+          if(width > 1)
+              asprintf(&b->name, "%s%s_%d", CurrentDeclarationScope->name, s, i);
+          else
+              asprintf(&b->name, "%s%s", CurrentDeclarationScope->name, s);
+        }
+        if(debug & 2) fprintf(stderr, "CreateVariable: s(%s) bit(%s)\n", s, b->name);
     }
+    nvariables++;
     return (v);
+}
+
+/* Flags for findvariable */
+#define MUSTEXIST	1
+#define MAYEXIST	2
+#define COPYOFEXISTS	4
+
+struct variable *findvariable(char *s, int flag, int width, struct varlist **list, struct variable *currentscope) {
+    int i, ticked;
+    struct varlist *var;
+    struct variable *v = 0;
+    struct bit *b;
+
+
+    if(flag == COPYOFEXISTS) {
+        v = (struct variable *) s;
+v = v->copyof;
+        if(debug & 2) fprintf(stderr, "findvariable: v(%s) on list(0x%08x)\n", v->name, list);
+        flag = MUSTEXIST;
+    } else {
+        // first find variable by that name on provided scope's list
+        if(debug & 2) fprintf(stderr, "findvariable: s(%s) on list(0x%08x)\n", s, list);
+        for(var = *list; var; var = var->next) {
+            if(!strcmp(var->variable->name, s)) {
+                if(debug & 2) fprintf(stderr, "findvariable: located(%s) at variable(0x%08x)\n", s, var->variable);
+                v = var->variable;
+                break;
+            }
+        }
+    }
+
+    // if found, then return more recient version of that variable
+    if(v) {
+        if(v->flags & SYM_TAG) return(v);
+
+        ticked = 0;
+        for(var = ReferenceScopeStack; var; var = var->next) {
+            if(!strcmp(var->variable->copyof->name, TICKMARK)) {
+                /* All variables above this point have been
+                 * stored in flip flops
+                 */
+                ticked = 1;
+                continue;
+            }
+            if(var->variable->copyof == v) {
+                if(ticked) {
+
+                    /* The most recent version of the variable
+                     * has been stored in a flipflop, and the
+                     * clock has since ticked.
+                     * Return a new version of the variable that
+                     * points at the output of the FF
+                     */
+
+                    makeff(var->variable->copyof);
+                    v = ffoutput(var->variable->copyof);
+                    if(debug & 2) fprintf(stderr, "findvariable: ticked s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
+                    return (v);
+                }
+                return (var->variable);
+            }
+        }
+        if(!(v->flags & SYM_FUNCTION)) {
+            /* The variable is either global, or uninitialized,
+            * and has not yet been modified in the routine
+            * we are compiling.
+            * Return a new version of the variable that
+            * points at the output of the FF
+            */
+
+            makeff(v);
+            v = ffoutput(v);
+            if(v->copyof->flags & SYM_INPUTPORT) {
+                v->flags |= SYM_TEMP;
+                modifiedvar(v);
+            }
+            if(debug & 2) fprintf(stderr, "findvariable: s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
+        }
+        return (v);
+    }
+    if(flag == MUSTEXIST)
+        error2(s, "has not been declared");
+    if(debug & 2) fprintf(stderr, "findvariable: s(%s) not found\n", s);
+    return (CreateVariable(s, width, list, currentscope, 0));
 }
 
 /* A parameter may have been seen before it is declared.  Make sure that
@@ -594,7 +702,7 @@ changewidth(struct variable *v, int width) {
     v->bits = NULL;
     v->width = width;
 
-    if(debug == 3 || debug == 4)
+    if(debug & 0x0004)
 	printf("Width of '%s' is now %d\n", v->name, width);
 
     for(i = 0; i < width; i++) {
@@ -630,8 +738,8 @@ struct variable *intconstant(int value) {
     /* Add one bit for the sign bit */
     width++;
 
-    snprintf(buf, MAXNAMELEN, "constant_%d", value);
-    v = findvariable(buf, MAYEXIST, width);
+    sprintf(buf, "_constant_%d", value);
+    v = findvariable(buf, MAYEXIST, width, &ThreadScopeStack, CurrentReferenceScope);
     v->flags |= SYM_LITERAL;
     bl = v->bits;
     temp = value;
@@ -646,17 +754,17 @@ struct variable *intconstant(int value) {
 }
 
 clearvarflag(int bitmask) {
-    int i;
+    struct variable *v;
 
-    for(i = 0; i < nvariables; i++)
-	variables[i].flags &= ~bitmask;
+    for(v = variables; v; v=v->next)
+        v->flags &= ~bitmask;
 }
 
 clearflag(int bitmask) {
-    int i;
+    struct bit *b;
 
-    for(i = 0; i < nbits; i++)
-	bits[i].flags &= ~bitmask;
+    for(b = bits; b; b=b->next)
+        b->flags &= ~bitmask;
 }
 
 addtolist(struct bitlist **listp, struct bit *b) {
@@ -667,7 +775,11 @@ addtolist(struct bitlist **listp, struct bit *b) {
 	    return;
     }
     list = *listp;
-    *listp = (struct bitlist *) calloc(1, sizeof(struct bitlist));
+    *listp = (struct bitlist *) calloc(1,sizeof(struct bitlist));
+    if(!*listp) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
     (*listp)->bit = b;
     (*listp)->next = list;
 }
@@ -678,7 +790,11 @@ addtolistwithduplicates(struct bitlist **listp, struct bit *b) {
     for(; *listp; listp = &((*listp)->next)) {
     }
     list = *listp;
-    *listp = (struct bitlist *) calloc(1, sizeof(struct bitlist));
+    *listp = (struct bitlist *) calloc(1,sizeof(struct bitlist));
+    if(!*listp) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
     (*listp)->bit = b;
     (*listp)->next = list;
 }
@@ -691,7 +807,11 @@ addtovlist(struct varlist **listp, struct variable *v) {
 	    return;
     }
     list = *listp;
-    *listp = (struct varlist *) calloc(1, sizeof(struct varlist));
+    *listp = (struct varlist *) calloc(1,sizeof(struct varlist));
+    if(!*listp) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
     (*listp)->variable = v;
     (*listp)->next = list;
 }
@@ -701,7 +821,11 @@ addtovlistwithduplicates(struct varlist **listp, struct variable *v) {
 
     for(; *listp; listp = &((*listp)->next));
     list = *listp;
-    *listp = (struct varlist *) calloc(1, sizeof(struct varlist));
+    *listp = (struct varlist *) calloc(1,sizeof(struct varlist));
+    if(!*listp) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
     (*listp)->variable = v;
     (*listp)->next = list;
 }
@@ -740,29 +864,81 @@ notequal(int a, int b) {
     return (a != b);
 }
 
+/* Add members from structure tag to structure instance
+ * members varlist is backwards, so use recursion for depth first search
+ * add members bits to structure as we go, so later we can make
+ * struct assignments work too (not currently supported)
+ */
+struct variable * MapStructureVars(struct variable *v, struct varlist *vl) {
+    struct variable *new;
+    struct bitlist *bl;
+
+    if(vl->next) MapStructureVars(v, vl->next);
+    if(vl->variable->members) {
+        struct variable *oldscope;
+        char *thisname;
+
+        oldscope = CurrentDeclarationScope;
+        asprintf(&thisname, "%s%s", oldscope->name, vl->variable->name);
+
+        CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
+        CurrentDeclarationScope->flags |= SYM_TEMP;
+        CurrentDeclarationScope->parent = oldscope;
+        new = CreateVariable(vl->variable->name, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
+        PushDeclarationScope(&(new->members));
+
+        MapStructureVars(new, vl->variable->members);
+
+        PopDeclarationScope();
+        CurrentDeclarationScope = CurrentDeclarationScope->parent;
+    } else {
+        new = CreateVariable(vl->variable->name, vl->variable->width, ScopeStack->scope, CurrentDeclarationScope, 0);
+        new->flags = vl->variable->flags;
+        new->type = vl->variable->type;
+        new->flags |= SYM_STRUCT_MEMBER;
+        if(vl->variable->arraysize)
+            CreateArray(new, vl->variable->arraysize);
+    }
+    new->parent = v;
+    new->offset = v->width;
+    bl = vl->variable->bits;
+    while(bl) {
+        addtolist(&v->bits, bl->bit);
+        v->width++;
+        bl=bl->next;
+    }
+}
+
 struct variable *newtempvar(char *s, int width) {
-    char buf[MAXNAMELEN];
+    char *buf;
     struct variable *temp;
     struct bitlist *bl;
 
-    snprintf(buf, MAXNAMELEN, "L%d%s", tempchar++, s);
-    temp = findvariable(buf, MUSTNOTEXIST, width);
+    asprintf(&buf, "%s_T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, s);
+    temp = CreateVariable(buf, width, &ThreadScopeStack, CurrentReferenceScope, 1);
     temp->flags |= SYM_TEMP;
-    for(bl = temp->bits; bl; bl = bl->next)
+    for(bl = temp->bits; bl; bl = bl->next) {
 	bl->bit->flags |= BIT_TEMP;
+    }
     return (temp);
 }
 
 struct variable *copyvar(struct variable *v) {
-    char buf[MAXNAMELEN];
+    char *buf;
     struct variable *temp;
     struct bitlist *bl, *bl2;
 
-    snprintf(buf, MAXNAMELEN, "L%d_%s", tempchar++, v->copyof->name);
-    temp = findvariable(buf, MUSTNOTEXIST, v->width);
-    temp->flags |= (v->flags & SYM_TEMP);
+    if(v->flags & (SYM_STATE|SYM_TEMP)) {
+        asprintf(&buf,"%s_C%d", v->copyof->name, v->copyof->temp++);
+        temp = CreateVariable(buf, v->width, &ThreadScopeStack, CurrentReferenceScope, 0);
+    } else {
+        temp = CreateVariable((char *) 0, v->width, &ThreadScopeStack, CurrentReferenceScope, 0);
+    }
+    temp->flags |= (v->flags & (SYM_TEMP|SYM_STRUCT_MEMBER|SYM_STATE));
     temp->copyof = v->copyof;
     temp->type = v->type;
+    temp->parent = v->parent;
+    temp->members = v->members;
     temp->arraysize = v->arraysize;
     temp->arrayaddrbits = v->arrayaddrbits;
     temp->arrayref = v->arrayref;
@@ -803,8 +979,12 @@ struct bit *freezebit(struct bit *b) {
     int i;
 
     temp = newbit();
-    temp->name = (char *) calloc(1, MAXNAMELEN);
-    snprintf(temp->name, MAXNAMELEN, "T%d_%dL%d_%s", thread, inputlineno, tempchar++, bitname(b->copyof));
+    temp->name = (char *) calloc(1,MAXNAMELEN);
+    if(!temp->name) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
+    sprintf(temp->name, "F%s", bitname(b->copyof));
     if(b->flags & BIT_TEMP) {
 	addtolist(&temp->primaries, b);
 	temp->truth[0] = 0;
@@ -828,14 +1008,18 @@ struct bit *freezebit(struct bit *b) {
 modifiedvar(struct variable *v) {
     struct varlist *temp;
 
-    if(debug == 1 && v->bits && v->bits->bit) {
+    if((debug & 1) && v->bits && v->bits->bit) {
 	printf("   push modified ");
 	printbit(v->bits->bit);
     }
-    temp = (struct varlist *) calloc(1, sizeof(struct varlist));
+    temp = (struct varlist *) calloc(1,sizeof(struct varlist));
+    if(!temp) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
     temp->variable = v;
-    temp->next = scopestack;
-    scopestack = temp;
+    temp->next = ReferenceScopeStack;
+    ReferenceScopeStack = temp;
 }
 
 setbit(struct bit *b, struct bit *value) {
@@ -981,7 +1165,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     int i, j, k, n;
     int leftcount, rightcount, newcount;
 
-    if(debug == 1) {
+    if(debug & 1) {
 	printf("twoop1bit line %d\n", inputlineno);
 	printbit(left);
 	printbit(right);
@@ -991,7 +1175,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     if((left->flags & SYM_KNOWNVALUE) && (right->flags & SYM_KNOWNVALUE)) {
 	temp->truth[0] = (*func) (left->truth[0], right->truth[0]);
 	temp->flags = SYM_KNOWNVALUE;
-	if(debug == 1)
+	if(debug & 1)
 	    printbit(temp);
 	return;
     }
@@ -1005,7 +1189,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
 	for(i = 0; i < 16; i++)
 	    temp->truth[i] = (*func) (left->truth[i], right->truth[0]);
 	optimizebit(temp);
-	if(debug == 1)
+	if(debug & 1)
 	    printbit(temp);
 	return;
     }
@@ -1050,7 +1234,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
 	temp->truth[i] = (*func) (left->truth[j], right->truth[k]);
     }
     optimizebit(temp);
-    if(debug == 1)
+    if(debug & 1)
 	printbit(temp);
 }
 
@@ -1081,9 +1265,13 @@ struct variable *twoop(struct variable *left, struct variable *right, int (*func
 char *intop(char *left, char *right, int (*func) ()) {
     char temp[32], *result;
 
-    snprintf(temp, 32, "%d", func(atoi(left), atoi(right)));
-    result = calloc(1, strlen(temp) + 1);
-    strncpy(result, temp, strlen(temp) + 1);
+    sprintf(temp, "%d", func(atoi(left), atoi(right)));
+    result = calloc(1,strlen(temp) + 1);
+    if(!result) {
+	fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
+    strcpy(result, temp);
     return (result);
 }
 
@@ -1094,9 +1282,9 @@ struct variable *thistick(struct variable *v) {
     /* Check to make sure we have a version of this variable that is
      * valid in the current clock period.
      */
-    if(v->flags & SYM_LITERAL)
+    if(v->flags & (SYM_LITERAL|SYM_ARRAY))
 	return (v);
-    for(scope = scopestack; scope; scope = scope->next) {
+    for(scope = ReferenceScopeStack; scope; scope = scope->next) {
 	if(!strcmp(scope->variable->copyof->name, TICKMARK))
 	    break;
 	if(scope->variable == v)
@@ -1145,7 +1333,7 @@ optimizebit(struct bit *b) {
 		break;
 	}
 	if(i == (1 << nprimaries)) {
-	    if(debug == 1) {
+	    if(debug & 1) {
 		printf("optimizing %s out of %s\n",
 		       bitname((*p)->bit), bitname(b));
 		printf("nprimaries %d i %d bit 0x%x\n", nprimaries, i,
@@ -1320,7 +1508,7 @@ struct variable *nonzero(struct variable *v) {
 makeff(struct variable *v) {
     struct bitlist *b;
 
-    if(v->flags & (SYM_FF | SYM_TEMP | SYM_LITERAL))
+    if(v->flags & (SYM_FF | SYM_TEMP | SYM_LITERAL | SYM_ARRAY))
 	return;
     for(b = v->bits; b; b = b->next) {
 	b->bit->flags |= SYM_FF;
@@ -1391,11 +1579,11 @@ busport(struct variable *v, struct varlist *vl) {
 
     inputport(v, vl);
     makeff(v->copyof);
-    if(currentscope != v->copyof->scope) {
-	temp_scope = currentscope;
-	currentscope = v->copyof->scope;
+    if(CurrentReferenceScope != v->copyof->scope) {
+	temp_scope = CurrentReferenceScope;
+	CurrentReferenceScope = v->copyof->scope;
 	v->copyof->enable = newtempvar("enable", 1);
-	currentscope = temp_scope;
+	CurrentReferenceScope = temp_scope;
     } else
 	v->copyof->enable = newtempvar("enable", 1);
     v->copyof->enable->flags &= ~SYM_TEMP;
@@ -1458,7 +1646,7 @@ addtoff(struct variable *ff, struct variable *state, struct variable *value) {
     struct bitlist *fbl, *sbl, *vbl, *tbl;
     struct variable *temp;
 
-    if(debug == 1) {
+    if(debug & 1) {
 	printf("addtoff ff %s state %s value %s\n", ff->name,
 	       state->name, value->name);
     }
@@ -1501,13 +1689,147 @@ addtoff(struct variable *ff, struct variable *state, struct variable *value) {
     }
 }
 
+/*
+ * Small arrays are almost free in most Xilinx FPGA's as they will tie up about
+ * as many slices as clocked LUTs for 16x1 memories as they do for for FFs
+ * to register a single value -- assuming a single read/write index being active
+ * in any particular block.  Multiple read references per block are easily handled
+ * by using dual ported LUT rams to create n-ported memories.
+ *
+ * When the array is referenced, we replace those references with the array port
+ * variable associated with the index being used. We also assign the index used
+ * for reference to that ports address lines. At the next clock tick, the reference
+ * ports and associated index lines are released for use in a later block.
+ */
+
+struct variable *CreateArrayRef(struct variable *array) {
+    int ref = 0;
+    struct varlist *vl, *vn;
+    struct bitlist *bl;
+    char buf[MAXNAMELEN];
+
+    vl = (struct varlist *) calloc(1,sizeof(struct varlist));
+    vl->next = array->arrayref;
+    array->arrayref = vl;
+
+    for(vn=vl; vn->next; vn = vn->next) {
+            ref++;
+    }
+
+    sprintf(buf, "%s_p%d", array->name+1, ref);
+    vl->variable = CreateVariable(buf, array->width, &ThreadScopeStack, CurrentReferenceScope,0);
+    vl->variable->port = ref;
+    vl->variable->flags |= SYM_ARRAY;
+    vl->variable->flags &= (~SYM_FF);
+    vl->variable->arrayparent = array;
+    if(debug & 4) printf( "    creating arrayref(%s)", vl->variable->name);
+
+    sprintf(buf, "%s_index_p%d", array->name+1, ref);
+    vl->variable->index = CreateVariable(buf, array->arrayaddrbits, &ThreadScopeStack, CurrentReferenceScope,0);
+    vl->variable->index->port = ref;
+    makeff(vl->variable->index);
+    vl->variable->index->flags |= SYM_ARRAY_INDEX;
+    if(debug & 4) printf( " index(%s)\n", vl->variable->index->name);
+
+    for(bl = vl->variable->bits; bl; bl = bl->next) {
+        struct bit *b;
+
+        b = bl->bit->copyof;
+        b->flags &= ~SYM_KNOWNVALUE;
+        b->flags |= SYM_ARRAY;
+        b->pin = (char *) NULL;
+        b->primaries = (struct bitlist *) NULL;
+        addtolist(&b->primaries, b);
+        b->truth[0] = 0;
+        b->truth[1] = 1;
+        b->bitnumber = bl->bit->bitnumber;
+    }
+
+    for(bl = vl->variable->index->bits; bl; bl = bl->next) {
+        struct bit *b;
+
+        b = bl->bit->copyof;
+        b->flags |= SYM_ARRAY_INDEX;
+    }
+    return(vl->variable);
+}
+
+CreateArray(struct variable *array, int index) {
+
+    if(debug & 4) printf( "CreateArray: array(%s) size(%d)\n", array->name, index);
+    array->arraysize = index;
+    array->arrayaddrbits = sizelog2(index);
+    array->arraywrite = CreateArrayRef(array);     // create first port, read/write
+//    CreateArrayRef(array);                         // create second read port
+}
+
+struct variable * ArrayReference(struct variable *array, struct variable *index) {
+    struct varlist *vl;
+    struct variable *v = 0;
+
+    index = thistick(index);
+    if(!array->copyof->arraysize) {
+	error2(array->copyof->name, "was not declared as an array");
+        return(array);
+    }
+    if(debug & 4) printf( "Reference of array(%s) with index(%s)\n", array->copyof->name, index->name);
+
+    if(array->copyof->arraywrite->index->index == index) {
+    if(debug & 4) printf( "    Using arrayref(%s) with index(%s)\n", array->arraywrite->name, index->name);
+        return(array->copyof->arraywrite);
+    }
+
+    for(vl=array->copyof->arrayref; vl->next; vl = vl->next) {
+        if(vl->variable->index->index == index) {
+            if(debug & 4) printf( "    Using arrayref(%s) with index(%s)\n", vl->variable->name, index->name);
+            return(vl->variable);
+        }
+        if(vl->next && !vl->variable->index->index) {
+            v = vl->variable;
+        }
+    }
+    if(!v) {
+        v = CreateArrayRef(array->copyof);
+    }
+    if(debug & 4) printf( "    Assigning arrayref(%s) to index(%s)\n", v->name, index->name);
+    assignment(thistick(v->index), index);
+    v->index->index = index;
+    return(v);
+}
+
 tick(struct variable *state) {
     struct variable *temp;
 
     assertoutputs(state);
 
-    temp = findvariable(TICKMARK, MAYEXIST, 1);
+    temp = findvariable(TICKMARK, MAYEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
     modifiedvar(temp);
+}
+
+ArrayAssignment(struct variable *array, struct variable *index) {
+    struct variable *temp, *currentstate, *arraystate;
+
+    if(!array->copyof->arraysize) {
+	error2(array->copyof->name, "was not declared as an array");
+        return;
+    }
+    if(array->copyof->arraywrite->index->index) {
+        if(debug & 4) printf( "****force tick\n");
+        currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+        tick(currentstate);
+	arraystate = newtempvar("array", 1);
+	arraystate->flags = SYM_STATE;
+	makeff(arraystate);
+	setvar(arraystate, currentstate);
+	assignment(currentstate, ffoutput(arraystate));
+    }
+    index = thistick(index);
+    if(debug & 4) printf( "Assignment to array(%s) with index(%s)\n", array->name, index->name);
+    if(debug & 4) printf( "   which is a copyof(%s)\n", array->copyof->name);
+    temp = thistick(array->copyof->arraywrite->index->copyof);
+    if(debug & 4) printf( "   which uses index(%s)\n", temp);
+    assignment(temp, index);
+    array->copyof->arraywrite->index->index = index;
 }
 
 ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsescope) {
@@ -1518,12 +1840,12 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
     struct variable *tempstate;
     int thenticked, elseticked;
 
-    scopestack = thenscope;
-    thenstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
-    scopestack = elsescope;
-    elsestate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
-    scopestack = expn->junk;
-    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+    ReferenceScopeStack = thenscope;
+    thenstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+    ReferenceScopeStack = elsescope;
+    elsestate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+    ReferenceScopeStack = expn->junk;
+    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
     originalstate = currentstate;
 
     thenticked = 0;
@@ -1545,8 +1867,8 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
     }
 
     if(thenticked && !elseticked) {
-	tempscope = scopestack;
-	scopestack = elsescope;
+	tempscope = ReferenceScopeStack;
+	ReferenceScopeStack = elsescope;
 	tick(elsestate);
 	elseticked++;
 	tempstate = newtempvar("iftick", 1);
@@ -1554,13 +1876,13 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
 	makeff(tempstate);
 	setvar(tempstate, elsestate);
 	elsestate = assignment(elsestate, ffoutput(tempstate));
-	elsescope = scopestack;
-	scopestack = tempscope;
+	elsescope = ReferenceScopeStack;
+	ReferenceScopeStack = tempscope;
     }
 
     if(!thenticked && elseticked) {
-	tempscope = scopestack;
-	scopestack = thenscope;
+	tempscope = ReferenceScopeStack;
+	ReferenceScopeStack = thenscope;
 	tick(thenstate);
 	thenticked++;
 	tempstate = newtempvar("iftick", 1);
@@ -1568,8 +1890,8 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
 	makeff(tempstate);
 	setvar(tempstate, thenstate);
 	thenstate = assignment(thenstate, ffoutput(tempstate));
-	thenscope = scopestack;
-	scopestack = tempscope;
+	thenscope = ReferenceScopeStack;
+	ReferenceScopeStack = tempscope;
     }
 
     if(!thenticked && !elseticked) {
@@ -1579,7 +1901,7 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
     } else {
 	/* Record the fact that there was a tick during this if */
 
-	temp = findvariable(TICKMARK, MAYEXIST, 1);
+	temp = findvariable(TICKMARK, MAYEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 	modifiedvar(temp);
 	assignment(currentstate, twoop(thenstate, elsestate, or));
     }
@@ -1593,10 +1915,10 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
 	if(!strcmp(v->copyof->name, TICKMARK))
 	    continue;
 	v->copyof->flags |= SYM_UPTODATE;
-	tempscope = scopestack;
-	scopestack = elsescope;
-	altv = findvariable(v->copyof->name, MUSTEXIST, 0);
-	scopestack = tempscope;
+	tempscope = ReferenceScopeStack;
+	ReferenceScopeStack = elsescope;
+	altv = findvariable((char *)v, COPYOFEXISTS, 0, &ReferenceScopeStack, CurrentReferenceScope);
+	ReferenceScopeStack = tempscope;
 	ifmerge(v, altv, thenstate, elsestate, (thenticked || elseticked));
     }
     for(; elsescope != expn->junk; elsescope = elsescope->next) {
@@ -1608,7 +1930,7 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
 	if(!strcmp(v->copyof->name, TICKMARK))
 	    continue;
 	v->copyof->flags |= SYM_UPTODATE;
-	altv = findvariable(v->copyof->name, MUSTEXIST, 0);
+	altv = findvariable((char *)v, COPYOFEXISTS, 0, &ReferenceScopeStack, CurrentReferenceScope);
 	ifmerge(altv, v, thenstate, elsestate, (thenticked || elseticked));
     }
     clearvarflag(SYM_UPTODATE);
@@ -1674,7 +1996,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 #define MUXBIT_B		2
 #define MUXBIT_CONDITION	3
 
-    if(debug == 1) {
+    if(debug & 1) {
 	printf("muxbit line %d\n", inputlineno);
 	printbit(condition);
 	printbit(a);
@@ -1685,7 +2007,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	    setbit(result, a);
 	else
 	    setbit(result, b);
-	if(debug == 1)
+	if(debug & 1)
 	    printbit(result);
 	return;
     }
@@ -1703,7 +2025,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	    complementbit(tempbit3, condition);
 	    twoop1bit(tempbit2, b, tempbit3, and);
 	    twoop1bit(result, tempbit1, tempbit2, or);
-	    if(debug == 1)
+	    if(debug & 1)
 		printbit(result);
 	    return;
 	}
@@ -1757,19 +2079,19 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
     }
 }
 
-struct variable *whileloop(expn, initialstate, loopstate, endloopexpn)
+struct variable *FormLoop(expn, initialstate, loopstate, endloopexpn)
 struct variable *expn;
 struct variable *initialstate, *loopstate, *endloopexpn;
 {
     struct variable *currentstate, *endloopstate, *temp;
     struct variable *temp1, *temp2;
 
-    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 0);
+    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 0, &ThreadScopeStack, CurrentReferenceScope);
     tick(currentstate);
 
     temp1 = twoop(initialstate, expn, and);
     temp2 = twoop(currentstate, endloopexpn, and);
-    setvar(loopstate, twoop(temp1, temp2, or));
+    setvar(loopstate, twoop(temp1, temp2, or));           // (currentstate * endloopexpn) + (initialstate * expn)
 
     endloopstate = breakstack->variable;
     breakstack = breakstack->next;
@@ -1777,38 +2099,48 @@ struct variable *initialstate, *loopstate, *endloopexpn;
     temp2 = twoop(currentstate, complement(endloopexpn), and);
     temp = twoop(temp1, temp2, or);
     setvar(endloopstate, twoop(endloopstate, temp, or));
-    assignment(currentstate, ffoutput(endloopstate));
+    assignment(currentstate, ffoutput(endloopstate));     // endloopstate + (currentstate * ~endloopexpn) + (initialstate * ~expn)
 }
 
 init() {
-    struct variable *v, *running, *vcc, *myzeroff;
-    char buf[MAXNAMELEN];
+    struct variable *v, *vcc, *myzeroff;
+    char *buf, *mbuf, *rbuf;
 
     /* Running is a FF whose output is 0 initially, and is 1 thereafter.
      * The initial state is the inverse of the FF output, so is 1 on the
      * first clock cycle, and 0 thereafter.
      */
+    if(!thread) thread=inputfilename;
+    asprintf(&buf, "_%s", thread);
+    for(mbuf=buf; *mbuf; mbuf++) {
+        if(*mbuf == '/') buf=mbuf+1;
+    }
+    if(mbuf[-2] == '.' && mbuf[-1] == 'c') mbuf[-2] = 0;
+    thread=buf;
 
-    snprintf(buf, MAXNAMELEN, "%dRunning", thread);
-    running = findvariable(buf, MUSTNOTEXIST, 1);
+    CurrentDeclarationScope = CreateVariable(buf, 0, &DeclarationScopeStack, 0, 0);
+    CurrentDeclarationScope->flags |= SYM_TEMP;
+
+    asprintf(&rbuf, "_Running");
+    running = CreateVariable(rbuf, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
     makeff(running);
-    snprintf(buf, MAXNAMELEN, "%dZero", thread);
-    myzeroff = findvariable(buf, MUSTNOTEXIST, 1);
-    makeff(myzeroff);
-    setvar(myzeroff, ffoutput(myzeroff));
-    vcc = findvariable("VCC", MUSTNOTEXIST, 1);
-    vcc->bits->bit->flags |= SYM_VCC;
     running->flags |= SYM_STATE;
-    setvar(running, complement(ffoutput(myzeroff)));
+    setvar(running, ffoutput(intconstant(1)));
     running->bits->bit->flags |= SYM_STATE | SYM_DONTPULLUP;
-    v = findvariable("_main", MUSTNOTEXIST, 1);
-    declarefunction(v, defaultwidth);
+    v = CreateVariable("_main", 0, &DeclarationScopeStack, CurrentDeclarationScope, 0);
+    declarefunction(v, 0);
     v->flags |= SYM_FUNCTIONEXISTS;
     v->initialstate->bits->bit->flags &= ~SYM_FF;
     setvar(v->initialstate, complement(ffoutput(running)));
     powerup_state = v->initialstate;
-    v = findvariable(CURRENTSTATE, MUSTNOTEXIST, 1);
+    v = CreateVariable(CURRENTSTATE, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
     v->flags |= SYM_STATE;
+}
+
+halt() {
+    // would like to create a halted state that negates Running, where either
+    // of these states can be tied to an LED for visual indication of the state
+    // of the application.
 }
 
 assertoutputs(struct variable *currentstate) {
@@ -1820,20 +2152,25 @@ assertoutputs(struct variable *currentstate) {
      * to tick.
      */
 
-    for(scope = scopestack; scope; scope = scope->next) {
+    for(scope = ReferenceScopeStack; scope; scope = scope->next) {
 	v = scope->variable;
 	if(!strcmp(v->copyof->name, TICKMARK))
 	    break;
 	if(v->copyof->flags & (SYM_STATE | SYM_UPTODATE))
 	    continue;
 	makeff(v->copyof);
-	if(v->flags & SYM_TEMP)
+	if(v->flags & (SYM_TEMP | SYM_ARRAY)) {
 	    v->state = currentstate;
-	else {
+	} else {
+            if(debug & 4) printf( "assertoutputs: assigned(%s) to %s in state(%s)\n",v->name, v->copyof->name, currentstate->name);
 	    addtoff(v->copyof, currentstate, v);
 	    modifiedvar(ffoutput(v->copyof));
 	}
 	v->copyof->flags |= SYM_UPTODATE;
+        if(v->copyof->flags & SYM_ARRAY_INDEX) {
+            if(debug & 4) printf( "               index(%s) cleared\n", v->name);
+            v->copyof->index = 0;
+        }
     }
     clearvarflag(SYM_UPTODATE);
 }
@@ -2000,19 +2337,16 @@ makeffinputs() {
     struct variable *temp, *temp1, *temp2;
     struct bitlist *vbl, *sbl;
     struct bit *b;
-    int i;
 
-    for(i = 0; i < nbits; i++) {
-	b = &bits[i];
+    for(b = bits; b; b=b->next) {
 	if(!(b->flags & SYM_FF))
 	    continue;
 	if(!b->modifying_values)
 	    continue;
 	if(b->primaries && !(b->flags & SYM_BUSPORT))
-	    error2("This should not happen: makeffinputs found inputs in",
-		   bitname(b));
-	if((b->flags & SYM_OUTPUTPORT) && !(b->flags & BIT_HASFF)) {
-	    /* This is an output from the circuit, and they
+	    error2("This should not happen: makeffinputs found inputs in", bitname(b));
+	if((b->flags & (SYM_OUTPUTPORT|SYM_ARRAY_INDEX)) && !(b->flags & BIT_HASFF)) {
+	    /* This is an index or output from the circuit, and they
 	     * don't want a flip-flop.  If it is only set in
 	     * one state, just set it to that value.  If it
 	     * is set in more than one state, guard each of the
@@ -2025,6 +2359,7 @@ makeffinputs() {
 	    } else {
 		setbit(b, b->modifying_values->bit);
 	    }
+            if(b->flags & SYM_ARRAY_INDEX) b->flags &= ~SYM_FF;
 	    continue;
 	}
 	if((countlist(b->modifying_values) == 1) && use_clock_enables) {
@@ -2036,8 +2371,7 @@ makeffinputs() {
 	     * Makes the output easier to understand.
 	     */
 	    b->clock_enable = b->modifying_states->bit;
-	    if((countlist(b->clock_enable->primaries) == 1)
-		&& (b->clock_enable->truth[1] == 1))
+	    if((countlist(b->clock_enable->primaries) == 1) && (b->clock_enable->truth[1] == 1))
 		b->clock_enable = b->clock_enable->primaries->bit;
 	    setbit(b, b->modifying_values->bit);
 	    continue;
@@ -2095,7 +2429,7 @@ makeffinputs() {
 
 /* Look through all bits and eliminate duplicates */
 
-struct bit *hash[NBITS];
+struct bit **hash;
 
 struct bit *dupcheck(struct bit *b, int depth) {
     struct bitlist *bl;
@@ -2113,7 +2447,7 @@ struct bit *dupcheck(struct bit *b, int depth) {
 
     hashval = 0;
     for(bl = b->primaries; bl; bl = bl->next) {
-	hashval += NBITS / 4;
+	hashval += nbits / 4;
 	newbit = dupcheck(bl->bit, depth + 1);
 	if(newbit)
 	    bl->bit = newbit;
@@ -2121,10 +2455,10 @@ struct bit *dupcheck(struct bit *b, int depth) {
     }
     if(hashval < 0)
 	hashval = -hashval;
-    hashval = hashval % NBITS;
+    hashval = hashval % nbits;
     while (hash[hashval]) {
 	if(bitequal(hash[hashval], b)) {
-	    if(debug == 1) {
+	    if(debug & 1) {
 		printf("duplicate bit deleted\n");
 		printbit(b);
 		printbit(hash[hashval]);
@@ -2132,7 +2466,7 @@ struct bit *dupcheck(struct bit *b, int depth) {
 	    return (hash[hashval]);
 	}
 	hashval++;
-	if(hashval >= NBITS)
+	if(hashval >= nbits)
 	    hashval = 0;
     }
     hash[hashval] = b;
@@ -2142,19 +2476,23 @@ struct bit *dupcheck(struct bit *b, int depth) {
 
 checkforduplicates() {
     struct bit *b;
-    int i;
 
-    for(i = 0; i < nbits; i++) {
-	b = &bits[i];
+    hash = (struct bit **) calloc(nbits, sizeof (struct bit *));
+    if(!hash) {
+        fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
+    for(b = bits; b; b=b->next) {
 	if(!(b->flags & (SYM_OUTPUTPORT | SYM_FF)))
 	    continue;
 	dupcheck(b, 0);
     }
     clearflag(SYM_UPTODATE);
+    free(hash);
 }
 
 static int maxdepth;
-static int deepest;
+static struct bit *deepest;
 
 finddepth(struct bit *bit, int top) {
     int depth;
@@ -2195,82 +2533,119 @@ finddepth(struct bit *bit, int top) {
 /* Look for functions that were called, but never defined */
 
 checkundefined() {
-    int i;
+    struct variable *v;
 
-    for(i = 0; i < nvariables; i++) {
-	if((variables[i].flags & (SYM_FUNCTION | SYM_FUNCTIONEXISTS))
-	    == SYM_FUNCTION)
-	    error2(variables[i].name, "is an undefined function");
+    for(v = variables; v; v=v->next) {
+        if((v->flags & (SYM_FUNCTION | SYM_FUNCTIONEXISTS)) == SYM_FUNCTION)
+            error2(v->name, "is an undefined function");
     }
 }
 
 output() {
-    prune();
+   if(doprune)
+        prune();
+    else
+        noprune();
 
-    if(output_format == VHDL) {
-	output_vhdl();
-    } else if(output_format == STRATIX_VQM) {
-	output_vqm("stratix");
-    } else {
-	output_XNF();
+
+    switch(output_format) {
+    case VHDL:		output_vhdl(); break;
+
+    case STRATIX_VQM:	output_vqm("stratix"); break;
+
+    case CNFEQNS:
+    case CNFROMS:
+    case CNFGATES:	output_CNF(); break;
+
+    case XNFEQNS:
+    case XNFROMS:
+    case XNFGATES:	output_XNF(); break;
     }
 }
+
+noprune() {
+    struct bitlist *bl;
+    struct bit *b;
+    for(b = bits; b; b=b->next) {
+        b->flags |= SYM_AFFECTSOUTPUT;
+        for(bl = b->primaries; bl; bl = bl->next) {
+            bl->bit->flags |= SYM_AFFECTSOUTPUT;
+        }
+    }
+}
+
 
 /* Go through the circuit, and mark all of the elements that can affect
  * an output.  The rest can be thrown away.
  */
 
 prune() {
-    int changed, n, i, size;
+    int changed, i, size;
     struct bitlist *bl;
+    struct bit *b;
+
 
     changed = 1;
     while (changed) {
 	changed = 0;
-	for(n = 0; n < nbits; n++) {
-	    if(bits[n].flags &
+        for(b = bits; b; b=b->next) {
+	    if(b->flags &
 		(SYM_AFFECTSOUTPUT | SYM_OUTPUTPORT | SYM_BUSPORT)) {
-		bits[n].flags |= SYM_AFFECTSOUTPUT;
-		optimizebit(&bits[n]);
-		for(bl = bits[n].primaries; bl; bl = bl->next) {
+		b->flags |= SYM_AFFECTSOUTPUT;
+		optimizebit(b);
+		for(bl = b->primaries; bl; bl = bl->next) {
 		    if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
 			bl->bit->flags |= SYM_AFFECTSOUTPUT;
 			changed = 1;
+                        if(debug & 8) printf( "prune: found(%s) from(%s)\n",bitname(bl->bit),bitname(b));
 		    }
 		}
-		if(bits[n].enable
-		    && !(bits[n].enable->flags & SYM_AFFECTSOUTPUT)) {
-		    bits[n].enable->flags |= SYM_AFFECTSOUTPUT;
+		if(b->enable && !(b->enable->flags & SYM_AFFECTSOUTPUT)) {
+		    b->enable->flags |= SYM_AFFECTSOUTPUT;
 		    changed = 1;
+                    if(debug & 8) printf( "prune: found(%s) from(%s)\n",bitname(b->enable),bitname(b));
 		}
-		if(bits[n].clock_enable
-		    && !(bits[n].clock_enable->
-			 flags & SYM_AFFECTSOUTPUT)) {
-		    bits[n].clock_enable->flags |= SYM_AFFECTSOUTPUT;
+		if(b->clock_enable && !(b->clock_enable->flags & SYM_AFFECTSOUTPUT)) {
+		    b->clock_enable->flags |= SYM_AFFECTSOUTPUT;
 		    changed = 1;
+                    if(debug & 8) printf( "prune: found(%s) from(%s)\n",bitname(b->clock_enable),bitname(b));
 		}
-                if(bits[n].variable && bits[n].variable->arraysize) {
-                    if(bits[n].variable->arraywrite && bits[n].variable->arraywrite->bits) {
-                        for(i=0,bl = bits[n].variable->arraywrite->bits;i<bits[n].variable->arrayaddrbits;i++) {
-                            if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
-                                bl->bit->flags |= SYM_AFFECTSOUTPUT;
-                                changed = 1;
-                            }
-                            if(bl->next) bl = bl->next;
+                // If parent is an array, include basic logic for the array
+                if(b->variable && b->variable->arrayparent) {
+                    for(i=0,bl = b->variable->arrayparent->copyof->bits;i<b->variable->copyof->width;i++) {
+                        if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
+                            bl->bit->flags |= SYM_AFFECTSOUTPUT;
+                            changed = 1;
+                            if(debug & 8) printf( "prune: found(%s) from(%s) arrayparent\n",bitname(bl->bit),bitname(b));
                         }
+                        if(bl->next) bl = bl->next;
                     }
-                    if(bits[n].variable->arrayref && bits[n].variable->arrayref->bits) {
-                        for(i=0,bl = bits[n].variable->arrayref->bits;i<bits[n].variable->arrayaddrbits;i++) {
-                            if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
-                                bl->bit->flags |= SYM_AFFECTSOUTPUT;
-                                changed = 1;
-                            }
-                            if(bl->next) bl = bl->next;
+                }
+                // If this is an array variable, include logic for write port
+                if(b->variable && b->variable->copyof->arraysize) {
+                    for(i=0,bl = b->variable->copyof->arraywrite->index->bits;i<b->variable->copyof->arrayaddrbits;i++) {
+                        if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
+                            bl->bit->flags |= SYM_AFFECTSOUTPUT;
+                            changed = 1;
+                            if(debug & 8) printf( "prune: found(%s) from(%s) arraywrite\n",bitname(bl->bit),bitname(b));
                         }
+                        if(bl->next) bl = bl->next;
+                    }
+                }
+                if(b->variable && (b->variable->flags & SYM_ARRAY)) {
+                    if(debug & 4) printf( "prune: looking at SYM_ARRAY(%s)\n",b->variable->copyof->index->name);
+                    for(i=0,bl = b->variable->copyof->index->bits;i<b->variable->arrayparent->copyof->arrayaddrbits;i++) {
+                        if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
+                            bl->bit->flags |= SYM_AFFECTSOUTPUT;
+                            changed = 1;
+                            if(debug & 8) printf( "prune: found(%s) from(%s) index\n",bitname(bl->bit),bitname(b));
+                        }
+                        if(bl->next) bl = bl->next;
                     }
                 }
 	    }
 	}
+    if(debug & 8) printf( "\n");
     }
 }
 
@@ -2346,38 +2721,38 @@ printtree(struct bit *b, int offset) {
 
 debugoutput() {
     int i, n;
+    struct bit *b;
 
     if(nerrors > 0)
 	return;
     printf("Start of debug output\n\n");
     maxdepth = 0;
-    for(n = 0; n < nbits; n++) {
-	if(bits[n].flags & SYM_AFFECTSOUTPUT) {
-	    bits[n].depth = finddepth(&bits[n], 1);
-	    bits[n].flags |= BIT_DEPTHVALID;
-	    if(maxdepth < bits[n].depth) {
-		maxdepth = bits[n].depth;
-		deepest = n;
+    for(b = bits; b; b=b->next) {
+	if(b->flags & SYM_AFFECTSOUTPUT) {
+	    b->depth = finddepth(b, 1);
+	    b->flags |= BIT_DEPTHVALID;
+	    if(maxdepth <= b->depth) {
+		maxdepth = b->depth;
+		deepest = b;
 	    }
 	}
     }
     if(debug >= 0) {
-	for(i = 0; i < nbits; i++)
-	    printbit(&bits[i]);
+        for(b = bits; b; b=b->next)
+	    printbit(b);
     }
     clearflag(SYM_UPTODATE);
-    for(i = 0; i < nbits; i++) {
-	if(!(bits[i].flags & SYM_AFFECTSOUTPUT))
+    for(b = bits; b; b=b->next) {
+	if(!(b->flags & SYM_AFFECTSOUTPUT))
 	    continue;
-	if(bits[i].flags & (SYM_OUTPUTPORT | SYM_FF)) {
+	if(b->flags & (SYM_OUTPUTPORT | SYM_FF)) {
 	    putchar('\n');
-	    printtree(&bits[i], 0);
+	    printtree(b, 0);
 	}
     }
     printf("\n");
     printf("%d variables %d bits\n", nvariables, nbits);
-    printf("maximum depth %d driving %s\n", maxdepth,
-	   bitname(&bits[deepest]));
+    printf("maximum depth %d driving %s\n", maxdepth, bitname(deepest));
     printf("%d roms, %d flipflops,", nroms, nff);
     printf(" %d I/O signals (%d input, %d output, %d bidir)\n",
 	   ninpins + noutpins + nbidirpins, ninpins, noutpins, nbidirpins);
@@ -2398,8 +2773,7 @@ debugoutput() {
 	fprintf(stderr, "Lookup table details: (Inputs, #LUTs)\n");
 	for(i = 0; i < 5; i++)
 	    fprintf(stderr, "%4d %8d\n", i, inputcounts[i]);
-	fprintf(stderr, "Maximum depth: %d levels to produce %s\n",
-		maxdepth, bitname(&bits[deepest]));
+	fprintf(stderr, "Maximum depth: %d levels to produce %s\n", maxdepth, bitname(deepest));
     }
 }
 
@@ -2437,6 +2811,61 @@ gettargetwidth() {
 	return (0);
 }
 
+/*
+ * Common code for Intrinsic Functions with Two Arguments.
+ * used for functions which multiply, divide, and mod/remainder operations.
+ */
+
+struct variable *
+IFuncTwoArgs(struct variable *func, int fwidth, struct variable *arg1, int width1, struct variable *arg2, int width2) {
+    struct variable *currentstate, *callingstate, *retval;
+    struct variable *v, *tempstate;
+    struct variable *temp1, *temp2;
+    struct varlist **vlp;
+
+    makefunction(func, fwidth);
+
+    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+    setvar(func->initialstate, twoop(func->initialstate, currentstate, or));
+
+    vlp = &func->arguments;
+    if(!*vlp) {
+	v = newtempvar("Iarg1", width1);
+	v->flags &= ~SYM_TEMP;
+	makeff(v);
+	addtoff(v, currentstate, arg1);
+	addtovlist(vlp, v);
+	v = newtempvar("Iarg2", width2);
+	v->flags &= ~SYM_TEMP;
+	makeff(v);
+	addtoff(v, currentstate, arg2);
+	addtovlist(vlp, v);
+    } else {
+        addtoff((*vlp)->variable, currentstate, arg1);
+        vlp = &((*vlp)->next);
+        if(!*vlp) {
+           warning2("too many arguments in call to", func->name);
+        }
+        addtoff((*vlp)->variable, currentstate, arg2);
+    }
+
+    tick(currentstate);
+    callingstate = newtempvar("calling", 1);
+    callingstate->flags = SYM_STATE;
+    makeff(callingstate);
+    tempstate = ffoutput(func->finalstate);
+    temp1 = ffoutput(callingstate);
+    temp2 = complement(tempstate);
+    temp1 = twoop(temp1, temp2, and);
+    setvar(callingstate, twoop(currentstate, temp1, or));
+    currentstate = assignment(currentstate, twoop(ffoutput(callingstate), tempstate, and));
+    if(countlist(currentstate->bits) > 1)
+	assignment(currentstate, ffoutput(currentstate));
+    retval = ffoutput(func->returnvalue);
+    modifiedvar(retval);
+    return(retval);
+}
+
 %}
 
 %%
@@ -2450,24 +2879,71 @@ program:	sourcefile
 		        checkforduplicates();
 		    checkundefined();
 		    output();
-//                  debugoutput();
+                    if(debug) debugoutput();
 		}
 
 sourcefile:	/* empty */
 		| sourcefile function
 		| sourcefile globaldeclaration
 
-function:	functionhead LEFTCURLY funcbody RIGHTCURLY
+function:	functionhead leftcurly funcbody rightcurly
 		{
-		    struct variable *currentstate;
+		    struct variable *currentstate, *processstate;
+		    struct varlist *vl;
 
 		    $1.v->flags |= SYM_FUNCTIONEXISTS;
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
-		    assertoutputs(currentstate);
-		    setvar($1.v->finalstate, twoop($1.v->finalstate, currentstate, or));
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 
-		    scopestack = (struct varlist *) NULL;
-		    currentscope = GLOBALSCOPE;
+		    if($1.v->type & TYPE_PROCESS) {
+			/*
+			 * a process starts with the first clock
+			 */
+		        $1.v->initialstate->bits->bit->flags &= ~SYM_FF;
+		        setvar($1.v->initialstate, complement(ffoutput(running)));
+
+			/*
+			 * and loops indefinately by ORing the final state to the initial state
+			 */
+			tick(currentstate);
+			assertoutputs(currentstate);
+			setvar($1.v->initialstate, twoop($1.v->initialstate, currentstate, or));
+		    } else {
+			/*
+			 * a called function must notify caller it's returning
+			 */
+			assertoutputs(currentstate);
+			setvar($1.v->finalstate, twoop($1.v->finalstate, currentstate, or));
+		    }
+
+                    /*
+                     * Flush each scope stack back to GLOBALSCOPE.
+                     * Free varlist structs along the way, everything else
+                     * has to remain till output is called above.
+                     */
+                    for(vl = ReferenceScopeStack; vl; vl = vl->next) {
+                        if(vl->variable && vl->variable->scope) {
+                            ReferenceScopeStack = vl->next;
+                            free(vl);
+                        }
+                    }
+                    for(vl = ThreadScopeStack; vl; vl = vl->next) {
+                        if(vl->variable && vl->variable->scope) {
+                            ThreadScopeStack = vl->next;
+                            free(vl);
+                        }
+                    }
+		    CurrentReferenceScope = GLOBALSCOPE;
+
+                    // Flush any variables on DeclarationScopeStack marked with this declscope
+                    for(vl = DeclarationScopeStack; vl; vl = DeclarationScopeStack) {
+                        if(vl->variable && vl->variable->scope == CurrentDeclarationScope) {
+                            DeclarationScopeStack = vl->next;
+                            free(vl);
+                        } else {
+                            CurrentDeclarationScope =  CurrentDeclarationScope->parent;
+                            break;
+                        }
+                    }
 		}
 
 functionhead:	optionaltype functionname LEFTPAREN parameterlist RIGHTPAREN parameterdeclarations
@@ -2476,7 +2952,7 @@ functionhead:	optionaltype functionname LEFTPAREN parameterlist RIGHTPAREN param
 		    struct varlist *vl;
 
 		    $2.v->flags |= SYM_FUNCTION_DECLARED;
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    if($2.v->initialstate->bits->bit->flags & SYM_FF)
 		        assignment(currentstate, ffoutput($2.v->initialstate));
 		    else
@@ -2508,9 +2984,19 @@ functionhead:	optionaltype functionname LEFTPAREN parameterlist RIGHTPAREN param
 		    $$ = $2;
 		}
 
-functionname:	identifier
+functionname:	funcidentifier
 		{
-		    currentscope = $1.v;
+		    struct variable *oldscope;
+                    char *thisname;
+
+		    oldscope = CurrentDeclarationScope;
+                    asprintf(&thisname, "%s%s", oldscope->name, $1.v->name);
+
+                    CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
+		    CurrentDeclarationScope->flags |= SYM_TEMP;
+		    CurrentDeclarationScope->parent = oldscope;
+
+		    CurrentReferenceScope = $1.v;
 		    declarefunction($1.v, currentwidth);
 		    $$ = $1;
 		}
@@ -2570,17 +3056,29 @@ globaldeclaration:	optionaltype globalvarlist SEMICOLON
 		        error2("declaration has no type", "");
 		}
 
+		| structdecl
+
 		| pragma
 
 declaration:	 typename varlist SEMICOLON
 
+		| structdecl
+
 		| pragma
 
-optionaltype:	/* empty */
+structdecl:     STRUCT struct_tag
 		{
-		    $$.type = currenttype = 0;
-		    currentwidth = 0;
+		    $$.type = currenttype = (int) $2.v;
+		    currentwidth = $2.v->width;
 		}
+		structvarlist SEMICOLON
+
+optionaltype:	/* empty */
+                {
+                    $$.type = currenttype = 0;
+                    currentwidth = 0;
+                }
+
 		| typename
 
 typename:	VOID
@@ -2589,114 +3087,113 @@ typename:	VOID
 		    currentwidth = 0;
 		}
 
-		| INT
+		| PROCESS
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
+		    $$.type = currenttype = TYPE_PROCESS;
+		    currentwidth = 0;
+		}
+
+		| inttypes
+
+inttypes:	INT
+		{
+		    $$.type = currenttype = TYPE_INTEGER;
 		    currentwidth = defaultwidth;
 		}
 
-		| REGISTER
+		| SIGNED
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
+		    $$.type = currenttype = TYPE_INTEGER;
 		    currentwidth = defaultwidth;
 		}
 
-		| REGISTER INT
+		| UNSIGNED
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
+		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED;
 		    currentwidth = defaultwidth;
+		}
+
+		| INPUT
+		{
+		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_INPUT;
+		    currentwidth = 8;
+		}
+
+		| OUTPUT
+		{
+		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_OUTPUT;
+		    currentwidth = 8;
+		}
+
+		| MAILBOX
+		{
+		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_MAILBOX;
+		    currentwidth = 8;
 		}
 
 		| CHAR
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
+		    $$.type = currenttype = TYPE_INTEGER;
 		    currentwidth = 8;
 		}
 
 		| SHORT
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
+		    $$.type = currenttype = TYPE_INTEGER;
 		    currentwidth = 16;
 		}
 
 		| LONG
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
+		    $$.type = currenttype = TYPE_INTEGER;
 		    currentwidth = 32;
 		}
 
 		| LONG LONG
 		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
-		    currentwidth = 64;
-		}
-
-		| SHORT INT
-		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
-		    currentwidth = 16;
-		}
-
-		| LONG INT
-		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
-		    currentwidth = 32;
-		}
-
-		| LONG LONG INT
-		{
-		    $$.type = currenttype = TYPE_INTEGER|TYPE_SIGNED;
-		    currentwidth = 64;
-		}
-
-		| UNSIGNED CHAR
-		{
-		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 8;
-		}
-
-		| UNSIGNED INT
-		{
-		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = defaultwidth;
-		}
-
-		| UNSIGNED SHORT
-		{
-		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 16;
-		}
-
-		| UNSIGNED LONG
-		{
-		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 32;
-		}
-
-		| UNSIGNED LONG LONG
-		{
 		    $$.type = currenttype = TYPE_INTEGER;
 		    currentwidth = 64;
 		}
 
-		| UNSIGNED SHORT INT
+		| REGISTER typename
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 16;
+		    $$.type = currenttype = $2.type;
 		}
 
-		| UNSIGNED LONG INT
+		| UNSIGNED typename
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 32;
+		    $$.type = currenttype = TYPE_UNSIGNED;
 		}
 
-		| UNSIGNED LONG LONG INT
+		| SIGNED typename
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 64;
 		}
 
+structvarlist:  /* empty case */
+		| structvarlistmember
+
+		| structvarlist COMMA structvarlistmember
+
+structvarlistmember: IDENTIFIER
+		{
+		    struct varlist *junk = 0;
+		    struct variable *oldscope = CurrentDeclarationScope;
+
+		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
+
+		    if(CurrentDeclarationScope && (CurrentDeclarationScope->parent == GLOBALSCOPE)) {
+		        CurrentDeclarationScope = CreateVariable($1.s, 0, &junk, 0, 0);
+        	        CurrentDeclarationScope->flags |= SYM_TEMP;
+                    }
+		    PushDeclarationScope(&($$.v->members));
+
+		    MapStructureVars($$.v, ((struct variable *)currenttype)->members);
+
+		    PopDeclarationScope();
+		    CurrentDeclarationScope = oldscope;
+		}
+		    
 varlist:	varlistmember
 
 		| varlist COMMA varlistmember
@@ -2709,7 +3206,7 @@ varlistmember:	newidentifier
 		expn
 		{ assignmentstmt($1.v, $4.v); }
 
-		| identifier LEFTPAREN RIGHTPAREN
+		| funcidentifier LEFTPAREN RIGHTPAREN
 		{ declarefunction($1.v, currentwidth); }
 
 globalvarlist:	 globalvarlistmember
@@ -2724,7 +3221,7 @@ globalvarlistmember: newidentifier
 		| functionname LEFTPAREN parameterlist RIGHTPAREN
 		{
 		    declarefunction($1.v, currentwidth);
-		    currentscope = GLOBALSCOPE;
+		    CurrentReferenceScope = GLOBALSCOPE;
 		    if($3.v->junk)
 		        error2("parameters not supported in function type specification of", $1.v->name);
 		}
@@ -2747,7 +3244,6 @@ pragma:         INTBITS INTEGER
                 | PORTFLAGS LEFTPAREN oldidentifier COMMA int_expr RIGHTPAREN
                         { portflags($3.v, $5.s); }
 
-                | pragma SEMICOLON
 
 stmts:		/* empty */
 
@@ -2757,7 +3253,11 @@ stmt:	SEMICOLON
 
 		| ifstmt
 
+		| dowhileloop
+
 		| whileloop
+
+		| forloop
 
 		| breakstmt SEMICOLON
 
@@ -2765,7 +3265,38 @@ stmt:	SEMICOLON
 
 		| expn SEMICOLON
 
-		| LEFTCURLY stmts RIGHTCURLY
+		| leftcurly declarations stmts rightcurly
+
+leftcurly:	LEFTCURLY
+		{
+		    struct variable *oldscope;
+                    char *thisname;
+
+                    oldscope = CurrentDeclarationScope;
+                    asprintf(&thisname, "%s_S%d", oldscope->name, oldscope->dscnt++);
+//fprintf(stderr, "LEFTCURLY: new scope(%s_S%d)\n", oldscope->name, oldscope->dscnt++);
+
+                    CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
+                    CurrentDeclarationScope->flags |= SYM_TEMP;
+		    CurrentDeclarationScope->parent = oldscope;
+		}
+
+rightcurly:	RIGHTCURLY
+		{
+		    struct varlist *vl;
+
+                    // Flush any variables on DeclarationScopeStack marked with this declscope
+                    for(vl = DeclarationScopeStack; vl; vl = DeclarationScopeStack) {
+                        if(vl->variable && vl->variable->scope == CurrentDeclarationScope) {
+                            DeclarationScopeStack = vl->next;
+                            free(vl);
+                        } else {
+                            CurrentDeclarationScope =  CurrentDeclarationScope->parent;
+                            break;
+                        }
+                    }
+//fprintf(stderr, "rightCURLY: new scope(%s)\n", CurrentDeclarationScope->name);
+		}
 
 pinlist:	/* Empty */
 		{
@@ -2809,13 +3340,13 @@ ifstmt:	ifhead stmt
 		    struct variable *currentstate;
 		    struct varlist *thenstack;
 
-		    thenstack = scopestack;
-		    scopestack = $1.v->junk;
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    thenstack = ReferenceScopeStack;
+		    ReferenceScopeStack = $1.v->junk;
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    assignment(currentstate, twoop(currentstate, complement($1.v), and));
 		    if(countlist(currentstate->bits) > 1)
 		        assignment(currentstate, ffoutput(currentstate));
-		    ifstmt($1.v, thenstack, scopestack);
+		    ifstmt($1.v, thenstack, ReferenceScopeStack);
 		}
 
 		| ifhead stmt ELSE
@@ -2823,9 +3354,9 @@ ifstmt:	ifhead stmt
 		    struct variable *currentstate;
 
 		    $$.v = newtempvar("", 1);
-		    $$.v->junk = scopestack;
-		    scopestack = $1.v->junk;
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    $$.v->junk = ReferenceScopeStack;
+		    ReferenceScopeStack = $1.v->junk;
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    assignment(currentstate, twoop(currentstate, complement($1.v), and));
 		    if(countlist(currentstate->bits) > 1)
 		        assignment(currentstate, ffoutput(currentstate));
@@ -2833,7 +3364,7 @@ ifstmt:	ifhead stmt
 
 		stmt
 		{
-		    ifstmt($1.v, $4.v->junk, scopestack);
+		    ifstmt($1.v, $4.v->junk, ReferenceScopeStack);
 		}
 
 ifhead:		IF LEFTPAREN expn RIGHTPAREN
@@ -2841,29 +3372,139 @@ ifhead:		IF LEFTPAREN expn RIGHTPAREN
 		    struct variable *currentstate;
 
 		    $$.v = nonzero($3.v);
-		    $$.v->junk = scopestack;
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    $$.v->junk = ReferenceScopeStack;
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    assignment(currentstate, twoop(currentstate, $$.v, and));
 		    if(countlist(currentstate->bits) > 1)
 		        assignment(currentstate, ffoutput(currentstate));
 		}
 
+
+		/*
+		 * DO/FOR/WHILE loops share common productions and support routines.
+		 * Each saves a copy of the current state at the beginning of the
+		 * statement, then uses the production looping_state to setup the
+		 * one hot statemachine for the loop body and conditional expression.
+		 * FormLoop then binds the initial expression and the loop expression
+		 * terms to the looptop and endloop state terms setup by looping_state
+		 *
+		 * FOR/WHILE lops share the same initial and ending conditional, so
+		 * they save it and replay it so it's constructed with both the
+		 * initial state and the ending state. DO loops are always executed
+		 * at least once, so they have an initial state of true.
+		 */
+
 whileloop:	WHILE
 		{
-		    $$.v = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    // is $2
+		    $$.v = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    pushinputstream();
 		    saveinput();
 		}
 
-		LEFTPAREN expn
+		LEFTPAREN expn    // $4
+                {
+                    stopsavinginput();
+                }
+
+                looping_state     // $6
+
+		RIGHTPAREN stmt
+		{
+		    replayinput();
+		}
+
+                replayloopexpn    // $10
+                {
+		    // FormLoop(expn, initialstate, loopstate, endloopexpn)
+		    // $4 is expn, $2 is WHILE CURRENTSTATE, $6 is looping_state, $10 is replayloopexpn
+		    FormLoop($4.v, $2.v, $6.v, $10.v);
+		}
+
+
+dowhileloop:	DO
+		{
+		    // is $2
+		    $$.v = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+		}
+
+                looping_state     // $3
+
+		stmt
+
+		WHILE LEFTPAREN expn RIGHTPAREN SEMICOLON
+                {
+		    // FormLoop(expn, initialstate, loopstate, endloopexpn)
+		    // always do once, $2 is DO CURRENTSTATE, $3 is looping_state, $7 is replayloopexpn
+		    FormLoop(intconstant(1), $2.v, $3.v, $7.v);
+		}
+
+forloop:        FOR
+		{
+		    // is $2
+		    $$.v= findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+		    pushinputstream();
+		}
+
+		LEFTPAREN expnloop  SEMICOLON  
+                {
+		    saveinput();
+                }
+
+		expnloop          // $7
+                {
+                        pushinputstream();
+                        ignore_token(IGNORE_FORLOOP);
+                }
+
+                SEMICOLON  
+
+                looping_state     // $10
+
+                /* expr3 part of the forloop  - ignore it for now will 
+                   be replayed after all statements are read in */
+                ignoretoken
+
+                RIGHTPAREN stmt
+		{ 
+                        replayinput(); 
+                }
+
+                /* expr 3 part of a for loop - replayed */
+		REPLAYSTART expnloop RIGHTPAREN  
+                {
+                    replayinput(); 
+                    popinputstream();
+                }
+
+                replayloopexpn    // $19
+                {
+		    // FormLoop(expn, initialstate, loopstate, endloopexpn)
+		    // $7 initial expn, $2 is FOR CURRENTSTATE, $10 is looping_state, $19 is replayloopexpn
+		    FormLoop($7.v, $2.v, $10.v, $19.v);
+		}
+
+expnloop:	/* empty -- for loops assume true with a null conditional */
+		{
+		    $$.v = intconstant(1);
+		}
+
+		| expn
+		{
+		    $$ = $1;
+		}
+
+
+ignoretoken:	/* empty*/
+		|  ignoretoken IGNORETOKEN 
+
+looping_state:  /* setup one hot state machine for statement body controlled by for/do/while loops */
 		{
 		    struct variable *loopstate, *currentstate, *endloop;
 		    struct varlist *vl;
 
-		    stopsavinginput();
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    tick(currentstate);
-
 		    loopstate = newtempvar("looptop", 1);
 		    loopstate->flags = SYM_STATE;
 		    makeff(loopstate);
@@ -2872,30 +3513,38 @@ whileloop:	WHILE
 		    endloop = newtempvar("endloop", 1);
 		    endloop->flags = SYM_STATE;
 		    makeff(endloop);
-		    vl = (struct varlist *) calloc(1, sizeof(struct varlist));
+		    vl = (struct varlist *) calloc(1,sizeof(struct varlist));
+                    if(!vl) {
+                        fprintf(stderr, "fpgac: Memory allocation error\n");
+                        exit(1);
+                    }
 		    vl->next = breakstack;
 		    breakstack = vl;
 		    breakstack->variable = endloop;
 		}
 
-		RIGHTPAREN stmt
-		{ replayinput(); }
-
-		REPLAYSTART expn REPLAYEND
-		{
-		    struct variable *temp1, *temp2;
-
+                /* generate netlist for the for/do/while loops controlling expression */
+replayloopexpn:	REPLAYSTART loopextn REPLAYEND 
+                {
+                    $$ = $2;
 		    popinputstream();
-		    temp1 = nonzero($4.v);
-		    temp2 = nonzero($10.v);
-		    whileloop(temp1, $2.v, $5.v, temp2);
 		}
+
+loopextn:	expnloop SEMICOLON
+		{
+		    $$ = $1;
+		}
+
+                | expn
+                {
+                    $$ = $1;
+                }
 
 breakstmt:	BREAK
 		{
 		    struct variable *currentstate, *endloop, *neverstate;
 
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    endloop = breakstack->variable;
 		    setvar(endloop, twoop(endloop, currentstate, or));
 		    tick(currentstate);
@@ -2907,8 +3556,8 @@ returnstmt:	RETURN
 		{
 		    struct variable *currentstate, *neverstate;
 
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
-		    setvar(currentscope->finalstate, twoop(currentscope->finalstate, currentstate, or));
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+		    setvar(CurrentReferenceScope->finalstate, twoop(CurrentReferenceScope->finalstate, currentstate, or));
 		    assertoutputs(currentstate);
 		    neverstate = newtempvar("never", 1);
 		    assignment(currentstate, neverstate);
@@ -2918,7 +3567,7 @@ returnstmt:	RETURN
 		{
 		    struct variable *currentstate, *neverstate, *retval;
 
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 
 		    /* If there is only one return statement in the
 		    * function, then we don't have to build a complex
@@ -2928,7 +3577,7 @@ returnstmt:	RETURN
 		    * their states.
 		    */
 
-		    retval = currentscope->returnvalue;
+		    retval = CurrentReferenceScope->returnvalue;
 
 		    if(!retval->state) {
 		        setvar(retval, $2.v);
@@ -2940,7 +3589,7 @@ returnstmt:	RETURN
 		        }
 		        setvar(retval, twoop(retval, twoop($2.v, currentstate, and), or));
 		    }
-		    setvar(currentscope->finalstate, twoop(currentscope->finalstate, currentstate, or));
+		    setvar(CurrentReferenceScope->finalstate, twoop(CurrentReferenceScope->finalstate, currentstate, or));
 		    assertoutputs(currentstate);
 		    neverstate = newtempvar("never", 1);
 		    assignment(currentstate, neverstate);
@@ -3019,6 +3668,24 @@ expn:		term
 		| expn SHIFTLEFT expn
 		{ $$.v = shiftbyvar($1.v, $3.v, 1); }
 
+		| expn MULTIPLY expn
+		{
+		    $$.v = findvariable("_multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = IFuncTwoArgs($$.v, defaultwidth*2, $1.v, defaultwidth, $3.v, defaultwidth);
+		}
+
+		| expn DIVIDE expn
+		{
+		    $$.v = findvariable("_divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = IFuncTwoArgs($$.v, defaultwidth, $1.v, defaultwidth*2, $3.v, defaultwidth);
+		}
+
+		| expn REMAINDER expn
+		{
+		    $$.v = findvariable("_remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = IFuncTwoArgs($$.v, defaultwidth, $1.v, defaultwidth*2, $3.v, defaultwidth);
+		}
+
 		| SUB expn %prec UNARYMINUS
 		{ $$.v = sub(intconstant(0), $2.v); }
 
@@ -3094,6 +3761,33 @@ expn:		term
 		expn
 		{ $$.v = assignmentstmt($1.v, twoopexpn($1.v, $4.v, or)); }
 
+		| lhsidentifier MULTIPLYEQUAL
+		{ pushtargetwidth($1.v); }
+		expn
+		{
+		    $$.v = findvariable("multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth, $4.v, defaultwidth));
+		}
+
+		| lhsidentifier DIVIDEEQUAL
+		{ pushtargetwidth($1.v); }
+		expn
+		{
+		    $$.v = findvariable("divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth*2, $4.v, defaultwidth));
+		}
+
+		| lhsidentifier REMAINDEREQUAL
+		{ pushtargetwidth($1.v); }
+		expn
+		{
+		    $$.v = findvariable("remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth*2, $4.v, defaultwidth));
+		}
+
+		| expn COMMA expn
+		{ $$.v = $3.v; }
+
 term:		INTEGER
 		{ $$.v = intconstant(atoi($1.s)); }
 
@@ -3104,19 +3798,22 @@ term:		INTEGER
 
 		| functioncall
 
-functioncall:	identifier LEFTPAREN argumentlist RIGHTPAREN
+functioncall:	funcidentifier LEFTPAREN argumentlist RIGHTPAREN
 		{
 		    struct variable *currentstate, *callingstate;
 		    struct variable *v, *tempstate;
 		    struct variable *temp1, *temp2;
 		    struct varlist **vlp;
 
+		    if($1.v->type & TYPE_PROCESS) 
+		        error2("Process functions may not be called:", $1.v->name+1);
+
 		    makefunction($1.v, $1.v->width);
 
 		    /* All functions are in global scope */
 
 		    $1.v->scope = GLOBALSCOPE;
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1);
+		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 		    setvar($1.v->initialstate, twoop($1.v->initialstate, currentstate, or));
 		    vlp = &$1.v->arguments;
 		    for(; $3.v->junk; $3.v->junk = $3.v->junk->next) {
@@ -3197,166 +3894,187 @@ arglist2:	expn
 
 lhsidentifier:  IDENTIFIER COLON INTEGER
                 {
-                    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s));
+                    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure assignments are not supported:", $1.v->name+1);
                     changewidth($$.v->copyof, atoi($3.s));
                     changewidth($$.v, atoi($3.s));
                 }
 
                 | IDENTIFIER LEFTBRACE expn RIGHTBRACE COLON INTEGER
                 {
-                    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s));
+                    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure arrays are not supported:", $1.v->name+1);
                     changewidth($$.v->copyof, atoi($6.s));
                     changewidth($$.v, atoi($6.s));
-//printf("array %08x arraywrite %08x for %s is %s\n", $$.v, $$.v->arraywrite, $1, $3.v->name);
-                    pushtargetwidth($$.v->arraywrite);
-                    assignmentstmt($$.v->arraywrite, $3.v);
-                }
-
-                | INTEGER IDENTIFIER
-                {
-                    $$.v = findvariable($2.s, MUSTEXIST, atoi($1.s));
-                    changewidth($$.v->copyof, atoi($1.s));
-                    changewidth($$.v, atoi($1.s));
-                }
-
-                | INTEGER IDENTIFIER LEFTBRACE expn RIGHTBRACE
-                {
-                    $$.v = findvariable($2.s, MUSTEXIST, atoi($1.s));
-                    changewidth($$.v->copyof, atoi($1.s));
-                    changewidth($$.v, atoi($1.s));
-//printf("array %08x arraywrite %08x for %s is %s\n", $$.v, $$.v->arraywrite, $1, $4.v->name);
-                    pushtargetwidth($$.v->arraywrite);
-                    assignmentstmt($$.v->arraywrite, $4.v);
+		    ArrayAssignment($$.v, $3.v);
                 }
 
                 | IDENTIFIER
-                { $$.v = findvariable($1.s, MUSTEXIST, currentwidth); }
+                {
+		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure assignments are not supported:", $1.v->name+1);
+		}
 
                 | IDENTIFIER LEFTBRACE expn RIGHTBRACE
                 {
-                    $$.v = findvariable($1.s, MUSTEXIST, currentwidth);
-//printf("array %08x arraywrite %08x for %s is %s\n", $$.v, $$.v->arraywrite, $1, $3.v->name);
-                    pushtargetwidth($$.v->arraywrite);
-                    assignmentstmt($$.v->arraywrite, $3.v);
+                    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure arrays are not supported:", $1.v->name+1);
+		    ArrayAssignment($$.v, $3.v);
                 }
+
+		| structref
+                {
+		    if($1.v->members)
+		        error2("Structure assignments are not supported:", $1.v->copyof->name+1);
+		}
 
 oldidentifier:	IDENTIFIER COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s));
+		    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope);
+		    if($1.v->members)
+		        error2("Structure references not supported:", $1.v->copyof->name+1);
 		    changewidth($$.v->copyof, atoi($3.s));
 		    changewidth($$.v, atoi($3.s));
 		}
 
 		| IDENTIFIER LEFTBRACE expn RIGHTBRACE COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s));
+		    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure arrays are not supported:", $1.v->name+1);
 		    changewidth($$.v->copyof, atoi($6.s));
 		    changewidth($$.v, atoi($6.s));
-//printf("array %08x arrayref %08x for %s is %s\n", $$.v, $$.v->arrayref, $1, $3.v->name);
-                    pushtargetwidth($$.v->arrayref);
-                    assignmentstmt($$.v->arrayref, $3.v);
-		}
-
-		| INTEGER IDENTIFIER
-		{
-		    $$.v = findvariable($2.s, MUSTEXIST, atoi($1.s));
-		    changewidth($$.v->copyof, atoi($1.s));
-		    changewidth($$.v, atoi($1.s));
-		}
-
-		| INTEGER IDENTIFIER LEFTBRACE expn RIGHTBRACE
-		{
-		    $$.v = findvariable($2.s, MUSTEXIST, atoi($1.s));
-		    changewidth($$.v->copyof, atoi($1.s));
-		    changewidth($$.v, atoi($1.s));
-//printf("array %08x arrayref %08x for %s is %s\n", $$.v, $$.v->arrayref, $1, $4.v->name);
-                    pushtargetwidth($$.v->arrayref);
-                    assignmentstmt($$.v->arrayref, $4.v);
+		    $$.v = ArrayReference($$.v, $3.v);
 		}
 
 		| IDENTIFIER
-		{ $$.v = findvariable($1.s, MUSTEXIST, currentwidth); }
+		{
+		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure references not supported:", $1.v->name+1);
+		}
 
 		| IDENTIFIER LEFTBRACE expn RIGHTBRACE
 		{
-		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth);
-//printf("array %08x arrayref %08x for %s is %s\n", $$.v, $$.v->arrayref, $1, $3.v->name);
-                    pushtargetwidth($$.v->arrayref);
-                    assignmentstmt($$.v->arrayref, $3.v);
+		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure arrays are not supported:", $1.v->name+1);
+		    $$.v = ArrayReference($$.v, $3.v);
 		}
+
+		| structref
+                {
+		    if($1.v->members)
+		        error2("Structure references not supported:", $1.v->copyof->name+1);
+		}
+
+
+structref:      IDENTIFIER PERIOD IDENTIFIER
+                {
+                    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+                    PushDeclarationScope(&($$.v->copyof->members));
+                    $$.v = findvariable($3.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+                    PopDeclarationScope();
+                }
+
+                | structref PERIOD IDENTIFIER
+                {
+                    PushDeclarationScope(&($1.v->copyof->members));
+                    $$.v = findvariable($3.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+                    PopDeclarationScope();
+                }
+
 
 newidentifier:	IDENTIFIER COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MUSTNOTEXIST, atoi($3.s));
+		    $$.v = CreateVariable($1.s, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
+		    if(currenttype & TYPE_INPUT)
+                        inputport(findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope), 0);
+		    else if(currenttype & TYPE_OUTPUT)
+                        outputport($$.v, 0);
+		    else if(currenttype & TYPE_BUS)
+                        busport($$.v, 0);
 		}
 
 		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MUSTNOTEXIST, atoi($6.s));
+		    $$.v = CreateVariable($1.s, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
-		    $$.v->arraysize = atoi($3.s);
-		    $$.v->arrayaddrbits = sizelog2(atoi($3.s));
-		    $$.v->arraywrite = newtempvar("writeindex", $$.v->arrayaddrbits);
-		    $$.v->arrayref = newtempvar("readindex", $$.v->arrayaddrbits);
-//printf("Array %s %08x is size %d/%d with %08x/%08x\n", $1.s, $$.v, $$.v->arraysize, $$.v->arrayaddrbits, $$.v->arraywrite,$$.v->arrayref);
-		}
-
-		| INTEGER IDENTIFIER
-		{
-		    $$.v = findvariable($2.s, MUSTNOTEXIST, atoi($1.s));
-		    $$.v->type = currenttype;
-		}
-
-		| INTEGER IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE
-		{
-		    $$.v = findvariable($2.s, MUSTNOTEXIST, atoi($1.s));
-		    $$.v->type = currenttype;
-		    $$.v->arraysize = atoi($4.s);
-		    $$.v->arrayaddrbits = sizelog2(atoi($4.s));
-		    $$.v->arraywrite = newtempvar("writeindex", $$.v->arrayaddrbits);
-		    $$.v->arrayref = newtempvar("readindex", $$.v->arrayaddrbits);
-//printf("Array %s %08x is size %d/%d with %08x/%08x\n", $1.s, $$.v, $$.v->arraysize, $$.v->arrayaddrbits, $$.v->arraywrite,$$.v->arrayref);
+		    CreateArray($$.v, atoi($3.s));
 		}
 
 		| IDENTIFIER
 		{
-		    $$.v = findvariable($1.s, MUSTNOTEXIST, currentwidth);
+		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
+		    if(currenttype & TYPE_INPUT)
+                        inputport(findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope), 0);
+		    else if(currenttype & TYPE_OUTPUT)
+                        outputport($$.v, 0);
+		    else if(currenttype & TYPE_BUS)
+                        busport($$.v, 0);
 		}
 
 		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE
 		{
-		    $$.v = findvariable($1.s, MUSTNOTEXIST, currentwidth);
+		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
-		    $$.v->arraysize = atoi($3.s);
-		    $$.v->arrayaddrbits = sizelog2(atoi($3.s));
-		    $$.v->arraywrite = newtempvar("writeindex", $$.v->arrayaddrbits);
-		    $$.v->arrayref = newtempvar("readindex", $$.v->arrayaddrbits);
-//printf("Array %s %08x is size %d/%d with %08x/%08x\n", $1.s, $$.v, $$.v->arraysize, $$.v->arrayaddrbits, $$.v->arraywrite,$$.v->arrayref);
+		    CreateArray($$.v, atoi($3.s));
 		}
 
-identifier:	IDENTIFIER COLON INTEGER
+funcidentifier:	IDENTIFIER COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MAYEXIST, atoi($3.s));
+		    $$.v = findvariable($1.s, MAYEXIST, atoi($3.s), &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v->type = currenttype;
 		    changewidth($$.v->copyof, atoi($3.s));
 		    changewidth($$.v, atoi($3.s));
 		}
 
-		| INTEGER IDENTIFIER
-		{
-		    $$.v = findvariable($1.s, MAYEXIST, atoi($1.s));
-		    changewidth($$.v->copyof, atoi($1.s));
-		    changewidth($$.v, atoi($1.s));
-		}
-
 		| IDENTIFIER
-		{ $$.v = findvariable($1.s, MAYEXIST, currentwidth); }
+		{
+		    $$.v = findvariable($1.s, MAYEXIST, currentwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v->type = currenttype;
+		}
 
 int_expr:	INTEGER
 
 		| int_expr OR int_expr
 		{ $$.s = intop($1.s, $3.s, or); }
+
+struct_members: declaration
+                | struct_members declaration
+
+struct_tag:     IDENTIFIER leftcurly
+                {
+
+                    $$.v = CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 0);
+                    PushDeclarationScope(&($$.v->members));
+                }
+                struct_members
+                {
+                    struct varlist *vl = TagScopeStack->variable->members;
+
+                    while(vl) {
+                        vl->variable->offset = TagScopeStack->variable->width;
+                        TagScopeStack->variable->width += vl->variable->width;
+                        vl = vl->next;
+                    }
+                    TagScopeStack->variable->flags |= SYM_STRUCT;
+                }
+                rightcurly
+                {
+                    PopDeclarationScope();
+                    $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+                }
+
+                | IDENTIFIER
+                { $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope); }
+
 
 %%
 
@@ -3377,22 +4095,36 @@ warning2(char *s1, char *s2) {
     fprintf(stderr, "\"%s\", line %d: warning %s %s\n", inputfilename, inputlineno, s1, s2);
 }
 
+/* What is the basename of this C file ? */
 char *get_designname(void) {
+    static char buf[BUFSIZ] = "";
+    int len;
 
-    /* What is the basename of this C file ? */
+    if (buf[0] != '\0')
+        return buf;                         // already set by previous call
 
-    static char buf[BUFSIZ];
-    char *cp;
-
-    if(original_inputfilename[0] == '\0') {
-	return ("no_designname");
+    if (real_filename[0] != '\0') {         // calling script used a temporary file
+        len = strlen(real_filename);
+        if (len > BUFSIZ)
+            len = BUFSIZ;
+        strncpy(buf, basename(real_filename), len);  // strlen(basename) is smaller
     }
+    else if (inputfilename[0] == '\0') {
+        const char* NONE = "no_designname";
+        len = strlen(NONE);
+        strncpy(buf, NONE, len);
+    }
+    else {
+        len = strlen(inputfilename);
+        if (len > BUFSIZ)
+            len = BUFSIZ;
+        strncpy(buf, basename(inputfilename), len);  // strlen(basename) is smaller
+    }
+    buf[len - 1] = '\0';
+    {
+      char *cp = strchr(buf, '.');
+      if (cp != NULL)
 
-    cp = strrchr(buf, '/');
-    strncpy(buf, basename(original_inputfilename), BUFSIZ);
-    buf[BUFSIZ - 1] = '\0';
-    cp = strchr(buf, '.');
-    if(cp != NULL) {
 	*cp = '\0';
     }
 
