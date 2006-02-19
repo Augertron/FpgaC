@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>FPGA C Compiler</title>
+</head>
+<body>
+<div style="text-align: center;"><big><big><big><big><span
+ style="font-weight: bold;">FPGA C Compiler</span></big></big></big></big><br>
+</div>
+<br>
+First, special thanks to Dave Galloway's original <a
+ href="http://www.eecg.toronto.edu/EECG/RESEARCH/tmcc/tmcc/">TMCC</a>
+hardware description
+language work for the University of Toronto's <a
+ href="http://www.eecg.toronto.edu/%7Ejayar/research/tm2.html">Transmogrifier</a>
+system which was the starting point for this project.<br>
+<br>
+The initial release (to be available in a few days) includes additional
+work
+by Dave Galloway and John Bass over the last several years.&nbsp; The
+current
+project is still XNF based and requires using xnf2edf and some editing
+to use FpgaC with current versions of Xilinx ISE and modern
+FPGAs.&nbsp; The <a
+ href="http://www.xilinx.com/ise/logic_design_prod/classics.htm">Xilinx
+ISE Classics release</a> which supports the Spartan and XC4000 series
+FPGAs is available for free download off the Xilinx site, and works
+directly with the current FpgaC.&nbsp; This allows use of older
+inexpensive XC4K and Spartan student project boards, including the
+popular <a
+ href="http://www.digilentinc.com/Data/Products/XLA/XLA-brochure.pdf">Digilent
+XLA series XCS10 Spartan boards</a>, for the hobbyist on a budget or
+someone just wanting to learn about FPGAs and have a useful breadboard
+environment to play with FPGA interfacing.<br>
+<br>
+The current compiler will accept:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">/*</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;* counter.c -- Will make
+the 8 LEDs on the Xilinx XC4000 demo board</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+count up.</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;*</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Compile as:</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;*</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+fpgac counter.c</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;*/</span><br
+ style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">main() {</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+char lights, count;</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;"># pragma outputport(lights, 60,
+59, 58, 57, 66, 65, 62, 61);</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+count = 0;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+while(1) {</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+count = count + 1;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+lights = ~count;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+}</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">}</span><br>
+</div>
+<br>
+and run with the while loop block executing each hardware clock.&nbsp;
+The 8 bits for each LED for the <span
+ style="font-family: monospace; font-weight: bold;">lights</span>
+variable would be mapped to the pin list in the <span
+ style="font-family: monospace; font-weight: bold;">pragma outputport</span>
+statement.&nbsp; Similar pragma statements exist for input and
+bi-direction I/O pin mapping, and for creating global register values
+that can be used as mailboxes and semaphores for multi-threaded
+projects.&nbsp; Each file is a single thread of control, and multiple
+files can be be
+linked together to build multi-threaded applications, as in the
+original TMCC work.<br>
+<br>
+The execution model used by FpgaC is that each C block is executed as a
+single clock cycle, with all statements in a block being reduced to
+combinatorial logic, variable assignments are registered at each clock
+cycle that block is active.&nbsp; Multiple assignments to a variable
+which are later referenced in the same block automatically create
+intermediate combinatorial values to preserve the expected sequential
+like execution semantics.&nbsp; As an optimization, only bits and
+states which directly affect an output are realized in the net list
+which is output, to automatically remove dead or unused code. <br>
+<br>
+Explicit bit widths can be specified several ways:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">int
+13 var1; // Handel-C syntax</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">int var2:22; // C bit field syntax</span><br
+ style="font-family: monospace;">
+</div>
+<br>
+The <span style="font-family: monospace; font-weight: bold;">char,
+short,</span> long, and <span
+ style="font-family: monospace; font-weight: bold;">long long</span>
+are
+defined as 8, 16, 32, and 64 bits respectfully.&nbsp; The default width
+for
+<span style="font-family: monospace; font-weight: bold;">int</span> is
+16, and can be changed with a pragma, as was in the original TMCC work.<br>
+<br>
+Because there is no native memory model in FPGAs, there are no pointers
+in FpgaC. This may change later if bulk external memories are added as
+an intrinsic support in FpgaC.<br>
+<br>
+FpgaC is an amazingly powerful tool, even in it's current subset C
+form, for exploring reconfigurable computing projects.&nbsp; This is
+very useful for many C programmers wishing to develop robotics or other
+hobby applications, as the code testing can largely be done with a
+traditional compiler and source code debug environment, and once
+working, moved to the FPGA target platform with FpgaC.&nbsp; Much
+easier than learning VHDL or Verilog, and debugging in a simulator
+environment with test vectors for applications which involve complex
+algorithms and state machines.<br>
+<br>
+Other team members are welcome that would like to join the FpgaC
+project.&nbsp;
+Several job postings have been made for short term projects, and longer
+term help is certainly welcome. Initially help getting the base release
+into cvs, automate builds, and get rpm and deb packages would be
+appreciated.&nbsp; The front end yacc/lex system needs some additional
+work
+to bring the compiler up to date and correctly handle variable scoping
+to improve portability between FpgaC and other C environments.&nbsp;
+The
+backend xnf generator needs to be augmented to produce EDIF output to
+avoid the xnf2edf conversion process.&nbsp; The current subset language
+lacks
+switch/case, structures/unions, enums and several other constructs
+which would be highly useful too.&nbsp; I have a nearly working version
+with arrays implemented as LUT RAMs and BLOCK RAMs that still has a few
+bugs, and some reference restrictions that would be nice to get fixed.
+Support for external RAMs, standard header files for various FPGA
+development boards, and drivers for their onboard devices are also high
+on the list.<br>
+<br>
+A side project is to develop a runtime support library similar to <a
+ href="http://www.jhdl.org/">JHDL</a> to directly support
+reconfigurable computing on the fly with USB or PCI target boards.<br>
+<br>
+There are some interesting ideas in <a
+ href="http://www.cs.princeton.edu/software/lcc/doc/linux.html">lcc</a>
+as described in the book <i>A Retargetable C Compiler: Design and
+Implementation</i> that could greatly benefit FpgaC.&nbsp;
+Unfortunately the lcc project is not open source, only available for
+free if used for non-commercial work. So, FpgaC and lcc code can not be
+directly merged, but the ideas described should benefit a later rewrite
+of FpgaC.<br>
+<br>
+If you enjoyed your compilers class, or are looking for a senior
+project or thesis, consider helping with FpgaC for your project.<br>
+<br>
+If you find this tool useful, and would like to help further it's
+development with donations, feel free to
+<a href="http://sourceforge.net/donate/index.php?group_id=152034"><img
+ src="http://images.sourceforge.net/images/project-support.jpg"
+ alt="Support This Project" border="0" height="32" width="88"> </a><br>
+<br>
+<br>
+<br>
+<div style="text-align: center;">
+<a href="http://sourceforge.net"><img
+ src="http://sourceforge.net/sflogo.php?group_id=152034&amp;type=5"
+ alt="SourceForge.net Logo" border="0" height="62" width="210"></a></div>
+</body>
+</html>
