@@ -28,3 +28,6 @@ appreciated.
 
 Also getting scripting help for directly interfacing FpgaC to various FPGA/PLD
 vendors tools would be greatly appreciated as well.
+
+History:
+	Feb 10, 2006 - pentinmaki - Provided initial release and docs.
