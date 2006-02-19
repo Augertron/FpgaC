@@ -544,7 +544,7 @@ variable name to be an input port. A call to the <span
 used to
 produce port variables that do not have external pins, and are suitable
 for communicating between threads.<br>
-<h3>Modifying Input and Output Port Semantics -- portflags()</h3>
+<h3>Modifying Input and Output Port Semantics -- fpgac_portflags()</h3>
 An input or output port has a set of attributes, with the following
 defines automatically provided by the FpgaC compiler.&nbsp; These
 attributes can be set on a port with
@@ -715,6 +715,113 @@ Output using the -m flag is not useful for hardware implementation, as
 it outputs net list components that were used as internally and would
 normally be discarded. This is mostly useful for FpgaC internals
 developers debugging the compiler.<br>
+<br>
+<h3>Xilinx ISE Support</h3>
+The
+current Xilinx netlist output is still XNF based and requires using
+xnf2edf (possibly with some editing)
+to use FpgaC with current versions of Xilinx ISE and modern
+FPGAs. The backend of your fpgac script may look something like this
+(ISE 4.2i/6.1i mixed example, other releases vary):<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">case
+$optimize in</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">false) mapargs="-k 4";
+parargs="-ol std"</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+;;</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">force)&nbsp; mapargs="-k 6";
+parargs="-ol high"</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+;;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">esac</span><br
+ style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">xnf2edf.exe $file.xnf</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">ngdbuild -intstyle ise -dd `pwd`
+-uc $file.ucf $file.edf $file.ngd</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">map -intstyle ise -cm area -pr b
+$mapargs -c 100 -tx off -o $file.ncd $file.ngd $file.pcf</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">par -w -intstyle ise $parargs -t
+1 $file.ncd $file.ncd $file.pcf</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">trce -intstyle ise -e 3 -l 3 -xml
+$file $file.ncd -o $file.twr $file.pcf</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">bitgen -intstyle ise -f $file.ut
+$file.ncd</span><br>
+</div>
+<br>
+where <span style="font-family: monospace;">xnf2edf.exe is from an ISE
+4.x release (run under wine), and the other tools are from an ISE 6.x
+release using Linux as the host operating system. ngdbuild, map, par,
+trce, and bitgen are all /usr/local/bin scripts to setup the Xilinx ISE
+environment (using map as the example):<br>
+<br>
+</span>
+<div style="margin-left: 40px;"><span style="font-family: monospace;"><span
+ style="font-family: monospace;">LD_ASSUME_KERNEL=2.4.1;export
+LD_ASSUME_KERNEL</span></span><br style="font-family: monospace;">
+<span style="font-family: monospace;"><span
+ style="font-family: monospace;">PATH=/usr/local/xilinx/bin/lin:$PATH</span></span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;"><span
+ style="font-family: monospace;">export PATH</span></span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;"><span
+ style="font-family: monospace;">. /usr/local/xilinx/settings.sh</span></span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;"><span
+ style="font-family: monospace;">/usr/local/xilinx/bin/lin/map $*<br
+ style="font-family: monospace;">
+</span></span><span style="font-family: monospace;"></span></div>
+<span style="font-family: monospace;"><br>
+</span>with a symlink for xnf2edf:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">xnf2edf
+-&gt; /WinMe/XilinxFdn4/active/exe/xnf2edf.exe</span><br>
+</div>
+<br>
+The <a href="http://www.xilinx.com/ise/logic_design_prod/classics.htm">Xilinx
+ISE Classics release</a> which supports the Spartan and XC4000 series
+FPGAs is available for free download off the Xilinx site, and works
+directly with the current FpgaC.&nbsp; This allows use of older
+inexpensive XC4K and Spartan student project boards, including the
+popular <a
+ href="http://www.digilentinc.com/Data/Products/XLA/XLA-brochure.pdf">Digilent
+XLA series XCS10 Spartan boards</a>,
+for the hobbyist on a budget or
+someone just wanting to learn about FPGAs and have a useful breadboard
+environment to play with FPGA interfacing.&nbsp; The download cable for
+the
+older Digilent boards isn't recognized by newer ISE releases.&nbsp; One
+workaround is to grab the Xilinx download utility off an older ISE
+release, such as ISE 1.5 student edition.<br>
+<br>
+<h3>Altera Support</h3>
+The current Altera support was adopted from the TMCC work of the <a
+ href="http://www.eecg.toronto.edu/EECG/RESEARCH/FPGA.html">Transmogrifier</a>
+projects, and has not been updated for arrays, but should otherwise
+work (at least for older versions of the Altera tool chain).<br>
+<br>
+If you are actively developing with Altera product, please consider
+joining the FpgaC development team to support the newer Altera devices
+and software.&nbsp; As of Feb 2006, there isn't anyone on the FpgaC
+actively supporting Altera development (mostly people using
+Xilinx).&nbsp; If someone could provide/donate a development board and
+software with license, that would change quickly.<br>
+<br>
+<h3>Other Fpga Vendor Support</h3>
+If you are actively developing with FPGA product, please consider
+joining the FpgaC development team to support that vendors devices
+and software.&nbsp;&nbsp; If someone could provide/donate a development
+board and software with license, that would change support for that
+product line quickly.<br>
+<br>
 <h3>Understanding how FpgaC generates a circuit for execution</h3>
 Hardware designers, and advanced programmers doing reconfigurable
 computing will need to have a basic understanding of how FpgaC
