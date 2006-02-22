@@ -1,4 +1,9 @@
 /*
+ * output_netlist.c -- Compact Netlist output format for FpgaC
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ */
+
+/*
  * Copyright notice taken from BSD source, and suitably modified:
  *
  * Copyright (c) 1994, 1995, 1996 University of Toronto
@@ -89,10 +94,7 @@ output_CNF() {
     now = time((time_t) NULL);
     datestring = ctime(&now);
     datestring[strlen(datestring) - 1] = '\0';
-    Revision[strlen(Revision) - 2] = '\0';
-    if (((int) strlen(Revision)) <= 11)
-        strcpy(Revision, "Revision unknown");
-    fprintf(outputfile, "// fpgac, %s, \"%s\"\n", &Revision[11], datestring);
+    fprintf(outputfile, "// fpgac, %s, \"%s\"\n", Revision, datestring);
     if (partname) {
         fprintf(outputfile, "// part=%s\n", partname);
     }

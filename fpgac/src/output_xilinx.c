@@ -1,4 +1,9 @@
 /*
+ * output_xilinx.c -- XNF netlist output for Fpgac
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ */
+
+/*
  * Copyright notice taken from BSD source, and suitably modified:
  *
  * Copyright (c) 1994, 1995, 1996 University of Toronto
@@ -129,10 +134,7 @@ output_XNF() {
     now = time((time_t) NULL);
     datestring = ctime(&now);
     datestring[strlen(datestring) - 1] = '\0';
-    Revision[strlen(Revision) - 2] = '\0';
-    if (((int) strlen(Revision)) <= 11)
-	strcpy(Revision, "Revision unknown");
-    fprintf(outputfile, "PROG, fpgac, %s, \"%s\"\n", &Revision[11], datestring);
+    fprintf(outputfile, "PROG, fpgac, %s, \"%s\"\n", Revision, datestring);
     if (partname)
 	fprintf(outputfile, "PART, %s\n", partname);
     if (genclock) {

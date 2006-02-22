@@ -1,4 +1,9 @@
 /*
+ * output_vhdl.c -- VHDL netlist output function for Fpgac
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ */
+
+/*
  * Copyright notice taken from BSD source, and suitably modified:
  *
  * Copyright (c) 1994, 1995, 1996, 2003 University of Toronto
@@ -90,11 +95,7 @@ void output_vhdl(void) {
    now = time((time_t) NULL);
    datestring = ctime(&now);
    datestring[strlen(datestring) - 1] = '\0';
-   Revision[strlen(Revision) - 2] = '\0';
-   if(((int) strlen(Revision)) <= 11) {
-      strcpy(Revision, "Revision unknown");
-   }
-   fprintf(outputfile, "\n-- fpgac %s %s\n\n", &Revision[11], datestring);
+   fprintf(outputfile, "\n-- fpgac %s %s\n\n", Revision, datestring);
 
    fprintf(outputfile, "entity %s is port(\n", get_designname());
    fprintf(outputfile, "	%s : in std_logic;\n", clockname);

@@ -1,4 +1,6 @@
-/* adders.c -- Create adders, subtractors and counters for fpgac programs.
+/*
+ * adders.c -- Create adders, subtractors and counters for fpgac programs.
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
  */
 
 /*
@@ -97,6 +99,7 @@ addsub(left, right, func)
 	top_plus1 = (*func)(topleft, topright, 1, (struct bit *) 0);
 
 	result = newtempvar("csadd", width);
+        result->type = TYPE_INTEGER;
 	rbl = result->bits;
 	bbl = bottom->bits;
 

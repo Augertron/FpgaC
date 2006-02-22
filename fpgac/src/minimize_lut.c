@@ -1,8 +1,12 @@
-/* semi-hack of Quine-MacCluskey by jf to allow minimal EQN expressions
-   in XNF. It is not important to be minimal, just more reduced than
-   naive printing out every term. It produces all implicants. 11/94 */
-
-/* Originally written by Dr. John Forrest of UMIST, Manchester, UK */
+/*
+ * semi-hack of Quine-MacCluskey by jf to allow minimal EQN expressions
+ * in XNF. It is not important to be minimal, just more reduced than
+ * naive printing out every term. It produces all implicants. 11/94
+ *
+ * Originally written by Dr. John Forrest of UMIST, Manchester, UK
+ *
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ */
 
 #include <stdio.h>
 #include "names.h"

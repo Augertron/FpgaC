@@ -1,7 +1,9 @@
 %option stack
 %x SAVETOKENS
 %{
-/* syntax.l -- the scanner for fpgac
+/*
+ * syntax.l -- the scanner for fpgac
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
  */
 
 /*
@@ -311,6 +313,10 @@ char				return(newtoken(CHAR));
 signed				return(newtoken(SIGNED));
 
 unsigned			return(newtoken(UNSIGNED));
+
+float				return(newtoken(FLOAT));
+
+double				return(newtoken(DOUBLE));
 
 register			return(newtoken(REGISTER));
 

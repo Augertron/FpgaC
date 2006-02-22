@@ -4,6 +4,8 @@
  * based on a subset of C, derived from the work in
  * TMCC by Dave Galloway, CSRI, University of Toronto
  * by John L. Bass, DMS Design and other SF.NET developers.
+ *
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
  */
 
 /*
@@ -66,7 +68,7 @@
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
 %token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID REGISTER EXTERN
-%token          INPUT OUTPUT MAILBOX PROCESS
+%token          FLOAT DOUBLE INPUT OUTPUT MAILBOX PROCESS
 %token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
 %token		INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
@@ -450,15 +452,6 @@ struct varlist *breakstack;
 int defaultwidth = 16;
 int currentwidth = 16;
 
-#define TYPE_INTEGER    0x0001
-#define TYPE_UNSIGNED   0x0002
-#define TYPE_INPUT      0x0004
-#define TYPE_OUTPUT     0x0008
-#define TYPE_BUS        0x0010
-#define TYPE_MAILBOX    0x0020
-
-#define TYPE_PROCESS    0x0100
-
 int currenttype = TYPE_INTEGER|TYPE_UNSIGNED;
 
 PushDeclarationScope(struct varlist **NextScopeStack) {
@@ -740,6 +733,7 @@ struct variable *intconstant(int value) {
 
     sprintf(buf, "_constant_%d", value);
     v = findvariable(buf, MAYEXIST, width, &ThreadScopeStack, CurrentReferenceScope);
+    v->type = TYPE_INTEGER;
     v->flags |= SYM_LITERAL;
     bl = v->bits;
     temp = value;
@@ -917,6 +911,7 @@ struct variable *newtempvar(char *s, int width) {
     asprintf(&buf, "%s_T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, s);
     temp = CreateVariable(buf, width, &ThreadScopeStack, CurrentReferenceScope, 1);
     temp->flags |= SYM_TEMP;
+    temp->type = TYPE_INTEGER;
     for(bl = temp->bits; bl; bl = bl->next) {
 	bl->bit->flags |= BIT_TEMP;
     }
@@ -1148,6 +1143,7 @@ struct variable *complement(struct variable *v) {
     struct bitlist *bl, *bl2;
 
     newv = newtempvar("comp", v->width);
+    newv->type = TYPE_INTEGER;
     bl = v->bits;
     bl2 = newv->bits;
     for(j = 0; j < v->width; j++) {
@@ -1245,6 +1241,7 @@ struct variable *twoop(struct variable *left, struct variable *right, int (*func
 
     width = MAX(left->width, right->width);
     temp = newtempvar("twoop", width);
+    temp->type = TYPE_INTEGER;
     bl = left->bits;
     bl2 = right->bits;
     bl3 = temp->bits;
@@ -1394,6 +1391,7 @@ struct variable *topbit(struct variable *v) {
     struct bitlist *bl;
 
     result = newtempvar("topbit", 1);
+    result->type = TYPE_INTEGER;
     for(bl = v->bits; bl->next; bl = bl->next);
     setbit(result->bits->bit, bl->bit);
     modifiedvar(result);
@@ -2810,32 +2808,31 @@ gettargetwidth() {
     else
 	return (0);
 }
-
 /*
  * Common code for Intrinsic Functions with Two Arguments.
  * used for functions which multiply, divide, and mod/remainder operations.
  */
 
 struct variable *
-IFuncTwoArgs(struct variable *func, int fwidth, struct variable *arg1, int width1, struct variable *arg2, int width2) {
+IFuncTwoArgs(struct variable *func, struct variable *arg1, struct variable *arg2) {
     struct variable *currentstate, *callingstate, *retval;
     struct variable *v, *tempstate;
     struct variable *temp1, *temp2;
     struct varlist **vlp;
 
-    makefunction(func, fwidth);
+    makefunction(func, func->width);
 
     currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
     setvar(func->initialstate, twoop(func->initialstate, currentstate, or));
 
     vlp = &func->arguments;
     if(!*vlp) {
-	v = newtempvar("Iarg1", width1);
+	v = newtempvar("Iarg1", arg1->width);
 	v->flags &= ~SYM_TEMP;
 	makeff(v);
 	addtoff(v, currentstate, arg1);
 	addtovlist(vlp, v);
-	v = newtempvar("Iarg2", width2);
+	v = newtempvar("Iarg2", arg2->width);
 	v->flags &= ~SYM_TEMP;
 	makeff(v);
 	addtoff(v, currentstate, arg2);
@@ -2864,6 +2861,231 @@ IFuncTwoArgs(struct variable *func, int fwidth, struct variable *arg1, int width
     retval = ffoutput(func->returnvalue);
     modifiedvar(retval);
     return(retval);
+}
+
+/*
+ * Common code for Intrinsic Functions with One Argument.
+ */
+
+struct variable *
+IFuncOneArg(struct variable *func, struct variable *arg1) {
+       return (IFuncTwoArgs(func,arg1,arg1));
+// TODO: find way to merge this with TwoArgs
+
+}
+
+/*
+ * As soon as we introduce more than one real type into FpgaC, then
+ * promotion between types becomes an issue. In the initial versions
+ * of FpgaC we had a single type, and that was signed integers of
+ * variable size, so not even the difference between short, long and
+ * long long was a serious issue. That is until we introduced the
+ * concept of intrinsic functions for mult, div, and mod where both
+ * formal args and return value need to have a reasonable width.
+ *
+ * This promotion problem with intrinsic functions is compound by
+ * needing a conversion matrix of type by width.
+ *
+ * DoOp attempts to address this problem, by moving the common
+ * code for all operators into a common setup function so that width
+ * and type promotion can be uniformly addressed in a single code
+ * body.  -- John Bass, Feb 2006
+ */
+
+struct variable *
+DoOp(int op, struct variable *arg1, struct variable *arg2) {
+    int realop = 0;
+    char *func;
+    struct variable *temp;
+
+    if(debug & 1) {
+        fprintf(stderr, "DoOp: (%s/%d)(%d)(%s/%d)\n", arg1->copyof->name, arg1->width, op, arg2->copyof->name, arg2->width);
+        fprintf(stderr, "DoOp types: (%x)(%d)(%x)\n", arg1->type, op, arg2->type);
+    }
+
+    /*
+     * First pickoff the real operation for assignment operators
+     */
+    switch(op) {
+    case PLUSEQUAL:		op = EQUAL; realop = ADD; break;
+    case MINUSEQUAL:            op = EQUAL; realop = SUB; break;
+    case SHIFTRIGHTEQUAL:       op = EQUAL; realop = SHIFTRIGHT; break;
+    case SHIFTLEFTEQUAL:        op = EQUAL; realop = SHIFTLEFT; break;
+    case ANDEQUAL:              op = EQUAL; realop = AND; break;
+    case XOREQUAL:              op = EQUAL; realop = XOR; break;
+    case OREQUAL:               op = EQUAL; realop = OR; break;
+    case MULTIPLYEQUAL:         op = EQUAL; realop = MULTIPLY; break;
+    case DIVIDEEQUAL:           op = EQUAL; realop = DIVIDE; break;
+    case REMAINDEREQUAL:        op = EQUAL; realop = REMAINDER; break;
+    }
+
+    /*
+     * If the left side is floating point, then promote the right side now
+     */
+    if((arg1->type & TYPE_FLOAT) && (arg2->type & TYPE_INTEGER)) {
+        switch(op) {
+        case ADD:
+        case SUB:
+        case UNARYMINUS:
+        case MULTIPLY:
+        case DIVIDE:
+                        if(arg2->width < (32-9))
+                            func = "fpgac_int2float";
+                        else if(arg2->width < (64-11))
+                            func = "fpgac_int2double";
+                        else
+                            func = "fpgac_int2longdouble";
+
+                        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+                        arg2 = IFuncOneArg(temp, arg2);
+                        break;
+        }
+    }
+
+    /*
+     * if an assignment operator, use recurrion to process the
+     * real operation, then perform the requested assignment.
+     */
+    if(realop) {
+        arg2 = DoOp(realop, arg1, arg2);
+	if(arg1->type & TYPE_INTEGER) return(assignmentstmt(arg1, arg2));
+
+// TODO: other types of variables need a solution/strategy here.
+// basically need an assignmentstmt function that doesn't diddle with width
+        return(intconstant(0));
+
+    }
+
+    if(op == EQUAL) {
+	if(arg1->type & TYPE_INTEGER) return(assignmentstmt(arg1, arg2));
+    }
+
+    if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_FLOAT)) {
+        switch(op) {
+        case ADD:
+        case SUB:
+        case UNARYMINUS:
+        case MULTIPLY:
+        case DIVIDE:		
+                        if(arg1->width < (32-9))
+                            func = "fpgac_int2float";
+                        else if(arg1->width < (64-11))
+                            func = "fpgac_int2double";
+                        else
+                            func = "fpgac_int2longdouble";
+
+                        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+                        arg1 = IFuncOneArg(temp, arg1);
+                        break;
+        }
+    }
+
+// TODO: we need relationals for FP vars too.
+
+    if((arg1->type & TYPE_FLOAT) && (arg2->type & TYPE_FLOAT)) {
+        int left, right;
+
+	if(arg1->width <= 32) left = 32;
+	else if(arg1->width <= 64) left = 64;
+        else left = 128;
+
+	if(arg2->width <= 32) right = 32;
+	else if(arg2->width <= 64) right = 64;
+        else right = 128;
+
+        if(left > right) {
+            if(left == 64) func = "fpgac_float2double";
+            else if(left == 128 && right == 32) func = "fpgac_float2longdouble";
+            else func = "fpgac_double2longdouble";
+
+            temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+            arg2 = IFuncOneArg(temp, arg2);
+            right = left;
+        }
+
+        if(left < right) {
+            if(right == 64) func = "fpgac_float2double";
+            else if(right == 128 && left == 32) func = "fpgac_float2longdouble";
+            else func = "fpgac_double2longdouble";
+
+            temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+            arg1 = IFuncOneArg(temp, arg1);
+            left = right;
+        }
+
+        if(left == 32)switch(op) {
+        case ADD:		func = "fpgac_fp_add_float"; break;
+        case SUB:		func = "fpgac_fp_sub_float"; break;
+        case UNARYMINUS:	func = "fpgac_fp_sub_float"; break;
+        case MULTIPLY:		func = "fpgac_fp_mult_float"; break;
+        case DIVIDE:		func = "fpgac_fp_div_float"; break;
+        default:		func = "fpgac_nan_float"; break;
+        }
+        else if(left == 64) switch(op) {
+        case ADD:		func = "fpgac_fp_add_double"; break;
+        case SUB:		func = "fpgac_fp_sub_double"; break;
+        case UNARYMINUS:	func = "fpgac_fp_sub_double"; break;
+        case MULTIPLY:		func = "fpgac_fp_mult_double"; break;
+        case DIVIDE:		func = "fpgac_fp_div_double"; break;
+        default:		func = "fpgac_nan_double"; break;
+        }
+        else switch(op) {
+        case ADD:		func = "fpgac_fp_add_longdouble"; break;
+        case SUB:		func = "fpgac_fp_sub_longdouble"; break;
+        case UNARYMINUS:	func = "fpgac_fp_sub_longdouble"; break;
+        case MULTIPLY:		func = "fpgac_fp_mult_longdouble"; break;
+        case DIVIDE:		func = "fpgac_fp_div_longdouble"; break;
+        default:		func = "fpgac_nan_longdouble"; break;
+        }
+
+        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+        return(IFuncTwoArgs(temp, arg1, arg2));
+    }
+
+// TODO: both twoop and twoopexpn were being used, which is correct?
+
+    if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_INTEGER)) {
+        switch(op) {
+        case ADD:		return(add(arg1,arg2));
+        case SUB:		return(sub(arg1,arg2));
+        case UNARYMINUS:	return(sub(arg1,arg2));
+        case MULTIPLY:		func = "fpgac_multiply"; break;
+        case DIVIDE:		func = "fpgac_divide"; break;
+        case REMAINDER:		func = "fpgac_remainder"; break;
+
+        case TILDE:		return(complement(arg1));
+        case NOT:		return(complement(nonzero(arg1)));
+        case AND:		return(twoopexpn(arg1,arg2,and));
+        case OR:		return(twoopexpn(arg1,arg2,or));
+        case XOR:		return(twoopexpn(arg1,arg2,xor));
+
+        case SHIFTRIGHT:	return(shiftbyvar(arg1,arg2,0));
+        case SHIFTLEFT:		return(shiftbyvar(arg1,arg2,1));
+
+        case EQUALEQUAL:	return(equals(arg1,arg2));
+        case NOTEQUAL:		return(complement(equals(arg1,arg2)));
+        case GREATER:		temp = sub(arg1, arg2);
+                                return(twoop(complement(topbit(temp)), nonzero(temp), and));
+        case GREATEROREQUAL:	return(complement(topbit(sub(arg1,arg2))));
+        case LESSTHAN:          return(topbit(sub(arg1, arg2)));
+        case LESSTHANOREQUAL:   temp = sub(arg1, arg2);
+                                return(twoop(topbit(temp), complement(nonzero(temp)), or));
+ 
+        case ANDAND:		return(twoopexpn(nonzero(arg1),nonzero(arg2),and));
+        case OROR:		return(twoopexpn(nonzero(arg1),nonzero(arg2),or));
+
+        default:
+                                ;
+        }
+
+// TODO: mult/div/mod will fall out here, but we need to match widths unless all are long long promoted
+// need to think about best sizes for retval and args.
+
+        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+        return(IFuncTwoArgs(temp, arg1, arg2));
+    }
+
+    return(intconstant(0));
 }
 
 %}
@@ -3155,6 +3377,24 @@ inttypes:	INT
 		    currentwidth = 64;
 		}
 
+		| FLOAT
+		{
+		    $$.type = currenttype = TYPE_FLOAT;
+		    currentwidth = 32;
+		}
+
+		| DOUBLE
+		{
+		    $$.type = currenttype = TYPE_FLOAT;
+		    currentwidth = 64;
+		}
+
+		| LONG DOUBLE
+		{
+		    $$.type = currenttype = TYPE_FLOAT;
+		    currentwidth = 128;
+		}
+
 		| REGISTER typename
 		{
 		    $$.type = currenttype = $2.type;
@@ -3162,7 +3402,7 @@ inttypes:	INT
 
 		| UNSIGNED typename
 		{
-		    $$.type = currenttype = TYPE_UNSIGNED;
+		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED;
 		}
 
 		| SIGNED typename
@@ -3598,192 +3838,151 @@ returnstmt:	RETURN
 expn:		term
 
 		| expn AND expn
-		{ $$.v = twoopexpn($1.v, $3.v, and); }
+		{
+//fprintf(stderr, "expn AND expn: (%s)(%d)(%s)\n", $1.v->copyof->name, AND, $3.v->copyof->name);
+		    $$.v = DoOp(AND, $1.v, $3.v);
+		}
 
 		| expn OR expn
-		{ $$.v = twoopexpn($1.v, $3.v, or); }
+		{ $$.v = DoOp(OR, $1.v, $3.v); }
 
 		| expn ANDAND expn
-		{
-		    struct variable *temp1, *temp2;
-
-		    temp1 = nonzero($1.v);
-		    temp2 = nonzero($3.v);
-		    $$.v = twoopexpn(temp1, temp2, and);
-		}
+		{ $$.v = DoOp(ANDAND, $1.v, $3.v); }
 
 		| expn OROR expn
-		{
-		    struct variable *temp1, *temp2;
-
-		    temp1 = nonzero($1.v);
-		    temp2 = nonzero($3.v);
-		    $$.v = twoopexpn(temp1, temp2, or);
-		}
+		{ $$.v = DoOp(OROR, $1.v, $3.v); }
 
 		| expn XOR expn
-		{ $$.v = twoopexpn($1.v, $3.v, xor); }
+		{ $$.v = DoOp(XOR, $1.v, $3.v); }
 
 		| expn ADD expn
-		{ $$.v = add($1.v, $3.v); }
+		{ $$.v = DoOp(ADD, $1.v, $3.v); }
 
 		| expn SUB expn
-		{ $$.v = sub($1.v, $3.v); }
+		{ $$.v = DoOp(SUB, $1.v, $3.v); }
 
 		| expn EQUALEQUAL expn
-		{ $$.v = equals($1.v, $3.v); }
+		{ $$.v = DoOp(EQUALEQUAL, $1.v, $3.v); }
 
 		| expn NOTEQUAL expn
-		{ $$.v = complement(equals($1.v, $3.v)); }
+		{ $$.v = DoOp(NOTEQUAL, $1.v, $3.v); }
 
 		| expn GREATEROREQUAL expn
-		{ $$.v = complement(topbit(sub($1.v, $3.v))); }
+		{ $$.v = DoOp(GREATEROREQUAL, $1.v, $3.v); }
 
 		| expn GREATER expn
-		{
-		    struct variable *temp1, *temp2;
-
-		    $$.v = sub($1.v, $3.v);
-		    temp1 = topbit($$.v);
-		    temp2 = nonzero($$.v);
-		    $$.v = twoop(complement(temp1), temp2, and);
-		}
+		{ $$.v = DoOp(GREATER, $1.v, $3.v); }
 
 		| expn LESSTHANOREQUAL expn
-		{
-		    struct variable *temp1, *temp2;
-
-		    $$.v = sub($1.v, $3.v);
-		    temp1 = topbit($$.v);
-		    temp2 = complement(nonzero($$.v));
-		    $$.v = twoop(temp1, temp2, or);
-		}
+		{ $$.v = DoOp(LESSTHANOREQUAL, $1.v, $3.v); }
 
 		| expn LESSTHAN expn
-		{ $$.v = topbit(sub($1.v, $3.v)); }
+		{ $$.v = DoOp(LESSTHAN, $1.v, $3.v); }
 
 		| expn SHIFTRIGHT expn
-		{ $$.v = shiftbyvar($1.v, $3.v, 0); }
+		{ $$.v = DoOp(SHIFTRIGHT, $1.v, $3.v); }
 
 		| expn SHIFTLEFT expn
-		{ $$.v = shiftbyvar($1.v, $3.v, 1); }
+		{ $$.v = DoOp(SHIFTLEFT, $1.v, $3.v); }
 
 		| expn MULTIPLY expn
-		{
-		    $$.v = findvariable("fpgac_multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v = IFuncTwoArgs($$.v, defaultwidth*2, $1.v, defaultwidth, $3.v, defaultwidth);
-		}
+		{ $$.v = DoOp(MULTIPLY, $1.v, $3.v); }
 
 		| expn DIVIDE expn
-		{
-		    $$.v = findvariable("fpgac_divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v = IFuncTwoArgs($$.v, defaultwidth, $1.v, defaultwidth*2, $3.v, defaultwidth);
-		}
+		{ $$.v = DoOp(DIVIDE, $1.v, $3.v); }
 
 		| expn REMAINDER expn
-		{
-		    $$.v = findvariable("fpgac_remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v = IFuncTwoArgs($$.v, defaultwidth, $1.v, defaultwidth*2, $3.v, defaultwidth);
-		}
+		{ $$.v = DoOp(REMAINDER, $1.v, $3.v); }
 
 		| SUB expn %prec UNARYMINUS
-		{ $$.v = sub(intconstant(0), $2.v); }
+		{ $$.v = DoOp(UNARYMINUS, intconstant(0), $2.v); }
 
 		| TILDE expn
-		{ $$.v = complement($2.v); }
+		{ $$.v = DoOp(TILDE, $2.v, $2.v); }
 
 		| NOT expn
-		{ $$.v = complement(nonzero($2.v)); }
+		{ $$.v = DoOp(NOT, $2.v, $2.v); }
 
 		| PLUSPLUS lhsidentifier
 		{
 		    pushtargetwidth($2.v);
-		    $$.v = assignmentstmt($2.v, add($2.v, intconstant(1)));
+		    $$.v = DoOp(PLUSEQUAL, $2.v, intconstant(1));
 		}
 
 		| MINUSMINUS lhsidentifier
 		{
 		    pushtargetwidth($2.v);
-		    $$.v = assignmentstmt($2.v, sub($2.v, intconstant(1)));
+		    $$.v = DoOp(MINUSEQUAL, $2.v, intconstant(1));
 		}
 
 		| lhsidentifier PLUSPLUS
 		{
 		    $$.v = $1.v;
 		    pushtargetwidth($1.v);
-		    assignmentstmt($1.v, add($1.v, intconstant(1)));
+		    DoOp(PLUSEQUAL, $1.v, intconstant(1));
 		}
 
 		| lhsidentifier MINUSMINUS
 		{
 		    $$.v = $1.v;
 		    pushtargetwidth($1.v);
-		    assignmentstmt($1.v, sub($1.v, intconstant(1)));
+		    DoOp(MINUSEQUAL, $1.v, intconstant(1));
 		}
 
 		| lhsidentifier EQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, $4.v); }
+		{ $$.v = DoOp(EQUAL, $1.v, $4.v); }
 
 		| lhsidentifier PLUSEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, add($1.v, $4.v)); }
+		{ $$.v = DoOp(PLUSEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier MINUSEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, sub($1.v, $4.v)); }
+		{ $$.v = DoOp(MINUSEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier SHIFTRIGHTEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, shiftbyvar($1.v, $4.v, 0)); }
+		{ $$.v = DoOp(SHIFTRIGHTEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier SHIFTLEFTEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, shiftbyvar($1.v, $4.v, 1)); }
+		{ $$.v = DoOp(SHIFTLEFTEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier ANDEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, twoopexpn($1.v, $4.v, and)); }
+		{ $$.v = DoOp(ANDEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier XOREQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, twoopexpn($1.v, $4.v, xor)); }
+		{ $$.v = DoOp(XOREQUAL, $1.v, $4.v); }
 
 		| lhsidentifier OREQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{ $$.v = assignmentstmt($1.v, twoopexpn($1.v, $4.v, or)); }
+		{ $$.v = DoOp(OREQUAL, $1.v, $4.v); }
 
 		| lhsidentifier MULTIPLYEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{
-		    $$.v = findvariable("fpgac_multiply", MAYEXIST, defaultwidth*2, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth, $4.v, defaultwidth));
-		}
+		{ $$.v = DoOp(MULTIPLYEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier DIVIDEEQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{
-		    $$.v = findvariable("fpgac_divide", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth*2, $4.v, defaultwidth));
-		}
+		{ $$.v = DoOp(DIVIDEEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier REMAINDEREQUAL
 		{ pushtargetwidth($1.v); }
 		expn
-		{
-		    $$.v = findvariable("fpgac_remainder", MAYEXIST, defaultwidth, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v = assignmentstmt($1.v, IFuncTwoArgs($$.v, $$.v->width, $1.v, defaultwidth*2, $4.v, defaultwidth));
-		}
+		{ $$.v = DoOp(REMAINDEREQUAL, $1.v, $4.v); }
 
 		| expn COMMA expn
 		{ $$.v = $3.v; }
@@ -4079,7 +4278,7 @@ struct_tag:     IDENTIFIER leftcurly
 %%
 
 yyerror(char *s) {
-    extern char yytext[];
+    extern char *yytext;
 
     fprintf(stderr, "\"%s\", line %d: %s at or near symbol %s\n", inputfilename, inputlineno, s, yytext);
 }
