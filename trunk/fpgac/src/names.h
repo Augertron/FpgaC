@@ -1,4 +1,6 @@
-/* names.h -- defines for the fpgac compiler
+/*
+ * names.h -- defines for the fpgac compiler
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
  */
 
 /*
@@ -52,6 +54,19 @@ typedef enum {
     shiftright_op, sub_op, while_op, xor_op
 } op_types;
 
+#define TYPE_INTEGER    0x0001
+#define TYPE_FLOAT      0x0002
+
+#define TYPE_INPUT      0x0010
+#define TYPE_OUTPUT     0x0020
+#define TYPE_BUS        0x0040
+#define TYPE_MAILBOX    0x0080
+
+#define TYPE_PROCESS    0x0100
+#define TYPE_UNSIGNED   0x1000
+#define TYPE_BITSERIAL  0x2000
+
+
 #define MAXNAMELEN	128
 
 #define SYM_KNOWNVALUE		0x1
@@ -78,7 +93,9 @@ typedef enum {
 #define SYM_ARRAY               0x400000
 #define SYM_ARRAY_INDEX         0x800000
 #define SYM_STRUCT_MEMBER       0x1000000
-#define SYM_INTEGER             0x01000000
+#define SYM_INTEGER             0x2000000
+#define SYM_FLOAT               0x4000000
+#define SYM_NUMBER              0x01000000
 #define SYM_ENUM                0x02000000
 #define SYM_STRUCT              0x04000000
 #define SYM_UNION               0x08000000

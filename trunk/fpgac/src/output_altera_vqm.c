@@ -1,4 +1,9 @@
 /*
+ * Altera netlist output routines for FpgaC
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ */
+
+/*
  * Copyright notice taken from BSD source, and suitably modified:
  *
  * Copyright (c) 1994-2004 University of Toronto
@@ -90,12 +95,7 @@ void output_vqm(char *familyname)
    now = time((time_t) NULL);
    datestring = ctime(&now);
    datestring[strlen(datestring) - 1] = '\0';
-   Revision[strlen(Revision) - 2] = '\0';
-   if(((int) strlen(Revision)) <= 11)
-      strcpy(Revision, "Revision unknown");
-   fprintf(outputfile, "// VERSION  \"%s, %s\"\n", &Revision[11],
-         datestring);
-   fprintf(outputfile, "\n");
+   fprintf(outputfile, "// VERSION  \"%s, %s\"\n", Revision, datestring);
 
    fprintf(outputfile, "module \\%s (\n", get_designname());
    fprintf(outputfile, "\t\\%s ", clockname);

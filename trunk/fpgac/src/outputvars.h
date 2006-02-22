@@ -1,4 +1,7 @@
-/* Variables used in the output section of the code */
+/*
+ * outputvars.h -- Variables used in the output section of the code
+ * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ */
 
 /*
  * Copyright notice taken from BSD source, and suitably modified:
