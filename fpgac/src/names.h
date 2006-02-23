@@ -152,6 +152,7 @@ EXTFIX struct bit {
 	char *name;
 	struct bit *next;
 	long int flags;
+	int temp;
 	char *pin;
 	char truth[16];
 	struct bitlist *primaries;
