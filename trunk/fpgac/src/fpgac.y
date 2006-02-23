@@ -979,7 +979,7 @@ struct bit *freezebit(struct bit *b) {
 	fprintf(stderr, "fpgac: Memory allocation error\n");
         exit(1);
     }
-    sprintf(temp->name, "F%s", bitname(b->copyof));
+    sprintf(temp->name, "%sF%d", bitname(b->copyof), b->copyof->temp++);
     if(b->flags & BIT_TEMP) {
 	addtolist(&temp->primaries, b);
 	temp->truth[0] = 0;
