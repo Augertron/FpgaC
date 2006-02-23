@@ -1,7 +1,7 @@
 LCANET, 4
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0-beta-2F, "Fri Feb 17 19:34:56 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Feb 23 00:50:06 2006"
 PART, 4003pc84
 SYM, FFin-_lcd_Running, INV
 PIN, I, I, GND
@@ -920,7 +920,7 @@ SYM, FFin-_lcd_doscanline_S0_stage_3, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3
 PIN, I3, I, _lcd_doscanline_S0_stage_3
 PIN, I2, I, _lcd_doscanline_S0_T70_looptop
 PIN, I1, I, _lcd_doscanline_S0_S0_S0_T64_endloop
-PIN, I0, I, F_lcd_doscanline_S0_stage_3
+PIN, I0, I, _lcd_doscanline_S0_stage_3F0
 PIN, O, O, FFin-_lcd_doscanline_S0_stage_3
 END
 SYM, _lcd_doscanline_S0_stage_3, DFF
@@ -1021,7 +1021,7 @@ SYM, FFin-_lcd_doscanline_S0_column_8, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I
 PIN, I3, I, _lcd_doscanline_S0_column_8
 PIN, I2, I, _lcd_doscanline_S0_T40_endloop
 PIN, I1, I, _lcd_doscanline_S0_T70_looptop
-PIN, I0, I, F_lcd_doscanline_S0_column_8
+PIN, I0, I, _lcd_doscanline_S0_column_8F0
 PIN, O, O, FFin-_lcd_doscanline_S0_column_8
 END
 SYM, _lcd_doscanline_S0_column_8, DFF
@@ -1887,61 +1887,61 @@ PIN, I1, I, _scan_addr_12
 PIN, I0, I, _scan_addr_13
 PIN, O, O, _lcd_doscanline_S0_T21_car_4
 END
-SYM, SYMF_scan_addr_5, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+SYM, SYM_scan_addr_5F0, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
 PIN, I3, I, _scan_addr_3
 PIN, I2, I, _scan_addr_2
 PIN, I1, I, _scan_addr_4
 PIN, I0, I, _scan_addr_5
-PIN, O, O, F_scan_addr_5
+PIN, O, O, _scan_addr_5F0
 END
-SYM, SYMF_scan_addr_8, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+SYM, SYM_scan_addr_8F0, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
 PIN, I3, I, _lcd_doscanline_S0_T9_car_6
 PIN, I2, I, _scan_addr_6
 PIN, I1, I, _scan_addr_7
 PIN, I0, I, _scan_addr_8
-PIN, O, O, F_scan_addr_8
+PIN, O, O, _scan_addr_8F0
 END
-SYM, SYMF_scan_addr_11, EQN, EQN=((I0*I1*I2*~I3)+(~I2*I3)+(~I1*I3)+(~I0*I3))
+SYM, SYM_scan_addr_11F0, EQN, EQN=((I0*I1*I2*~I3)+(~I2*I3)+(~I1*I3)+(~I0*I3))
 PIN, I3, I, _scan_addr_11
 PIN, I2, I, _scan_addr_10
 PIN, I1, I, _lcd_doscanline_S0_T9_car_9
 PIN, I0, I, _scan_addr_9
-PIN, O, O, F_scan_addr_11
+PIN, O, O, _scan_addr_11F0
 END
-SYM, SYMF_scan_addr_12, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+SYM, SYM_scan_addr_12F0, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
 PIN, I3, I, _scan_addr_11
 PIN, I2, I, _scan_addr_10
 PIN, I1, I, _scan_addr_12
 PIN, I0, I, _lcd_doscanline_S0_T9_car_10
-PIN, O, O, F_scan_addr_12
+PIN, O, O, _scan_addr_12F0
 END
-SYM, SYMF_scan_addr_13, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_scan_addr_13F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _lcd_doscanline_S0_T9_car_9
 PIN, I2, I, _scan_addr_9
 PIN, I1, I, _lcd_doscanline_S0_T20_add_3
 PIN, I0, I, _scan_addr_13
-PIN, O, O, F_scan_addr_13
+PIN, O, O, _scan_addr_13F0
 END
-SYM, SYMF_scan_addr_14, EQN, EQN=((I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(~I0*I2))
+SYM, SYM_scan_addr_14F0, EQN, EQN=((I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(~I0*I2))
 PIN, I3, I, _lcd_doscanline_S0_T21_car_4
 PIN, I2, I, _scan_addr_14
 PIN, I1, I, _lcd_doscanline_S0_T9_car_9
 PIN, I0, I, _scan_addr_9
-PIN, O, O, F_scan_addr_14
+PIN, O, O, _scan_addr_14F0
 END
-SYM, SYMF_scan_addr_15, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+SYM, SYM_scan_addr_15F0, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
 PIN, I3, I, _lcd_doscanline_S0_T21_car_4
 PIN, I2, I, _scan_addr_14
 PIN, I1, I, _scan_addr_15
 PIN, I0, I, _lcd_doscanline_S0_T9_car_10
-PIN, O, O, F_scan_addr_15
+PIN, O, O, _scan_addr_15F0
 END
-SYM, SYMF_scan_addr_16, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_scan_addr_16F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _lcd_doscanline_S0_T9_car_9
 PIN, I2, I, _scan_addr_9
 PIN, I1, I, _lcd_doscanline_S0_T20_add_6
 PIN, I0, I, _scan_addr_16
-PIN, O, O, F_scan_addr_16
+PIN, O, O, _scan_addr_16F0
 END
 SYM, FFin-_lcd_doscanline_S0_T39_looptop, EQN, EQN=((I0*~I1)+(~I1*I2))
 PIN, I2, I, _lcd_doscanline_T0_init
@@ -2005,12 +2005,12 @@ PIN, I1, I, _lcd_doscanline_S0_column_7
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_doscanline_S0_S0_T67_twoop_7
 END
-SYM, SYMF_lcd_doscanline_S0_column_8, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+SYM, SYM_lcd_doscanline_S0_column_8F0, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
 PIN, I3, I, _lcd_doscanline_S0_column_6
 PIN, I2, I, _lcd_doscanline_S0_column_5
 PIN, I1, I, _lcd_doscanline_S0_column_7
 PIN, I0, I, _lcd_doscanline_S0_column_8
-PIN, O, O, F_lcd_doscanline_S0_column_8
+PIN, O, O, _lcd_doscanline_S0_column_8F0
 END
 SYM, FFin-_lcd_doscanline_S0_S0_T68_looptop, EQN, EQN=((I1*I2)+(I0))
 PIN, I2, I, _lcd_doscanline_S0_S0_T79_comp
@@ -2154,12 +2154,12 @@ PIN, I1, I, _lcd_doscanline_S0_stage_2
 PIN, I0, I, _lcd_doscanline_S0_S0_S0_T64_endloop
 PIN, O, O, _lcd_doscanline_S0_S0_T80_twoop_2
 END
-SYM, SYMF_lcd_doscanline_S0_stage_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I3)+(I1*I3)+(I2*I3))
+SYM, SYM_lcd_doscanline_S0_stage_3F0, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I3)+(I1*I3)+(I2*I3))
 PIN, I3, I, _lcd_doscanline_S0_stage_3
 PIN, I2, I, _lcd_doscanline_S0_stage_2
 PIN, I1, I, _lcd_doscanline_S0_stage_1
 PIN, I0, I, _lcd_doscanline_S0_stage_0
-PIN, O, O, F_lcd_doscanline_S0_stage_3
+PIN, O, O, _lcd_doscanline_S0_stage_3F0
 END
 SYM, SYM_lcd_doscanline_S0_S0_T86_comp, EQN, EQN=((I0*~I1*~I2*~I3))
 PIN, I3, I, _lcd_doscanline_S0_stage_3
@@ -2234,61 +2234,61 @@ PIN, I1, I, _scan_addr_12
 PIN, I0, I, _scan_addr_13
 PIN, O, O, _lcd_doscanline_S0_T112_car_4
 END
-SYM, SYMF_scan_addr_5, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+SYM, SYM_scan_addr_5F2, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
 PIN, I3, I, _scan_addr_3
 PIN, I2, I, _scan_addr_2
 PIN, I1, I, _scan_addr_4
 PIN, I0, I, _scan_addr_5
-PIN, O, O, F_scan_addr_5
+PIN, O, O, _scan_addr_5F2
 END
-SYM, SYMF_scan_addr_8, EQN, EQN=((~I0*~I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
+SYM, SYM_scan_addr_8F2, EQN, EQN=((~I0*~I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
 PIN, I3, I, _lcd_doscanline_S0_T96_car_6
 PIN, I2, I, _scan_addr_6
 PIN, I1, I, _scan_addr_7
 PIN, I0, I, _scan_addr_8
-PIN, O, O, F_scan_addr_8
+PIN, O, O, _scan_addr_8F2
 END
-SYM, SYMF_scan_addr_11, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
+SYM, SYM_scan_addr_11F2, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
 PIN, I3, I, _scan_addr_11
 PIN, I2, I, _scan_addr_10
 PIN, I1, I, _lcd_doscanline_S0_T96_car_9
 PIN, I0, I, _scan_addr_9
-PIN, O, O, F_scan_addr_11
+PIN, O, O, _scan_addr_11F2
 END
-SYM, SYMF_scan_addr_12, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+SYM, SYM_scan_addr_12F2, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
 PIN, I3, I, _scan_addr_11
 PIN, I2, I, _scan_addr_10
 PIN, I1, I, _scan_addr_12
 PIN, I0, I, _lcd_doscanline_S0_T96_car_10
-PIN, O, O, F_scan_addr_12
+PIN, O, O, _scan_addr_12F2
 END
-SYM, SYMF_scan_addr_13, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
+SYM, SYM_scan_addr_13F2, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
 PIN, I3, I, _lcd_doscanline_S0_T96_car_9
 PIN, I2, I, _scan_addr_9
 PIN, I1, I, _lcd_doscanline_S0_T111_sub_3
 PIN, I0, I, _scan_addr_13
-PIN, O, O, F_scan_addr_13
+PIN, O, O, _scan_addr_13F2
 END
-SYM, SYMF_scan_addr_14, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
+SYM, SYM_scan_addr_14F2, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
 PIN, I3, I, _lcd_doscanline_S0_T112_car_4
 PIN, I2, I, _scan_addr_14
 PIN, I1, I, _lcd_doscanline_S0_T96_car_9
 PIN, I0, I, _scan_addr_9
-PIN, O, O, F_scan_addr_14
+PIN, O, O, _scan_addr_14F2
 END
-SYM, SYMF_scan_addr_15, EQN, EQN=((I0*~I1*~I2*I3)+(I1*~I3)+(~I0*I1)+(I1*I2))
+SYM, SYM_scan_addr_15F2, EQN, EQN=((I0*~I1*~I2*I3)+(I1*~I3)+(~I0*I1)+(I1*I2))
 PIN, I3, I, _lcd_doscanline_S0_T112_car_4
 PIN, I2, I, _scan_addr_14
 PIN, I1, I, _scan_addr_15
 PIN, I0, I, _lcd_doscanline_S0_T96_car_10
-PIN, O, O, F_scan_addr_15
+PIN, O, O, _scan_addr_15F2
 END
-SYM, SYMF_scan_addr_16, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
+SYM, SYM_scan_addr_16F2, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
 PIN, I3, I, _lcd_doscanline_S0_T96_car_9
 PIN, I2, I, _scan_addr_9
 PIN, I1, I, _lcd_doscanline_S0_T111_sub_6
 PIN, I0, I, _scan_addr_16
-PIN, O, O, F_scan_addr_16
+PIN, O, O, _scan_addr_16F2
 END
 SYM, FFin-_lcd_doframe_T0_init, BUF
 PIN, I, I, _lcd_main_S0_T104_looptop
@@ -2346,7 +2346,7 @@ SYM, FFin-_lcd_doframe_S0_row_3, EQN, EQN=((~I1*I2*~I3)+(I0*I2*~I3)+(I0*I1))
 PIN, I3, I, _lcd_doframe_T0_init
 PIN, I2, I, _lcd_doframe_S0_row_3
 PIN, I1, I, _lcd_doframe_S0_T14_looptop
-PIN, I0, I, F_lcd_doframe_S0_row_3
+PIN, I0, I, _lcd_doframe_S0_row_3F0
 PIN, O, O, FFin-_lcd_doframe_S0_row_3
 END
 SYM, _lcd_doframe_S0_row_3, DFF
@@ -2385,7 +2385,7 @@ SYM, FFin-_lcd_doframe_S0_row_6, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_doframe_S0_row_6
 PIN, I2, I, _lcd_doframe_T0_init
 PIN, I1, I, _lcd_doframe_S0_T14_looptop
-PIN, I0, I, F_lcd_doframe_S0_row_6
+PIN, I0, I, _lcd_doframe_S0_row_6F0
 PIN, O, O, FFin-_lcd_doframe_S0_row_6
 END
 SYM, _lcd_doframe_S0_row_6, DFF
@@ -2398,7 +2398,7 @@ SYM, FFin-_lcd_doframe_S0_row_7, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_doframe_S0_row_7
 PIN, I2, I, _lcd_doframe_T0_init
 PIN, I1, I, _lcd_doframe_S0_T14_looptop
-PIN, I0, I, F_lcd_doframe_S0_row_7
+PIN, I0, I, _lcd_doframe_S0_row_7F0
 PIN, O, O, FFin-_lcd_doframe_S0_row_7
 END
 SYM, _lcd_doframe_S0_row_7, DFF
@@ -2411,7 +2411,7 @@ SYM, FFin-_lcd_doframe_S0_row_8, EQN, EQN=((~I1*I2*~I3)+(I0*I2*~I3)+(I0*I1))
 PIN, I3, I, _lcd_doframe_T0_init
 PIN, I2, I, _lcd_doframe_S0_row_8
 PIN, I1, I, _lcd_doframe_S0_T14_looptop
-PIN, I0, I, F_lcd_doframe_S0_row_8
+PIN, I0, I, _lcd_doframe_S0_row_8F0
 PIN, O, O, FFin-_lcd_doframe_S0_row_8
 END
 SYM, _lcd_doframe_S0_row_8, DFF
@@ -2424,7 +2424,7 @@ SYM, FFin-_lcd_doframe_S0_row_9, EQN, EQN=((~I1*I2*~I3)+(I0*I2*~I3)+(I0*I1))
 PIN, I3, I, _lcd_doframe_T0_init
 PIN, I2, I, _lcd_doframe_S0_row_9
 PIN, I1, I, _lcd_doframe_S0_T14_looptop
-PIN, I0, I, F_lcd_doframe_S0_row_9
+PIN, I0, I, _lcd_doframe_S0_row_9F0
 PIN, O, O, FFin-_lcd_doframe_S0_row_9
 END
 SYM, _lcd_doframe_S0_row_9, DFF
@@ -2475,7 +2475,7 @@ SYM, FFin-_lcd_doframe_S0_delay_3, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(
 PIN, I3, I, _lcd_doframe_S0_delay_3
 PIN, I2, I, _lcd_doframe_S0_S0_T95_endloop
 PIN, I1, I, _lcd_doframe_S0_S0_T117_looptop
-PIN, I0, I, F_lcd_doframe_S0_delay_3
+PIN, I0, I, _lcd_doframe_S0_delay_3F0
 PIN, O, O, FFin-_lcd_doframe_S0_delay_3
 END
 SYM, _lcd_doframe_S0_delay_3, DFF
@@ -2514,7 +2514,7 @@ SYM, FFin-_lcd_doframe_S0_delay_6, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(
 PIN, I3, I, _lcd_doframe_S0_delay_6
 PIN, I2, I, _lcd_doframe_S0_S0_T95_endloop
 PIN, I1, I, _lcd_doframe_S0_S0_T117_looptop
-PIN, I0, I, F_lcd_doframe_S0_delay_6
+PIN, I0, I, _lcd_doframe_S0_delay_6F0
 PIN, O, O, FFin-_lcd_doframe_S0_delay_6
 END
 SYM, _lcd_doframe_S0_delay_6, DFF
@@ -2613,40 +2613,40 @@ PIN, I1, I, _lcd_doframe_S0_row_5
 PIN, I0, I, _lcd_doframe_S0_T14_looptop
 PIN, O, O, _lcd_doframe_S0_S0_T31_twoop_5
 END
-SYM, SYMF_lcd_doframe_S0_row_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+SYM, SYM_lcd_doframe_S0_row_3F0, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
 PIN, I3, I, _lcd_doframe_S0_row_1
 PIN, I2, I, _lcd_doframe_S0_row_0
 PIN, I1, I, _lcd_doframe_S0_row_2
 PIN, I0, I, _lcd_doframe_S0_row_3
-PIN, O, O, F_lcd_doframe_S0_row_3
+PIN, O, O, _lcd_doframe_S0_row_3F0
 END
-SYM, SYMF_lcd_doframe_S0_row_6, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
+SYM, SYM_lcd_doframe_S0_row_6F0, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
 PIN, I3, I, _lcd_doframe_S0_row_6
 PIN, I2, I, _lcd_doframe_S0_row_5
 PIN, I1, I, _lcd_doframe_S0_S0_T3_car_4
 PIN, I0, I, _lcd_doframe_S0_row_4
-PIN, O, O, F_lcd_doframe_S0_row_6
+PIN, O, O, _lcd_doframe_S0_row_6F0
 END
-SYM, SYMF_lcd_doframe_S0_row_7, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+SYM, SYM_lcd_doframe_S0_row_7F0, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
 PIN, I3, I, _lcd_doframe_S0_row_6
 PIN, I2, I, _lcd_doframe_S0_row_5
 PIN, I1, I, _lcd_doframe_S0_row_7
 PIN, I0, I, _lcd_doframe_S0_S0_T3_car_5
-PIN, O, O, F_lcd_doframe_S0_row_7
+PIN, O, O, _lcd_doframe_S0_row_7F0
 END
-SYM, SYMF_lcd_doframe_S0_row_8, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
+SYM, SYM_lcd_doframe_S0_row_8F0, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
 PIN, I3, I, _lcd_doframe_S0_S0_T3_car_4
 PIN, I2, I, _lcd_doframe_S0_row_4
 PIN, I1, I, _lcd_doframe_S0_S0_T18_sub_3
 PIN, I0, I, _lcd_doframe_S0_row_8
-PIN, O, O, F_lcd_doframe_S0_row_8
+PIN, O, O, _lcd_doframe_S0_row_8F0
 END
-SYM, SYMF_lcd_doframe_S0_row_9, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
+SYM, SYM_lcd_doframe_S0_row_9F0, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
 PIN, I3, I, _lcd_doframe_S0_S0_T19_car_4
 PIN, I2, I, _lcd_doframe_S0_row_9
 PIN, I1, I, _lcd_doframe_S0_S0_T3_car_4
 PIN, I0, I, _lcd_doframe_S0_row_4
-PIN, O, O, F_lcd_doframe_S0_row_9
+PIN, O, O, _lcd_doframe_S0_row_9F0
 END
 SYM, FFin-_lcd_doframe_S0_S0_T32_calling, EQN, EQN=((~I1*I2)+(I0))
 PIN, I2, I, _lcd_doframe_S0_S0_T32_calling
@@ -2892,19 +2892,19 @@ PIN, I1, I, _lcd_doframe_S0_S0_T122_car_4
 PIN, I0, I, _lcd_doframe_S0_S0_T117_looptop
 PIN, O, O, _lcd_doframe_S0_S0_T158_twoop_8
 END
-SYM, SYMF_lcd_doframe_S0_delay_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+SYM, SYM_lcd_doframe_S0_delay_3F0, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
 PIN, I3, I, _lcd_doframe_S0_delay_1
 PIN, I2, I, _lcd_doframe_S0_delay_0
 PIN, I1, I, _lcd_doframe_S0_delay_2
 PIN, I0, I, _lcd_doframe_S0_delay_3
-PIN, O, O, F_lcd_doframe_S0_delay_3
+PIN, O, O, _lcd_doframe_S0_delay_3F0
 END
-SYM, SYMF_lcd_doframe_S0_delay_6, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+SYM, SYM_lcd_doframe_S0_delay_6F0, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
 PIN, I3, I, _lcd_doframe_S0_delay_5
 PIN, I2, I, _lcd_doframe_S0_delay_4
 PIN, I1, I, _lcd_doframe_S0_delay_6
 PIN, I0, I, _lcd_doframe_S0_S0_T122_car_4
-PIN, O, O, F_lcd_doframe_S0_delay_6
+PIN, O, O, _lcd_doframe_S0_delay_6F0
 END
 SYM, SYM_lcd_doframe_S0_S0_T164_comp, EQN, EQN=((~I0*~I1*~I2*~I3))
 PIN, I3, I, _lcd_doframe_S0_S0_T154_tree2_0
@@ -3099,7 +3099,7 @@ SYM, FFin-_lcd_main_S0_count2_3, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_main_S0_count2_3
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_S2_T41_looptop
-PIN, I0, I, F_lcd_main_S0_count2_3
+PIN, I0, I, _lcd_main_S0_count2_3F0
 PIN, O, O, FFin-_lcd_main_S0_count2_3
 END
 SYM, _lcd_main_S0_count2_3, DFF
@@ -3138,7 +3138,7 @@ SYM, FFin-_lcd_main_S0_count2_6, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_main_S0_count2_6
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_S2_T41_looptop
-PIN, I0, I, F_lcd_main_S0_count2_6
+PIN, I0, I, _lcd_main_S0_count2_6F0
 PIN, O, O, FFin-_lcd_main_S0_count2_6
 END
 SYM, _lcd_main_S0_count2_6, DFF
@@ -3151,7 +3151,7 @@ SYM, FFin-_lcd_main_S0_count2_7, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_main_S0_count2_7
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_S2_T41_looptop
-PIN, I0, I, F_lcd_main_S0_count2_7
+PIN, I0, I, _lcd_main_S0_count2_7F0
 PIN, O, O, FFin-_lcd_main_S0_count2_7
 END
 SYM, _lcd_main_S0_count2_7, DFF
@@ -3164,7 +3164,7 @@ SYM, FFin-_lcd_main_S0_count2_8, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_main_S0_count2_8
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_S2_T41_looptop
-PIN, I0, I, F_lcd_main_S0_count2_8
+PIN, I0, I, _lcd_main_S0_count2_8F0
 PIN, O, O, FFin-_lcd_main_S0_count2_8
 END
 SYM, _lcd_main_S0_count2_8, DFF
@@ -3177,7 +3177,7 @@ SYM, FFin-_lcd_main_S0_count2_9, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)+(~I1*I3)+(I0
 PIN, I3, I, _lcd_main_S0_count2_9
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_S2_T41_looptop
-PIN, I0, I, F_lcd_main_S0_count2_9
+PIN, I0, I, _lcd_main_S0_count2_9F0
 PIN, O, O, FFin-_lcd_main_S0_count2_9
 END
 SYM, _lcd_main_S0_count2_9, DFF
@@ -3278,44 +3278,44 @@ PIN, I1, I, _lcd_main_S0_count1_7
 PIN, I0, I, _lcd_main_S0_count1_8
 PIN, O, O, _lcd_main_S0_S2_T19_car_4
 END
-SYM, SYMF_lcd_main_S0_count1_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+SYM, SYM_lcd_main_S0_count1_3F0, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
 PIN, I3, I, _lcd_main_S0_count1_1
 PIN, I2, I, _lcd_main_S0_count1_0
 PIN, I1, I, _lcd_main_S0_count1_2
 PIN, I0, I, _lcd_main_S0_count1_3
-PIN, O, O, F_lcd_main_S0_count1_3
+PIN, O, O, _lcd_main_S0_count1_3F0
 END
-SYM, SYMF_lcd_main_S0_count1_6, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
+SYM, SYM_lcd_main_S0_count1_6F0, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
 PIN, I3, I, _lcd_main_S0_count1_6
 PIN, I2, I, _lcd_main_S0_count1_5
 PIN, I1, I, _lcd_main_S0_S2_T3_car_4
 PIN, I0, I, _lcd_main_S0_count1_4
-PIN, O, O, F_lcd_main_S0_count1_6
+PIN, O, O, _lcd_main_S0_count1_6F0
 END
-SYM, SYMF_lcd_main_S0_count1_7, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+SYM, SYM_lcd_main_S0_count1_7F0, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
 PIN, I3, I, _lcd_main_S0_count1_6
 PIN, I2, I, _lcd_main_S0_count1_5
 PIN, I1, I, _lcd_main_S0_count1_7
 PIN, I0, I, _lcd_main_S0_S2_T3_car_5
-PIN, O, O, F_lcd_main_S0_count1_7
+PIN, O, O, _lcd_main_S0_count1_7F0
 END
-SYM, SYMF_lcd_main_S0_count1_8, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
+SYM, SYM_lcd_main_S0_count1_8F0, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
 PIN, I3, I, _lcd_main_S0_S2_T3_car_4
 PIN, I2, I, _lcd_main_S0_count1_4
 PIN, I1, I, _lcd_main_S0_S2_T18_sub_3
 PIN, I0, I, _lcd_main_S0_count1_8
-PIN, O, O, F_lcd_main_S0_count1_8
+PIN, O, O, _lcd_main_S0_count1_8F0
 END
-SYM, SYMF_lcd_main_S0_count1_9, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
+SYM, SYM_lcd_main_S0_count1_9F0, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
 PIN, I3, I, _lcd_main_S0_S2_T19_car_4
 PIN, I2, I, _lcd_main_S0_count1_9
 PIN, I1, I, _lcd_main_S0_S2_T3_car_4
 PIN, I0, I, _lcd_main_S0_count1_4
-PIN, O, O, F_lcd_main_S0_count1_9
+PIN, O, O, _lcd_main_S0_count1_9F0
 END
 SYM, FFin-_lcd_main_S0_S2_T41_looptop, EQN, EQN=((I1*I2)+(I1*I3)+(I0))
 PIN, I3, I, _lcd_main_S0_S2_T52_tree2_0
-PIN, I2, I, F_lcd_main_S0_count2_9
+PIN, I2, I, _lcd_main_S0_count2_9F0
 PIN, I1, I, _lcd_main_S0_S2_T41_looptop
 PIN, I0, I, _lcd_main_S0_T45_looptop
 PIN, O, O, FFin-_lcd_main_S0_S2_T41_looptop
@@ -3328,7 +3328,7 @@ PIN, Q, O, _lcd_main_S0_S2_T41_looptop
 END
 SYM, FFin-_lcd_main_S0_S2_T42_endloop, EQN, EQN=((I0*~I1*~I2))
 PIN, I2, I, _lcd_main_S0_S2_T52_tree2_0
-PIN, I1, I, F_lcd_main_S0_count2_9
+PIN, I1, I, _lcd_main_S0_count2_9F0
 PIN, I0, I, _lcd_main_S0_S2_T41_looptop
 PIN, O, O, FFin-_lcd_main_S0_S2_T42_endloop
 END
@@ -3381,8 +3381,8 @@ END
 SYM, SYM_lcd_main_S0_S2_T52_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3))
 PIN, I3, I, _lcd_main_S0_S2_T49_tree2_0
 PIN, I2, I, _lcd_main_S0_S2_T45_word_1
-PIN, I1, I, F_lcd_main_S0_count2_7
-PIN, I0, I, F_lcd_main_S0_count2_8
+PIN, I1, I, _lcd_main_S0_count2_7F0
+PIN, I0, I, _lcd_main_S0_count2_8F0
 PIN, O, O, _lcd_main_S0_S2_T52_tree2_0
 END
 SYM, SYM_lcd_main_S0_S2_T56_twoop_2, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3))
@@ -3399,40 +3399,40 @@ PIN, I1, I, _lcd_main_S0_count2_5
 PIN, I0, I, _lcd_main_S0_S2_T41_looptop
 PIN, O, O, _lcd_main_S0_S2_T56_twoop_5
 END
-SYM, SYMF_lcd_main_S0_count2_3, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
+SYM, SYM_lcd_main_S0_count2_3F0, EQN, EQN=((~I0*~I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3))
 PIN, I3, I, _lcd_main_S0_count2_1
 PIN, I2, I, _lcd_main_S0_count2_0
 PIN, I1, I, _lcd_main_S0_count2_2
 PIN, I0, I, _lcd_main_S0_count2_3
-PIN, O, O, F_lcd_main_S0_count2_3
+PIN, O, O, _lcd_main_S0_count2_3F0
 END
-SYM, SYMF_lcd_main_S0_count2_6, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
+SYM, SYM_lcd_main_S0_count2_6F0, EQN, EQN=((~I0*I1*~I2*~I3)+(~I1*I3)+(I0*I3)+(I2*I3))
 PIN, I3, I, _lcd_main_S0_count2_6
 PIN, I2, I, _lcd_main_S0_count2_5
 PIN, I1, I, _lcd_main_S0_S2_S0_T3_car_4
 PIN, I0, I, _lcd_main_S0_count2_4
-PIN, O, O, F_lcd_main_S0_count2_6
+PIN, O, O, _lcd_main_S0_count2_6F0
 END
-SYM, SYMF_lcd_main_S0_count2_7, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
+SYM, SYM_lcd_main_S0_count2_7F0, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3))
 PIN, I3, I, _lcd_main_S0_count2_6
 PIN, I2, I, _lcd_main_S0_count2_5
 PIN, I1, I, _lcd_main_S0_count2_7
 PIN, I0, I, _lcd_main_S0_S2_S0_T3_car_5
-PIN, O, O, F_lcd_main_S0_count2_7
+PIN, O, O, _lcd_main_S0_count2_7F0
 END
-SYM, SYMF_lcd_main_S0_count2_8, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
+SYM, SYM_lcd_main_S0_count2_8F0, EQN, EQN=((I1*~I2*I3)+(I0*~I3)+(I0*I1)+(I0*I2))
 PIN, I3, I, _lcd_main_S0_S2_S0_T3_car_4
 PIN, I2, I, _lcd_main_S0_count2_4
 PIN, I1, I, _lcd_main_S0_S2_S0_T18_sub_3
 PIN, I0, I, _lcd_main_S0_count2_8
-PIN, O, O, F_lcd_main_S0_count2_8
+PIN, O, O, _lcd_main_S0_count2_8F0
 END
-SYM, SYMF_lcd_main_S0_count2_9, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
+SYM, SYM_lcd_main_S0_count2_9F0, EQN, EQN=((~I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(I0*I2))
 PIN, I3, I, _lcd_main_S0_S2_S0_T19_car_4
 PIN, I2, I, _lcd_main_S0_count2_9
 PIN, I1, I, _lcd_main_S0_S2_S0_T3_car_4
 PIN, I0, I, _lcd_main_S0_count2_4
-PIN, O, O, F_lcd_main_S0_count2_9
+PIN, O, O, _lcd_main_S0_count2_9F0
 END
 SYM, SYM_lcd_main_S0_T49_word_1, EQN, EQN=((I0)+(I1)+(I2)+(I3))
 PIN, I3, I, _lcd_main_S0_count1_4
@@ -3650,16 +3650,16 @@ PIN, I0, I, _lcd_doscanline_T0_init
 PIN, O, O, _lcd_T275_tree2_0
 END
 SYM, SYM_lcd_T286_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_5
+PIN, I3, I, _scan_addr_5F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_5
 PIN, O, O, _lcd_T286_word_1
 END
 SYM, SYM_lcd_T290_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_5
+PIN, I3, I, _scan_addr_5F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_5
+PIN, I1, I, _scan_addr_5F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T290_tree2_0
 END
@@ -3709,16 +3709,16 @@ PIN, I0, I, _lcd_doscanline_T0_init
 PIN, O, O, _lcd_T320_tree2_0
 END
 SYM, SYM_lcd_T331_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_8
+PIN, I3, I, _scan_addr_8F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_8
 PIN, O, O, _lcd_T331_word_1
 END
 SYM, SYM_lcd_T335_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_8
+PIN, I3, I, _scan_addr_8F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_8
+PIN, I1, I, _scan_addr_8F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T335_tree2_0
 END
@@ -3768,86 +3768,86 @@ PIN, I0, I, _lcd_doscanline_T0_init
 PIN, O, O, _lcd_T365_tree2_0
 END
 SYM, SYM_lcd_T376_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_11
+PIN, I3, I, _scan_addr_11F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_11
 PIN, O, O, _lcd_T376_word_1
 END
 SYM, SYM_lcd_T380_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_11
+PIN, I3, I, _scan_addr_11F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_11
+PIN, I1, I, _scan_addr_11F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T380_tree2_0
 END
 SYM, SYM_lcd_T391_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_12
+PIN, I3, I, _scan_addr_12F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_12
 PIN, O, O, _lcd_T391_word_1
 END
 SYM, SYM_lcd_T395_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_12
+PIN, I3, I, _scan_addr_12F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_12
+PIN, I1, I, _scan_addr_12F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T395_tree2_0
 END
 SYM, SYM_lcd_T406_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_13
+PIN, I3, I, _scan_addr_13F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_13
 PIN, O, O, _lcd_T406_word_1
 END
 SYM, SYM_lcd_T410_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_13
+PIN, I3, I, _scan_addr_13F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_13
+PIN, I1, I, _scan_addr_13F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T410_tree2_0
 END
 SYM, SYM_lcd_T421_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_14
+PIN, I3, I, _scan_addr_14F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_14
 PIN, O, O, _lcd_T421_word_1
 END
 SYM, SYM_lcd_T425_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_14
+PIN, I3, I, _scan_addr_14F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_14
+PIN, I1, I, _scan_addr_14F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T425_tree2_0
 END
 SYM, SYM_lcd_T436_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_15
+PIN, I3, I, _scan_addr_15F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_15
 PIN, O, O, _lcd_T436_word_1
 END
 SYM, SYM_lcd_T440_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_15
+PIN, I3, I, _scan_addr_15F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_15
+PIN, I1, I, _scan_addr_15F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T440_tree2_0
 END
 SYM, SYM_lcd_T451_word_1, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_16
+PIN, I3, I, _scan_addr_16F2
 PIN, I2, I, _lcd_doscanline_S0_T71_endloop
 PIN, I1, I, _lcd_T239_comp
 PIN, I0, I, _scan_addr_16
 PIN, O, O, _lcd_T451_word_1
 END
 SYM, SYM_lcd_T455_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_scan_addr_16
+PIN, I3, I, _scan_addr_16F0
 PIN, I2, I, _lcd_doscanline_T0_init
-PIN, I1, I, F_scan_addr_16
+PIN, I1, I, _scan_addr_16F0
 PIN, I0, I, _lcd_doscanline_S0_T70_looptop
 PIN, O, O, _lcd_T455_tree2_0
 END
@@ -4094,7 +4094,7 @@ PIN, I0, I, _lcd_T1347_word_2
 PIN, O, O, _lcd_T1351_tree2_2
 END
 SYM, SYM_lcd_T1362_word_1, EQN, EQN=((I0*I1))
-PIN, I1, I, F_lcd_main_S0_count1_3
+PIN, I1, I, _lcd_main_S0_count1_3F0
 PIN, I0, I, _lcd_main_S0_S3_T13_endloop
 PIN, O, O, _lcd_T1362_word_1
 END
@@ -4106,7 +4106,7 @@ PIN, I0, I, _lcd_main_S0_count1_3
 PIN, O, O, _lcd_T1362_word_2
 END
 SYM, SYM_lcd_T1366_tree2_1, EQN, EQN=((I2*I3)+(I0)+(I1))
-PIN, I3, I, F_lcd_main_S0_count1_3
+PIN, I3, I, _lcd_main_S0_count1_3F0
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_T46_endloop
 PIN, I0, I, _lcd_T1362_word_1
@@ -4147,7 +4147,7 @@ PIN, I0, I, _lcd_main_S0_count1_5
 PIN, O, O, _lcd_T1392_word_3
 END
 SYM, SYM_lcd_T1407_word_1, EQN, EQN=((I0*I1))
-PIN, I1, I, F_lcd_main_S0_count1_6
+PIN, I1, I, _lcd_main_S0_count1_6F0
 PIN, I0, I, _lcd_main_S0_S3_T13_endloop
 PIN, O, O, _lcd_T1407_word_1
 END
@@ -4159,7 +4159,7 @@ PIN, I0, I, _lcd_main_S0_count1_6
 PIN, O, O, _lcd_T1407_word_2
 END
 SYM, SYM_lcd_T1411_tree2_1, EQN, EQN=((I2*I3)+(I0)+(I1))
-PIN, I3, I, F_lcd_main_S0_count1_6
+PIN, I3, I, _lcd_main_S0_count1_6F0
 PIN, I2, I, _lcd_main_S0_T45_looptop
 PIN, I1, I, _lcd_main_S0_T23_endloop
 PIN, I0, I, _lcd_T1407_word_1
@@ -4171,9 +4171,9 @@ PIN, I0, I, _lcd_main_S0_count1_7
 PIN, O, O, _lcd_T1422_word_1
 END
 SYM, SYM_lcd_T1426_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_lcd_main_S0_count1_7
+PIN, I3, I, _lcd_main_S0_count1_7F0
 PIN, I2, I, _lcd_main_S0_T45_looptop
-PIN, I1, I, F_lcd_main_S0_count1_7
+PIN, I1, I, _lcd_main_S0_count1_7F0
 PIN, I0, I, _lcd_main_S0_S3_T13_endloop
 PIN, O, O, _lcd_T1426_tree2_0
 END
@@ -4183,9 +4183,9 @@ PIN, I0, I, _lcd_main_S0_count1_8
 PIN, O, O, _lcd_T1437_word_1
 END
 SYM, SYM_lcd_T1441_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_lcd_main_S0_count1_8
+PIN, I3, I, _lcd_main_S0_count1_8F0
 PIN, I2, I, _lcd_main_S0_T45_looptop
-PIN, I1, I, F_lcd_main_S0_count1_8
+PIN, I1, I, _lcd_main_S0_count1_8F0
 PIN, I0, I, _lcd_main_S0_S3_T13_endloop
 PIN, O, O, _lcd_T1441_tree2_0
 END
@@ -4195,13 +4195,13 @@ PIN, I0, I, _lcd_main_S0_count1_9
 PIN, O, O, _lcd_T1452_word_1
 END
 SYM, SYM_lcd_T1456_tree2_0, EQN, EQN=((I0*I1)+(I2*I3))
-PIN, I3, I, F_lcd_main_S0_count1_9
+PIN, I3, I, _lcd_main_S0_count1_9F0
 PIN, I2, I, _lcd_main_S0_T45_looptop
-PIN, I1, I, F_lcd_main_S0_count1_9
+PIN, I1, I, _lcd_main_S0_count1_9F0
 PIN, I0, I, _lcd_main_S0_S3_T13_endloop
 PIN, O, O, _lcd_T1456_tree2_0
 END
-PROG, fpgac, 1.0-beta-2F, "Fri Feb 17 19:34:55 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Feb 23 00:50:05 2006"
 SYM, FFin-_1_Running, INV
 PIN, I, I, GND
 PIN, O, O, FFin-_1_Running
@@ -4317,7 +4317,7 @@ PIN, I, I, _sram_tosun_0
 PIN, O, O, sram_tosun_v0
 END
 SYM, FFin-_sram_tosun_0, BUF
-PIN, I, I, F_sram_tosun_0
+PIN, I, I, _sram_tosun_0F2
 PIN, O, O, FFin-_sram_tosun_0
 END
 SYM, _sram_tosun_0, DFF
@@ -4331,7 +4331,7 @@ PIN, I, I, _sram_tosun_1
 PIN, O, O, sram_tosun_v1
 END
 SYM, FFin-_sram_tosun_1, BUF
-PIN, I, I, F_sram_tosun_1
+PIN, I, I, _sram_tosun_1F2
 PIN, O, O, FFin-_sram_tosun_1
 END
 SYM, _sram_tosun_1, DFF
@@ -4345,7 +4345,7 @@ PIN, I, I, _sram_tosun_2
 PIN, O, O, sram_tosun_v2
 END
 SYM, FFin-_sram_tosun_2, BUF
-PIN, I, I, F_sram_tosun_2
+PIN, I, I, _sram_tosun_2F2
 PIN, O, O, FFin-_sram_tosun_2
 END
 SYM, _sram_tosun_2, DFF
@@ -4359,7 +4359,7 @@ PIN, I, I, _sram_tosun_3
 PIN, O, O, sram_tosun_v3
 END
 SYM, FFin-_sram_tosun_3, BUF
-PIN, I, I, F_sram_tosun_3
+PIN, I, I, _sram_tosun_3F2
 PIN, O, O, FFin-_sram_tosun_3
 END
 SYM, _sram_tosun_3, DFF
@@ -4373,7 +4373,7 @@ PIN, I, I, _sram_tosun_4
 PIN, O, O, sram_tosun_v4
 END
 SYM, FFin-_sram_tosun_4, BUF
-PIN, I, I, F_sram_tosun_4
+PIN, I, I, _sram_tosun_4F2
 PIN, O, O, FFin-_sram_tosun_4
 END
 SYM, _sram_tosun_4, DFF
@@ -4387,7 +4387,7 @@ PIN, I, I, _sram_tosun_5
 PIN, O, O, sram_tosun_v5
 END
 SYM, FFin-_sram_tosun_5, BUF
-PIN, I, I, F_sram_tosun_5
+PIN, I, I, _sram_tosun_5F2
 PIN, O, O, FFin-_sram_tosun_5
 END
 SYM, _sram_tosun_5, DFF
@@ -4401,7 +4401,7 @@ PIN, I, I, _sram_tosun_6
 PIN, O, O, sram_tosun_v6
 END
 SYM, FFin-_sram_tosun_6, BUF
-PIN, I, I, F_sram_tosun_6
+PIN, I, I, _sram_tosun_6F2
 PIN, O, O, FFin-_sram_tosun_6
 END
 SYM, _sram_tosun_6, DFF
@@ -4415,7 +4415,7 @@ PIN, I, I, _sram_tosun_7
 PIN, O, O, sram_tosun_v7
 END
 SYM, FFin-_sram_tosun_7, BUF
-PIN, I, I, F_sram_tosun_7
+PIN, I, I, _sram_tosun_7F2
 PIN, O, O, FFin-_sram_tosun_7
 END
 SYM, _sram_tosun_7, DFF
@@ -4992,7 +4992,7 @@ PIN, O, O, sram_addr_v0
 END
 EXT, sram_addr_v0, O
 SYM, FFin-_sram_addr_0, BUF
-PIN, I, I, F_sram_addr_0
+PIN, I, I, _sram_addr_0F1
 PIN, O, O, FFin-_sram_addr_0
 END
 SYM, _sram_addr_0, DFF
@@ -5007,7 +5007,7 @@ PIN, O, O, sram_addr_v1
 END
 EXT, sram_addr_v1, O
 SYM, FFin-_sram_addr_1, BUF
-PIN, I, I, F_sram_addr_1
+PIN, I, I, _sram_addr_1F1
 PIN, O, O, FFin-_sram_addr_1
 END
 SYM, _sram_addr_1, DFF
@@ -5022,7 +5022,7 @@ PIN, O, O, sram_addr_v2
 END
 EXT, sram_addr_v2, O
 SYM, FFin-_sram_addr_2, BUF
-PIN, I, I, F_sram_addr_2
+PIN, I, I, _sram_addr_2F1
 PIN, O, O, FFin-_sram_addr_2
 END
 SYM, _sram_addr_2, DFF
@@ -5037,7 +5037,7 @@ PIN, O, O, sram_addr_v3
 END
 EXT, sram_addr_v3, O
 SYM, FFin-_sram_addr_3, BUF
-PIN, I, I, F_sram_addr_3
+PIN, I, I, _sram_addr_3F1
 PIN, O, O, FFin-_sram_addr_3
 END
 SYM, _sram_addr_3, DFF
@@ -5052,7 +5052,7 @@ PIN, O, O, sram_addr_v4
 END
 EXT, sram_addr_v4, O
 SYM, FFin-_sram_addr_4, BUF
-PIN, I, I, F_sram_addr_4
+PIN, I, I, _sram_addr_4F1
 PIN, O, O, FFin-_sram_addr_4
 END
 SYM, _sram_addr_4, DFF
@@ -5067,7 +5067,7 @@ PIN, O, O, sram_addr_v5
 END
 EXT, sram_addr_v5, O
 SYM, FFin-_sram_addr_5, BUF
-PIN, I, I, F_sram_addr_5
+PIN, I, I, _sram_addr_5F1
 PIN, O, O, FFin-_sram_addr_5
 END
 SYM, _sram_addr_5, DFF
@@ -5082,7 +5082,7 @@ PIN, O, O, sram_addr_v6
 END
 EXT, sram_addr_v6, O
 SYM, FFin-_sram_addr_6, BUF
-PIN, I, I, F_sram_addr_6
+PIN, I, I, _sram_addr_6F1
 PIN, O, O, FFin-_sram_addr_6
 END
 SYM, _sram_addr_6, DFF
@@ -5097,7 +5097,7 @@ PIN, O, O, sram_addr_v7
 END
 EXT, sram_addr_v7, O
 SYM, FFin-_sram_addr_7, BUF
-PIN, I, I, F_sram_addr_7
+PIN, I, I, _sram_addr_7F1
 PIN, O, O, FFin-_sram_addr_7
 END
 SYM, _sram_addr_7, DFF
@@ -5112,7 +5112,7 @@ PIN, O, O, sram_addr_v8
 END
 EXT, sram_addr_v8, O
 SYM, FFin-_sram_addr_8, BUF
-PIN, I, I, F_sram_addr_8
+PIN, I, I, _sram_addr_8F1
 PIN, O, O, FFin-_sram_addr_8
 END
 SYM, _sram_addr_8, DFF
@@ -5127,7 +5127,7 @@ PIN, O, O, sram_addr_v9
 END
 EXT, sram_addr_v9, O
 SYM, FFin-_sram_addr_9, BUF
-PIN, I, I, F_sram_addr_9
+PIN, I, I, _sram_addr_9F1
 PIN, O, O, FFin-_sram_addr_9
 END
 SYM, _sram_addr_9, DFF
@@ -5142,7 +5142,7 @@ PIN, O, O, sram_addr_v10
 END
 EXT, sram_addr_v10, O
 SYM, FFin-_sram_addr_10, BUF
-PIN, I, I, F_sram_addr_10
+PIN, I, I, _sram_addr_10F1
 PIN, O, O, FFin-_sram_addr_10
 END
 SYM, _sram_addr_10, DFF
@@ -5157,7 +5157,7 @@ PIN, O, O, sram_addr_v11
 END
 EXT, sram_addr_v11, O
 SYM, FFin-_sram_addr_11, BUF
-PIN, I, I, F_sram_addr_11
+PIN, I, I, _sram_addr_11F1
 PIN, O, O, FFin-_sram_addr_11
 END
 SYM, _sram_addr_11, DFF
@@ -5172,7 +5172,7 @@ PIN, O, O, sram_addr_v12
 END
 EXT, sram_addr_v12, O
 SYM, FFin-_sram_addr_12, BUF
-PIN, I, I, F_sram_addr_12
+PIN, I, I, _sram_addr_12F1
 PIN, O, O, FFin-_sram_addr_12
 END
 SYM, _sram_addr_12, DFF
@@ -5187,7 +5187,7 @@ PIN, O, O, sram_addr_v13
 END
 EXT, sram_addr_v13, O
 SYM, FFin-_sram_addr_13, BUF
-PIN, I, I, F_sram_addr_13
+PIN, I, I, _sram_addr_13F1
 PIN, O, O, FFin-_sram_addr_13
 END
 SYM, _sram_addr_13, DFF
@@ -5202,7 +5202,7 @@ PIN, O, O, sram_addr_v14
 END
 EXT, sram_addr_v14, O
 SYM, FFin-_sram_addr_14, BUF
-PIN, I, I, F_sram_addr_14
+PIN, I, I, _sram_addr_14F1
 PIN, O, O, FFin-_sram_addr_14
 END
 SYM, _sram_addr_14, DFF
@@ -6123,7 +6123,7 @@ PIN, I, I, _1_Running
 PIN, O, O, _1_main__state_C1
 END
 SYM, FFin-_1_main_S0_doinglcd, BUF
-PIN, I, I, F_1_main_S0_doinglcd
+PIN, I, I, _1_main_S0_doinglcdF0
 PIN, O, O, FFin-_1_main_S0_doinglcd
 END
 SYM, _1_main_S0_doinglcd, DFF
@@ -6135,7 +6135,7 @@ END
 SYM, FFin-_1_main_S0_write, EQN, EQN=((I0*~I2)+(I0*~I1))
 PIN, I2, I, _1_main_S0_lcd_has_acked
 PIN, I1, I, _sram_lcd_request
-PIN, I0, I, F_1_main_S0_write
+PIN, I0, I, _1_main_S0_writeF0
 PIN, O, O, FFin-_1_main_S0_write
 END
 SYM, _1_main_S0_write, DFF
@@ -6159,7 +6159,7 @@ SYM, FFin-_1_main_S0_request, EQN, EQN=((~I1*I2*~I3)+(I0*I2*~I3)+(I0*I1))
 PIN, I3, I, _1_main_S0_T25_looptop
 PIN, I2, I, _1_main_S0_request
 PIN, I1, I, _1_main_S0_S0_T34_looptop
-PIN, I0, I, F_1_main_S0_request
+PIN, I0, I, _1_main_S0_requestF0
 PIN, O, O, FFin-_1_main_S0_request
 END
 SYM, _1_main_S0_request, DFF
@@ -6193,7 +6193,7 @@ PIN, CE, I, VCC
 PIN, Q, O, _1_main_S0_S0_T34_looptop
 END
 SYM, FFin-_1_main_S0_S0_T35_endloop, EQN, EQN=((I0*I1))
-PIN, I1, I, F_1_main_S0_request
+PIN, I1, I, _1_main_S0_requestF0
 PIN, I0, I, _1_main_S0_S0_T34_looptop
 PIN, O, O, FFin-_1_main_S0_S0_T35_endloop
 END
@@ -6203,101 +6203,101 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, _1_main_S0_S0_T35_endloop
 END
-SYM, SYMF_sram_addr_0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_0F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_2
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_0
-PIN, O, O, F_sram_addr_0
+PIN, O, O, _sram_addr_0F0
 END
-SYM, SYMF_sram_addr_1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_1F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_3
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_1
-PIN, O, O, F_sram_addr_1
+PIN, O, O, _sram_addr_1F0
 END
-SYM, SYMF_sram_addr_2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_2F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_4
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_2
-PIN, O, O, F_sram_addr_2
+PIN, O, O, _sram_addr_2F0
 END
-SYM, SYMF_sram_addr_3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_3F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_5
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_3
-PIN, O, O, F_sram_addr_3
+PIN, O, O, _sram_addr_3F0
 END
-SYM, SYMF_sram_addr_4, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_4F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_6
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_4
-PIN, O, O, F_sram_addr_4
+PIN, O, O, _sram_addr_4F0
 END
-SYM, SYMF_sram_addr_5, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_5F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_7
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_5
-PIN, O, O, F_sram_addr_5
+PIN, O, O, _sram_addr_5F0
 END
-SYM, SYMF_sram_addr_6, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_6F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_8
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_6
-PIN, O, O, F_sram_addr_6
+PIN, O, O, _sram_addr_6F0
 END
-SYM, SYMF_sram_addr_7, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_7F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_9
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_7
-PIN, O, O, F_sram_addr_7
+PIN, O, O, _sram_addr_7F0
 END
-SYM, SYMF_sram_addr_8, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_8F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_10
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_8
-PIN, O, O, F_sram_addr_8
+PIN, O, O, _sram_addr_8F0
 END
-SYM, SYMF_sram_addr_9, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_9F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_11
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_9
-PIN, O, O, F_sram_addr_9
+PIN, O, O, _sram_addr_9F0
 END
-SYM, SYMF_sram_addr_10, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_10F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_12
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_10
-PIN, O, O, F_sram_addr_10
+PIN, O, O, _sram_addr_10F0
 END
-SYM, SYMF_sram_addr_11, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_11F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_13
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_11
-PIN, O, O, F_sram_addr_11
+PIN, O, O, _sram_addr_11F0
 END
-SYM, SYMF_sram_addr_12, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_12F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_14
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_12
-PIN, O, O, F_sram_addr_12
+PIN, O, O, _sram_addr_12F0
 END
-SYM, SYMF_sram_addr_13, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_13F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_15
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_13
-PIN, O, O, F_sram_addr_13
+PIN, O, O, _sram_addr_13F0
 END
-SYM, SYMF_sram_addr_14, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_addr_14F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_address_16
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _sram_addr_14
-PIN, O, O, F_sram_addr_14
+PIN, O, O, _sram_addr_14F0
 END
-SYM, SYMF_1_main_S0_write, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_1_main_S0_writeF0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_sun_write
 PIN, I1, I, _sram_sun_request
 PIN, I0, I, _1_main_S0_write
-PIN, O, O, F_1_main_S0_write
+PIN, O, O, _1_main_S0_writeF0
 END
 SYM, SYM_1_main_S0_S0_T42_comp, EQN, EQN=((~I1*~I2*~I3)+(~I0*~I2*~I3))
 PIN, I3, I, _1_main_S0_request
@@ -6306,124 +6306,124 @@ PIN, I1, I, _1_main_S0_lcd_has_acked
 PIN, I0, I, _sram_lcd_request
 PIN, O, O, _1_main_S0_S0_T42_comp
 END
-SYM, SYMF_1_main_S0_doinglcd, EQN, EQN=((I0*I1)+(~I2*I3))
+SYM, SYM_1_main_S0_doinglcdF0, EQN, EQN=((I0*I1)+(~I2*I3))
 PIN, I3, I, _1_main_S0_doinglcd
 PIN, I2, I, _sram_sun_request
 PIN, I1, I, _1_main_S0_lcd_has_acked
 PIN, I0, I, _sram_lcd_request
-PIN, O, O, F_1_main_S0_doinglcd
+PIN, O, O, _1_main_S0_doinglcdF0
 END
-SYM, SYMF_sram_addr_0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_0F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_2
-PIN, I0, I, F_sram_addr_0
-PIN, O, O, F_sram_addr_0
+PIN, I0, I, _sram_addr_0F0
+PIN, O, O, _sram_addr_0F1
 END
-SYM, SYMF_sram_addr_1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_1F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_3
-PIN, I0, I, F_sram_addr_1
-PIN, O, O, F_sram_addr_1
+PIN, I0, I, _sram_addr_1F0
+PIN, O, O, _sram_addr_1F1
 END
-SYM, SYMF_sram_addr_2, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_2F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_4
-PIN, I0, I, F_sram_addr_2
-PIN, O, O, F_sram_addr_2
+PIN, I0, I, _sram_addr_2F0
+PIN, O, O, _sram_addr_2F1
 END
-SYM, SYMF_sram_addr_3, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_3F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_5
-PIN, I0, I, F_sram_addr_3
-PIN, O, O, F_sram_addr_3
+PIN, I0, I, _sram_addr_3F0
+PIN, O, O, _sram_addr_3F1
 END
-SYM, SYMF_sram_addr_4, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_4F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_6
-PIN, I0, I, F_sram_addr_4
-PIN, O, O, F_sram_addr_4
+PIN, I0, I, _sram_addr_4F0
+PIN, O, O, _sram_addr_4F1
 END
-SYM, SYMF_sram_addr_5, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_5F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_7
-PIN, I0, I, F_sram_addr_5
-PIN, O, O, F_sram_addr_5
+PIN, I0, I, _sram_addr_5F0
+PIN, O, O, _sram_addr_5F1
 END
-SYM, SYMF_sram_addr_6, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_6F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_8
-PIN, I0, I, F_sram_addr_6
-PIN, O, O, F_sram_addr_6
+PIN, I0, I, _sram_addr_6F0
+PIN, O, O, _sram_addr_6F1
 END
-SYM, SYMF_sram_addr_7, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_7F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_9
-PIN, I0, I, F_sram_addr_7
-PIN, O, O, F_sram_addr_7
+PIN, I0, I, _sram_addr_7F0
+PIN, O, O, _sram_addr_7F1
 END
-SYM, SYMF_sram_addr_8, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_8F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_10
-PIN, I0, I, F_sram_addr_8
-PIN, O, O, F_sram_addr_8
+PIN, I0, I, _sram_addr_8F0
+PIN, O, O, _sram_addr_8F1
 END
-SYM, SYMF_sram_addr_9, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_9F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_11
-PIN, I0, I, F_sram_addr_9
-PIN, O, O, F_sram_addr_9
+PIN, I0, I, _sram_addr_9F0
+PIN, O, O, _sram_addr_9F1
 END
-SYM, SYMF_sram_addr_10, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_10F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_12
-PIN, I0, I, F_sram_addr_10
-PIN, O, O, F_sram_addr_10
+PIN, I0, I, _sram_addr_10F0
+PIN, O, O, _sram_addr_10F1
 END
-SYM, SYMF_sram_addr_11, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_11F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_13
-PIN, I0, I, F_sram_addr_11
-PIN, O, O, F_sram_addr_11
+PIN, I0, I, _sram_addr_11F0
+PIN, O, O, _sram_addr_11F1
 END
-SYM, SYMF_sram_addr_12, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_12F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_14
-PIN, I0, I, F_sram_addr_12
-PIN, O, O, F_sram_addr_12
+PIN, I0, I, _sram_addr_12F0
+PIN, O, O, _sram_addr_12F1
 END
-SYM, SYMF_sram_addr_13, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_13F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_15
-PIN, I0, I, F_sram_addr_13
-PIN, O, O, F_sram_addr_13
+PIN, I0, I, _sram_addr_13F0
+PIN, O, O, _sram_addr_13F1
 END
-SYM, SYMF_sram_addr_14, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_addr_14F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _1_main_S0_lcd_has_acked
 PIN, I2, I, _sram_lcd_request
 PIN, I1, I, _sram_lcd_address_16
-PIN, I0, I, F_sram_addr_14
-PIN, O, O, F_sram_addr_14
+PIN, I0, I, _sram_addr_14F0
+PIN, O, O, _sram_addr_14F1
 END
-SYM, SYMF_1_main_S0_request, EQN, EQN=((I0*I1)+(I2)+(I3))
+SYM, SYM_1_main_S0_requestF0, EQN, EQN=((I0*I1)+(I2)+(I3))
 PIN, I3, I, _1_main_S0_request
 PIN, I2, I, _sram_sun_request
 PIN, I1, I, _1_main_S0_lcd_has_acked
 PIN, I0, I, _sram_lcd_request
-PIN, O, O, F_1_main_S0_request
+PIN, O, O, _1_main_S0_requestF0
 END
 SYM, SYM_1_main_S0_S0_T104_twoop_0, EQN, EQN=((I0*~I3)+(I0*~I2)+(I0*~I1))
 PIN, I3, I, _sram_sun_address_1
@@ -6505,149 +6505,149 @@ PIN, I1, I, _1_main_S0_S0_T145_endloop
 PIN, I0, I, _1_main_S0_doinglcd
 PIN, O, O, _1_main_S0_S0_S6__state_C52
 END
-SYM, SYMF_sram_tosun_0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_0F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_8
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_24
-PIN, O, O, F_sram_tosun_0
+PIN, O, O, _sram_tosun_0F0
 END
-SYM, SYMF_sram_tosun_0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_0F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_0
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_16
-PIN, O, O, F_sram_tosun_0
+PIN, O, O, _sram_tosun_0F1
 END
-SYM, SYMF_sram_tosun_1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_1F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_9
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_25
-PIN, O, O, F_sram_tosun_1
+PIN, O, O, _sram_tosun_1F0
 END
-SYM, SYMF_sram_tosun_1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_1F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_1
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_17
-PIN, O, O, F_sram_tosun_1
+PIN, O, O, _sram_tosun_1F1
 END
-SYM, SYMF_sram_tosun_2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_2F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_10
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_26
-PIN, O, O, F_sram_tosun_2
+PIN, O, O, _sram_tosun_2F0
 END
-SYM, SYMF_sram_tosun_2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_2F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_2
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_18
-PIN, O, O, F_sram_tosun_2
+PIN, O, O, _sram_tosun_2F1
 END
-SYM, SYMF_sram_tosun_3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_3F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_11
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_27
-PIN, O, O, F_sram_tosun_3
+PIN, O, O, _sram_tosun_3F0
 END
-SYM, SYMF_sram_tosun_3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_3F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_3
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_19
-PIN, O, O, F_sram_tosun_3
+PIN, O, O, _sram_tosun_3F1
 END
-SYM, SYMF_sram_tosun_4, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_4F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_12
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_28
-PIN, O, O, F_sram_tosun_4
+PIN, O, O, _sram_tosun_4F0
 END
-SYM, SYMF_sram_tosun_4, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_4F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_4
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_20
-PIN, O, O, F_sram_tosun_4
+PIN, O, O, _sram_tosun_4F1
 END
-SYM, SYMF_sram_tosun_5, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_5F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_13
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_29
-PIN, O, O, F_sram_tosun_5
+PIN, O, O, _sram_tosun_5F0
 END
-SYM, SYMF_sram_tosun_5, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_5F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_5
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_21
-PIN, O, O, F_sram_tosun_5
+PIN, O, O, _sram_tosun_5F1
 END
-SYM, SYMF_sram_tosun_6, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_6F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_14
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_30
-PIN, O, O, F_sram_tosun_6
+PIN, O, O, _sram_tosun_6F0
 END
-SYM, SYMF_sram_tosun_6, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_6F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_6
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_22
-PIN, O, O, F_sram_tosun_6
+PIN, O, O, _sram_tosun_6F1
 END
-SYM, SYMF_sram_tosun_7, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_7F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_15
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_31
-PIN, O, O, F_sram_tosun_7
+PIN, O, O, _sram_tosun_7F0
 END
-SYM, SYMF_sram_tosun_7, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+SYM, SYM_sram_tosun_7F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
 PIN, I2, I, _sram_fromram_7
 PIN, I1, I, _sram_sun_address_1
 PIN, I0, I, _sram_fromram_23
-PIN, O, O, F_sram_tosun_7
+PIN, O, O, _sram_tosun_7F1
 END
-SYM, SYMF_sram_tosun_0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_0
+SYM, SYM_sram_tosun_0F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_0F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_0
-PIN, O, O, F_sram_tosun_0
+PIN, I0, I, _sram_tosun_0F0
+PIN, O, O, _sram_tosun_0F2
 END
-SYM, SYMF_sram_tosun_1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_1
+SYM, SYM_sram_tosun_1F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_1F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_1
-PIN, O, O, F_sram_tosun_1
+PIN, I0, I, _sram_tosun_1F0
+PIN, O, O, _sram_tosun_1F2
 END
-SYM, SYMF_sram_tosun_2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_2
+SYM, SYM_sram_tosun_2F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_2F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_2
-PIN, O, O, F_sram_tosun_2
+PIN, I0, I, _sram_tosun_2F0
+PIN, O, O, _sram_tosun_2F2
 END
-SYM, SYMF_sram_tosun_3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_3
+SYM, SYM_sram_tosun_3F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_3F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_3
-PIN, O, O, F_sram_tosun_3
+PIN, I0, I, _sram_tosun_3F0
+PIN, O, O, _sram_tosun_3F2
 END
-SYM, SYMF_sram_tosun_4, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_4
+SYM, SYM_sram_tosun_4F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_4F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_4
-PIN, O, O, F_sram_tosun_4
+PIN, I0, I, _sram_tosun_4F0
+PIN, O, O, _sram_tosun_4F2
 END
-SYM, SYMF_sram_tosun_5, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_5
+SYM, SYM_sram_tosun_5F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_5F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_5
-PIN, O, O, F_sram_tosun_5
+PIN, I0, I, _sram_tosun_5F0
+PIN, O, O, _sram_tosun_5F2
 END
-SYM, SYMF_sram_tosun_6, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_6
+SYM, SYM_sram_tosun_6F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_6F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_6
-PIN, O, O, F_sram_tosun_6
+PIN, I0, I, _sram_tosun_6F0
+PIN, O, O, _sram_tosun_6F2
 END
-SYM, SYMF_sram_tosun_7, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
-PIN, I2, I, F_sram_tosun_7
+SYM, SYM_sram_tosun_7F2, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2))
+PIN, I2, I, _sram_tosun_7F1
 PIN, I1, I, _sram_sun_address_0
-PIN, I0, I, F_sram_tosun_7
-PIN, O, O, F_sram_tosun_7
+PIN, I0, I, _sram_tosun_7F0
+PIN, O, O, _sram_tosun_7F2
 END
 SYM, FFin-_1_main_S0_S0_S6_T19_looptop, BUF
 PIN, I, I, GND
@@ -6747,7 +6747,7 @@ PIN, I1, I, _1_T70_word_2
 PIN, I0, I, _1_T70_word_3
 PIN, O, O, _1_T77_tree2_0
 END
-PROG, fpgac, 1.0-beta-2F, "Fri Feb 17 19:34:56 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Feb 23 00:50:06 2006"
 SYM, FFin-_2_Running, INV
 PIN, I, I, GND
 PIN, O, O, FFin-_2_Running
@@ -7699,7 +7699,7 @@ PIN, Q, O, _sun_p2_11
 END
 SYM, FFin-_2_do_sram_access_T0_init, EQN, EQN=((I0*I1)+(I2))
 PIN, I2, I, _2_T177_tree2_0
-PIN, I1, I, F_2__state
+PIN, I1, I, _2__stateF2
 PIN, I0, I, _2_main_S0_S0_T113_tree2
 PIN, O, O, FFin-_2_do_sram_access_T0_init
 END
@@ -7784,75 +7784,75 @@ PIN, I1, I, _sram_sun_address_13
 PIN, I0, I, _sram_sun_address_14
 PIN, O, O, _2_do_sram_access_S0_T43_car_7
 END
-SYM, SYMF_sram_sun_address_3, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+SYM, SYM_sram_sun_address_3F0, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
 PIN, I3, I, _sram_sun_address_1
 PIN, I2, I, _sram_sun_address_0
 PIN, I1, I, _sram_sun_address_2
 PIN, I0, I, _sram_sun_address_3
-PIN, O, O, F_sram_sun_address_3
+PIN, O, O, _sram_sun_address_3F0
 END
-SYM, SYMF_sram_sun_address_6, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
+SYM, SYM_sram_sun_address_6F0, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))
 PIN, I3, I, _2_do_sram_access_S0_T31_car_4
 PIN, I2, I, _sram_sun_address_4
 PIN, I1, I, _sram_sun_address_5
 PIN, I0, I, _sram_sun_address_6
-PIN, O, O, F_sram_sun_address_6
+PIN, O, O, _sram_sun_address_6F0
 END
-SYM, SYMF_sram_sun_address_9, EQN, EQN=((I0*I1*I2*~I3)+(~I2*I3)+(~I1*I3)+(~I0*I3))
+SYM, SYM_sram_sun_address_9F0, EQN, EQN=((I0*I1*I2*~I3)+(~I2*I3)+(~I1*I3)+(~I0*I3))
 PIN, I3, I, _sram_sun_address_9
 PIN, I2, I, _sram_sun_address_8
 PIN, I1, I, _2_do_sram_access_S0_T31_car_7
 PIN, I0, I, _sram_sun_address_7
-PIN, O, O, F_sram_sun_address_9
+PIN, O, O, _sram_sun_address_9F0
 END
-SYM, SYMF_sram_sun_address_10, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+SYM, SYM_sram_sun_address_10F0, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
 PIN, I3, I, _sram_sun_address_9
 PIN, I2, I, _sram_sun_address_8
 PIN, I1, I, _sram_sun_address_10
 PIN, I0, I, _2_do_sram_access_S0_T31_car_8
-PIN, O, O, F_sram_sun_address_10
+PIN, O, O, _sram_sun_address_10F0
 END
-SYM, SYMF_sram_sun_address_11, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_sun_address_11F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _2_do_sram_access_S0_T31_car_7
 PIN, I2, I, _sram_sun_address_7
 PIN, I1, I, _2_do_sram_access_S0_T42_add_3
 PIN, I0, I, _sram_sun_address_11
-PIN, O, O, F_sram_sun_address_11
+PIN, O, O, _sram_sun_address_11F0
 END
-SYM, SYMF_sram_sun_address_12, EQN, EQN=((I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(~I0*I2))
+SYM, SYM_sram_sun_address_12F0, EQN, EQN=((I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(~I0*I2))
 PIN, I3, I, _2_do_sram_access_S0_T43_car_4
 PIN, I2, I, _sram_sun_address_12
 PIN, I1, I, _2_do_sram_access_S0_T31_car_7
 PIN, I0, I, _sram_sun_address_7
-PIN, O, O, F_sram_sun_address_12
+PIN, O, O, _sram_sun_address_12F0
 END
-SYM, SYMF_sram_sun_address_13, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+SYM, SYM_sram_sun_address_13F0, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
 PIN, I3, I, _2_do_sram_access_S0_T43_car_4
 PIN, I2, I, _sram_sun_address_12
 PIN, I1, I, _sram_sun_address_13
 PIN, I0, I, _2_do_sram_access_S0_T31_car_8
-PIN, O, O, F_sram_sun_address_13
+PIN, O, O, _sram_sun_address_13F0
 END
-SYM, SYMF_sram_sun_address_14, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
+SYM, SYM_sram_sun_address_14F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))
 PIN, I3, I, _2_do_sram_access_S0_T31_car_7
 PIN, I2, I, _sram_sun_address_7
 PIN, I1, I, _2_do_sram_access_S0_T42_add_6
 PIN, I0, I, _sram_sun_address_14
-PIN, O, O, F_sram_sun_address_14
+PIN, O, O, _sram_sun_address_14F0
 END
-SYM, SYMF_sram_sun_address_15, EQN, EQN=((I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(~I0*I2))
+SYM, SYM_sram_sun_address_15F0, EQN, EQN=((I0*I1*~I2*I3)+(I2*~I3)+(~I1*I2)+(~I0*I2))
 PIN, I3, I, _2_do_sram_access_S0_T43_car_7
 PIN, I2, I, _sram_sun_address_15
 PIN, I1, I, _2_do_sram_access_S0_T31_car_7
 PIN, I0, I, _sram_sun_address_7
-PIN, O, O, F_sram_sun_address_15
+PIN, O, O, _sram_sun_address_15F0
 END
-SYM, SYMF_sram_sun_address_16, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
+SYM, SYM_sram_sun_address_16F0, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1))
 PIN, I3, I, _2_do_sram_access_S0_T43_car_7
 PIN, I2, I, _sram_sun_address_15
 PIN, I1, I, _sram_sun_address_16
 PIN, I0, I, _2_do_sram_access_S0_T31_car_8
-PIN, O, O, F_sram_sun_address_16
+PIN, O, O, _sram_sun_address_16F0
 END
 SYM, FFin-_2_main_S0_sunflag, BUF
 PIN, I, I, _sun_p2_8
@@ -7867,7 +7867,7 @@ END
 SYM, FFin-_2_main_S0_myflag, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(~I0*I2*I3))
 PIN, I3, I, _2_main_S0_S0_S2_S0_T15_calling
 PIN, I2, I, _2_do_sram_access_T2_final
-PIN, I1, I, F_2__state
+PIN, I1, I, _2__stateF1
 PIN, I0, I, _2_main_S0_myflag
 PIN, O, O, FFin-_2_main_S0_myflag
 END
@@ -7934,7 +7934,7 @@ PIN, I0, I, _sun_p1_4
 PIN, O, O, _2_main_S0_S0_T73_tree2
 END
 SYM, FFin-_2_main_S0_S0_S1_T6_calling, EQN, EQN=((~I0*I1)+(I2))
-PIN, I2, I, F_2__state
+PIN, I2, I, _2__stateF0
 PIN, I1, I, _2_main_S0_S0_S1_T6_calling
 PIN, I0, I, _2_do_sram_access_T2_final
 PIN, O, O, FFin-_2_main_S0_S0_S1_T6_calling
@@ -7945,11 +7945,11 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, _2_main_S0_S0_S1_T6_calling
 END
-SYM, SYMF_2__state, EQN, EQN=((I0*I1*I2))
+SYM, SYM_2__stateF0, EQN, EQN=((I0*I1*I2))
 PIN, I2, I, _2_main_S0_S0_T73_tree2
 PIN, I1, I, _2_main_S0_S0_T57_comp
 PIN, I0, I, _2_main_S0_S0_T10_endloop
-PIN, O, O, F_2__state
+PIN, O, O, _2__stateF0
 END
 SYM, SYM_2_main_S0_S0_T77_comp, EQN, EQN=((~I2)+(I0)+(I1)+(I3))
 PIN, I3, I, _sun_p1_1
@@ -7965,15 +7965,15 @@ PIN, I1, I, _sun_p1_3
 PIN, I0, I, _sun_p1_4
 PIN, O, O, _2_main_S0_S0_T93_tree2
 END
-SYM, SYMF_2__state, EQN, EQN=((I0*I1*I2*I3))
+SYM, SYM_2__stateF1, EQN, EQN=((I0*I1*I2*I3))
 PIN, I3, I, _2_main_S0_S0_T93_tree2
 PIN, I2, I, _2_main_S0_S0_T77_comp
 PIN, I1, I, _2_main_S0_S0_T57_comp
 PIN, I0, I, _2_main_S0_S0_T10_endloop
-PIN, O, O, F_2__state
+PIN, O, O, _2__stateF1
 END
 SYM, FFin-_2_main_S0_S0_S2_T12_looptop, EQN, EQN=((I0*~I1)+(~I1*I2))
-PIN, I2, I, F_2__state
+PIN, I2, I, _2__stateF1
 PIN, I1, I, _sun_p2_9
 PIN, I0, I, _2_main_S0_S0_S2_S0_T86_endloop
 PIN, O, O, FFin-_2_main_S0_S0_S2_T12_looptop
@@ -7985,7 +7985,7 @@ PIN, CE, I, VCC
 PIN, Q, O, _2_main_S0_S0_S2_T12_looptop
 END
 SYM, FFin-_2_main_S0_S0_S2_T13_endloop, EQN, EQN=((I0*I1)+(I1*I2))
-PIN, I2, I, F_2__state
+PIN, I2, I, _2__stateF1
 PIN, I1, I, _sun_p2_9
 PIN, I0, I, _2_main_S0_S0_S2_S0_T86_endloop
 PIN, O, O, FFin-_2_main_S0_S0_S2_T13_endloop
@@ -8074,15 +8074,15 @@ PIN, I1, I, _sun_p1_3
 PIN, I0, I, _sun_p1_4
 PIN, O, O, _2_main_S0_S0_T113_tree2
 END
-SYM, SYMF_2__state, EQN, EQN=((I0*I1*I2*I3))
+SYM, SYM_2__stateF2, EQN, EQN=((I0*I1*I2*I3))
 PIN, I3, I, _2_main_S0_S0_T97_comp
 PIN, I2, I, _2_main_S0_S0_T77_comp
 PIN, I1, I, _2_main_S0_S0_T57_comp
 PIN, I0, I, _2_main_S0_S0_T10_endloop
-PIN, O, O, F_2__state
+PIN, O, O, _2__stateF2
 END
 SYM, FFin-_2_main_S0_S0_S3_T6_calling, EQN, EQN=((~I0*I1)+(I2*I3))
-PIN, I3, I, F_2__state
+PIN, I3, I, _2__stateF2
 PIN, I2, I, _2_main_S0_S0_T113_tree2
 PIN, I1, I, _2_main_S0_S0_S3_T6_calling
 PIN, I0, I, _2_do_sram_access_T2_final
@@ -8103,7 +8103,7 @@ PIN, O, O, _2_main_S0_S0_T116_comp
 END
 SYM, FFin-_2_main_S0_S0_T121_iftick, EQN, EQN=((I0*I1))
 PIN, I1, I, _2_main_S0_S0_T116_comp
-PIN, I0, I, F_2__state
+PIN, I0, I, _2__stateF2
 PIN, O, O, FFin-_2_main_S0_S0_T121_iftick
 END
 SYM, _2_main_S0_S0_T121_iftick, DFF
@@ -8112,12 +8112,12 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, _2_main_S0_S0_T121_iftick
 END
-SYM, SYMF_2__state, EQN, EQN=((I2*I3)+(I0)+(I1))
+SYM, SYM_2__stateF3, EQN, EQN=((I2*I3)+(I0)+(I1))
 PIN, I3, I, _2_main_S0_S0_S3_T6_calling
 PIN, I2, I, _2_do_sram_access_T2_final
 PIN, I1, I, _2_main_S0_S0_T121_iftick
 PIN, I0, I, _2_main_S0_S0_S2_T13_endloop
-PIN, O, O, F_2__state
+PIN, O, O, _2__stateF3
 END
 SYM, FFin-_2_main_S0_S0_T193_iftick, EQN, EQN=((I0*I1))
 PIN, I1, I, _2_main_S0_S0_T53_tree2
@@ -8152,7 +8152,7 @@ PIN, CE, I, VCC
 PIN, Q, O, _2_main_S0_S0_T231_endloop
 END
 SYM, SYM_2_main_S0_S0_T236_twoop, EQN, EQN=((I1*I2)+(I0)+(I3))
-PIN, I3, I, F_2__state
+PIN, I3, I, _2__stateF3
 PIN, I2, I, _2_main_S0_S0_S1_T6_calling
 PIN, I1, I, _2_do_sram_access_T2_final
 PIN, I0, I, _2_main_S0_S0_T193_iftick
@@ -8205,7 +8205,7 @@ END
 SYM, SYM_2_T36_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_3
-PIN, I0, I, F_sram_sun_address_3
+PIN, I0, I, _sram_sun_address_3F0
 PIN, O, O, _2_T36_twoop
 END
 SYM, SYM_2_T45_twoop, EQN, EQN=((I0*~I1*I2)+(I1*~I2)+(~I0*I1))
@@ -8224,7 +8224,7 @@ END
 SYM, SYM_2_T63_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_6
-PIN, I0, I, F_sram_sun_address_6
+PIN, I0, I, _sram_sun_address_6F0
 PIN, O, O, _2_T63_twoop
 END
 SYM, SYM_2_T72_twoop, EQN, EQN=((I0*~I1*I2)+(I1*~I2)+(~I0*I1))
@@ -8243,53 +8243,53 @@ END
 SYM, SYM_2_T90_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_9
-PIN, I0, I, F_sram_sun_address_9
+PIN, I0, I, _sram_sun_address_9F0
 PIN, O, O, _2_T90_twoop
 END
 SYM, SYM_2_T99_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_10
-PIN, I0, I, F_sram_sun_address_10
+PIN, I0, I, _sram_sun_address_10F0
 PIN, O, O, _2_T99_twoop
 END
 SYM, SYM_2_T108_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_11
-PIN, I0, I, F_sram_sun_address_11
+PIN, I0, I, _sram_sun_address_11F0
 PIN, O, O, _2_T108_twoop
 END
 SYM, SYM_2_T117_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_12
-PIN, I0, I, F_sram_sun_address_12
+PIN, I0, I, _sram_sun_address_12F0
 PIN, O, O, _2_T117_twoop
 END
 SYM, SYM_2_T126_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_13
-PIN, I0, I, F_sram_sun_address_13
+PIN, I0, I, _sram_sun_address_13F0
 PIN, O, O, _2_T126_twoop
 END
 SYM, SYM_2_T135_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_14
-PIN, I0, I, F_sram_sun_address_14
+PIN, I0, I, _sram_sun_address_14F0
 PIN, O, O, _2_T135_twoop
 END
 SYM, SYM_2_T144_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_15
-PIN, I0, I, F_sram_sun_address_15
+PIN, I0, I, _sram_sun_address_15F0
 PIN, O, O, _2_T144_twoop
 END
 SYM, SYM_2_T153_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2))
 PIN, I2, I, _2_do_sram_access_S0_T11_endloop
 PIN, I1, I, _sram_sun_address_16
-PIN, I0, I, F_sram_sun_address_16
+PIN, I0, I, _sram_sun_address_16F0
 PIN, O, O, _2_T153_twoop
 END
 SYM, SYM_2_T173_word_1, EQN, EQN=((I0*~I2)+(I0*~I1))
-PIN, I2, I, F_2__state
+PIN, I2, I, _2__stateF2
 PIN, I1, I, _2_main_S0_S0_T113_tree2
 PIN, I0, I, _sram_sun_write
 PIN, O, O, _2_T173_word_1
@@ -8304,21 +8304,21 @@ END
 SYM, SYM_2_T180_word_1, EQN, EQN=((I0*I1)+(I2*I3))
 PIN, I3, I, _2_main_S0_S0_S2_S0_T15_calling
 PIN, I2, I, _2_do_sram_access_T2_final
-PIN, I1, I, F_2__state
+PIN, I1, I, _2__stateF2
 PIN, I0, I, _2_main_S0_S0_T113_tree2
 PIN, O, O, _2_T180_word_1
 END
 SYM, SYM_2_T180_word_2, EQN, EQN=((I0*I1)+(I2*I3))
 PIN, I3, I, _2_main_S0_S0_T116_comp
-PIN, I2, I, F_2__state
+PIN, I2, I, _2__stateF2
 PIN, I1, I, _2_main_S0_S0_T53_tree2
 PIN, I0, I, _2_main_S0_S0_T10_endloop
 PIN, O, O, _2_T180_word_2
 END
 SYM, SYM_2_T184_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3))
 PIN, I3, I, _2_main_S0_T9_looptop
-PIN, I2, I, F_2__state
-PIN, I1, I, F_2__state
+PIN, I2, I, _2__stateF0
+PIN, I1, I, _2__stateF1
 PIN, I0, I, _2_main_S0_S0_T231_endloop
 PIN, O, O, _2_T184_tree2_0
 END
@@ -8393,7 +8393,7 @@ SYM, SYM_2_T319_tree2_0, EQN, EQN=((I1*I2*I3)+(I0))
 PIN, I3, I, _2_main_S0_S0_T73_tree2
 PIN, I2, I, _2_main_S0_S0_T57_comp
 PIN, I1, I, _2_main_S0_S0_T10_endloop
-PIN, I0, I, F_2__state
+PIN, I0, I, _2__stateF1
 PIN, O, O, _2_T319_tree2_0
 END
 SYM, SYM_2_T321_comp, EQN, EQN=((~I0*~I1*~I2*~I3))
@@ -8405,8 +8405,8 @@ PIN, O, O, _2_T321_comp
 END
 SYM, SYM_2_T334_tree2_1, EQN, EQN=((I0)+(I1)+(I2)+(I3))
 PIN, I3, I, _2_main_S0_T9_looptop
-PIN, I2, I, F_2__state
-PIN, I1, I, F_2__state
+PIN, I2, I, _2__stateF0
+PIN, I1, I, _2__stateF1
 PIN, I0, I, _2_T180_word_1
 PIN, O, O, _2_T334_tree2_1
 END
