@@ -55,9 +55,15 @@ static printEQN(struct bit *b, int count);
 static printAND(int i, QMtab table[], int count, struct bit *b);
 
 char *bitname_cnf(struct bit *b) {
-    char *n = b->variable->name;
+    char *n;
 
-    if(*n == '_') n++;
+    if(b->name) n=b->name;
+    else if(b->variable) n = b->variable->name;
+
+    while(*n == '_') n++;
+
+    if(*n) return(n);
+
 
     if(b->variable->width == 1) {
         if(b->flags & SYM_VCC) {
