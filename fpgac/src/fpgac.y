@@ -904,6 +904,9 @@ struct variable * MapStructureVars(struct variable *v, struct varlist *vl) {
         new->flags |= SYM_STRUCT_MEMBER;
         if(vl->variable->arraysize)
             CreateArray(new, vl->variable->arraysize);
+        if(new->type & TYPE_INPUT) inputport(new, 0);
+        if(new->type & TYPE_BUS) busport(new, 0);
+        if(new->type & TYPE_OUTPUT) outputport(new, 0);
     }
     new->parent = v;
     new->offset = v->width;
@@ -1520,6 +1523,7 @@ makeff(struct variable *v) {
 
     if(v->flags & (SYM_FF | SYM_TEMP | SYM_LITERAL | SYM_ARRAY))
 	return;
+    if(v->members) return;
     for(b = v->bits; b; b = b->next) {
 	b->bit->flags |= SYM_FF;
 	b->bit->flags &= ~BIT_TEMP;
@@ -4164,6 +4168,7 @@ lhsidentifier:  IDENTIFIER COLON INTEGER
 
 		| structref
                 {
+		    $$ = $1;
 		    if($1.v->members)
 		        error2("Structure assignments are not supported:", $1.v->copyof->name+1);
 		}
@@ -4204,6 +4209,7 @@ oldidentifier:	IDENTIFIER COLON INTEGER
 
 		| structref
                 {
+		    $$ = $1;
 		    if($1.v->members)
 		        error2("Structure references not supported:", $1.v->copyof->name+1);
 		}
