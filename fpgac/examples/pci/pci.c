@@ -1,8 +1,10 @@
 /*
- * Generic Target Mode PCI Interface for FpgaC Applications
+ * pci.c - Generic Target Mode PCI Interface for FpgaC Applications
+ * copyright 2006 by John Bass, DMS Design under FpgaC BSD License
  *
  *  NOTE: This is NOT complete yet .... still a work in progress
  */
+
 #include "pci.h"
 
 /*
