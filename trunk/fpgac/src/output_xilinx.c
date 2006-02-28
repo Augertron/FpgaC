@@ -93,11 +93,12 @@ static printExt(char *extname, char *type, char *pin) {
 extern char Revision[];
 
 char *bitname_xnf(struct bit *b) {
-    char *n = b->variable->name;
+    char *n;
 
     if(b->name) n=b->name;
+    else if(b->variable) n = b->variable->name;
 
-    if(*n == '_') n++;
+    while(*n == '_') n++;
 
     if(*n) return(n);
  
