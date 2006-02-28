@@ -1,0 +1,23 @@
+PCI Target Mode demo code -- work in progress -- need Fpgac fixes
+
+This project is waiting on a bug fix for io variables in structures.
+It currently doesn't compile, but will in another day or so.
+
+This is an example of interfacing to a synchronous bus with FpgaC.
+
+The fpgac_process pci is designed to run directly off the PCI bus
+clock, and be a standards conformant PCI 2.2 target mode interface.
+
+The design is based on a one hot state machine using the variables
+target_sm and next_target_sm. There is one if statement per state,
+plus an async reset state. The fpgac_process pci is invoked for
+each PCI clock, processing the current state, and then updating
+next_target_sm state to target_sm. 
+
+The use of the one hot allows the if statements for each state to
+be dependent on a single bit AND operation for the conditional,
+and avoids doing a parallel subtract comparison if this was a
+normal char/int C variable. There is also an excess of masking to
+trim bits (particularly the sign bits), and shifts which are not
+done at runtime, but by the compiler, thus they are "free" since
+they do not create additional logic.
