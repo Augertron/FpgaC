@@ -326,6 +326,8 @@ fpgac_input			return(newtoken(INPUT));
 
 fpgac_output			return(newtoken(OUTPUT));
 
+fpgac_tristate			return(newtoken(TRISTATE));
+
 fpgac_mailbox			return(newtoken(MAILBOX));
 
 fpgac_process			return(newtoken(PROCESS));
@@ -365,6 +367,18 @@ return				return(newtoken(RETURN));
 ^#[ \t]*pragma[ \t]*fpgac_portflags	return(newtoken(PORTFLAGS));
 
 ^#[ \t]*pragma[ \t]*fpgac_intbits	return(newtoken(INTBITS));
+
+^#[ \t]*pragma[ \t]*fpgac_shortbits	return(newtoken(SHORTBITS));
+
+^#[ \t]*pragma[ \t]*fpgac_longbits	return(newtoken(LONGBITS));
+
+^#[ \t]*pragma[ \t]*fpgac_longlongbits	return(newtoken(LONGLONGBITS));
+
+^#[ \t]*pragma[ \t]*fpgac_floatbits	return(newtoken(FLOATBITS));
+
+^#[ \t]*pragma[ \t]*fpgac_doublebits	return(newtoken(DOUBLEBITS));
+
+^#[ \t]*pragma[ \t]*fpgac_longdoublebits	return(newtoken(LONGDOUBLEBITS));
 
 ^#[ \t]+[0-9]+[ \t]+"$pragma"[ \t]+fpgac_intbits	{
 				    /* DEC and SGI cpps do this to #pragma */
