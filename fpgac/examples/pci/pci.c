@@ -46,8 +46,9 @@ fpgac_process pci() {
 
     next_target_sm = PCI_SM_Target_Idle;	// Default next state is idle
 
-    if(pci_state.rst == 0) {
-#pragma fpgac_bus_idle(pci_bus.ad_b0)
+    if(pci_bus.rst_ == 0) {
+
+#pragma fpgac_bus_idle(pci_bus.ad_b0)		// release PCI bus
 #pragma fpgac_bus_idle(pci_bus.ad_b1)
 #pragma fpgac_bus_idle(pci_bus.ad_b2)
 #pragma fpgac_bus_idle(pci_bus.ad_b3)
@@ -69,7 +70,12 @@ fpgac_process pci() {
 #pragma fpgac_bus_idle(pci_bus.par64_)
 #pragma fpgac_bus_idle(pci_bus.req64_)
 #pragma fpgac_bus_idle(pci_bus.ack64_)
-        target_sm = 0;
+
+        target_sm = 0;				// stop target state machine NOW!
+
+        /*
+         * revert to default configuration when reset is removed
+         */
         pci_config.Device_ID = PCI_VENDOR_ID;
         pci_config.Vendor_ID = PCI_DEVICE_ID;
         pci_config.Status = 0;
@@ -95,13 +101,13 @@ fpgac_process pci() {
         pci_state.devsel = ~pci_bus.devsel_;
         pci_state.idsel  = ~pci_bus.idsel_;
         pci_state.gnt    = ~pci_bus.gnt_;
-        pci_state.rst    = ~pci_bus.rst_;
         pci_state.req64  = ~pci_bus.req64_;
         pci_state.ack64  = ~pci_bus.ack64_;
     }
 
     if(target_sm & PCI_SM_Target_Idle) {
-#pragma fpgac_bus_idle(pci_bus.ad_b0)
+
+#pragma fpgac_bus_idle(pci_bus.ad_b0)		// release PCI bus
 #pragma fpgac_bus_idle(pci_bus.ad_b1)
 #pragma fpgac_bus_idle(pci_bus.ad_b2)
 #pragma fpgac_bus_idle(pci_bus.ad_b3)
@@ -115,6 +121,7 @@ fpgac_process pci() {
 #pragma fpgac_bus_idle(pci_bus.par_)
 #pragma fpgac_bus_idle(pci_bus.par64_)
 #pragma fpgac_bus_idle(pci_bus.perr_)
+
         if(pci_state.frame & !pci_state.lastframe) {
             pci_state.cmd   = ~pci_bus.cbe_;	// Latch cmd and address when frame asserted
             pci_state.ad_b0 = pci_bus.ad_b0;
@@ -123,12 +130,13 @@ fpgac_process pci() {
             pci_state.ad_b3 = pci_bus.ad_b3;
             pci_state.rw = pci_state.cmd & 1;
 
-            if(pci_state.cmd & PCI_CMD_Memory) { // Memory RW
+            if(pci_state.cmd & PCI_CMD_Memory) { // Memory RW, so check if our addresses
                 pci_state.bar0 = pci_bus.ad_b3 == ((pci_config.Bar0>>23) & 0xff);
                 pci_state.bar1 = pci_bus.ad_b3 == ((pci_config.Bar1>>23) & 0xff);
                 if(pci_state.bar0 | pci_state.bar1)
                     next_target_sm = PCI_SM_Target_B_Busy;
-            } else {
+
+            } else {				// IO or Config space access
                 pci_state.bar0 = pci_state.bar1 = 0;
                 if(idsel && ((pci_state.cmd & 0xfe) == PCI_CMD_Config_Read))  // Config RW
                     next_target_sm = PCI_SM_Target_Config;
@@ -152,8 +160,8 @@ fpgac_process pci() {
          * Place read/write interfaces to backend here
          */
 
-        if(!(trdy_reg_int & irdy)) next_target_sm = PCI_SM_Target_S_Data;
-        else if(irdy & trdy_reg_int & frame) next_target_sm = PCI_SM_Target_BackOff;
+        if(!(pci_state.irdy)) next_target_sm = PCI_SM_Target_S_Data;
+        else if(pci_state.irdy & pci_state.frame) next_target_sm = PCI_SM_Target_BackOff;
         else ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
@@ -183,9 +191,9 @@ fpgac_process pci() {
             if(config_addr == PCI_CONFIG_class_revid)
                 data = ((pci_config.ClassCode & 0xffffff) << 8) | (pci_config.Revision_ID & 0xff);
             if(config_addr == PCI_CONFIG_bar0)
-                data = pci_config.Bar0 & 0xffffffe0;
+                data = pci_config.Bar0 & 0xffffffff;
             if(config_addr == PCI_CONFIG_bar1)
-                data = pci_config.Bar1 & 0xffffffe0;
+                data = pci_config.Bar1 & 0xffffffff;
             if(config_addr == PCI_CONFIG_ssid_svid)
                 data = ((pci_config.SubSystem_ID & 0xffff) << 16) | (pci_config.SubVendor_ID & 0xffff);
 
@@ -195,7 +203,7 @@ fpgac_process pci() {
             if(pci_bus.cbe & 0x04) pci_bus.ad_2 = (data>>16) & 0xff;
             if(pci_bus.cbe & 0x08) pci_bus.ad_3 = (data>>16) & 0xff;
         }
-        pci_bus.trdy_ = pci_bus.devsel_ = 0; // Now driving trdy, must be tristated at end of cycle
+        pci_bus.trdy_ = pci_bus.devsel_ = 0; // Now driving, must be tristated at end of cycle
 
         if(!pci_state.irdy)
             next_target_sm = PCI_SM_Target_Config;   // Loop in Config waiting for host
