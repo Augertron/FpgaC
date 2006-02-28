@@ -95,11 +95,15 @@ extern char Revision[];
 char *bitname_xnf(struct bit *b) {
     char *n = b->variable->name;
 
+    if(b->name) n=b->name;
+
     if(*n == '_') n++;
+
+    if(*n) return(n);
  
     if(b->variable->width == 1) {
         if(b->flags & SYM_VCC) {
-            asprintf(&b->name, "%s", b->variable->name);
+            asprintf(&b->name, "%s", n);
         } else {
             if(b->variable->copyof->arraysize) {
                 asprintf(&b->name, "%s_p%d", n, b->variable->port);
@@ -128,7 +132,7 @@ output_XNF() {
 
     if (nerrors > 0)
 	return;
-    fprintf(outputfile, "LCANET, 4\n");
+    fprintf(outputfile, "LCANET, 6\n");
     fprintf(outputfile, "PWR, 1, VCC\n");
     fprintf(outputfile, "PWR, 0, GND\n");
     now = time((time_t) NULL);
@@ -138,10 +142,10 @@ output_XNF() {
     if (partname)
 	fprintf(outputfile, "PART, %s\n", partname);
     if (genclock) {
-	fprintf(outputfile, "SYM, OSC4, OSC4\n");
+	fprintf(outputfile, "SYM, OSC4, OSC4, LIBVER=2.0.0\n");
 	fprintf(outputfile, "PIN, F15, O, CLKin\n");
 	fprintf(outputfile, "END\n");
-	fprintf(outputfile, "SYM, CLK-AA, BUFGS\n");
+	fprintf(outputfile, "SYM, CLK-AA, BUFGS, LIBVER=2.0.0\n");
 	fprintf(outputfile, "PIN, I, I, CLKin\n");
 	fprintf(outputfile, "PIN, O, O, %s\n", clockname);
 	fprintf(outputfile, "END\n");
@@ -154,7 +158,7 @@ output_XNF() {
 	switch (b->flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | BIT_HASPIN | BIT_HASFF | SYM_BUSPORT)) {
 	case SYM_INPUTPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, IBUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", externalname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
@@ -163,12 +167,12 @@ output_XNF() {
 
 	case SYM_INPUTPORT | BIT_HASPIN | BIT_HASFF:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-IBUF, IBUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-IBUF, IBUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", externalname(b));
 	    fprintf(outputfile, "PIN, O, O, FFin-%s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
 	    printExt(externalname(b), "I", b->pin);
-	    fprintf(outputfile, "SYM, %s, DFF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s, DFF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, D, I, FFin-%s\n", bitname(b));
 	    fprintf(outputfile, "PIN, C, I, %s\n", clockname);
 	    fprintf(outputfile, "PIN, CE, I, VCC\n");
@@ -179,11 +183,11 @@ output_XNF() {
 
 	case SYM_INPUTPORT | BIT_HASFF:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-BUF, BUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-BUF, BUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", externalname(b));
 	    fprintf(outputfile, "PIN, O, O, FFin-%s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
-	    fprintf(outputfile, "SYM, %s, DFF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s, DFF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, D, I, FFin-%s\n", bitname(b));
 	    fprintf(outputfile, "PIN, C, I, %s\n", clockname);
 	    fprintf(outputfile, "PIN, CE, I, VCC\n");
@@ -193,7 +197,7 @@ output_XNF() {
 
 	case SYM_INPUTPORT:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, BUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s, BUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", externalname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
@@ -202,7 +206,7 @@ output_XNF() {
 	case SYM_OUTPUTPORT | BIT_HASFF | BIT_HASPIN:
 	case SYM_OUTPUTPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-OBUF, OBUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-OBUF, OBUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", bitname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
 	    fprintf(outputfile, "END\n");
@@ -212,7 +216,7 @@ output_XNF() {
 	case SYM_OUTPUTPORT | BIT_HASFF:
 	case SYM_OUTPUTPORT:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-OBUF, BUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-OBUF, BUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", bitname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
 	    fprintf(outputfile, "END\n");
@@ -221,11 +225,11 @@ output_XNF() {
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN | BIT_HASFF:
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, IBUF\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s\n", externalname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
-	    fprintf(outputfile, "SYM, %s-OBUFT, OBUFT\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-OBUFT, OBUFT, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, T, I, %s,, INV\n", bitname(b->enable));
 	    fprintf(outputfile, "PIN, I, I, out%s\n", bitname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
@@ -243,13 +247,13 @@ output_XNF() {
 	}
 
 	if ((b->flags & BIT_HASPIN) && (b->flags & BIT_HASPULLUP)) {
-	    fprintf(outputfile, "SYM, %s-PULLUP, PULLUP\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-PULLUP, PULLUP, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
 	    fprintf(outputfile, "END\n");
 	}
 
 	if ((b->flags & BIT_HASPIN) && (b->flags & BIT_HASPULLDOWN)) {
-	    fprintf(outputfile, "SYM, %s-PULLDOWN, PULLDOWN\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-PULLDOWN, PULLDOWN, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
 	    fprintf(outputfile, "END\n");
 	}
@@ -281,9 +285,9 @@ output_XNF() {
 		} else
 		    fprintf(outputfile, "SYM, %s, ", bitname(b));
 		if (b->truth[0])
-		    fprintf(outputfile, "INV\n");
+		    fprintf(outputfile, "INV, LIBVER=2.0.0\n");
 		else
-		    fprintf(outputfile, "BUF\n");
+		    fprintf(outputfile, "BUF, LIBVER=2.0.0\n");
 		if (count == 0)
 		    fprintf(outputfile, "PIN, I, I, %s\n", bitname(b->primaries->bit));
 		else
@@ -337,14 +341,21 @@ output_XNF() {
                     if ( b->variable->arrayref->variable  == b->variable->arraywrite ) 
                     {
                             if (b->variable->arraysize <= 16) {
-                                    fprintf(outputfile, "SYM, %s, ram16x1s\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram16x1s, LIBVER=2.0.0\n", bitname(b));
                             } else if (b->variable->arraysize <= 32) {
-                                    fprintf(outputfile, "SYM, %s, ram32x1s\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram32x1s, LIBVER=2.0.0\n", bitname(b));
                             } else if (b->variable->arraysize <= 64) {
-                                    fprintf(outputfile, "SYM, %s, ram64x1s\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram64x1s, LIBVER=2.0.0\n", bitname(b));
+                            } else if (b->variable->arraysize <= 128) {
+                                    fprintf(outputfile, "SYM, %s, ram128x1s, LIBVER=2.0.0\n", bitname(b));
+                            } else if (b->variable->arraysize <= 4096) {
+                                    fprintf(outputfile, "SYM, %s, ramb4_s1, LIBVER=2.0.0\n", bitname(b));
                             } else {
-                                    fprintf(outputfile, "SYM, %s, blockram\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, rammacro, LIBVER=2.0.0\n", bitname(b));
                             }
+
+// For older ISE use this instead of above
+//			    fprintf(outputfile, "SYM, %s, RAMS, LIBVER=2.0.0\n", bitname(b));
                             fprintf(outputfile, "PIN, D, I, RAMin-%s\n", bitname(b));
                             fprintf(outputfile, "PIN, WCLK, I, CLK\n");
                             if(b->variable->arraywrite && b->variable->arraywrite->index->bits) {
@@ -382,15 +393,25 @@ output_XNF() {
                             for ( array_read_reference_list = b->variable->arrayref ;array_read_reference_list!=NULL ;array_read_reference_list = array_read_reference_list->next,ram_count++) { 
                                     // a default read port is added  , ignore it 
                                     if ( array_read_reference_list->variable  == b->variable->arraywrite ) break;
+
+                                    // Not all of these sizes are available ... edit for your device
                                     if (b->variable->arraysize <= 16) {
-                                            fprintf(outputfile, "SYM, %s_%d, ram16x1d\n", bitname(b),ram_count);
+                                            fprintf(outputfile, "SYM, %s, ram16x1d, LIBVER=2.0.0\n", bitname(b));
                                     } else if (b->variable->arraysize <= 32) {
-                                            fprintf(outputfile, "SYM, %s_%d, ram32x1d\n", bitname(b),ram_count);
+                                            fprintf(outputfile, "SYM, %s, ram32x1d, LIBVER=2.0.0\n", bitname(b));
                                     } else if (b->variable->arraysize <= 64) {
-                                            fprintf(outputfile, "SYM, %s_%d, ram64x1d\n", bitname(b),ram_count);
+                                            fprintf(outputfile, "SYM, %s, ram64x1d, LIBVER=2.0.0\n", bitname(b));
+                                    } else if (b->variable->arraysize <= 128) {
+                                            fprintf(outputfile, "SYM, %s, ram128x1d, LIBVER=2.0.0\n", bitname(b));
+                                    } else if (b->variable->arraysize <= 4096) {
+                                            fprintf(outputfile, "SYM, %s, ramb4_s1_s1, LIBVER=2.0.0\n", bitname(b));
                                     } else {
-                                            fprintf(outputfile, "SYM, %s_%d, blockram\n", bitname(b),ram_count);
+                                            fprintf(outputfile, "SYM, %s, rammacro, LIBVER=2.0.0\n", bitname(b));
                                     }
+
+// uncomment for older ISE, and comment out above
+//				    fprintf(outputfile, "SYM, %s_%d, RAMD, LIBVER=2.0.0\n", bitname(b),ram_count);
+
                                     fprintf(outputfile, "PIN, D, I, RAMin-%s\n", bitname(b));
                                     fprintf(outputfile, "PIN, WCLK, I, CLK\n");
                                     if(b->variable->arraywrite && b->variable->arraywrite->index->bits) {
@@ -432,9 +453,9 @@ output_XNF() {
                     }
             } else if (b->flags & SYM_FF) {
 		if (b->flags & SYM_BUSPORT)
-		    fprintf(outputfile, "SYM, out%s, DFF\n", bitname(b));
+		    fprintf(outputfile, "SYM, out%s, DFF, LIBVER=2.0.0\n", bitname(b));
 		else
-		    fprintf(outputfile, "SYM, %s, DFF\n", bitname(b));
+		    fprintf(outputfile, "SYM, %s, DFF, LIBVER=2.0.0\n", bitname(b));
 		fprintf(outputfile, "PIN, D, I, FFin-%s\n", bitname(b));
 		fprintf(outputfile, "PIN, C, I, %s\n", clockname);
 		if (b->clock_enable)
@@ -479,7 +500,7 @@ static printROM(struct bit *b, int count) {
     hex = 0;
     for (i = 0; i < (1 << (count + 1)); i++)
 	hex |= (b->truth[i] << i);
-    fprintf(outputfile, "INIT=%04X\n", hex);
+    fprintf(outputfile, "INIT=%04X, LIBVER=2.0.0\n", hex);
     for (i = 3; i > count; --i)
 	fprintf(outputfile, "PIN, A%d, I, GND\n", i);
 // TODO: tag array ports and flop here
@@ -535,7 +556,7 @@ static printEQN(struct bit *b, int count) {
     }
     if (first)			/* no terms were true */
 	fprintf(outputfile, "GND");
-    fprintf(outputfile, ")\n");
+    fprintf(outputfile, "), LIBVER=2.0.0\n");
 // TODO: tag array ports and flop here
     for (bl = b->primaries; bl; bl = bl->next) {
 	fprintf(outputfile, "PIN, I%d, I, %s\n",
@@ -572,11 +593,11 @@ static printGates(struct bit *b, int count) {
 
     if (used_terms <= 1) {
           if (b->flags & SYM_FF && !b->variable->arraysize)
-              fprintf(outputfile, "SYM, FFin-%s, BUF\n", bitname(b));
+              fprintf(outputfile, "SYM, FFin-%s, BUF, LIBVER=2.0.0\n", bitname(b));
           else if (b->flags & SYM_FF && b->variable->arraysize)
-              fprintf(outputfile, "SYM, RAMin-%s, BUF\n", bitname(b));
+              fprintf(outputfile, "SYM, RAMin-%s, BUF, LIBVER=2.0.0\n", bitname(b));
           else
-              fprintf(outputfile, "SYM, SYM%s, BUF\n", bitname(b));
+              fprintf(outputfile, "SYM, SYM%s, BUF, LIBVER=2.0.0\n", bitname(b));
 	if (used_terms == 0)
 	    fprintf(outputfile, "PIN, I, I, GND\n");
 	else
@@ -594,15 +615,15 @@ static printGates(struct bit *b, int count) {
 		oldSubOr = subOr;
 		if (used_terms > ORlimit) {
 		    subOr += 1;
-		    fprintf(outputfile, "SYM, %dOR_%s, OR\n", subOr, bitname(b));
+		    fprintf(outputfile, "SYM, %dOR_%s, OR, LIBVER=2.0.0\n", subOr, bitname(b));
 		} else {
 		    subOr = 0;
                     if (b->flags & SYM_FF && !b->variable->arraysize)
-                        fprintf(outputfile, "SYM, FFin-%s, OR\n", bitname(b));
+                        fprintf(outputfile, "SYM, FFin-%s, OR, LIBVER=2.0.0\n", bitname(b));
                     else if (b->flags & SYM_FF && b->variable->arraysize)
                         fprintf(outputfile, "SYM, RAMin-%s, OR\n", bitname(b));
                     else
-                        fprintf(outputfile, "SYM, SYM%s, OR\n", bitname(b));
+                        fprintf(outputfile, "SYM, SYM%s, OR, LIBVER=2.0.0\n", bitname(b));
 		}
 		if (oldSubOr)
 		    fprintf(outputfile, "PIN, I%d, I, %dOR_%s\n", posCnt++, oldSubOr, bitname(b));
@@ -623,7 +644,7 @@ static printAND(int i, QMtab table[], int count, struct bit *b) {
     struct bitlist *bl;
 
     bitCnt = QMtermBits(table[i], count + 1);
-    fprintf(outputfile, "SYM, %dT_SYM%s, %s\n", i, bitname(b), (bitCnt == 1) ? "BUF" : "AND");
+    fprintf(outputfile, "SYM, %dT_SYM%s, %s, LIBVER=2.0.0\n", i, bitname(b), (bitCnt == 1) ? "BUF" : "AND");
     for (bl = b->primaries, j = count; bl; bl = bl->next, j--) {
 	if (!(table[i].dc & (1 << j))) {
 	    if (bitCnt == 1)

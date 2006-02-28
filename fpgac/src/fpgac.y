@@ -68,9 +68,10 @@
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
 %token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID REGISTER EXTERN
-%token          FLOAT DOUBLE INPUT OUTPUT MAILBOX PROCESS
+%token          FLOAT DOUBLE INPUT OUTPUT TRISTATE MAILBOX PROCESS
 %token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
-%token		INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
+%token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
+%token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
 %token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
 %token		ANDAND OROR BUS_PORT BUS_IDLE STRING PORTFLAGS PLUSEQUAL
 %token		MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL
@@ -277,6 +278,10 @@ main(int argc, char *argv[]) {
 	argv++;
     }
 
+//  switch(partname[0]<<8 | partname[1]) {
+//  case ('x'<<8|'c'):	setup_xilinx(partname); break;
+//  }
+
     for(i = 0; legal_arch[i]; i++) {
 	if(!strcmp(target_arch, legal_arch[i]))
 	    break;
@@ -449,7 +454,14 @@ struct variable *CurrentTagScope = GLOBALSCOPE;
 
 struct varlist *breakstack;
 
-int defaultwidth = 16;
+int DefaultIntWidth = 16;
+int DefaultCharWidth = 8;
+int DefaultShortWidth = 16;
+int DefaultLongWidth = 43;
+int DefaultLongLongWidth = 64;
+int DefaultFloatWidth = 32;
+int DefaultDoubleWidth = 64;
+int DefaultLongDoubleWidth = 128;
 int currentwidth = 16;
 
 int currenttype = TYPE_INTEGER|TYPE_UNSIGNED;
@@ -473,9 +485,9 @@ PopDeclarationScope() {
 
 char *bitname(struct bit *b) {
 
-    if(b->name && !(b->flags & BIT_WORD)) {
-        return (b->name);
-    }
+//    if(b->name && !(b->flags & BIT_WORD)) {
+//        return (b->name);
+//    }
     if(!b->name) {
         b->name = (char *) calloc(1,MAXNAMELEN);
         if(!b->name) {
@@ -679,7 +691,7 @@ v = v->copyof;
 }
 
 /* A parameter may have been seen before it is declared.  Make sure that
- * its width is the defaultwidth at the time of declaration, not the width
+ * its width is the DefaultIntWidth at the time of declaration, not the width
  * at the time the function header was encountered.
  *
  * It assumes that this is called before the variable has been used.
@@ -3315,24 +3327,22 @@ typename:	VOID
 		    currentwidth = 0;
 		}
 
-		| inttypes
-
-inttypes:	INT
+		| INT
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = defaultwidth;
+		    currentwidth = DefaultIntWidth;
 		}
 
 		| SIGNED
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = defaultwidth;
+		    currentwidth = DefaultIntWidth;
 		}
 
 		| UNSIGNED
 		{
 		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED;
-		    currentwidth = defaultwidth;
+		    currentwidth = DefaultIntWidth;
 		}
 
 		| INPUT
@@ -3347,6 +3357,12 @@ inttypes:	INT
 		    currentwidth = 8;
 		}
 
+		| TRISTATE
+		{
+		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_BUS;
+		    currentwidth = 8;
+		}
+
 		| MAILBOX
 		{
 		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_MAILBOX;
@@ -3356,43 +3372,43 @@ inttypes:	INT
 		| CHAR
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 8;
+		    currentwidth = DefaultCharWidth;
 		}
 
 		| SHORT
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 16;
+		    currentwidth = DefaultShortWidth;
 		}
 
 		| LONG
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 32;
+		    currentwidth = DefaultLongWidth;
 		}
 
 		| LONG LONG
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
-		    currentwidth = 64;
+		    currentwidth = DefaultLongLongWidth;
 		}
 
 		| FLOAT
 		{
 		    $$.type = currenttype = TYPE_FLOAT;
-		    currentwidth = 32;
+		    currentwidth = DefaultFloatWidth;
 		}
 
 		| DOUBLE
 		{
 		    $$.type = currenttype = TYPE_FLOAT;
-		    currentwidth = 64;
+		    currentwidth = DefaultDoubleWidth;
 		}
 
 		| LONG DOUBLE
 		{
 		    $$.type = currenttype = TYPE_FLOAT;
-		    currentwidth = 128;
+		    currentwidth = DefaultLongDoubleWidth;
 		}
 
 		| REGISTER typename
@@ -3467,7 +3483,28 @@ globalvarlistmember: newidentifier
 		}
 
 pragma:         INTBITS INTEGER
-                        { defaultwidth = atoi($2.s); }
+                { DefaultIntWidth = atoi($2.s); }
+
+		| CHARBITS INTEGER
+                { DefaultCharWidth = atoi($2.s); }
+
+		| SHORTBITS INTEGER
+                { DefaultShortWidth = atoi($2.s); }
+
+		| LONGBITS INTEGER
+                { DefaultLongWidth = atoi($2.s); }
+
+		| LONGLONGBITS INTEGER
+                { DefaultLongLongWidth = atoi($2.s); }
+
+		| FLOATBITS INTEGER
+                { DefaultFloatWidth = atoi($2.s); }
+
+		| DOUBLEBITS INTEGER
+                { DefaultDoubleWidth = atoi($2.s); }
+
+		| LONGDOUBLEBITS INTEGER
+                { DefaultLongDoubleWidth = atoi($2.s); }
 
                 | INPUTPORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
                         { inputport($3.v, $4.v->junk); }
@@ -4197,7 +4234,7 @@ newidentifier:	IDENTIFIER COLON INTEGER
 		    else if(currenttype & TYPE_OUTPUT)
                         outputport($$.v, 0);
 		    else if(currenttype & TYPE_BUS)
-                        busport($$.v, 0);
+                        busport(findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope), 0);
 		}
 
 		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE COLON INTEGER
@@ -4216,7 +4253,7 @@ newidentifier:	IDENTIFIER COLON INTEGER
 		    else if(currenttype & TYPE_OUTPUT)
                         outputport($$.v, 0);
 		    else if(currenttype & TYPE_BUS)
-                        busport($$.v, 0);
+                        busport(findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope), 0);
 		}
 
 		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE
