@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>FpgaC - FAQ</title>
+</head>
+<body>
+<h3 style="text-align: center;">Fpgac FAQs</h3>
+<a href="#Q:_Can_I_compile_regular_C_code_to_FPGA"><span
+ style="font-style: italic; font-weight: bold;">Q: Can I compile
+regular C code to FPGA with FpgaC?</span></a><br>
+<span style="font-style: italic; font-weight: bold;"><a
+ href="#Q:_How_do_I_get_best_performance_from_my">Q: How do I get
+best performance from my C code?</a><br>
+</span><span style="font-weight: bold; font-style: italic;"><a
+ href="#Q:_What_is_statement_level_parallelism">Q: What is
+statement level parallelism?</a><br>
+</span><span style="font-weight: bold; font-style: italic;"><a
+ href="#Q:_What_is_decomposition">Q: What is
+decomposition?</a><br>
+</span><a href="#Q:_What_is_Process_Pipelining"><span
+ style="font-weight: bold; font-style: italic;">Q: What is Process
+Pipelining?</span></a><br>
+<a href="#Q:_What_is_Statement_level_Pipelining"><span
+ style="font-weight: bold; font-style: italic;">Q: What is Statement
+level Pipelining?</span></a><br>
+<br>
+<h3><a name="Q:_Can_I_compile_regular_C_code_to_FPGA"></a><span
+ style="font-style: italic; font-weight: bold;">Q: Can I compile
+regular C code to FPGA with FpgaC?</span></h3>
+<span style="font-style: italic; font-weight: bold;">A:</span> Yes, and
+No.&nbsp; FpgaC is currently a subset of C with the goal of being a
+fully compliant Standards based C over time. Currently FpgaC doesn't
+support commonly used C features such as switch/case, pointers,
+initialized variables (including strings), structure arrays, or
+structure assignments.&nbsp; It is however, very likely most of these
+features
+will exist during early 2006 with support in the form of labor and
+donations from our user community.&nbsp;
+Development toward a fully Standards based C is likely to be completed
+late 2006, or early next.<br>
+<br>
+Once FpgaC is complete, and Standards based C compliant, it may be
+possible to compile and execute entire programs in an FPGA.&nbsp; There
+will be applications whereparts of the program are best done as a
+mixure of logic gates in an FPGA, and other parts are best done for a
+more traditional CPU environment, such a microprocessor connected to
+the FPGA, in the FPGA as a hard or soft core, or as a custom virtual
+machine such as a Java interpreter or pop-code interpreter.<br>
+<br>
+As FpgaC matures it will allow Co-Design so that a single source may be
+compiled using both a CPU and logic to best balance space and time
+tradeoffs for each section of an application.&nbsp; This is facilitated
+first by FpgaC using Standard C syntax where possible, so that code can
+be easily moved between logic and other processors with Standards based
+C compilers.&nbsp; As FpgaC matures, it will include native support for
+soft core processors and VM engines, as well as better interfaces to
+common compilers, such as GCC for hard core processors.<br>
+<br>
+The hardware extensions in FpgaC will be implemented so they are
+transparent for other Standards based C compilers where possible.&nbsp;
+We do this to make FpgaC applications as portable as possible for
+testing on traditional CPU development hosts, so that once an
+application is done, it can then be recompiled with FpgaC and executed
+in logic.<br>
+<br>
+<h3><a name="Q:_How_do_I_get_best_performance_from_my"></a><span
+ style="font-style: italic; font-weight: bold;">Q: How do I get
+best performance from my C code?</span></h3>
+<span style="font-style: italic; font-weight: bold;">A: </span>The
+best performance may be gained by adopting coding styles and algorithms
+which have higher degrees of exploitable parallelism, by using
+partitioning, replication, or pipelining effectively.<br>
+<br>
+Algorithms which can be expressed with high degrees of parallelism, may
+see performance gains of 10-300 times from this parallelism as compared
+to traditional sequential architectures.&nbsp; See "Parallel
+Programming: Techniques and Applications Using Networked Workstations
+and Parallel Computers" by Barry Wilkinson and Michael Allen to learn
+more about structuring programs and algorithms to exploit available
+parallelism.<br>
+<br>
+<h3><a name="Q:_What_is_statement_level_parallelism"></a><span
+ style="font-weight: bold; font-style: italic;">Q: What is
+statement level parallelism?</span></h3>
+<span style="font-weight: bold; font-style: italic;">A:</span>&nbsp;
+Consider the following sequential code sequence, which in FpgaC would
+execute all four additions in parallel, in a single clock time,
+because they are completely independent:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">newi
+= i + ioffset;<br>
+newx
+= x + xoffset;</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">newy = y + yoffset;</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">newz = z + zoffset;<br>
+</span></div>
+<br>
+Some algorithms may see modest to significant performance gains, from
+simply exploiting this natural statement level parallelism.&nbsp;&nbsp;
+In a traditional processor, this would require 8 memory reads to load
+registers, 4 additions, and 4 memory writes.&nbsp; This typically would
+take
+between 12, and several hundred, processor clocks to complete depending
+on the processor, data locality, and relative memory performance.&nbsp;
+Multiple pipeline processors attempt to exploit part of this
+parallelism for their performance.<br>
+<br>
+In FpgaC the variables are contained in FF's written on the rising edge
+of the
+clock, gated with a one hot state for this statement block.&nbsp; Other
+statements around these in the same statement block would also occur in
+the same clock, potentially several hundred for an unrolled loop in a
+large FPGA.&nbsp; Because of the serial nature of memory accesses,
+traditional processors are limited to memory/cache bandwidth for their
+best case concurrency.<br>
+<br style="font-weight: bold; font-style: italic;">
+<h3><a name="Q:_What_is_decomposition"></a><span
+ style="font-weight: bold; font-style: italic;">Q: What is
+decomposition?</span></h3>
+<span style="font-weight: bold; font-style: italic;">A:</span>
+Decomposition is dividing a problem up into a number of independent
+smaller
+problems.&nbsp; This may include dividing either the data, or the
+algorithm's code, or both up into pieces that can be processed
+concurrently.&nbsp; The smaller problems are then independently
+processes by multiple Processing Elements (PEs).<br>
+<br>
+Traditional multiprocessing strategies are based on building PEs either
+by sharing a
+common memory pool with lots of CPU's (such as SMP machines), or
+hooking lots of independent machines (CPU+Memory) togather with a fast
+communications channel or network switch (such as a cluster).&nbsp; In
+the first case, the shared memory is frequently the bottleneck, and in
+the second, the communications or network performance/latency is
+frequently the bottleneck.<br>
+<br>
+The FPGA approach is to construct application or task specific PEs
+using independent distributed memory in the form of FlipFlops or LUT
+based RAMs, plus direct connections
+between these PEs and memory. This may allow dozens, or
+even thousands, of PEs to concurrently execute inside a single large
+FPGA (or group of FPGAs) using decomposition strategies.&nbsp; Problems
+which can be decomposed and restructured like this for FPGAs do not
+have natural serial bottlenecks in memory or communications, other than
+external I/O demands at the FPGA pins or host boards interfaces.&nbsp;
+Computationally bound portion of problems can see significant speedups
+using FPGAs as processors for this part of the problem.<br>
+<br>
+<h3><a name="Q:_What_is_Process_Pipelining"></a><span
+ style="font-weight: bold; font-style: italic;">Q: What is Process
+Pipelining?</span></h3>
+<span style="font-weight: bold; font-style: italic;">A:</span>&nbsp;
+One form of decomposition is "Pipelining" which can occur at the
+process level, or statement level.&nbsp; Pipelining generally
+rearranges code and data to be processed in
+smaller faster stages with concurrency. Lets consider a real time video
+server for a high resolution specialty projector system which has the
+following processes sharing a single frame memory for processing:<br>
+<br>
+<div style="margin-left: 40px;">1) read next frame from disk<br>
+2) uncompress the frame<br>
+3) resize the image to projectors resolution<br>
+4) correct for projectors lens and projection surface distortions
+(think IMAX)<br>
+5) use smoothing convolution to remove aliasing from compression and
+resizing<br>
+6) color balance/correct frame so image is accurate after projection<br>
+7) transfer frame to projectors video converter<br>
+</div>
+<br>
+Each of these processes may take roughly the same amount of time.&nbsp;
+If they are done sequentially, a single process at a time, then each
+process does it's part while the others are idle.&nbsp; The projectors
+frame rate is limited by 7*Process_time.<br>
+<br>
+If we rearrange the hardware design to have 6 dual ported shared
+memories (or communications channels), and 7 processors, we can then
+fully pipeline the problem.<br>
+<br>
+If each process was an independent program, with the unix shell syntax,
+we might express this concurrency as:<br>
+<br>
+<div style="margin-left: 40px;">read&nbsp; &lt;&nbsp; disk&nbsp;
+|&nbsp; uncompress&nbsp; |&nbsp; resize&nbsp; |&nbsp;
+correct_lens&nbsp; |&nbsp; smooth&nbsp; |&nbsp; correct_color&nbsp; |
+output&nbsp; &gt;&nbsp; projector<br>
+</div>
+<br>
+Each process can then concurrently take pixel data from it's input
+port/memory, do it's processing, and place the result in it's output
+port/memory. None of the processes are now idle at any time the
+projector is running.&nbsp; The projectors frame rate can now be as
+fast as 1*Process_time with pipelined concurrency.<br>
+<br>
+In FpgaC one way to build process pipelines would place each process's
+code in it's own fpgac_process function. The input and output ends of
+the process would be connected to FPGA package pins, and the processes
+in the middle would pass data using global variables instantiated as
+FF's or LUT memories.<br>
+<br>
+<h3><a name="Q:_What_is_Statement_level_Pipelining"></a><span
+ style="font-weight: bold; font-style: italic;">Q: What is Statement
+level Pipelining?</span></h3>
+<span style="font-weight: bold; font-style: italic;">A:</span>&nbsp;&nbsp;
+FpgaC preserves the expected sequential execution of C,
+and frequently tries to capitalize on it by building combinatorials
+for each block of C statements. This may create deep combinatorials,
+which
+require a slow clock rate. For instance, the following C code block
+sequentially adds a to b, then adds b to c, and finally adds c to d
+before the clock can tick:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b += a;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c += b;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d += c;<br>
+<br>
+Reversing the statements however, uses the sequential semantics to our
+benefit by creating a pipeline where each statement executes
+concurrently with the data from the prior clock:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d += c;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c += b;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b += a;<br>
+<br>
+New data is introduced in the pipeline at a, and after three clocks is
+available at d as an output.&nbsp; Concurrently the prior c is added d,
+AND the prior b is added to c, AND the new a is added to b, in a single
+clock which can run at a much faster rate.<br>
+<br>
+Statement level pipelining frequently requires data "retiming".
+Consider the above example where the assignment for d includes the sum
+of a + c.&nbsp; The third statement would then be:<br>
+<br>
+<div style="margin-left: 40px;">d += c + a;<br>
+</div>
+<br>
+When the statements are reversed, a different instance of a is used,
+for this term that is two clocks later. To make this reversed statement
+pipeline correct, we need to retime a by saving a copy of it, so our
+pipeline becomes two reversed statement pipelines:<br>
+<br>
+<div style="margin-left: 40px;">d += c + a3;<br>
+c += b;&nbsp;&nbsp; a3 = a2;<br>
+b += a;&nbsp;&nbsp; a2 = a;<br>
+</div>
+<br>
+so that the correct copy of a trickles up the pipeline with the same
+timing.<br>
+<br>
+It takes a little more work to initialize and manage pipelines, but for
+large algorithm C code blocks, they can provide significant performance
+gains. Since the execution of these pipelines have the same results on
+traditional sequential processors, the pipelined code is easily
+debugged before moving it to FpgaC for FPGA execution.
+</body>
+</html>
