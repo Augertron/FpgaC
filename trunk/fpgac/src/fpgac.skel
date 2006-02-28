@@ -173,6 +173,7 @@ force)	mapargs="-k 6"; parargs="-ol high"
 	;;
 esac
 
+touch $file.ucf
 xnf2edf $file.xnf
 ngdbuild -intstyle ise -dd `pwd` -uc $file.ucf  -p xcv2000e-bg560-8 $file.edf $file.ngd
 map -intstyle ise -p xcv2000e-bg560-8 -cm area -pr b $mapargs -c 100 -tx off -o $file.ncd $file.ngd $file.pcf
