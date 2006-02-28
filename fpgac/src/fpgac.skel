@@ -76,6 +76,7 @@ case $format in
 		rm -f $file.vqm
 		exit 1
 	fi
+        exit 0
 	;;
 	
 cnf*)
@@ -104,6 +105,7 @@ cnf*)
 		esac
 		shift
 		done
+        exit 0
 	;;
 	
 xnf*)
@@ -143,6 +145,7 @@ vhd|vhdl)
 		rm -f $file.vhd
 		exit 1
 	fi
+        exit 0
 	;;
 
 *)	$FPGAC -p $parttype $args $1
@@ -150,4 +153,37 @@ vhd|vhdl)
 	
 esac
 
-exit 0
+# if you are using a vendor other than Xilinx, you will need similar script
+
+# The rest of the script runs the Xilinx ppr software to convert the
+# xnf file to a bit file.  It is highly site specific, and you will
+# have to change this to make it work at your site.
+#
+# at this site, xnf2edf is ISE 4.2i run by wine from a windows partition.
+# xnf2edf doesn't convert pin assignments from LOC, so you need a ucf file
+# the rest of the xilinx tools are a native linux ISE 6.1i
+
+#. /xilinx/settings.sh
+
+case $optimize in
+false) mapargs="-k 4"; parargs="-ol std"
+	;;
+
+force)	mapargs="-k 6"; parargs="-ol high"
+	;;
+esac
+
+xnf2edf $file.xnf
+ngdbuild -intstyle ise -dd `pwd` -uc $file.ucf  -p xcv2000e-bg560-8 $file.edf $file.ngd
+map -intstyle ise -p xcv2000e-bg560-8 -cm area -pr b $mapargs -c 100 -tx off -o $file.ncd $file.ngd $file.pcf
+par -w -intstyle ise $parargs -t 1 $file.ncd $file.ncd $file.pcf
+trce -intstyle ise -e 3 -l 3 -xml $file $file.ncd -o $file.twr $file.pcf
+bitgen -intstyle ise -f $file.ut $file.ncd
+
+if test "$toss"; then
+	rm -f xnf2edf.log zz.log netlist.lst
+	for suffix in bit bld  edf  log  mrp  ncd  ngd  ngm  ngo  pad  pad.csv  pad.txt  par  pcf  twr  twx ut  xnf  xpi
+		do
+		rm -f $file.$suffix
+		done
+fi
