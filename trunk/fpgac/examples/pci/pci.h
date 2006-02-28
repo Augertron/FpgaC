@@ -1,4 +1,12 @@
 /*
+ * pci.h - Generic Target Mode PCI Interface for FpgaC Applications
+ * copyright 2006 by John Bass, DMS Design under FpgaC BSD License
+ *
+ *  NOTE: This is NOT complete yet .... still a work in progress
+ */
+
+
+/*
  * PCI Local Bus interfaces from PCI Specification Rev 2.2
  * Chapter 2 Signal Definitions
  *
