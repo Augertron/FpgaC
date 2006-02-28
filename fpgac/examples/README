@@ -5,7 +5,18 @@ directories:
    tmcc  - these are the original TMCC examples updated
 	   for FpgaC's syntax. These examples also served
            as a regression test for TMCC, and now FpgaC.
+           We do not have one of these cards for testing.
 
    pipes - these are pipeline examples, including a
            simple tutorial in building power FpgaC
            pipelined applications.
+
+   pci   - An example of a Target mode PCI bus interface written
+           using FpgaC for a Dini DN2K card with Virtex 2000E
+           FPGAs.  Easily portable to other cards with FPGA PCI
+           interfaces.
+
+   regression_tests - A small, but growing, collection of netlist
+           checks for verifing correct netlist generation.
+
+   lcd   - this directory was moved to tmcc
