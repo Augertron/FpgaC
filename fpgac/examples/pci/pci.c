@@ -3,6 +3,21 @@
  * copyright 2006 by John Bass, DMS Design under FpgaC BSD License
  *
  *  NOTE: This is NOT complete yet .... still a work in progress
+ *
+ * TODO:
+ *       * Finish state machine to include 64bit transactions.
+ *
+ *       * Add in burst mode support
+ *
+ *       * Do parity check and error assertion
+ *
+ *       * Finish application interface to my Dini demos
+ *
+ *       * Setup a multifunction PCI device with spoof of parallel port
+ *         and xilinx config prom so the Dini eeprom can be programed
+ *         directly from ISE, and not have to use the Dini utility.
+ *
+ *       * think more about master mode
  */
 
 #include "pci.h"
@@ -126,7 +141,8 @@ fpgac_process pci() {
     }
 
     if(target_sm & PCI_SM_Target_Comp_Addr) {
-        if(bar_match_any || bar2match) next_target_sm = PCI_SM_Target_S_Data;
+        if(pci_state.bar0 | pci_state.bar1)
+             next_target_sm = PCI_SM_Target_S_Data;
         else ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
