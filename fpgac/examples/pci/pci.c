@@ -20,6 +20,8 @@
  *       * think more about master mode
  */
 
+#pragma fpgac_clock(pci_clk)
+
 #include "pci.h"
 
 /*

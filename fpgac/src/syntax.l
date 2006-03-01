@@ -356,6 +356,8 @@ break				return(newtoken(BREAK));
 
 return				return(newtoken(RETURN));
 
+^#[ \t]*pragma[ \t]*fpgac_clock		return(newtoken(CLOCK));
+
 ^#[ \t]*pragma[ \t]*fpgac_inputport	return(newtoken(INPUTPORT));
 
 ^#[ \t]*pragma[ \t]*fpgac_outputport	return(newtoken(OUTPUTPORT));

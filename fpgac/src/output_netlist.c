@@ -193,13 +193,13 @@ output_CNF() {
 
 	if ((b->flags & BIT_HASPIN) && (b->flags & BIT_HASPULLUP)) {
 	    fprintf(outputfile, "SYM, %s-PULLUP, PULLUP\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
+	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
 	    fprintf(outputfile, "END\n");
 	}
 
 	if ((b->flags & BIT_HASPIN) && (b->flags & BIT_HASPULLDOWN)) {
 	    fprintf(outputfile, "SYM, %s-PULLDOWN, PULLDOWN\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", externalname(b));
+	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
 	    fprintf(outputfile, "END\n");
 	}
 
