@@ -69,7 +69,7 @@ fpgac_process pci() {
 #pragma fpgac_bus_idle(pci_bus.perr_)
 #pragma fpgac_bus_idle(pci_bus.serr_)
 #pragma fpgac_bus_idle(pci_bus.req_)
-#pragma fpgac_bus_idle(pci_bus.par64_)
+#pragma fpgac_bus_idle(pci_bus.par64)
 #pragma fpgac_bus_idle(pci_bus.req64_)
 #pragma fpgac_bus_idle(pci_bus.ack64_)
 
@@ -146,7 +146,7 @@ fpgac_process pci() {
                           ^ ((pci_bus.ad_b7>>4)&1) ^ ((pci_bus.ad_b7>>5)&1)
                           ^ ((pci_bus.ad_b7>>6)&1) ^ ((pci_bus.ad_b7>>7)&1);
         } else {
-#pragma fpgac_bus_idle(pci_bus.par64_)
+#pragma fpgac_bus_idle(pci_bus.par64)
         }
     }
 

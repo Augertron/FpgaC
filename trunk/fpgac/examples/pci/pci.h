@@ -39,7 +39,7 @@ struct PCI_Interface {
 	fpgac_output	intb_:1;	// Interupt Request, active low
 	fpgac_output	intc_:1;	// Interupt Request, active low
 	fpgac_output	intd_:1;	// Interupt Request, active low
-        fpgac_tristate	par64_:1;	// PCI Parity for Upper 32 bit bus
+        fpgac_tristate	par64:1;	// PCI Parity for Upper 32 bit bus
         fpgac_tristate	req64_:1;	// PCI Request for 64 bit transfer
         fpgac_tristate	ack64_:1;	// PCI Acknowledge for 64 bit transfer
 };
@@ -146,6 +146,10 @@ struct PCI_State {
 	unsigned	addr_b1:8;	// PCI address latched with frame, bits 15:8
 	unsigned	addr_b2:8;	// PCI address latched with frame, bits 23:16
 	unsigned	addr_b3:8;	// PCI address latched with frame, bits 31:24
+	unsigned	addr_b4:8;	// PCI address latched with frame, bits  7:0
+	unsigned	addr_b5:8;	// PCI address latched with frame, bits 15:8
+	unsigned	addr_b6:8;	// PCI address latched with frame, bits 23:16
+	unsigned	addr_b7:8;	// PCI address latched with frame, bits 31:24
         unsigned	cmd:8;		// PCI Bus Command latched with frame
         unsigned	frame:1;	// PCI Cycle Frame, active high for an access
         unsigned	trdy:1;		// PCI Initiator Ready, active high
