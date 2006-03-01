@@ -13,14 +13,14 @@
  * Active low interfaces signals are designated with '_' name suffix
  */
 struct PCI_Interface {
-        fpgac_tristate	ad_0:8;		// PCI Address/Data bus bits  7:0
-        fpgac_tristate	ad_1:8;		// PCI Address/Data bus bits 15:8
-        fpgac_tristate	ad_2:8;		// PCI Address/Data bus bits 23:16
-        fpgac_tristate	ad_3:8;		// PCI Address/Data bus bits 31:24
-        fpgac_tristate	ad_4:8;		// PCI Address/Data bus bits 39:32
-        fpgac_tristate	ad_5:8;		// PCI Address/Data bus bits 47:40
-        fpgac_tristate	ad_6:8;		// PCI Address/Data bus bits 55:48
-        fpgac_tristate	ad_7:8;		// PCI Address/Data bus bits 63:56
+        fpgac_tristate	ad_b0:8;	// PCI Address/Data bus bits  7:0
+        fpgac_tristate	ad_b1:8;	// PCI Address/Data bus bits 15:8
+        fpgac_tristate	ad_b2:8;	// PCI Address/Data bus bits 23:16
+        fpgac_tristate	ad_b3:8;	// PCI Address/Data bus bits 31:24
+        fpgac_tristate	ad_b4:8;	// PCI Address/Data bus bits 39:32
+        fpgac_tristate	ad_b5:8;	// PCI Address/Data bus bits 47:40
+        fpgac_tristate	ad_b6:8;	// PCI Address/Data bus bits 55:48
+        fpgac_tristate	ad_b7:8;	// PCI Address/Data bus bits 63:56
         fpgac_tristate	cbe_:8;		// PCI Bus Command and Byte Enables
         fpgac_tristate	par:1;		// PCI Parity for ad and cbe is EVEN low 32 bit bus
         fpgac_tristate	frame_:1;	// PCI Cycle Frame, active low for an access
@@ -120,12 +120,13 @@ struct PCI_Config {
  *
  * Target Mode States
  */
-#define PCI_SM_Target_Idle	0b000001	// Valid next states are idle, B_Busy
-#define PCI_SM_Target_B_Busy	0b000010	// Valid next states are idle, B_Busy, Backoff, S_Data
-#define PCI_SM_Target_S_Data	0b000100	// Valid next states are S_Data, Backoff, Turn_Ar
-#define PCI_SM_Target_Turn_Ar	0b001000	// Valid next states are idle, B_Busy
-#define PCI_SM_Target_BackOff	0b010000	// Valid next states are Backoff, Turn_Ar
-#define PCI_SM_Target_Config	0b100000	// Valid next states are
+#define PCI_SM_Target_Idle	0b0000001	// Valid next states are idle, B_Busy
+#define PCI_SM_Target_B_Busy	0b0000010	// Valid next states are idle, B_Busy, Backoff, S_Data
+#define PCI_SM_Target_S_Data	0b0000100	// Valid next states are S_Data, Backoff, Turn_Ar
+#define PCI_SM_Target_Turn_Ar	0b0001000	// Valid next states are idle, B_Busy
+#define PCI_SM_Target_BackOff	0b0010000	// Valid next states are Backoff, Turn_Ar
+#define PCI_SM_Target_Comp_Addr	0b0100000	// Valid next states are
+#define PCI_SM_Target_Config	0b1000000	// Valid next states are
 
 /*
  * Master Mode States
@@ -141,10 +142,10 @@ struct PCI_Config {
  * Latched copy of key PCI Bus values, inverted versions, etc
  */
 struct PCI_State {
-	unsigned	ad_b0:8;	// PCI address latched with frame, bits  7:0
-	unsigned	ad_b1:8;	// PCI address latched with frame, bits 15:8
-	unsigned	ad_b2:8;	// PCI address latched with frame, bits 23:16
-	unsigned	ad_b3:8;	// PCI address latched with frame, bits 31:24
+	unsigned	addr_b0:8;	// PCI address latched with frame, bits  7:0
+	unsigned	addr_b1:8;	// PCI address latched with frame, bits 15:8
+	unsigned	addr_b2:8;	// PCI address latched with frame, bits 23:16
+	unsigned	addr_b3:8;	// PCI address latched with frame, bits 31:24
         unsigned	cmd:8;		// PCI Bus Command latched with frame
         unsigned	frame:1;	// PCI Cycle Frame, active high for an access
         unsigned	trdy:1;		// PCI Initiator Ready, active high
@@ -152,7 +153,7 @@ struct PCI_State {
         unsigned	stop:1;		// PCI Stop, active high when target requests stop
         unsigned	devsel:1;	// PCI Device Select, active high
         unsigned	idsel:1;	// PCI Initalization Device Select
-        unsigned	gnt_:1;		// PCI Grant for Bus Master, active high
+        unsigned	gnt:1;		// PCI Grant for Bus Master, active high
         unsigned	rst:1;		// System Reset, active high
         unsigned	req64:1;	// PCI Request for 64 bit transfer
         unsigned	ack64:1;	// PCI Acknowledge for 64 bit transfer
