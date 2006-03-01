@@ -84,7 +84,7 @@ typedef enum {
 #define SYM_VCC			0x2000
 #define BIT_HASPIN		0x4000
 #define BIT_HASFF		0x8000
-#define SYM_FUNCTIONEXISTS	0x10000
+#define SYM_CLOCK		0x10000
 #define BIT_HASPULLUP		0x20000
 #define BIT_HASPULLDOWN		0x40000
 #define BIT_DEPTHVALID		0x80000
@@ -92,14 +92,12 @@ typedef enum {
 #define SYM_MULTIPLE_RETURNS	0x200000
 #define SYM_ARRAY               0x400000
 #define SYM_ARRAY_INDEX         0x800000
-#define SYM_STRUCT_MEMBER       0x1000000
-#define SYM_INTEGER             0x2000000
-#define SYM_FLOAT               0x4000000
-#define SYM_NUMBER              0x01000000
-#define SYM_ENUM                0x02000000
-#define SYM_STRUCT              0x04000000
-#define SYM_UNION               0x08000000
-#define SYM_TAG                 0x0E000000
+#define SYM_FUNCTIONEXISTS	0x1000000
+#define SYM_STRUCT_MEMBER       0x10000000
+#define SYM_ENUM                0x20000000
+#define SYM_STRUCT              0x40000000
+#define SYM_UNION               0x80000000
+#define SYM_TAG                 0xE0000000
 
 EXTFIX struct variable {
 	char name[MAXNAMELEN];
@@ -207,7 +205,7 @@ typedef union {
 struct variable *findvariable(), *complement(), *shift(), *intconstant();
 struct variable *add(), *sub(), *thistick(), *newtempvar(), *twoop();
 int xor(), and(), or();
-char *bitname(), *externalname();
+char *bitname();
 
 /* Structure for terms that is used in minimize_lut.c and output_xilinx.c */
    

@@ -68,7 +68,7 @@
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
 %token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID REGISTER EXTERN
-%token          FLOAT DOUBLE INPUT OUTPUT TRISTATE MAILBOX PROCESS
+%token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS
 %token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
@@ -117,7 +117,7 @@ int nocpp;
 
 /* Architecture specific optimizations */
 
-char *target_arch = "cnf";
+char *target_arch = "xnf";
 int use_clock_enables = 0;
 int ffs_zero_at_powerup = 0;
 
@@ -172,7 +172,7 @@ main(int argc, char *argv[]) {
 	    PORT_REGISTERED, PORT_PIN, (PORT_REGISTERED | PORT_PIN),
 	    PORT_PULLUP, PORT_PULLDOWN);
 
-    genclock = 1;
+    genclock = 0;
     output_format = CNFEQNS;
     debug = 0;
     clockname = "CLK";
@@ -230,9 +230,7 @@ main(int argc, char *argv[]) {
 	    break;
 
 	case 'c':
-	    genclock = 0;
-	    if(argv[1][2])
-		clockname = &argv[1][2];
+	    genclock = 1;
 	    break;
 
 	case 'r':
@@ -415,7 +413,7 @@ usage() {
     fprintf(stderr, "    %-20s %s\n", "-a", "don't run cpp");
     fprintf(stderr, "    %-20s %s\n", "-b", "-b basefilename");
     fprintf(stderr, "    %-20s %s\n", "-c",
-	    "don't generate 15 Hz clock from internal OSC");
+	    "generate clock from FPGA's internal OSC");
     fprintf(stderr, "    %-20s %s\n", "-dn", "set debug level");
     fprintf(stderr, "    %-20s %s\n", "-fno-carry-select",
 	    "use ripple carry adders and counters (smaller/slower)");
@@ -508,21 +506,6 @@ char *bitname(struct bit *b) {
     case XNFROMS:
     case XNFGATES:	return((char *)bitname_xnf(b)); break;
     }
-}
-
-
-/* Return the name of a port, to be used in the output file
- * Skip the "_" on the front of the name.
- */
-
-char *externalname(struct bit *b) {
-    static char name[MAXNAMELEN];
-
-    if(b->variable->width == 1)
-	strncpy(name, b->variable->name + 1, MAXNAMELEN);
-    else
-	sprintf(name, external_bus_name_format, b->variable->name + 1, b->bitnumber);
-    return (name);
 }
 
 struct bit *newbit() {
@@ -3509,6 +3492,17 @@ pragma:         INTBITS INTEGER
 
 		| LONGDOUBLEBITS INTEGER
                 { DefaultLongDoubleWidth = atoi($2.s); }
+
+                | CLOCK
+		{
+		    currentwidth = 1;
+		}
+		LEFTPAREN newidentifier pinlist RIGHTPAREN
+                {
+		    inputport($4.v, $5.v->junk);
+		    $4.v->bits->bit->flags |= SYM_CLOCK;
+                    clockname = $4.v->bits->bit->name+1;
+		}
 
                 | INPUTPORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
                         { inputport($3.v, $4.v->junk); }

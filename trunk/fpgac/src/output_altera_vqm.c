@@ -50,6 +50,24 @@
 
 extern char Revision[];
 
+/* Return the name of a port, to be used in the output file
+ * Skip the "_" on the front of the name.
+ */
+
+extern char *external_bus_name_format;
+
+static char *externalname(struct bit *b) {
+    static char name[MAXNAMELEN];
+
+    if(b->variable->width == 1)
+        strncpy(name, b->variable->name + 1, MAXNAMELEN);
+    else
+        sprintf(name, external_bus_name_format, b->variable->name + 1, b->bitnumber);
+    return (name);
+}
+
+
+
 char *bitname_vqm(struct bit *b) {
     char *n;
 

@@ -153,6 +153,11 @@ vhd|vhdl)
 	
 esac
 
+if test "$xnfonly"; then
+        exit 0
+fi
+
+
 # if you are using a vendor other than Xilinx, you will need similar script
 
 # The rest of the script runs the Xilinx ppr software to convert the
