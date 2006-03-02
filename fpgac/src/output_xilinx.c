@@ -154,8 +154,12 @@ output_XNF() {
     }
     if(!clockname[0]) {
         clockname = "CLK";
-	fprintf(outputfile, "SYM, CLK-AA, BUFGS, LIBVER=2.0.0\n");
-	fprintf(outputfile, "PIN, I, I, CLK_pad\n");
+	fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", bitname(b));
+	fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
+	fprintf(outputfile, "PIN, O, O, %s_clk\n", bitname(b));
+	fprintf(outputfile, "END\n");
+	fprintf(outputfile, "SYM, CLK-AA, BUFG, LIBVER=2.0.0\n");
+	fprintf(outputfile, "PIN, I, I, CLK_clk\n");
 	fprintf(outputfile, "PIN, O, O, %s\n", clockname);
 	fprintf(outputfile, "END\n");
 	printExt(clockname, "I", 0);
@@ -168,11 +172,15 @@ output_XNF() {
 	switch (b->flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | BIT_HASPIN | BIT_HASFF | SYM_BUSPORT | SYM_CLOCK)) {
 	case SYM_INPUTPORT | BIT_HASPIN | SYM_CLOCK:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, BUFG, LIBVER=2.0.0\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s_pad, IBUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
+	    fprintf(outputfile, "PIN, O, O, %s_clk\n", bitname(b));
 	    fprintf(outputfile, "END\n");
 	    printExt(bitname(b), "I", b->pin);
+	    fprintf(outputfile, "SYM, %s, BUFG, LIBVER=2.0.0\n", bitname(b));
+	    fprintf(outputfile, "PIN, I, I, %s_clk\n", bitname(b));
+	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
+	    fprintf(outputfile, "END\n");
 	    break;
 
 	case SYM_INPUTPORT | BIT_HASPIN:
@@ -244,7 +252,7 @@ output_XNF() {
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN | BIT_HASFF:
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", bitname(b));
+	    fprintf(outputfile, "SYM, %s-IBUF, IBUF, LIBVER=2.0.0\n", bitname(b));
 	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
 	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
@@ -341,7 +349,7 @@ output_XNF() {
             else if (b->flags & SYM_FF && b->variable->arraysize)
                 fprintf(outputfile, "PIN, O, O, %s_RAMin\n", bitname(b));
 	    else if (b->flags & SYM_BUSPORT)
-		fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
+		fprintf(outputfile, "PIN, O, O, %s_FF\n", bitname(b));
 	    else
 		fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
 	    fprintf(outputfile, "END\n");
