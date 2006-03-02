@@ -1,15 +1,15 @@
-// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Tue Feb 28 02:38:50 2006"
+// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Thu Mar  2 03:30:55 2006"
 // part=4003pc84
 test_Running^CLK = VCC;
 test_main_S0_a_0^CLK = port(_test_main_S0_a_0,"a9");
-test_main_S0_a_1^CLK = port(_test_main_S0_a_1);
-test_main_S0_a_2^CLK = port(_test_main_S0_a_2);
+test_main_S0_a_1^CLK = port(test_main_S0_a_1);
+test_main_S0_a_2^CLK = port(test_main_S0_a_2);
 test_main_S0_b_0^CLK = port(_test_main_S0_b_0,"a10");
-test_main_S0_b_1^CLK = port(_test_main_S0_b_1);
-test_main_S0_b_2^CLK = port(_test_main_S0_b_2);
+test_main_S0_b_1^CLK = port(test_main_S0_b_1);
+test_main_S0_b_2^CLK = port(test_main_S0_b_2);
 port(_test_main_S0_sum_of_products_0,"a11")^CLK = (test_T9_twoop*test_main_S0_b_0*test_main_S0_loopvar_0)+(test_main_S0_T32_endloop*test_main_S0_b_0*test_main_S0_loopvar_0)+(test_T9_twoop*~test_main_S0_T32_endloop);
-port(_test_main_S0_sum_of_products_1)^CLK = (test_T18_twoop*test_main_S0_b_1*test_main_S0_loopvar_1)+(test_main_S0_T32_endloop*test_main_S0_b_1*test_main_S0_loopvar_1)+(test_T18_twoop*~test_main_S0_T32_endloop);
-port(_test_main_S0_sum_of_products_2)^CLK = (test_T27_twoop*test_main_S0_b_2*test_main_S0_loopvar_2)+(test_main_S0_T32_endloop*test_main_S0_b_2*test_main_S0_loopvar_2)+(test_T27_twoop*~test_main_S0_T32_endloop);
+port(test_main_S0_sum_of_products_1)^CLK = (test_T18_twoop*test_main_S0_b_1*test_main_S0_loopvar_1)+(test_main_S0_T32_endloop*test_main_S0_b_1*test_main_S0_loopvar_1)+(test_T18_twoop*~test_main_S0_T32_endloop);
+port(test_main_S0_sum_of_products_2)^CLK = (test_T27_twoop*test_main_S0_b_2*test_main_S0_loopvar_2)+(test_main_S0_T32_endloop*test_main_S0_b_2*test_main_S0_loopvar_2)+(test_T27_twoop*~test_main_S0_T32_endloop);
 test_main_S0_loopvar_0^CLK = (~test_Running*~test_main_S0_loopvar_0)+(~test_main_S0_T13_endloop*~test_Running)+(test_main_S0_T13_endloop*~test_main_S0_loopvar_0)+(~test_main_S0_T13_endloop*test_main_S0_loopvar_0);
 test_main_S0_loopvar_1^(CLK*test_main_S0_T13_endloop) = (test_main_S0_loopvar_0*~test_main_S0_loopvar_1)+(~test_main_S0_loopvar_0*test_main_S0_loopvar_1);
 test_main_S0_loopvar_2^(CLK*test_main_S0_T13_endloop) = (~test_main_S0_loopvar_2*test_main_S0_loopvar_0*test_main_S0_loopvar_1)+(test_main_S0_loopvar_2*~test_main_S0_loopvar_1)+(test_main_S0_loopvar_2*~test_main_S0_loopvar_0);

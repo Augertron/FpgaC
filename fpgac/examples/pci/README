@@ -1,17 +1,25 @@
-PCI Target Mode demo code -- work in progress -- need Fpgac fixes
-
-This project is waiting on a bug fix for io variables in structures.
-It currently doesn't compile, but will in another day or so.
+PCI Target Mode demo code -- work in progress
 
 This is an example of interfacing to a synchronous bus with FpgaC.
+
+Check on FpgaC sf.net subversion archive for current source,
+and project status.
+
+   svn co https://svn.sourceforge.net/svnroot/fpgac/trunk/fpgac fpgac
+
+Development isn't complete as of Beta-2, and work is still in
+progress to complete development and testing on the Dini DN2K
+board in the next few weeks. What is provided here is for
+reference only, as an example of constructing more complex hardware
+projects with FpgaC.
 
 The fpgac_process pci is designed to run directly off the PCI bus
 clock, and be a standards conformant PCI 2.2 target mode interface.
 
 The design is based on a one hot state machine using the variables
 target_sm and next_target_sm. There is one if statement per state,
-plus an async reset state. The fpgac_process pci is invoked for
-each PCI clock, processing the current state, and then updating
+plus an async reset state. The fpgac_process pci loops for each
+PCI clock, processes the current state, and then updates
 next_target_sm state to target_sm. 
 
 The use of the one hot allows the if statements for each state to

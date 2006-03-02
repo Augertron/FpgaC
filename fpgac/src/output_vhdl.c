@@ -105,6 +105,9 @@ void output_vhdl(void) {
    if(nerrors > 0) {
       return;
    }
+   if(!clockname[0]) {
+       clockname = "CLK";
+   }
 
    fprintf(outputfile, "library ieee;\n");
    fprintf(outputfile, "use ieee.std_logic_1164.all;\n");

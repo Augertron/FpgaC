@@ -121,6 +121,10 @@ void output_vqm(char *familyname)
    fprintf(outputfile, "// VERSION  \"%s, %s\"\n", Revision, datestring);
 
    fprintf(outputfile, "module \\%s (\n", get_designname());
+   if(!clockname[0]) {
+       clockname = "CLK";
+   }
+
    fprintf(outputfile, "\t\\%s ", clockname);
 
    printed = 0;

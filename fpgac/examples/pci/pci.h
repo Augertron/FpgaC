@@ -33,7 +33,6 @@ struct PCI_Interface {
         fpgac_tristate	serr_:1;	// PCI System Error, active low
         fpgac_tristate	req_:1;		// PCI Request for Bus Master, active low
         fpgac_input	gnt_:1;		// PCI Grant for Bus Master, active low
-        fpgac_input	clk:1;		// System Clock
         fpgac_input	rst_:1;		// System Reset, active low
 	fpgac_output	inta_:1;	// Interupt Request, active low
 	fpgac_output	intb_:1;	// Interupt Request, active low
