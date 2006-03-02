@@ -2,9 +2,9 @@
 TIMESPEC TS00=FROM:FFS:TO:FFS = 30 ns;
 #TIMESPEC TS01=FROM:PADS:TO:FFS = 6 ns;
 TIMESPEC TS02=FROM:FFS:TO:PADS = 11 ns;
-NET pci_clk PERIOD = 70 Mhz;
+NET "pci_clk" PERIOD = 66 Mhz;
 
-
+NET "pci_clk_pad"            LOC  = "AL4";
 NET "pci_bus_ad_b0_0_pad"    LOC  = "AK18";
 NET "pci_bus_ad_b0_1_pad"    LOC  = "AJ20";
 NET "pci_bus_ad_b0_2_pad"    LOC  = "AN19";
@@ -77,9 +77,7 @@ NET "pci_bus_cbe__4_pad"     LOC  = "AJ22";
 NET "pci_bus_cbe__5_pad"     LOC  = "AN21";
 NET "pci_bus_cbe__6_pad"     LOC  = "AL21";
 NET "pci_bus_cbe__7_pad"     LOC  = "AK21";
-
 NET "pci_bus_ack64__pad"      LOC  = "AL20";
-
 NET "pci_bus_devsel__pad"     LOC  = "AK12";
 NET "pci_bus_frame__pad"      LOC  = "AL11";
 NET "pci_bus_gnt__pad"        LOC  = "AK5";
@@ -91,7 +89,6 @@ NET "pci_bus_intd__pad"       LOC  = "AJ10";
 NET "pci_bus_irdy__pad"       LOC  = "AN11";
 NET "pci_bus_par64_pad"       LOC  = "AK22";
 NET "pci_bus_par_pad"         LOC  = "AM14";
-NET "pci_clk_pad"             LOC  = "AL4";
 NET "pci_bus_perr__pad"       LOC  = "AN13";
 NET "pci_bus_req64__pad"      LOC  = "AM20";
 NET "pci_bus_req__pad"        LOC  = "AL5";

@@ -1,0 +1,3764 @@
+LCANET, 6
+PWR, 1, VCC
+PWR, 0, GND
+PROG, fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Thu Mar  2 06:58:23 2006"
+PART, xcv2000e-bg560-8
+SYM, pci_Running_FFin, INV, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_Running_FFin
+END
+SYM, pci_Running, DFF, LIBVER=2.0.0
+PIN, D, I, pci_Running_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_Running
+END
+SYM, pci_clk_pad, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_clk_pad
+PIN, O, O, pci_clk_clk
+END
+EXT, pci_clk_pad, I
+SYM, pci_clk, BUFG, LIBVER=2.0.0
+PIN, I, I, pci_clk_clk
+PIN, O, O, pci_clk
+END
+SYM, pci_bus_ad_b0_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_0_pad
+PIN, O, O, pci_bus_ad_b0_0
+END
+SYM, pci_bus_ad_b0_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_0_FF
+PIN, O, O, pci_bus_ad_b0_0_pad
+END
+EXT, pci_bus_ad_b0_0_pad, B
+SYM, pci_bus_ad_b0_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_0
+PIN, O, O, pci_bus_ad_b0_0_FF
+END
+SYM, pci_bus_ad_b0_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_1_pad
+PIN, O, O, pci_bus_ad_b0_1
+END
+SYM, pci_bus_ad_b0_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_1_FF
+PIN, O, O, pci_bus_ad_b0_1_pad
+END
+EXT, pci_bus_ad_b0_1_pad, B
+SYM, pci_bus_ad_b0_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_1
+PIN, O, O, pci_bus_ad_b0_1_FF
+END
+SYM, pci_bus_ad_b0_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_2_pad
+PIN, O, O, pci_bus_ad_b0_2
+END
+SYM, pci_bus_ad_b0_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_2_FF
+PIN, O, O, pci_bus_ad_b0_2_pad
+END
+EXT, pci_bus_ad_b0_2_pad, B
+SYM, pci_bus_ad_b0_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_2
+PIN, O, O, pci_bus_ad_b0_2_FF
+END
+SYM, pci_bus_ad_b0_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_3_pad
+PIN, O, O, pci_bus_ad_b0_3
+END
+SYM, pci_bus_ad_b0_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_3_FF
+PIN, O, O, pci_bus_ad_b0_3_pad
+END
+EXT, pci_bus_ad_b0_3_pad, B
+SYM, pci_bus_ad_b0_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_3
+PIN, O, O, pci_bus_ad_b0_3_FF
+END
+SYM, pci_bus_ad_b0_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_4_pad
+PIN, O, O, pci_bus_ad_b0_4
+END
+SYM, pci_bus_ad_b0_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_4_FF
+PIN, O, O, pci_bus_ad_b0_4_pad
+END
+EXT, pci_bus_ad_b0_4_pad, B
+SYM, pci_bus_ad_b0_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_4
+PIN, O, O, pci_bus_ad_b0_4_FF
+END
+SYM, pci_bus_ad_b0_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_5_pad
+PIN, O, O, pci_bus_ad_b0_5
+END
+SYM, pci_bus_ad_b0_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_5_FF
+PIN, O, O, pci_bus_ad_b0_5_pad
+END
+EXT, pci_bus_ad_b0_5_pad, B
+SYM, pci_bus_ad_b0_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_5
+PIN, O, O, pci_bus_ad_b0_5_FF
+END
+SYM, pci_bus_ad_b0_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_6_pad
+PIN, O, O, pci_bus_ad_b0_6
+END
+SYM, pci_bus_ad_b0_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_6_FF
+PIN, O, O, pci_bus_ad_b0_6_pad
+END
+EXT, pci_bus_ad_b0_6_pad, B
+SYM, pci_bus_ad_b0_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_6
+PIN, O, O, pci_bus_ad_b0_6_FF
+END
+SYM, pci_bus_ad_b0_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_7_pad
+PIN, O, O, pci_bus_ad_b0_7
+END
+SYM, pci_bus_ad_b0_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T0_enable,, INV
+PIN, I, I, pci_bus_ad_b0_7_FF
+PIN, O, O, pci_bus_ad_b0_7_pad
+END
+EXT, pci_bus_ad_b0_7_pad, B
+SYM, pci_bus_ad_b0_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b0_7
+PIN, O, O, pci_bus_ad_b0_7_FF
+END
+SYM, pci_bus_T0_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T0_enableF3
+PIN, O, O, pci_bus_T0_enable_FFin
+END
+SYM, pci_bus_T0_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T0_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T0_enable
+END
+SYM, pci_bus_ad_b1_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_0_pad
+PIN, O, O, pci_bus_ad_b1_0
+END
+SYM, pci_bus_ad_b1_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_0_FF
+PIN, O, O, pci_bus_ad_b1_0_pad
+END
+EXT, pci_bus_ad_b1_0_pad, B
+SYM, pci_bus_ad_b1_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_0
+PIN, O, O, pci_bus_ad_b1_0_FF
+END
+SYM, pci_bus_ad_b1_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_1_pad
+PIN, O, O, pci_bus_ad_b1_1
+END
+SYM, pci_bus_ad_b1_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_1_FF
+PIN, O, O, pci_bus_ad_b1_1_pad
+END
+EXT, pci_bus_ad_b1_1_pad, B
+SYM, pci_bus_ad_b1_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_1
+PIN, O, O, pci_bus_ad_b1_1_FF
+END
+SYM, pci_bus_ad_b1_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_2_pad
+PIN, O, O, pci_bus_ad_b1_2
+END
+SYM, pci_bus_ad_b1_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_2_FF
+PIN, O, O, pci_bus_ad_b1_2_pad
+END
+EXT, pci_bus_ad_b1_2_pad, B
+SYM, pci_bus_ad_b1_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_2
+PIN, O, O, pci_bus_ad_b1_2_FF
+END
+SYM, pci_bus_ad_b1_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_3_pad
+PIN, O, O, pci_bus_ad_b1_3
+END
+SYM, pci_bus_ad_b1_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_3_FF
+PIN, O, O, pci_bus_ad_b1_3_pad
+END
+EXT, pci_bus_ad_b1_3_pad, B
+SYM, pci_bus_ad_b1_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_3
+PIN, O, O, pci_bus_ad_b1_3_FF
+END
+SYM, pci_bus_ad_b1_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_4_pad
+PIN, O, O, pci_bus_ad_b1_4
+END
+SYM, pci_bus_ad_b1_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_4_FF
+PIN, O, O, pci_bus_ad_b1_4_pad
+END
+EXT, pci_bus_ad_b1_4_pad, B
+SYM, pci_bus_ad_b1_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_4
+PIN, O, O, pci_bus_ad_b1_4_FF
+END
+SYM, pci_bus_ad_b1_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_5_pad
+PIN, O, O, pci_bus_ad_b1_5
+END
+SYM, pci_bus_ad_b1_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_5_FF
+PIN, O, O, pci_bus_ad_b1_5_pad
+END
+EXT, pci_bus_ad_b1_5_pad, B
+SYM, pci_bus_ad_b1_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_5
+PIN, O, O, pci_bus_ad_b1_5_FF
+END
+SYM, pci_bus_ad_b1_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_6_pad
+PIN, O, O, pci_bus_ad_b1_6
+END
+SYM, pci_bus_ad_b1_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_6_FF
+PIN, O, O, pci_bus_ad_b1_6_pad
+END
+EXT, pci_bus_ad_b1_6_pad, B
+SYM, pci_bus_ad_b1_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_6
+PIN, O, O, pci_bus_ad_b1_6_FF
+END
+SYM, pci_bus_ad_b1_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_7_pad
+PIN, O, O, pci_bus_ad_b1_7
+END
+SYM, pci_bus_ad_b1_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T1_enable,, INV
+PIN, I, I, pci_bus_ad_b1_7_FF
+PIN, O, O, pci_bus_ad_b1_7_pad
+END
+EXT, pci_bus_ad_b1_7_pad, B
+SYM, pci_bus_ad_b1_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b1_7
+PIN, O, O, pci_bus_ad_b1_7_FF
+END
+SYM, pci_bus_T1_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T1_enableF3
+PIN, O, O, pci_bus_T1_enable_FFin
+END
+SYM, pci_bus_T1_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T1_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T1_enable
+END
+SYM, pci_bus_ad_b2_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_0_pad
+PIN, O, O, pci_bus_ad_b2_0
+END
+SYM, pci_bus_ad_b2_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_0_FF
+PIN, O, O, pci_bus_ad_b2_0_pad
+END
+EXT, pci_bus_ad_b2_0_pad, B
+SYM, pci_bus_ad_b2_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_0
+PIN, O, O, pci_bus_ad_b2_0_FF
+END
+SYM, pci_bus_ad_b2_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_1_pad
+PIN, O, O, pci_bus_ad_b2_1
+END
+SYM, pci_bus_ad_b2_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_1_FF
+PIN, O, O, pci_bus_ad_b2_1_pad
+END
+EXT, pci_bus_ad_b2_1_pad, B
+SYM, pci_bus_ad_b2_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_1
+PIN, O, O, pci_bus_ad_b2_1_FF
+END
+SYM, pci_bus_ad_b2_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_2_pad
+PIN, O, O, pci_bus_ad_b2_2
+END
+SYM, pci_bus_ad_b2_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_2_FF
+PIN, O, O, pci_bus_ad_b2_2_pad
+END
+EXT, pci_bus_ad_b2_2_pad, B
+SYM, pci_bus_ad_b2_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_2
+PIN, O, O, pci_bus_ad_b2_2_FF
+END
+SYM, pci_bus_ad_b2_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_3_pad
+PIN, O, O, pci_bus_ad_b2_3
+END
+SYM, pci_bus_ad_b2_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_3_FF
+PIN, O, O, pci_bus_ad_b2_3_pad
+END
+EXT, pci_bus_ad_b2_3_pad, B
+SYM, pci_bus_ad_b2_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_3
+PIN, O, O, pci_bus_ad_b2_3_FF
+END
+SYM, pci_bus_ad_b2_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_4_pad
+PIN, O, O, pci_bus_ad_b2_4
+END
+SYM, pci_bus_ad_b2_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_4_FF
+PIN, O, O, pci_bus_ad_b2_4_pad
+END
+EXT, pci_bus_ad_b2_4_pad, B
+SYM, pci_bus_ad_b2_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_4
+PIN, O, O, pci_bus_ad_b2_4_FF
+END
+SYM, pci_bus_ad_b2_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_5_pad
+PIN, O, O, pci_bus_ad_b2_5
+END
+SYM, pci_bus_ad_b2_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_5_FF
+PIN, O, O, pci_bus_ad_b2_5_pad
+END
+EXT, pci_bus_ad_b2_5_pad, B
+SYM, pci_bus_ad_b2_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_5
+PIN, O, O, pci_bus_ad_b2_5_FF
+END
+SYM, pci_bus_ad_b2_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_6_pad
+PIN, O, O, pci_bus_ad_b2_6
+END
+SYM, pci_bus_ad_b2_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_6_FF
+PIN, O, O, pci_bus_ad_b2_6_pad
+END
+EXT, pci_bus_ad_b2_6_pad, B
+SYM, pci_bus_ad_b2_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_6
+PIN, O, O, pci_bus_ad_b2_6_FF
+END
+SYM, pci_bus_ad_b2_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_7_pad
+PIN, O, O, pci_bus_ad_b2_7
+END
+SYM, pci_bus_ad_b2_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T2_enable,, INV
+PIN, I, I, pci_bus_ad_b2_7_FF
+PIN, O, O, pci_bus_ad_b2_7_pad
+END
+EXT, pci_bus_ad_b2_7_pad, B
+SYM, pci_bus_ad_b2_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b2_7
+PIN, O, O, pci_bus_ad_b2_7_FF
+END
+SYM, pci_bus_T2_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T2_enableF3
+PIN, O, O, pci_bus_T2_enable_FFin
+END
+SYM, pci_bus_T2_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T2_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T2_enable
+END
+SYM, pci_bus_ad_b3_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_0_pad
+PIN, O, O, pci_bus_ad_b3_0
+END
+SYM, pci_bus_ad_b3_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_0_FF
+PIN, O, O, pci_bus_ad_b3_0_pad
+END
+EXT, pci_bus_ad_b3_0_pad, B
+SYM, pci_bus_ad_b3_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_0
+PIN, O, O, pci_bus_ad_b3_0_FF
+END
+SYM, pci_bus_ad_b3_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_1_pad
+PIN, O, O, pci_bus_ad_b3_1
+END
+SYM, pci_bus_ad_b3_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_1_FF
+PIN, O, O, pci_bus_ad_b3_1_pad
+END
+EXT, pci_bus_ad_b3_1_pad, B
+SYM, pci_bus_ad_b3_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_1
+PIN, O, O, pci_bus_ad_b3_1_FF
+END
+SYM, pci_bus_ad_b3_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_2_pad
+PIN, O, O, pci_bus_ad_b3_2
+END
+SYM, pci_bus_ad_b3_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_2_FF
+PIN, O, O, pci_bus_ad_b3_2_pad
+END
+EXT, pci_bus_ad_b3_2_pad, B
+SYM, pci_bus_ad_b3_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_2
+PIN, O, O, pci_bus_ad_b3_2_FF
+END
+SYM, pci_bus_ad_b3_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_3_pad
+PIN, O, O, pci_bus_ad_b3_3
+END
+SYM, pci_bus_ad_b3_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_3_FF
+PIN, O, O, pci_bus_ad_b3_3_pad
+END
+EXT, pci_bus_ad_b3_3_pad, B
+SYM, pci_bus_ad_b3_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_3
+PIN, O, O, pci_bus_ad_b3_3_FF
+END
+SYM, pci_bus_ad_b3_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_4_pad
+PIN, O, O, pci_bus_ad_b3_4
+END
+SYM, pci_bus_ad_b3_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_4_FF
+PIN, O, O, pci_bus_ad_b3_4_pad
+END
+EXT, pci_bus_ad_b3_4_pad, B
+SYM, pci_bus_ad_b3_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_4
+PIN, O, O, pci_bus_ad_b3_4_FF
+END
+SYM, pci_bus_ad_b3_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_5_pad
+PIN, O, O, pci_bus_ad_b3_5
+END
+SYM, pci_bus_ad_b3_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_5_FF
+PIN, O, O, pci_bus_ad_b3_5_pad
+END
+EXT, pci_bus_ad_b3_5_pad, B
+SYM, pci_bus_ad_b3_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_5
+PIN, O, O, pci_bus_ad_b3_5_FF
+END
+SYM, pci_bus_ad_b3_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_6_pad
+PIN, O, O, pci_bus_ad_b3_6
+END
+SYM, pci_bus_ad_b3_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_6_FF
+PIN, O, O, pci_bus_ad_b3_6_pad
+END
+EXT, pci_bus_ad_b3_6_pad, B
+SYM, pci_bus_ad_b3_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_6
+PIN, O, O, pci_bus_ad_b3_6_FF
+END
+SYM, pci_bus_ad_b3_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_7_pad
+PIN, O, O, pci_bus_ad_b3_7
+END
+SYM, pci_bus_ad_b3_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T3_enable,, INV
+PIN, I, I, pci_bus_ad_b3_7_FF
+PIN, O, O, pci_bus_ad_b3_7_pad
+END
+EXT, pci_bus_ad_b3_7_pad, B
+SYM, pci_bus_ad_b3_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b3_7
+PIN, O, O, pci_bus_ad_b3_7_FF
+END
+SYM, pci_bus_T3_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T3_enableF3
+PIN, O, O, pci_bus_T3_enable_FFin
+END
+SYM, pci_bus_T3_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T3_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T3_enable
+END
+SYM, pci_bus_ad_b4_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_0_pad
+PIN, O, O, pci_bus_ad_b4_0
+END
+SYM, pci_bus_ad_b4_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_0_FF
+PIN, O, O, pci_bus_ad_b4_0_pad
+END
+EXT, pci_bus_ad_b4_0_pad, B
+SYM, pci_bus_ad_b4_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_0
+PIN, O, O, pci_bus_ad_b4_0_FF
+END
+SYM, pci_bus_ad_b4_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_1_pad
+PIN, O, O, pci_bus_ad_b4_1
+END
+SYM, pci_bus_ad_b4_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_1_FF
+PIN, O, O, pci_bus_ad_b4_1_pad
+END
+EXT, pci_bus_ad_b4_1_pad, B
+SYM, pci_bus_ad_b4_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_1
+PIN, O, O, pci_bus_ad_b4_1_FF
+END
+SYM, pci_bus_ad_b4_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_2_pad
+PIN, O, O, pci_bus_ad_b4_2
+END
+SYM, pci_bus_ad_b4_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_2_FF
+PIN, O, O, pci_bus_ad_b4_2_pad
+END
+EXT, pci_bus_ad_b4_2_pad, B
+SYM, pci_bus_ad_b4_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_2
+PIN, O, O, pci_bus_ad_b4_2_FF
+END
+SYM, pci_bus_ad_b4_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_3_pad
+PIN, O, O, pci_bus_ad_b4_3
+END
+SYM, pci_bus_ad_b4_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_3_FF
+PIN, O, O, pci_bus_ad_b4_3_pad
+END
+EXT, pci_bus_ad_b4_3_pad, B
+SYM, pci_bus_ad_b4_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_3
+PIN, O, O, pci_bus_ad_b4_3_FF
+END
+SYM, pci_bus_ad_b4_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_4_pad
+PIN, O, O, pci_bus_ad_b4_4
+END
+SYM, pci_bus_ad_b4_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_4_FF
+PIN, O, O, pci_bus_ad_b4_4_pad
+END
+EXT, pci_bus_ad_b4_4_pad, B
+SYM, pci_bus_ad_b4_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_4
+PIN, O, O, pci_bus_ad_b4_4_FF
+END
+SYM, pci_bus_ad_b4_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_5_pad
+PIN, O, O, pci_bus_ad_b4_5
+END
+SYM, pci_bus_ad_b4_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_5_FF
+PIN, O, O, pci_bus_ad_b4_5_pad
+END
+EXT, pci_bus_ad_b4_5_pad, B
+SYM, pci_bus_ad_b4_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_5
+PIN, O, O, pci_bus_ad_b4_5_FF
+END
+SYM, pci_bus_ad_b4_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_6_pad
+PIN, O, O, pci_bus_ad_b4_6
+END
+SYM, pci_bus_ad_b4_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_6_FF
+PIN, O, O, pci_bus_ad_b4_6_pad
+END
+EXT, pci_bus_ad_b4_6_pad, B
+SYM, pci_bus_ad_b4_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_6
+PIN, O, O, pci_bus_ad_b4_6_FF
+END
+SYM, pci_bus_ad_b4_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_7_pad
+PIN, O, O, pci_bus_ad_b4_7
+END
+SYM, pci_bus_ad_b4_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T4_enable,, INV
+PIN, I, I, pci_bus_ad_b4_7_FF
+PIN, O, O, pci_bus_ad_b4_7_pad
+END
+EXT, pci_bus_ad_b4_7_pad, B
+SYM, pci_bus_ad_b4_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b4_7
+PIN, O, O, pci_bus_ad_b4_7_FF
+END
+SYM, pci_bus_T4_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T4_enableF2
+PIN, O, O, pci_bus_T4_enable_FFin
+END
+SYM, pci_bus_T4_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T4_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T4_enable
+END
+SYM, pci_bus_ad_b5_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_0_pad
+PIN, O, O, pci_bus_ad_b5_0
+END
+SYM, pci_bus_ad_b5_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_0_FF
+PIN, O, O, pci_bus_ad_b5_0_pad
+END
+EXT, pci_bus_ad_b5_0_pad, B
+SYM, pci_bus_ad_b5_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_0
+PIN, O, O, pci_bus_ad_b5_0_FF
+END
+SYM, pci_bus_ad_b5_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_1_pad
+PIN, O, O, pci_bus_ad_b5_1
+END
+SYM, pci_bus_ad_b5_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_1_FF
+PIN, O, O, pci_bus_ad_b5_1_pad
+END
+EXT, pci_bus_ad_b5_1_pad, B
+SYM, pci_bus_ad_b5_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_1
+PIN, O, O, pci_bus_ad_b5_1_FF
+END
+SYM, pci_bus_ad_b5_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_2_pad
+PIN, O, O, pci_bus_ad_b5_2
+END
+SYM, pci_bus_ad_b5_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_2_FF
+PIN, O, O, pci_bus_ad_b5_2_pad
+END
+EXT, pci_bus_ad_b5_2_pad, B
+SYM, pci_bus_ad_b5_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_2
+PIN, O, O, pci_bus_ad_b5_2_FF
+END
+SYM, pci_bus_ad_b5_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_3_pad
+PIN, O, O, pci_bus_ad_b5_3
+END
+SYM, pci_bus_ad_b5_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_3_FF
+PIN, O, O, pci_bus_ad_b5_3_pad
+END
+EXT, pci_bus_ad_b5_3_pad, B
+SYM, pci_bus_ad_b5_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_3
+PIN, O, O, pci_bus_ad_b5_3_FF
+END
+SYM, pci_bus_ad_b5_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_4_pad
+PIN, O, O, pci_bus_ad_b5_4
+END
+SYM, pci_bus_ad_b5_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_4_FF
+PIN, O, O, pci_bus_ad_b5_4_pad
+END
+EXT, pci_bus_ad_b5_4_pad, B
+SYM, pci_bus_ad_b5_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_4
+PIN, O, O, pci_bus_ad_b5_4_FF
+END
+SYM, pci_bus_ad_b5_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_5_pad
+PIN, O, O, pci_bus_ad_b5_5
+END
+SYM, pci_bus_ad_b5_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_5_FF
+PIN, O, O, pci_bus_ad_b5_5_pad
+END
+EXT, pci_bus_ad_b5_5_pad, B
+SYM, pci_bus_ad_b5_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_5
+PIN, O, O, pci_bus_ad_b5_5_FF
+END
+SYM, pci_bus_ad_b5_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_6_pad
+PIN, O, O, pci_bus_ad_b5_6
+END
+SYM, pci_bus_ad_b5_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_6_FF
+PIN, O, O, pci_bus_ad_b5_6_pad
+END
+EXT, pci_bus_ad_b5_6_pad, B
+SYM, pci_bus_ad_b5_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_6
+PIN, O, O, pci_bus_ad_b5_6_FF
+END
+SYM, pci_bus_ad_b5_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_7_pad
+PIN, O, O, pci_bus_ad_b5_7
+END
+SYM, pci_bus_ad_b5_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T5_enable,, INV
+PIN, I, I, pci_bus_ad_b5_7_FF
+PIN, O, O, pci_bus_ad_b5_7_pad
+END
+EXT, pci_bus_ad_b5_7_pad, B
+SYM, pci_bus_ad_b5_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b5_7
+PIN, O, O, pci_bus_ad_b5_7_FF
+END
+SYM, pci_bus_T5_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T5_enableF2
+PIN, O, O, pci_bus_T5_enable_FFin
+END
+SYM, pci_bus_T5_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T5_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T5_enable
+END
+SYM, pci_bus_ad_b6_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_0_pad
+PIN, O, O, pci_bus_ad_b6_0
+END
+SYM, pci_bus_ad_b6_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_0_FF
+PIN, O, O, pci_bus_ad_b6_0_pad
+END
+EXT, pci_bus_ad_b6_0_pad, B
+SYM, pci_bus_ad_b6_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_0
+PIN, O, O, pci_bus_ad_b6_0_FF
+END
+SYM, pci_bus_ad_b6_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_1_pad
+PIN, O, O, pci_bus_ad_b6_1
+END
+SYM, pci_bus_ad_b6_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_1_FF
+PIN, O, O, pci_bus_ad_b6_1_pad
+END
+EXT, pci_bus_ad_b6_1_pad, B
+SYM, pci_bus_ad_b6_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_1
+PIN, O, O, pci_bus_ad_b6_1_FF
+END
+SYM, pci_bus_ad_b6_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_2_pad
+PIN, O, O, pci_bus_ad_b6_2
+END
+SYM, pci_bus_ad_b6_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_2_FF
+PIN, O, O, pci_bus_ad_b6_2_pad
+END
+EXT, pci_bus_ad_b6_2_pad, B
+SYM, pci_bus_ad_b6_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_2
+PIN, O, O, pci_bus_ad_b6_2_FF
+END
+SYM, pci_bus_ad_b6_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_3_pad
+PIN, O, O, pci_bus_ad_b6_3
+END
+SYM, pci_bus_ad_b6_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_3_FF
+PIN, O, O, pci_bus_ad_b6_3_pad
+END
+EXT, pci_bus_ad_b6_3_pad, B
+SYM, pci_bus_ad_b6_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_3
+PIN, O, O, pci_bus_ad_b6_3_FF
+END
+SYM, pci_bus_ad_b6_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_4_pad
+PIN, O, O, pci_bus_ad_b6_4
+END
+SYM, pci_bus_ad_b6_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_4_FF
+PIN, O, O, pci_bus_ad_b6_4_pad
+END
+EXT, pci_bus_ad_b6_4_pad, B
+SYM, pci_bus_ad_b6_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_4
+PIN, O, O, pci_bus_ad_b6_4_FF
+END
+SYM, pci_bus_ad_b6_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_5_pad
+PIN, O, O, pci_bus_ad_b6_5
+END
+SYM, pci_bus_ad_b6_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_5_FF
+PIN, O, O, pci_bus_ad_b6_5_pad
+END
+EXT, pci_bus_ad_b6_5_pad, B
+SYM, pci_bus_ad_b6_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_5
+PIN, O, O, pci_bus_ad_b6_5_FF
+END
+SYM, pci_bus_ad_b6_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_6_pad
+PIN, O, O, pci_bus_ad_b6_6
+END
+SYM, pci_bus_ad_b6_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_6_FF
+PIN, O, O, pci_bus_ad_b6_6_pad
+END
+EXT, pci_bus_ad_b6_6_pad, B
+SYM, pci_bus_ad_b6_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_6
+PIN, O, O, pci_bus_ad_b6_6_FF
+END
+SYM, pci_bus_ad_b6_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_7_pad
+PIN, O, O, pci_bus_ad_b6_7
+END
+SYM, pci_bus_ad_b6_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T6_enable,, INV
+PIN, I, I, pci_bus_ad_b6_7_FF
+PIN, O, O, pci_bus_ad_b6_7_pad
+END
+EXT, pci_bus_ad_b6_7_pad, B
+SYM, pci_bus_ad_b6_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b6_7
+PIN, O, O, pci_bus_ad_b6_7_FF
+END
+SYM, pci_bus_T6_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T6_enableF2
+PIN, O, O, pci_bus_T6_enable_FFin
+END
+SYM, pci_bus_T6_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T6_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T6_enable
+END
+SYM, pci_bus_ad_b7_0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_0_pad
+PIN, O, O, pci_bus_ad_b7_0
+END
+SYM, pci_bus_ad_b7_0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_0_FF
+PIN, O, O, pci_bus_ad_b7_0_pad
+END
+EXT, pci_bus_ad_b7_0_pad, B
+SYM, pci_bus_ad_b7_0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_0
+PIN, O, O, pci_bus_ad_b7_0_FF
+END
+SYM, pci_bus_ad_b7_1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_1_pad
+PIN, O, O, pci_bus_ad_b7_1
+END
+SYM, pci_bus_ad_b7_1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_1_FF
+PIN, O, O, pci_bus_ad_b7_1_pad
+END
+EXT, pci_bus_ad_b7_1_pad, B
+SYM, pci_bus_ad_b7_1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_1
+PIN, O, O, pci_bus_ad_b7_1_FF
+END
+SYM, pci_bus_ad_b7_2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_2_pad
+PIN, O, O, pci_bus_ad_b7_2
+END
+SYM, pci_bus_ad_b7_2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_2_FF
+PIN, O, O, pci_bus_ad_b7_2_pad
+END
+EXT, pci_bus_ad_b7_2_pad, B
+SYM, pci_bus_ad_b7_2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_2
+PIN, O, O, pci_bus_ad_b7_2_FF
+END
+SYM, pci_bus_ad_b7_3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_3_pad
+PIN, O, O, pci_bus_ad_b7_3
+END
+SYM, pci_bus_ad_b7_3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_3_FF
+PIN, O, O, pci_bus_ad_b7_3_pad
+END
+EXT, pci_bus_ad_b7_3_pad, B
+SYM, pci_bus_ad_b7_3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_3
+PIN, O, O, pci_bus_ad_b7_3_FF
+END
+SYM, pci_bus_ad_b7_4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_4_pad
+PIN, O, O, pci_bus_ad_b7_4
+END
+SYM, pci_bus_ad_b7_4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_4_FF
+PIN, O, O, pci_bus_ad_b7_4_pad
+END
+EXT, pci_bus_ad_b7_4_pad, B
+SYM, pci_bus_ad_b7_4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_4
+PIN, O, O, pci_bus_ad_b7_4_FF
+END
+SYM, pci_bus_ad_b7_5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_5_pad
+PIN, O, O, pci_bus_ad_b7_5
+END
+SYM, pci_bus_ad_b7_5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_5_FF
+PIN, O, O, pci_bus_ad_b7_5_pad
+END
+EXT, pci_bus_ad_b7_5_pad, B
+SYM, pci_bus_ad_b7_5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_5
+PIN, O, O, pci_bus_ad_b7_5_FF
+END
+SYM, pci_bus_ad_b7_6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_6_pad
+PIN, O, O, pci_bus_ad_b7_6
+END
+SYM, pci_bus_ad_b7_6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_6_FF
+PIN, O, O, pci_bus_ad_b7_6_pad
+END
+EXT, pci_bus_ad_b7_6_pad, B
+SYM, pci_bus_ad_b7_6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_6
+PIN, O, O, pci_bus_ad_b7_6_FF
+END
+SYM, pci_bus_ad_b7_7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_7_pad
+PIN, O, O, pci_bus_ad_b7_7
+END
+SYM, pci_bus_ad_b7_7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T7_enable,, INV
+PIN, I, I, pci_bus_ad_b7_7_FF
+PIN, O, O, pci_bus_ad_b7_7_pad
+END
+EXT, pci_bus_ad_b7_7_pad, B
+SYM, pci_bus_ad_b7_7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ad_b7_7
+PIN, O, O, pci_bus_ad_b7_7_FF
+END
+SYM, pci_bus_T7_enable_FFin, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T7_enableF2
+PIN, O, O, pci_bus_T7_enable_FFin
+END
+SYM, pci_bus_T7_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T7_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T7_enable
+END
+SYM, pci_bus_cbe__0-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__0_pad
+PIN, O, O, pci_bus_cbe__0
+END
+SYM, pci_bus_cbe__0-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__0_FF
+PIN, O, O, pci_bus_cbe__0_pad
+END
+EXT, pci_bus_cbe__0_pad, B
+SYM, pci_bus_cbe__0, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__0
+PIN, O, O, pci_bus_cbe__0_FF
+END
+SYM, pci_bus_cbe__1-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__1_pad
+PIN, O, O, pci_bus_cbe__1
+END
+SYM, pci_bus_cbe__1-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__1_FF
+PIN, O, O, pci_bus_cbe__1_pad
+END
+EXT, pci_bus_cbe__1_pad, B
+SYM, pci_bus_cbe__1, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__1
+PIN, O, O, pci_bus_cbe__1_FF
+END
+SYM, pci_bus_cbe__2-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__2_pad
+PIN, O, O, pci_bus_cbe__2
+END
+SYM, pci_bus_cbe__2-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__2_FF
+PIN, O, O, pci_bus_cbe__2_pad
+END
+EXT, pci_bus_cbe__2_pad, B
+SYM, pci_bus_cbe__2, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__2
+PIN, O, O, pci_bus_cbe__2_FF
+END
+SYM, pci_bus_cbe__3-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__3_pad
+PIN, O, O, pci_bus_cbe__3
+END
+SYM, pci_bus_cbe__3-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__3_FF
+PIN, O, O, pci_bus_cbe__3_pad
+END
+EXT, pci_bus_cbe__3_pad, B
+SYM, pci_bus_cbe__3, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__3
+PIN, O, O, pci_bus_cbe__3_FF
+END
+SYM, pci_bus_cbe__4-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__4_pad
+PIN, O, O, pci_bus_cbe__4
+END
+SYM, pci_bus_cbe__4-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__4_FF
+PIN, O, O, pci_bus_cbe__4_pad
+END
+EXT, pci_bus_cbe__4_pad, B
+SYM, pci_bus_cbe__4, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__4
+PIN, O, O, pci_bus_cbe__4_FF
+END
+SYM, pci_bus_cbe__5-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__5_pad
+PIN, O, O, pci_bus_cbe__5
+END
+SYM, pci_bus_cbe__5-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__5_FF
+PIN, O, O, pci_bus_cbe__5_pad
+END
+EXT, pci_bus_cbe__5_pad, B
+SYM, pci_bus_cbe__5, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__5
+PIN, O, O, pci_bus_cbe__5_FF
+END
+SYM, pci_bus_cbe__6-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__6_pad
+PIN, O, O, pci_bus_cbe__6
+END
+SYM, pci_bus_cbe__6-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__6_FF
+PIN, O, O, pci_bus_cbe__6_pad
+END
+EXT, pci_bus_cbe__6_pad, B
+SYM, pci_bus_cbe__6, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__6
+PIN, O, O, pci_bus_cbe__6_FF
+END
+SYM, pci_bus_cbe__7-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__7_pad
+PIN, O, O, pci_bus_cbe__7
+END
+SYM, pci_bus_cbe__7-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T8_enable,, INV
+PIN, I, I, pci_bus_cbe__7_FF
+PIN, O, O, pci_bus_cbe__7_pad
+END
+EXT, pci_bus_cbe__7_pad, B
+SYM, pci_bus_cbe__7, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_cbe__7
+PIN, O, O, pci_bus_cbe__7_FF
+END
+SYM, pci_bus_T8_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T8_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T8_enable_FFin
+END
+SYM, pci_bus_T8_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T8_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T8_enable
+END
+SYM, pci_bus_par-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_par_pad
+PIN, O, O, pci_bus_par
+END
+SYM, pci_bus_par-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T9_enable,, INV
+PIN, I, I, pci_bus_par_FF
+PIN, O, O, pci_bus_par_pad
+END
+EXT, pci_bus_par_pad, B
+SYM, pci_bus_par, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_par
+PIN, O, O, pci_bus_par_FF
+END
+SYM, pci_bus_T9_enable_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_S1_T219_tree2_0
+PIN, I1, I, pci_pci_C5_S0_S1_T215_word_1
+PIN, I0, I, pci_pci_C5_S0_S1_T215_word_2
+PIN, O, O, pci_bus_T9_enable_FFin
+END
+SYM, pci_bus_T9_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T9_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T9_enable
+END
+SYM, pci_bus_frame_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_frame__pad
+PIN, O, O, pci_bus_frame_
+END
+SYM, pci_bus_frame_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T10_enable,, INV
+PIN, I, I, pci_bus_frame__FF
+PIN, O, O, pci_bus_frame__pad
+END
+EXT, pci_bus_frame__pad, B
+SYM, pci_bus_frame_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_frame_
+PIN, O, O, pci_bus_frame__FF
+END
+SYM, pci_bus_T10_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T10_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T10_enable_FFin
+END
+SYM, pci_bus_T10_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T10_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T10_enable
+END
+SYM, pci_bus_trdy_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_trdy__pad
+PIN, O, O, pci_bus_trdy_
+END
+SYM, pci_bus_trdy_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T11_enable,, INV
+PIN, I, I, pci_bus_trdy__FF
+PIN, O, O, pci_bus_trdy__pad
+END
+EXT, pci_bus_trdy__pad, B
+SYM, pci_bus_trdy_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_trdy_
+PIN, O, O, pci_bus_trdy__FF
+END
+SYM, pci_bus_T11_enable_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_T11_enableF0
+PIN, O, O, pci_bus_T11_enable_FFin
+END
+SYM, pci_bus_T11_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T11_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T11_enable
+END
+SYM, pci_bus_irdy_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_irdy__pad
+PIN, O, O, pci_bus_irdy_
+END
+SYM, pci_bus_irdy_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T12_enable,, INV
+PIN, I, I, pci_bus_irdy__FF
+PIN, O, O, pci_bus_irdy__pad
+END
+EXT, pci_bus_irdy__pad, B
+SYM, pci_bus_irdy_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_irdy_
+PIN, O, O, pci_bus_irdy__FF
+END
+SYM, pci_bus_T12_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T12_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T12_enable_FFin
+END
+SYM, pci_bus_T12_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T12_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T12_enable
+END
+SYM, pci_bus_stop_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_stop__pad
+PIN, O, O, pci_bus_stop_
+END
+SYM, pci_bus_stop_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T13_enable,, INV
+PIN, I, I, pci_bus_stop__FF
+PIN, O, O, pci_bus_stop__pad
+END
+EXT, pci_bus_stop__pad, B
+SYM, pci_bus_stop_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_stop_
+PIN, O, O, pci_bus_stop__FF
+END
+SYM, pci_bus_T13_enable_FFin, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T13_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T13_enable_FFin
+END
+SYM, pci_bus_T13_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T13_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T13_enable
+END
+SYM, pci_bus_devsel_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_devsel__pad
+PIN, O, O, pci_bus_devsel_
+END
+SYM, pci_bus_devsel_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T14_enable,, INV
+PIN, I, I, pci_bus_devsel__FF
+PIN, O, O, pci_bus_devsel__pad
+END
+EXT, pci_bus_devsel__pad, B
+SYM, pci_bus_devsel_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_devsel_
+PIN, O, O, pci_bus_devsel__FF
+END
+SYM, pci_bus_T14_enable_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_6
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_T14_enableF2
+PIN, O, O, pci_bus_T14_enable_FFin
+END
+SYM, pci_bus_T14_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T14_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T14_enable
+END
+SYM, pci_bus_idsel-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_idsel_pad
+PIN, O, O, pci_bus_idsel
+END
+SYM, pci_bus_idsel-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T15_enable,, INV
+PIN, I, I, pci_bus_idsel_FF
+PIN, O, O, pci_bus_idsel_pad
+END
+EXT, pci_bus_idsel_pad, B
+SYM, pci_bus_idsel, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_idsel
+PIN, O, O, pci_bus_idsel_FF
+END
+SYM, pci_bus_T15_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T15_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T15_enable_FFin
+END
+SYM, pci_bus_T15_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T15_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T15_enable
+END
+SYM, pci_bus_perr_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_perr__pad
+PIN, O, O, pci_bus_perr_
+END
+SYM, pci_bus_perr_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T16_enable,, INV
+PIN, I, I, pci_bus_perr__FF
+PIN, O, O, pci_bus_perr__pad
+END
+EXT, pci_bus_perr__pad, B
+SYM, pci_bus_perr_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_perr_
+PIN, O, O, pci_bus_perr__FF
+END
+SYM, pci_bus_T16_enable_FFin, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T16_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T16_enable_FFin
+END
+SYM, pci_bus_T16_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T16_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T16_enable
+END
+SYM, pci_bus_serr_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_serr__pad
+PIN, O, O, pci_bus_serr_
+END
+SYM, pci_bus_serr_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T17_enable,, INV
+PIN, I, I, pci_bus_serr__FF
+PIN, O, O, pci_bus_serr__pad
+END
+EXT, pci_bus_serr__pad, B
+SYM, pci_bus_serr_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_serr_
+PIN, O, O, pci_bus_serr__FF
+END
+SYM, pci_bus_T17_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T17_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T17_enable_FFin
+END
+SYM, pci_bus_T17_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T17_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T17_enable
+END
+SYM, pci_bus_req_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_req__pad
+PIN, O, O, pci_bus_req_
+END
+SYM, pci_bus_req_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T18_enable,, INV
+PIN, I, I, pci_bus_req__FF
+PIN, O, O, pci_bus_req__pad
+END
+EXT, pci_bus_req__pad, B
+SYM, pci_bus_req_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_req_
+PIN, O, O, pci_bus_req__FF
+END
+SYM, pci_bus_T18_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T18_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T18_enable_FFin
+END
+SYM, pci_bus_T18_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T18_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T18_enable
+END
+SYM, pci_bus_gnt_, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_gnt__pad
+PIN, O, O, pci_bus_gnt_
+END
+EXT, pci_bus_gnt__pad, I
+SYM, pci_bus_rst_, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_rst__pad
+PIN, O, O, pci_bus_rst_
+END
+EXT, pci_bus_rst__pad, I
+SYM, pci_bus_inta_-OBUF, OBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_inta_
+PIN, O, O, pci_bus_inta__pad
+END
+EXT, pci_bus_inta__pad, O
+SYM, pci_bus_inta_, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_bus_inta_
+END
+SYM, pci_bus_intb_-OBUF, OBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_intb_
+PIN, O, O, pci_bus_intb__pad
+END
+EXT, pci_bus_intb__pad, O
+SYM, pci_bus_intb_, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_bus_intb_
+END
+SYM, pci_bus_intc_-OBUF, OBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_intc_
+PIN, O, O, pci_bus_intc__pad
+END
+EXT, pci_bus_intc__pad, O
+SYM, pci_bus_intc_, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_bus_intc_
+END
+SYM, pci_bus_intd_-OBUF, OBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_intd_
+PIN, O, O, pci_bus_intd__pad
+END
+EXT, pci_bus_intd__pad, O
+SYM, pci_bus_intd_, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_bus_intd_
+END
+SYM, pci_bus_par64-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_par64_pad
+PIN, O, O, pci_bus_par64
+END
+SYM, pci_bus_par64-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T19_enable,, INV
+PIN, I, I, pci_bus_par64_FF
+PIN, O, O, pci_bus_par64_pad
+END
+EXT, pci_bus_par64_pad, B
+SYM, pci_bus_par64, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_par64
+PIN, O, O, pci_bus_par64_FF
+END
+SYM, pci_bus_T19_enable_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_S1_T445_tree2_0
+PIN, I1, I, pci_pci_C5_S0_S1_T441_word_1
+PIN, I0, I, pci_pci_C5_S0_S1_T441_word_2
+PIN, O, O, pci_bus_T19_enable_FFin
+END
+SYM, pci_bus_T19_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T19_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T19_enable
+END
+SYM, pci_bus_req64_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_req64__pad
+PIN, O, O, pci_bus_req64_
+END
+SYM, pci_bus_req64_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T20_enable,, INV
+PIN, I, I, pci_bus_req64__FF
+PIN, O, O, pci_bus_req64__pad
+END
+EXT, pci_bus_req64__pad, B
+SYM, pci_bus_req64_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_req64_
+PIN, O, O, pci_bus_req64__FF
+END
+SYM, pci_bus_T20_enable_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_T20_enable
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_bus_T20_enable_FFin
+END
+SYM, pci_bus_T20_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T20_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T20_enable
+END
+SYM, pci_bus_ack64_-IBUF, IBUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ack64__pad
+PIN, O, O, pci_bus_ack64_
+END
+SYM, pci_bus_ack64_-OBUFT, OBUFT, LIBVER=2.0.0
+PIN, T, I, pci_bus_T21_enable,, INV
+PIN, I, I, pci_bus_ack64__FF
+PIN, O, O, pci_bus_ack64__pad
+END
+EXT, pci_bus_ack64__pad, B
+SYM, pci_bus_ack64_, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_ack64_
+PIN, O, O, pci_bus_ack64__FF
+END
+SYM, pci_bus_T21_enable_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_bus_T21_enableF3
+PIN, O, O, pci_bus_T21_enable_FFin
+END
+SYM, pci_bus_T21_enable, DFF, LIBVER=2.0.0
+PIN, D, I, pci_bus_T21_enable_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_bus_T21_enable
+END
+SYM, pci_state_addr_b0_0_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_0F1
+PIN, O, O, pci_state_addr_b0_0_FFin
+END
+SYM, pci_state_addr_b0_0, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_0_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_0
+END
+SYM, pci_state_addr_b0_1_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_1F1
+PIN, O, O, pci_state_addr_b0_1_FFin
+END
+SYM, pci_state_addr_b0_1, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_1_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_1
+END
+SYM, pci_state_addr_b0_2_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_2F1
+PIN, O, O, pci_state_addr_b0_2_FFin
+END
+SYM, pci_state_addr_b0_2, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_2_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_2
+END
+SYM, pci_state_addr_b0_3_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_3F1
+PIN, O, O, pci_state_addr_b0_3_FFin
+END
+SYM, pci_state_addr_b0_3, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_3_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_3
+END
+SYM, pci_state_addr_b0_4_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_4F1
+PIN, O, O, pci_state_addr_b0_4_FFin
+END
+SYM, pci_state_addr_b0_4, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_4_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_4
+END
+SYM, pci_state_addr_b0_5_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_5F1
+PIN, O, O, pci_state_addr_b0_5_FFin
+END
+SYM, pci_state_addr_b0_5, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_5_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_5
+END
+SYM, pci_state_addr_b0_6_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_6F1
+PIN, O, O, pci_state_addr_b0_6_FFin
+END
+SYM, pci_state_addr_b0_6, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_6_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_6
+END
+SYM, pci_state_addr_b0_7_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_addr_b0_7F1
+PIN, O, O, pci_state_addr_b0_7_FFin
+END
+SYM, pci_state_addr_b0_7, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_addr_b0_7_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_addr_b0_7
+END
+SYM, pci_state_lastframe_FFin, INV, LIBVER=2.0.0
+PIN, I, I, pci_bus_frame_
+PIN, O, O, pci_state_lastframe_FFin
+END
+SYM, pci_state_lastframe, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_lastframe_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_lastframe
+END
+SYM, pci_state_rw_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_state_rw_FFin
+END
+SYM, pci_state_rw, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_rw_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_rw
+END
+SYM, pci_state_bar0_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_bar0F2
+PIN, O, O, pci_state_bar0_FFin
+END
+SYM, pci_state_bar0, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_bar0_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_bar0
+END
+SYM, pci_state_bar1_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_state_bar1F2
+PIN, O, O, pci_state_bar1_FFin
+END
+SYM, pci_state_bar1, DFF, LIBVER=2.0.0
+PIN, D, I, pci_state_bar1_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_state_bar1
+END
+SYM, pci_config_Bar0_23_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_23F2
+PIN, O, O, pci_config_Bar0_23_FFin
+END
+SYM, pci_config_Bar0_23, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_23_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_23
+END
+SYM, pci_config_Bar0_24_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_24F3
+PIN, O, O, pci_config_Bar0_24_FFin
+END
+SYM, pci_config_Bar0_24, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_24_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_24
+END
+SYM, pci_config_Bar0_25_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_25F3
+PIN, O, O, pci_config_Bar0_25_FFin
+END
+SYM, pci_config_Bar0_25, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_25_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_25
+END
+SYM, pci_config_Bar0_26_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_26F3
+PIN, O, O, pci_config_Bar0_26_FFin
+END
+SYM, pci_config_Bar0_26, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_26_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_26
+END
+SYM, pci_config_Bar0_27_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_27F3
+PIN, O, O, pci_config_Bar0_27_FFin
+END
+SYM, pci_config_Bar0_27, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_27_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_27
+END
+SYM, pci_config_Bar0_28_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_28F3
+PIN, O, O, pci_config_Bar0_28_FFin
+END
+SYM, pci_config_Bar0_28, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_28_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_28
+END
+SYM, pci_config_Bar0_29_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_29F3
+PIN, O, O, pci_config_Bar0_29_FFin
+END
+SYM, pci_config_Bar0_29, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_29_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_29
+END
+SYM, pci_config_Bar0_30_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar0_30F3
+PIN, O, O, pci_config_Bar0_30_FFin
+END
+SYM, pci_config_Bar0_30, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar0_30_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar0_30
+END
+SYM, pci_config_Bar1_23_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_23F2
+PIN, O, O, pci_config_Bar1_23_FFin
+END
+SYM, pci_config_Bar1_23, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_23_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_23
+END
+SYM, pci_config_Bar1_24_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_24F3
+PIN, O, O, pci_config_Bar1_24_FFin
+END
+SYM, pci_config_Bar1_24, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_24_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_24
+END
+SYM, pci_config_Bar1_25_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_25F3
+PIN, O, O, pci_config_Bar1_25_FFin
+END
+SYM, pci_config_Bar1_25, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_25_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_25
+END
+SYM, pci_config_Bar1_26_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_26F3
+PIN, O, O, pci_config_Bar1_26_FFin
+END
+SYM, pci_config_Bar1_26, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_26_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_26
+END
+SYM, pci_config_Bar1_27_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_27F3
+PIN, O, O, pci_config_Bar1_27_FFin
+END
+SYM, pci_config_Bar1_27, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_27_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_27
+END
+SYM, pci_config_Bar1_28_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_28F3
+PIN, O, O, pci_config_Bar1_28_FFin
+END
+SYM, pci_config_Bar1_28, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_28_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_28
+END
+SYM, pci_config_Bar1_29_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_29F3
+PIN, O, O, pci_config_Bar1_29_FFin
+END
+SYM, pci_config_Bar1_29, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_29_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_29
+END
+SYM, pci_config_Bar1_30_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_config_Bar1_30F3
+PIN, O, O, pci_config_Bar1_30_FFin
+END
+SYM, pci_config_Bar1_30, DFF, LIBVER=2.0.0
+PIN, D, I, pci_config_Bar1_30_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_config_Bar1_30
+END
+SYM, SYMpci_pci_C5_T0_init, EQN, EQN=((~I1)+(I0)), LIBVER=2.0.0
+PIN, I1, I, pci_Running
+PIN, I0, I, pci_pci_C5_T0_init
+PIN, O, O, pci_pci_C5_T0_init
+END
+SYM, pci_pci_C5_S0_target_sm_0_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_target_sm_0F0
+PIN, O, O, pci_pci_C5_S0_target_sm_0_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_0, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_0_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_0
+END
+SYM, pci_pci_C5_S0_target_sm_1_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_target_sm_1F0
+PIN, O, O, pci_pci_C5_S0_target_sm_1_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_1, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_1_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_1
+END
+SYM, pci_pci_C5_S0_target_sm_2_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_target_sm_2F0
+PIN, O, O, pci_pci_C5_S0_target_sm_2_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_2, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_2_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_2
+END
+SYM, pci_pci_C5_S0_target_sm_3_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_next_target_sm_3F0
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_3F1
+PIN, O, O, pci_pci_C5_S0_target_sm_3_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_3, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_3_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_3
+END
+SYM, pci_pci_C5_S0_target_sm_4_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_target_sm_4F0
+PIN, O, O, pci_pci_C5_S0_target_sm_4_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_4, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_4_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_4
+END
+SYM, pci_pci_C5_S0_target_sm_5_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_target_sm_5F0
+PIN, O, O, pci_pci_C5_S0_target_sm_5_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_5, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_5_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_5
+END
+SYM, pci_pci_C5_S0_target_sm_6_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_target_sm_6F0
+PIN, O, O, pci_pci_C5_S0_target_sm_6_FFin
+END
+SYM, pci_pci_C5_S0_target_sm_6, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_target_sm_6_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_target_sm_6
+END
+SYM, pci_pci_C5_S0_assert_par_0_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_assert_par_0F2
+PIN, O, O, pci_pci_C5_S0_assert_par_0_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_0, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_0_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_0
+END
+SYM, pci_pci_C5_S0_assert_par_1_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_1F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_1F3
+PIN, O, O, pci_pci_C5_S0_assert_par_1_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_1, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_1_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_1
+END
+SYM, pci_pci_C5_S0_assert_par_2_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_2F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_2F3
+PIN, O, O, pci_pci_C5_S0_assert_par_2_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_2, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_2_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_2
+END
+SYM, pci_pci_C5_S0_assert_par_3_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_3F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_3F3
+PIN, O, O, pci_pci_C5_S0_assert_par_3_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_3, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_3_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_3
+END
+SYM, pci_pci_C5_S0_assert_par_4_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_4F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_4F3
+PIN, O, O, pci_pci_C5_S0_assert_par_4_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_4, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_4_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_4
+END
+SYM, pci_pci_C5_S0_assert_par_5_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_5F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_5F3
+PIN, O, O, pci_pci_C5_S0_assert_par_5_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_5, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_5_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_5
+END
+SYM, pci_pci_C5_S0_assert_par_6_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_6F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_6F3
+PIN, O, O, pci_pci_C5_S0_assert_par_6_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_6, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_6_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_6
+END
+SYM, pci_pci_C5_S0_assert_par_7_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_7F2
+PIN, I1, I, pci_pci_C5_S0_T451_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_7F3
+PIN, O, O, pci_pci_C5_S0_assert_par_7_FFin
+END
+SYM, pci_pci_C5_S0_assert_par_7, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par_7_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par_7
+END
+SYM, pci_pci_C5_S0_assert_par64_0_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, pci_pci_C5_S0_assert_par64_0F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_0_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_0, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_0_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_0
+END
+SYM, pci_pci_C5_S0_assert_par64_1_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_1F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_1F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_1_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_1, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_1_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_1
+END
+SYM, pci_pci_C5_S0_assert_par64_2_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_2F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_2F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_2_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_2, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_2_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_2
+END
+SYM, pci_pci_C5_S0_assert_par64_3_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_3F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_3F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_3_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_3, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_3_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_3
+END
+SYM, pci_pci_C5_S0_assert_par64_4_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_4F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_4F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_4_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_4, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_4_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_4
+END
+SYM, pci_pci_C5_S0_assert_par64_5_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_5F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_5F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_5_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_5, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_5_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_5
+END
+SYM, pci_pci_C5_S0_assert_par64_6_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_6F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_6F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_6_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_6, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_6_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_6
+END
+SYM, pci_pci_C5_S0_assert_par64_7_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_7F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_7F1
+PIN, O, O, pci_pci_C5_S0_assert_par64_7_FFin
+END
+SYM, pci_pci_C5_S0_assert_par64_7, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_assert_par64_7_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, pci_pci_C5_T0_init
+PIN, Q, O, pci_pci_C5_S0_assert_par64_7
+END
+SYM, SYMpci_pci_C5_S0_S1_T215_word_1, EQN, EQN=((I0*I2)+(I1*I2)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_3
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_assert_par_4
+PIN, I0, I, pci_pci_C5_S0_assert_par_5
+PIN, O, O, pci_pci_C5_S0_S1_T215_word_1
+END
+SYM, SYMpci_pci_C5_S0_S1_T215_word_2, EQN, EQN=((I0*I1)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_6
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_assert_par_7
+PIN, O, O, pci_pci_C5_S0_S1_T215_word_2
+END
+SYM, SYMpci_pci_C5_S0_S1_T219_tree2_0, EQN, EQN=((I0*I2)+(I1*I2)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_assert_par_1
+PIN, I0, I, pci_pci_C5_S0_assert_par_2
+PIN, O, O, pci_pci_C5_S0_S1_T219_tree2_0
+END
+SYM, SYMpci_pci_C5_S0_S1_T441_word_1, EQN, EQN=((I0*I2)+(I1*I2)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_3
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_assert_par64_4
+PIN, I0, I, pci_pci_C5_S0_assert_par64_5
+PIN, O, O, pci_pci_C5_S0_S1_T441_word_1
+END
+SYM, SYMpci_pci_C5_S0_S1_T441_word_2, EQN, EQN=((I0*I1)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_6
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_assert_par64_7
+PIN, O, O, pci_pci_C5_S0_S1_T441_word_2
+END
+SYM, SYMpci_pci_C5_S0_S1_T445_tree2_0, EQN, EQN=((I0*I2)+(I1*I2)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_assert_par64_1
+PIN, I0, I, pci_pci_C5_S0_assert_par64_2
+PIN, O, O, pci_pci_C5_S0_S1_T445_tree2_0
+END
+SYM, SYMpci_pci_C5_S0_S2_T12_tree2, EQN, EQN=((~I0*~I1)), LIBVER=2.0.0
+PIN, I1, I, pci_bus_frame_
+PIN, I0, I, pci_state_lastframe
+PIN, O, O, pci_pci_C5_S0_S2_T12_tree2
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T13_word_1, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar0_24
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_1
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T13_word_1
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T13_word_2, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar0_25
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_2
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T13_word_2
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T13_word_3, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar0_26
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_3
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T13_word_3
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T13_word_5, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar0_28
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_5
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T13_word_5
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T13_word_6, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar0_29
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_6
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T13_word_6
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T13_word_7, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar0_30
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_7
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T13_word_7
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_1, EQN, EQN=((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_23
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_0
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T13_word_1
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T17_tree2_1
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_5, EQN, EQN=((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_27
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_4
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T13_word_5
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T17_tree2_5
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_7, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_S2_S0_S1_T17_tree2_5
+PIN, I1, I, pci_pci_C5_S0_S2_S0_S1_T13_word_6
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T13_word_7
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T17_tree2_7
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T36_word_1, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar1_24
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_1
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T36_word_1
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T36_word_2, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar1_25
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_2
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T36_word_2
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T36_word_3, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar1_26
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_3
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T36_word_3
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T36_word_5, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar1_28
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_5
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T36_word_5
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T36_word_6, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar1_29
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_6
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T36_word_6
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T36_word_7, EQN, EQN=((~I0*I1*I2)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_config_Bar1_30
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_ad_b3_7
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T36_word_7
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_1, EQN, EQN=((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_23
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_0
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T36_word_1
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T40_tree2_1
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_5, EQN, EQN=((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_27
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_4
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T36_word_5
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T40_tree2_5
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_7, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_S2_S0_S1_T40_tree2_5
+PIN, I1, I, pci_pci_C5_S0_S2_S0_S1_T36_word_6
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T36_word_7
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T40_tree2_7
+END
+SYM, SYMpci_state_bar0F0, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S2_S0_S1_T17_tree2_1
+PIN, I2, I, pci_pci_C5_S0_S2_S0_S1_T13_word_2
+PIN, I1, I, pci_pci_C5_S0_S2_S0_S1_T13_word_3
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T17_tree2_7
+PIN, O, O, pci_state_bar0F0
+END
+SYM, SYMpci_state_bar1F0, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S2_S0_S1_T40_tree2_1
+PIN, I2, I, pci_pci_C5_S0_S2_S0_S1_T36_word_2
+PIN, I1, I, pci_pci_C5_S0_S2_S0_S1_T36_word_3
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T40_tree2_7
+PIN, O, O, pci_state_bar1F0
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S1_T51_tree2, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, pci_state_bar0F0
+PIN, I0, I, pci_state_bar1F0
+PIN, O, O, pci_pci_C5_S0_S2_S0_S1_T51_tree2
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S2_T3_word_1, EQN, EQN=((~I2)+(~I1)+(~I0)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_cbe__5
+PIN, I1, I, pci_bus_cbe__6
+PIN, I0, I, pci_bus_cbe__7
+PIN, O, O, pci_pci_C5_S0_S2_S0_S2_T3_word_1
+END
+SYM, SYMpci_pci_C5_S0_S2_S0_S2_T7_tree2_0, EQN, EQN=((~I2)+(~I0)+(I1)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_cbe__1
+PIN, I2, I, pci_bus_cbe__2
+PIN, I1, I, pci_bus_cbe__3
+PIN, I0, I, pci_bus_cbe__4
+PIN, O, O, pci_pci_C5_S0_S2_S0_S2_T7_tree2_0
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F0, EQN, EQN=((~I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_S2_S0_S2_T7_tree2_0
+PIN, I1, I, pci_pci_C5_S0_S2_S0_S2_T3_word_1
+PIN, I0, I, pci_bus_idsel
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F0
+END
+SYM, SYMpci_bus_T21_enableF0, EQN, EQN=((I0*~I1)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T21_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_req64_
+PIN, I0, I, pci_pci_C5_S0_S2_S0_S1_T51_tree2
+PIN, O, O, pci_bus_T21_enableF0
+END
+SYM, SYMpci_bus_T21_enableF1, EQN, EQN=((I0*I2*I3)+(I1*I2*I3)+(I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T21_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_cbe__2
+PIN, I0, I, pci_bus_T21_enableF0
+PIN, O, O, pci_bus_T21_enableF1
+END
+SYM, SYMpci_bus_T14_enableF0, EQN, EQN=((~I0*I1)+(~I0*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_state_bar0F0
+PIN, I1, I, pci_state_bar1F0
+PIN, I0, I, pci_bus_cbe__2
+PIN, O, O, pci_bus_T14_enableF0
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F1, EQN, EQN=((~I1*~I2*~I3)+(I0*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar0F0
+PIN, I2, I, pci_state_bar1F0
+PIN, I1, I, pci_bus_cbe__2
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_0F0
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_6F0, EQN, EQN=((I0*I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S2_S0_S2_T7_tree2_0
+PIN, I2, I, pci_pci_C5_S0_S2_S0_S2_T3_word_1
+PIN, I1, I, pci_bus_idsel
+PIN, I0, I, pci_bus_cbe__2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_6F0
+END
+SYM, SYMpci_state_rwF0, EQN, EQN=((~I1*~I2*~I3)+(I0*~I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_cbe__0
+PIN, I0, I, pci_state_rw
+PIN, O, O, pci_state_rwF0
+END
+SYM, SYMpci_state_addr_b0_0F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_0
+PIN, I0, I, pci_state_addr_b0_0
+PIN, O, O, pci_state_addr_b0_0F0
+END
+SYM, SYMpci_state_addr_b0_1F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_1
+PIN, I0, I, pci_state_addr_b0_1
+PIN, O, O, pci_state_addr_b0_1F0
+END
+SYM, SYMpci_state_addr_b0_2F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_2
+PIN, I0, I, pci_state_addr_b0_2
+PIN, O, O, pci_state_addr_b0_2F0
+END
+SYM, SYMpci_state_addr_b0_3F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_3
+PIN, I0, I, pci_state_addr_b0_3
+PIN, O, O, pci_state_addr_b0_3F0
+END
+SYM, SYMpci_state_addr_b0_4F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_4
+PIN, I0, I, pci_state_addr_b0_4
+PIN, O, O, pci_state_addr_b0_4F0
+END
+SYM, SYMpci_state_addr_b0_5F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_5
+PIN, I0, I, pci_state_addr_b0_5
+PIN, O, O, pci_state_addr_b0_5F0
+END
+SYM, SYMpci_state_addr_b0_6F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_6
+PIN, I0, I, pci_state_addr_b0_6
+PIN, O, O, pci_state_addr_b0_6F0
+END
+SYM, SYMpci_state_addr_b0_7F0, EQN, EQN=((I1*~I2*~I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_frame_
+PIN, I2, I, pci_state_lastframe
+PIN, I1, I, pci_bus_ad_b0_7
+PIN, I0, I, pci_state_addr_b0_7
+PIN, O, O, pci_state_addr_b0_7F0
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F2, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_state_lastframe
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_0F1
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F2
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_6F1, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_state_lastframe
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_6F0
+PIN, O, O, pci_pci_C5_S0_next_target_sm_6F1
+END
+SYM, SYMpci_bus_T14_enableF1, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_state_lastframe
+PIN, I0, I, pci_bus_T14_enableF0
+PIN, O, O, pci_bus_T14_enableF1
+END
+SYM, SYMpci_bus_T21_enableF2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T21_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S2_T12_tree2
+PIN, I0, I, pci_bus_T21_enableF1
+PIN, O, O, pci_bus_T21_enableF2
+END
+SYM, SYMpci_state_bar1F1, EQN, EQN=((I0*~I2*I3)+(I1*~I2*I3)+(I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar1F0
+PIN, I2, I, pci_bus_cbe__2
+PIN, I1, I, pci_pci_C5_S0_S2_T12_tree2
+PIN, I0, I, pci_state_bar1
+PIN, O, O, pci_state_bar1F1
+END
+SYM, SYMpci_state_bar0F1, EQN, EQN=((I0*~I2*I3)+(I1*~I2*I3)+(I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar0F0
+PIN, I2, I, pci_bus_cbe__2
+PIN, I1, I, pci_pci_C5_S0_S2_T12_tree2
+PIN, I0, I, pci_state_bar0
+PIN, O, O, pci_state_bar0F1
+END
+SYM, SYMpci_pci_C5_S0_T334_tree2, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_pci_C5_S0_target_sm_5
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_pci_C5_S0_T334_tree2
+END
+SYM, SYMpci_state_bar0F2, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_bar0F1
+PIN, I0, I, pci_state_bar0
+PIN, O, O, pci_state_bar0F2
+END
+SYM, SYMpci_state_bar1F2, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_bar1F1
+PIN, I0, I, pci_state_bar1
+PIN, O, O, pci_state_bar1F2
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F3, EQN, EQN=((~I0*~I3)+(~I0*I1)+(~I2)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_0F2
+PIN, I0, I, pci_pci_C5_S0_target_sm_1
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F3
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_1F2, EQN, EQN=((~I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_T14_enableF1
+PIN, I0, I, pci_pci_C5_S0_target_sm_1
+PIN, O, O, pci_pci_C5_S0_next_target_sm_1F2
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_6F2, EQN, EQN=((~I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_6F1
+PIN, I0, I, pci_pci_C5_S0_target_sm_1
+PIN, O, O, pci_pci_C5_S0_next_target_sm_6F2
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_5F0, EQN, EQN=((~I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_1
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_bar0F2
+PIN, I0, I, pci_state_bar1F2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_5F0
+END
+SYM, SYMpci_pci_C5_S0_T349_tree2, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_pci_C5_S0_target_sm_2
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_pci_C5_S0_T349_tree2
+END
+SYM, pci_pci_C5_S0_S5_data_24_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_24_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_24, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_24_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_24
+END
+SYM, pci_pci_C5_S0_S5_data_25_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_25_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_25, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_25_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_25
+END
+SYM, pci_pci_C5_S0_S5_data_26_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_26_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_26, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_26_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_26
+END
+SYM, pci_pci_C5_S0_S5_data_27_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_27_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_27, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_27_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_27
+END
+SYM, pci_pci_C5_S0_S5_data_28_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_28_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_28, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_28_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_28
+END
+SYM, pci_pci_C5_S0_S5_data_29_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_29_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_29, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_29_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_29
+END
+SYM, pci_pci_C5_S0_S5_data_30_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, GND
+PIN, O, O, pci_pci_C5_S0_S5_data_30_FFin
+END
+SYM, pci_pci_C5_S0_S5_data_30, DFF, LIBVER=2.0.0
+PIN, D, I, pci_pci_C5_S0_S5_data_30_FFin
+PIN, C, I, pci_clk
+PIN, CE, I, VCC
+PIN, Q, O, pci_pci_C5_S0_S5_data_30
+END
+SYM, SYMpci_pci_C5_S0_S5_T4_tree2, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_rwF0
+PIN, I0, I, pci_state_rw
+PIN, O, O, pci_pci_C5_S0_S5_T4_tree2
+END
+SYM, SYMpci_pci_C5_S0_S5_T12_then_0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_S5_T12_then_0
+END
+SYM, SYMpci_pci_C5_S0_S5_T16_then_0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_S5_T16_then_0
+END
+SYM, SYMpci_bus_T7_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T7_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__7
+PIN, O, O, pci_bus_T7_enableF0
+END
+SYM, SYMpci_bus_T7_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T7_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T7_enableF1
+END
+SYM, SYMpci_bus_T6_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T6_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__6
+PIN, O, O, pci_bus_T6_enableF0
+END
+SYM, SYMpci_bus_T6_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T6_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T6_enableF1
+END
+SYM, SYMpci_bus_T5_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T5_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__5
+PIN, O, O, pci_bus_T5_enableF0
+END
+SYM, SYMpci_bus_T5_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T5_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T5_enableF1
+END
+SYM, SYMpci_bus_T4_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T4_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__4
+PIN, O, O, pci_bus_T4_enableF0
+END
+SYM, SYMpci_bus_T4_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T4_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T4_enableF1
+END
+SYM, SYMpci_bus_T3_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T3_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__3
+PIN, O, O, pci_bus_T3_enableF0
+END
+SYM, SYMpci_bus_T3_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T3_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T3_enableF1
+END
+SYM, SYMpci_bus_T2_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T2_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__2
+PIN, O, O, pci_bus_T2_enableF0
+END
+SYM, SYMpci_bus_T2_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T2_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T2_enableF1
+END
+SYM, SYMpci_bus_T1_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T1_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__1
+PIN, O, O, pci_bus_T1_enableF0
+END
+SYM, SYMpci_bus_T1_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T1_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T1_enableF1
+END
+SYM, SYMpci_bus_T0_enableF0, EQN, EQN=((~I1*I2*I3)+(~I0)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T0_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_bus_cbe__0
+PIN, O, O, pci_bus_T0_enableF0
+END
+SYM, SYMpci_bus_T0_enableF1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_bus_T0_enable
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_bus_T0_enableF1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F4, EQN, EQN=((I1*~I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar0F2
+PIN, I2, I, pci_state_bar1F2
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_0F3
+PIN, I0, I, pci_pci_C5_S0_T334_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F4
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_1F3, EQN, EQN=((I1*~I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar0F2
+PIN, I2, I, pci_state_bar1F2
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_1F2
+PIN, I0, I, pci_pci_C5_S0_T334_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_1F3
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_2F0, EQN, EQN=((I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar0F2
+PIN, I2, I, pci_state_bar1F2
+PIN, I1, I, pci_pci_C5_S0_target_sm_5
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_pci_C5_S0_next_target_sm_2F0
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_5F1, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_5
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_5F0
+PIN, I0, I, pci_pci_C5_S0_target_sm_1
+PIN, O, O, pci_pci_C5_S0_next_target_sm_5F1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_6F3, EQN, EQN=((I1*~I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_state_bar0F2
+PIN, I2, I, pci_state_bar1F2
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_6F2
+PIN, I0, I, pci_pci_C5_S0_T334_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_6F3
+END
+SYM, SYMpci_bus_ad_b3_0F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_24
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_0F0
+END
+SYM, SYMpci_bus_ad_b3_1F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_25
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_1F0
+END
+SYM, SYMpci_bus_ad_b3_2F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_26
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_2
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_2F0
+END
+SYM, SYMpci_bus_ad_b3_3F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_27
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_3
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_3F0
+END
+SYM, SYMpci_bus_ad_b3_4F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_28
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_4
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_4F0
+END
+SYM, SYMpci_bus_ad_b3_5F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_29
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_5
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_5F0
+END
+SYM, SYMpci_bus_ad_b3_6F0, EQN, EQN=((~I0*~I2*I3)+(I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_data_30
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_bus_ad_b3_6
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_bus_ad_b3_6F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_0F0, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_0
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_0F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_1F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_1
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_1F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_1F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_1
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_1F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par_2F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_2F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_2F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_2
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_2F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par_3F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_3
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_3F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_3F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_3F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par_4F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_4
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_4F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_4F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_4F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par_5F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_5
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_5F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_5F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_5
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_5F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par_6F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_6F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_6F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_6
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_6F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par_7F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_7
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_7F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_7F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_7
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par_7F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_0F0, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_0
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_0F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_1F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_1
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_1F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_1F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_1
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_1F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_2F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_2F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_2F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_2
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_2F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_3F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_3
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_3F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_3F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_3
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_3F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_4F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_4
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_4F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_4F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_4F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_5F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_5
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_5F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_5F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_5
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_5F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_6F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_6F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_6F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_6
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_6F1
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_7F0, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par64_7
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par64_7F0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_7F1, EQN, EQN=((~I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par64_7
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_target_sm_0
+PIN, O, O, pci_pci_C5_S0_assert_par64_7F1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F5, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_0F4
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F5
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_1F4, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_1F3
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_1F4
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_2F1, EQN, EQN=((~I0*I1)+(I1*I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_2F0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_2F1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_4F0, EQN, EQN=((I0*I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_target_sm_2
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_pci_C5_S0_next_target_sm_4F0
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_5F2, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_5F1
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_5F2
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_6F4, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_6F3
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_6F4
+END
+SYM, SYMpci_pci_C5_S0_T451_tree2, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, pci_pci_C5_S0_target_sm_6
+PIN, I0, I, pci_bus_rst_
+PIN, O, O, pci_pci_C5_S0_T451_tree2
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T2_word_2, EQN, EQN=((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_2F0
+PIN, I0, I, pci_state_addr_b0_2
+PIN, O, O, pci_pci_C5_S0_S7_S0_T2_word_2
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T9_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_state_addr_b0_0F1
+PIN, I2, I, pci_state_addr_b0_1F1
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T2_word_2
+PIN, I0, I, pci_state_addr_b0_3F1
+PIN, O, O, pci_pci_C5_S0_S7_S0_T9_tree2_0
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T40_tree2_4, EQN, EQN=((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_4F0
+PIN, I0, I, pci_state_addr_b0_4
+PIN, O, O, pci_pci_C5_S0_S7_S0_T40_tree2_4
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T40_tree2_7, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S7_S0_T40_tree2_4
+PIN, I2, I, pci_state_addr_b0_5F1
+PIN, I1, I, pci_state_addr_b0_6F1
+PIN, I0, I, pci_state_addr_b0_7F1
+PIN, O, O, pci_pci_C5_S0_S7_S0_T40_tree2_7
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T43_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_state_addr_b0_0F1
+PIN, I2, I, pci_state_addr_b0_1F1
+PIN, I1, I, pci_state_addr_b0_2F1
+PIN, I0, I, pci_state_addr_b0_3F1
+PIN, O, O, pci_pci_C5_S0_S7_S0_T43_tree2_0
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T50_tree2, EQN, EQN=((~I0*~I1)), LIBVER=2.0.0
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T43_tree2_0
+PIN, I0, I, pci_pci_C5_S0_S7_S0_T40_tree2_7
+PIN, O, O, pci_pci_C5_S0_S7_S0_T50_tree2
+END
+SYM, SYMpci_config_Bar0_24F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_0F0
+PIN, I0, I, pci_bus_ad_b3_0
+PIN, O, O, pci_config_Bar0_24F0
+END
+SYM, SYMpci_config_Bar0_25F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_1F0
+PIN, I0, I, pci_bus_ad_b3_1
+PIN, O, O, pci_config_Bar0_25F0
+END
+SYM, SYMpci_config_Bar0_26F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_2F0
+PIN, I0, I, pci_bus_ad_b3_2
+PIN, O, O, pci_config_Bar0_26F0
+END
+SYM, SYMpci_config_Bar0_27F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_3F0
+PIN, I0, I, pci_bus_ad_b3_3
+PIN, O, O, pci_config_Bar0_27F0
+END
+SYM, SYMpci_config_Bar0_28F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_4F0
+PIN, I0, I, pci_bus_ad_b3_4
+PIN, O, O, pci_config_Bar0_28F0
+END
+SYM, SYMpci_config_Bar0_29F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_5F0
+PIN, I0, I, pci_bus_ad_b3_5
+PIN, O, O, pci_config_Bar0_29F0
+END
+SYM, SYMpci_config_Bar0_30F0, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_2
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_ad_b3_6F0
+PIN, I0, I, pci_bus_ad_b3_6
+PIN, O, O, pci_config_Bar0_30F0
+END
+SYM, SYMpci_pci_C5_S0_S7_S0_T85_tree2, EQN, EQN=((~I0*~I1)), LIBVER=2.0.0
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T9_tree2_0
+PIN, I0, I, pci_pci_C5_S0_S7_S0_T40_tree2_7
+PIN, O, O, pci_pci_C5_S0_S7_S0_T85_tree2
+END
+SYM, SYMpci_bus_T0_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T0_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T0_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T0_enableF2
+END
+SYM, SYMpci_bus_T1_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T1_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T1_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T1_enableF2
+END
+SYM, SYMpci_bus_T2_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T2_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T2_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T2_enableF2
+END
+SYM, SYMpci_bus_T3_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T3_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T3_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T3_enableF2
+END
+SYM, SYMpci_config_Bar1_23F0, EQN, EQN=((I0*I2*I3)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_23
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T9_tree2_0
+PIN, I0, I, pci_pci_C5_S0_S7_S0_T40_tree2_7
+PIN, O, O, pci_config_Bar1_23F0
+END
+SYM, SYMpci_config_Bar1_24F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_24
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_24F0
+PIN, O, O, pci_config_Bar1_24F1
+END
+SYM, SYMpci_config_Bar1_25F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_25
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_25F0
+PIN, O, O, pci_config_Bar1_25F1
+END
+SYM, SYMpci_config_Bar1_26F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_26
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_26F0
+PIN, O, O, pci_config_Bar1_26F1
+END
+SYM, SYMpci_config_Bar1_27F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_27
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_27F0
+PIN, O, O, pci_config_Bar1_27F1
+END
+SYM, SYMpci_config_Bar1_28F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_28
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_28F0
+PIN, O, O, pci_config_Bar1_28F1
+END
+SYM, SYMpci_config_Bar1_29F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_29
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_29F0
+PIN, O, O, pci_config_Bar1_29F1
+END
+SYM, SYMpci_config_Bar1_30F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_30
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T85_tree2
+PIN, I0, I, pci_config_Bar0_30F0
+PIN, O, O, pci_config_Bar1_30F1
+END
+SYM, SYMpci_config_Bar0_23F0, EQN, EQN=((I0*I2*I3)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_23
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T43_tree2_0
+PIN, I0, I, pci_pci_C5_S0_S7_S0_T40_tree2_7
+PIN, O, O, pci_config_Bar0_23F0
+END
+SYM, SYMpci_config_Bar0_24F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_24
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_24F0
+PIN, O, O, pci_config_Bar0_24F1
+END
+SYM, SYMpci_config_Bar0_25F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_25
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_25F0
+PIN, O, O, pci_config_Bar0_25F1
+END
+SYM, SYMpci_config_Bar0_26F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_26
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_26F0
+PIN, O, O, pci_config_Bar0_26F1
+END
+SYM, SYMpci_config_Bar0_27F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_27
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_27F0
+PIN, O, O, pci_config_Bar0_27F1
+END
+SYM, SYMpci_config_Bar0_28F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_28
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_28F0
+PIN, O, O, pci_config_Bar0_28F1
+END
+SYM, SYMpci_config_Bar0_29F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_29
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_29F0
+PIN, O, O, pci_config_Bar0_29F1
+END
+SYM, SYMpci_config_Bar0_30F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_30
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S7_S0_T50_tree2
+PIN, I0, I, pci_config_Bar0_30F0
+PIN, O, O, pci_config_Bar0_30F1
+END
+SYM, SYMpci_pci_C5_S0_S7_T26_else_0, EQN, EQN=((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_rwF0
+PIN, I0, I, pci_state_rw
+PIN, O, O, pci_pci_C5_S0_S7_T26_else_0
+END
+SYM, SYMpci_pci_C5_S0_assert_par_0F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_T16_then_0
+PIN, I2, I, pci_pci_C5_S0_S7_T26_else_0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_0F0
+PIN, O, O, pci_pci_C5_S0_assert_par_0F1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_0F6, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_0F5
+PIN, O, O, pci_pci_C5_S0_next_target_sm_0F6
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_1F5, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_1F4
+PIN, O, O, pci_pci_C5_S0_next_target_sm_1F5
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_2F2, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_2F1
+PIN, O, O, pci_pci_C5_S0_next_target_sm_2F2
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_4F1, EQN, EQN=((~I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_4
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_frame_
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_4F0
+PIN, O, O, pci_pci_C5_S0_next_target_sm_4F1
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_5F3, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_5F2
+PIN, O, O, pci_pci_C5_S0_next_target_sm_5F3
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_6F5, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_pci_C5_S0_next_target_sm_6F4
+PIN, O, O, pci_pci_C5_S0_next_target_sm_6F5
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_3F0, EQN, EQN=((~I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_4
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_frame_
+PIN, I0, I, pci_bus_irdy_
+PIN, O, O, pci_pci_C5_S0_next_target_sm_3F0
+END
+SYM, SYMpci_pci_C5_S0_next_target_sm_3F1, EQN, EQN=((I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_target_sm_4
+PIN, I1, I, pci_bus_rst_
+PIN, I0, I, pci_bus_frame_
+PIN, O, O, pci_pci_C5_S0_next_target_sm_3F1
+END
+SYM, SYMpci_bus_T14_enableF2, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_T14_enableF1
+PIN, I0, I, pci_bus_T14_enable
+PIN, O, O, pci_bus_T14_enableF2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_1F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_1F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_1F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_1F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_1F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_1F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_1F1
+PIN, O, O, pci_pci_C5_S0_assert_par_1F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_2F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_2F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_2F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_2F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_2F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_2F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_2F1
+PIN, O, O, pci_pci_C5_S0_assert_par_2F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_3F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_3F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_3F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_3F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_3F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_3F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_3F1
+PIN, O, O, pci_pci_C5_S0_assert_par_3F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_4F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_4F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_4F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_4F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_4F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_4F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_4F1
+PIN, O, O, pci_pci_C5_S0_assert_par_4F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_5F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_5F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_5F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_5F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_5F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_5F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_5F1
+PIN, O, O, pci_pci_C5_S0_assert_par_5F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_6F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_6F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_6F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_6F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_6F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_6F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_6F1
+PIN, O, O, pci_pci_C5_S0_assert_par_6F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_7F2, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_assert_par_7F0
+PIN, I2, I, pci_pci_C5_S0_T349_tree2
+PIN, I1, I, pci_pci_C5_S0_assert_par_7F1
+PIN, I0, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_7F2
+END
+SYM, SYMpci_pci_C5_S0_assert_par_7F3, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, pci_pci_C5_S0_assert_par_7F0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par_7F1
+PIN, O, O, pci_pci_C5_S0_assert_par_7F3
+END
+SYM, SYMpci_config_Bar0_23F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_23
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_23F0
+PIN, O, O, pci_config_Bar0_23F1
+END
+SYM, SYMpci_config_Bar0_24F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_24
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_24F1
+PIN, O, O, pci_config_Bar0_24F2
+END
+SYM, SYMpci_config_Bar0_25F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_25
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_25F1
+PIN, O, O, pci_config_Bar0_25F2
+END
+SYM, SYMpci_config_Bar0_26F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_26
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_26F1
+PIN, O, O, pci_config_Bar0_26F2
+END
+SYM, SYMpci_config_Bar0_27F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_27
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_27F1
+PIN, O, O, pci_config_Bar0_27F2
+END
+SYM, SYMpci_config_Bar0_28F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_28
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_28F1
+PIN, O, O, pci_config_Bar0_28F2
+END
+SYM, SYMpci_config_Bar0_29F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_29
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_29F1
+PIN, O, O, pci_config_Bar0_29F2
+END
+SYM, SYMpci_config_Bar0_30F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar0_30
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar0_30F1
+PIN, O, O, pci_config_Bar0_30F2
+END
+SYM, SYMpci_config_Bar1_23F1, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_23
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_23F0
+PIN, O, O, pci_config_Bar1_23F1
+END
+SYM, SYMpci_config_Bar1_24F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_24
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_24F1
+PIN, O, O, pci_config_Bar1_24F2
+END
+SYM, SYMpci_config_Bar1_25F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_25
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_25F1
+PIN, O, O, pci_config_Bar1_25F2
+END
+SYM, SYMpci_config_Bar1_26F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_26
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_26F1
+PIN, O, O, pci_config_Bar1_26F2
+END
+SYM, SYMpci_config_Bar1_27F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_27
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_27F1
+PIN, O, O, pci_config_Bar1_27F2
+END
+SYM, SYMpci_config_Bar1_28F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_28
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_28F1
+PIN, O, O, pci_config_Bar1_28F2
+END
+SYM, SYMpci_config_Bar1_29F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_29
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_29F1
+PIN, O, O, pci_config_Bar1_29F2
+END
+SYM, SYMpci_config_Bar1_30F2, EQN, EQN=((~I1*I2*I3)+(I0*I2*I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_config_Bar1_30
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_config_Bar1_30F1
+PIN, O, O, pci_config_Bar1_30F2
+END
+SYM, SYMpci_bus_T7_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T7_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T7_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T7_enableF2
+END
+SYM, SYMpci_bus_T6_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T6_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T6_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T6_enableF2
+END
+SYM, SYMpci_bus_T5_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T5_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T5_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T5_enableF2
+END
+SYM, SYMpci_bus_T4_enableF2, EQN, EQN=((I0*I1*~I2)+(~I0*I3)+(I1*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T4_enableF1
+PIN, I2, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I1, I, pci_bus_T4_enableF0
+PIN, I0, I, pci_pci_C5_S0_T349_tree2
+PIN, O, O, pci_bus_T4_enableF2
+END
+SYM, SYMpci_bus_T3_enableF3, EQN, EQN=((I0*~I1*~I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T3_enableF2
+PIN, I2, I, pci_bus_cbe__3
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_bus_T3_enableF3
+END
+SYM, SYMpci_bus_T2_enableF3, EQN, EQN=((I0*~I1*~I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T2_enableF2
+PIN, I2, I, pci_bus_cbe__2
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_bus_T2_enableF3
+END
+SYM, SYMpci_bus_T1_enableF3, EQN, EQN=((I0*~I1*~I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T1_enableF2
+PIN, I2, I, pci_bus_cbe__1
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_bus_T1_enableF3
+END
+SYM, SYMpci_bus_T0_enableF3, EQN, EQN=((I0*~I1*~I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T0_enableF2
+PIN, I2, I, pci_bus_cbe__0
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_bus_T0_enableF3
+END
+SYM, SYMpci_pci_C5_S0_target_sm_0F0, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_0F6
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_target_sm_0F0
+END
+SYM, SYMpci_pci_C5_S0_target_sm_1F0, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_1F5
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_target_sm_1F0
+END
+SYM, SYMpci_pci_C5_S0_target_sm_2F0, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_2F2
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_target_sm_2F0
+END
+SYM, SYMpci_pci_C5_S0_target_sm_4F0, EQN, EQN=((I0*~I2*~I3)+(I1*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_4F1
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_target_sm_4F0
+END
+SYM, SYMpci_pci_C5_S0_target_sm_5F0, EQN, EQN=((I1*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_5F3
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_target_sm_5F0
+END
+SYM, SYMpci_pci_C5_S0_target_sm_6F0, EQN, EQN=((~I0*I1)+(I1*I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_irdy_
+PIN, I2, I, pci_bus_frame_
+PIN, I1, I, pci_pci_C5_S0_next_target_sm_6F5
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_target_sm_6F0
+END
+SYM, SYMpci_config_Bar1_23F2, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_23F1
+PIN, I0, I, pci_config_Bar1_23
+PIN, O, O, pci_config_Bar1_23F2
+END
+SYM, SYMpci_config_Bar1_24F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_24F2
+PIN, I0, I, pci_config_Bar1_24
+PIN, O, O, pci_config_Bar1_24F3
+END
+SYM, SYMpci_config_Bar1_25F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_25F2
+PIN, I0, I, pci_config_Bar1_25
+PIN, O, O, pci_config_Bar1_25F3
+END
+SYM, SYMpci_config_Bar1_26F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_26F2
+PIN, I0, I, pci_config_Bar1_26
+PIN, O, O, pci_config_Bar1_26F3
+END
+SYM, SYMpci_config_Bar1_27F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_27F2
+PIN, I0, I, pci_config_Bar1_27
+PIN, O, O, pci_config_Bar1_27F3
+END
+SYM, SYMpci_config_Bar1_28F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_28F2
+PIN, I0, I, pci_config_Bar1_28
+PIN, O, O, pci_config_Bar1_28F3
+END
+SYM, SYMpci_config_Bar1_29F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_29F2
+PIN, I0, I, pci_config_Bar1_29
+PIN, O, O, pci_config_Bar1_29F3
+END
+SYM, SYMpci_config_Bar1_30F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar1_30F2
+PIN, I0, I, pci_config_Bar1_30
+PIN, O, O, pci_config_Bar1_30F3
+END
+SYM, SYMpci_config_Bar0_23F2, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_23F1
+PIN, I0, I, pci_config_Bar0_23
+PIN, O, O, pci_config_Bar0_23F2
+END
+SYM, SYMpci_config_Bar0_24F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_24F2
+PIN, I0, I, pci_config_Bar0_24
+PIN, O, O, pci_config_Bar0_24F3
+END
+SYM, SYMpci_config_Bar0_25F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_25F2
+PIN, I0, I, pci_config_Bar0_25
+PIN, O, O, pci_config_Bar0_25F3
+END
+SYM, SYMpci_config_Bar0_26F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_26F2
+PIN, I0, I, pci_config_Bar0_26
+PIN, O, O, pci_config_Bar0_26F3
+END
+SYM, SYMpci_config_Bar0_27F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_27F2
+PIN, I0, I, pci_config_Bar0_27
+PIN, O, O, pci_config_Bar0_27F3
+END
+SYM, SYMpci_config_Bar0_28F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_28F2
+PIN, I0, I, pci_config_Bar0_28
+PIN, O, O, pci_config_Bar0_28F3
+END
+SYM, SYMpci_config_Bar0_29F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_29F2
+PIN, I0, I, pci_config_Bar0_29
+PIN, O, O, pci_config_Bar0_29F3
+END
+SYM, SYMpci_config_Bar0_30F3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_6
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_config_Bar0_30F2
+PIN, I0, I, pci_config_Bar0_30
+PIN, O, O, pci_config_Bar0_30F3
+END
+SYM, SYMpci_pci_C5_S0_assert_par_0F2, EQN, EQN=((~I0*I2)+(I1*I2)+(I0*I3)+(I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S7_T26_else_0
+PIN, I2, I, pci_pci_C5_S0_assert_par_0F1
+PIN, I1, I, pci_pci_C5_S0_S5_T4_tree2
+PIN, I0, I, pci_pci_C5_S0_T451_tree2
+PIN, O, O, pci_pci_C5_S0_assert_par_0F2
+END
+SYM, SYMpci_bus_T11_enableF0, EQN, EQN=((~I1*I2*I3)+(I0*I2)), LIBVER=2.0.0
+PIN, I3, I, pci_bus_T11_enable
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_pci_C5_S0_target_sm_0
+PIN, I0, I, pci_pci_C5_S0_target_sm_6
+PIN, O, O, pci_bus_T11_enableF0
+END
+SYM, SYMpci_pci_C5_S0_assert_par64_0F1, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_S5_T12_then_0
+PIN, I2, I, pci_pci_C5_S0_S7_T26_else_0
+PIN, I1, I, pci_pci_C5_S0_T349_tree2
+PIN, I0, I, pci_pci_C5_S0_assert_par64_0F0
+PIN, O, O, pci_pci_C5_S0_assert_par64_0F1
+END
+SYM, SYMpci_bus_T21_enableF3, EQN, EQN=((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_bus_T21_enableF2
+PIN, I0, I, pci_bus_T21_enable
+PIN, O, O, pci_bus_T21_enableF3
+END
+SYM, SYMpci_state_addr_b0_0F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_0F0
+PIN, I0, I, pci_state_addr_b0_0
+PIN, O, O, pci_state_addr_b0_0F1
+END
+SYM, SYMpci_state_addr_b0_1F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_1F0
+PIN, I0, I, pci_state_addr_b0_1
+PIN, O, O, pci_state_addr_b0_1F1
+END
+SYM, SYMpci_state_addr_b0_2F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_2F0
+PIN, I0, I, pci_state_addr_b0_2
+PIN, O, O, pci_state_addr_b0_2F1
+END
+SYM, SYMpci_state_addr_b0_3F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_3F0
+PIN, I0, I, pci_state_addr_b0_3
+PIN, O, O, pci_state_addr_b0_3F1
+END
+SYM, SYMpci_state_addr_b0_4F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_4F0
+PIN, I0, I, pci_state_addr_b0_4
+PIN, O, O, pci_state_addr_b0_4F1
+END
+SYM, SYMpci_state_addr_b0_5F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_5F0
+PIN, I0, I, pci_state_addr_b0_5
+PIN, O, O, pci_state_addr_b0_5F1
+END
+SYM, SYMpci_state_addr_b0_6F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_6F0
+PIN, I0, I, pci_state_addr_b0_6
+PIN, O, O, pci_state_addr_b0_6F1
+END
+SYM, SYMpci_state_addr_b0_7F1, EQN, EQN=((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, pci_pci_C5_S0_target_sm_0
+PIN, I2, I, pci_bus_rst_
+PIN, I1, I, pci_state_addr_b0_7F0
+PIN, I0, I, pci_state_addr_b0_7
+PIN, O, O, pci_state_addr_b0_7F1
+END
+EOF

@@ -7,5 +7,5 @@ build:	pci.c pci.ucf
 	-trce -intstyle ise -e 3 -l 3 -xml pci pci.ncd -o pci.twr pci.pcf
 
 clean:
-	-rm -f netlist.lst pci.bld pci.edf pci.log pci.mrp pci.ncd pci.ngd pci.ngm pci.ngo
-	-rm -f pci.pad pci_pad.csv pci_pad.txt pci.par pci.pcf pci.twr pci.twx pci.xnf pci.xpi xnf2edf.log
+	-rm -f netlist.lst pci.bld pci.log pci.mrp pci.ncd pci.ngd pci.ngm pci.ngo
+	-rm -f pci.pad pci_pad.csv pci_pad.txt pci.par pci.pcf pci.twx pci.xpi xnf2edf.log

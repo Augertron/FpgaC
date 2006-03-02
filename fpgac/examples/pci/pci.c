@@ -97,7 +97,9 @@ fpgac_process pci() {
         assert_par = 0;
         assert_par64 = 0;
 
-    } else {
+    } 
+
+    {
         pci_state.frame  = ~pci_bus.frame_;	// Make active high copies (get optimized away)
         pci_state.trdy   = ~pci_bus.trdy_;
         pci_state.irdy   = ~pci_bus.irdy_;
@@ -107,8 +109,7 @@ fpgac_process pci() {
         pci_state.req64  = ~pci_bus.req64_;
         pci_state.ack64  = ~pci_bus.ack64_;
 
-        if(assert_par) {
-            pci_bus.par   = ( pci_bus.ad_b0    &1) ^ ((pci_bus.ad_b0>>1)&1)
+            pci_state.par = ( pci_bus.ad_b0    &1) ^ ((pci_bus.ad_b0>>1)&1)
                           ^ ((pci_bus.ad_b0>>2)&1) ^ ((pci_bus.ad_b0>>3)&1)
                           ^ ((pci_bus.ad_b0>>4)&1) ^ ((pci_bus.ad_b0>>5)&1)
                           ^ ((pci_bus.ad_b0>>6)&1) ^ ((pci_bus.ad_b0>>7)&1)
@@ -124,12 +125,13 @@ fpgac_process pci() {
                           ^ ((pci_bus.ad_b3>>2)&1) ^ ((pci_bus.ad_b3>>3)&1)
                           ^ ((pci_bus.ad_b3>>4)&1) ^ ((pci_bus.ad_b3>>5)&1)
                           ^ ((pci_bus.ad_b3>>6)&1) ^ ((pci_bus.ad_b3>>7)&1);
+        if(assert_par) {
+            pci_bus.par = pci_state.par;
         } else {
 #pragma fpgac_bus_idle(pci_bus.par)
         }
 
-        if(assert_par64) {
-            pci_bus.par64 = ( pci_bus.ad_b4    &1) ^ ((pci_bus.ad_b4>>1)&1)
+          pci_state.par64 = ( pci_bus.ad_b4    &1) ^ ((pci_bus.ad_b4>>1)&1)
                           ^ ((pci_bus.ad_b4>>2)&1) ^ ((pci_bus.ad_b4>>3)&1)
                           ^ ((pci_bus.ad_b4>>4)&1) ^ ((pci_bus.ad_b4>>5)&1)
                           ^ ((pci_bus.ad_b4>>6)&1) ^ ((pci_bus.ad_b4>>7)&1)
@@ -145,6 +147,8 @@ fpgac_process pci() {
                           ^ ((pci_bus.ad_b7>>2)&1) ^ ((pci_bus.ad_b7>>3)&1)
                           ^ ((pci_bus.ad_b7>>4)&1) ^ ((pci_bus.ad_b7>>5)&1)
                           ^ ((pci_bus.ad_b7>>6)&1) ^ ((pci_bus.ad_b7>>7)&1);
+        if(assert_par64) {
+            pci_bus.par64 = pci_state.par64;
         } else {
 #pragma fpgac_bus_idle(pci_bus.par64)
         }

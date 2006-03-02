@@ -164,5 +164,7 @@ struct PCI_State {
 	unsigned	rw:1;		// PCI Read/Write state latched from command
 	unsigned	bar0:1;		// PCI Read/Write to bar0
 	unsigned	bar1:1;		// PCI Read/Write to bar1
+	unsigned	par:1;		// PCI Read/Write parity
+	unsigned	par64:1;	// PCI Read/Write parity
 };
 
