@@ -548,30 +548,20 @@ thread, thus allowing libraries with precompiled netlists (cores) to be
 introduced into FpgaC. The current practice of creating one thread for
 each file will then be depreciated.<br>
 <h3>Clock Source</h3>
-By default, FpgaC gets the clock for the circuit from the default FPGA.
-For Xilinx XC4000 FPGAs this&nbsp; oscillator is running at 15
-Hz.&nbsp; Other FPGA's vary.&nbsp; This may suitable for
-testing the compiler, but useless for anything else. Other FPGAs and
-their various boards will require changes.<br>
-<br>
-If you want to get the clock from a different source, define a signal
-called CLK in your own XNF file, and compile the program this way:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; fpgac
-program.c myclock.xnf</span><br>
-<br>
-For instance, this XNF file will use a clock signal from an external
-pin named FPSCLK:<br>
+<span style="font-family: monospace;"></span>There can only be one
+clock source for a C file.&nbsp; The default XNF file clock input is
+from an external
+pin named CLKin:<br>
 <br>
 <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; SYM, CLK-AA,
 BUFGP</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; PIN, I, I,
-FPSCLK</span><br style="font-family: monospace;">
+CLKin</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; PIN, O, O, CLK</span><br
  style="font-family: monospace;">
 <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; END</span><br
  style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; EXT, FPSCLK, I</span><br
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; EXT, CLKin, I</span><br
  style="font-family: monospace;">
 <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; SYM, STARTUP,
 STARTUP</span><br style="font-family: monospace;">
@@ -579,11 +569,16 @@ STARTUP</span><br style="font-family: monospace;">
 CLK</span><br style="font-family: monospace;">
 <span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; END</span><br>
 <br>
-If you want to use a name other than CLK for the clock source, use the
--c YOURCLOCKNAME option.&nbsp; A simple -c option will leave the clock
-name as CLK, but will not generate the default 15 Hz clock circuitry.<br>
+If you want to use a name other than CLK for the clock source without
+creating the clock buffer, use the
+-cYOURCLOCKNAME option.&nbsp; A simple -c option will leave the clock
+name as CLK, and will generate the XC4000's default 15 Hz clock
+circuitry.<br>
 <br>
-Planned is a pragma to select the current clock, and work toward clock
+You may use the pragma fpgac_clock(clockname) to use a different clock
+name and buffer for multiple clock domain designs using multiple files.<br>
+<br>
+Planned is work toward clock
 "bining" to fit statement blocks to the fastest clock that block can
 use.&nbsp; See feature requests for more info.<br>
 <h3>Multiple Threads of Control</h3>

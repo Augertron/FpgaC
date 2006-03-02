@@ -175,7 +175,7 @@ main(int argc, char *argv[]) {
     genclock = 0;
     output_format = CNFEQNS;
     debug = 0;
-    clockname = "CLK";
+    clockname = "";
     resetname = "RESET";
 
     while (argc > 1 && argv[1][0] == '-') {
@@ -230,7 +230,11 @@ main(int argc, char *argv[]) {
 	    break;
 
 	case 'c':
-	    genclock = 1;
+	    if(argv[1][2])
+		clockname = &argv[1][2];
+	    else
+	        genclock = 1;
+                clockname = "CLK";
 	    break;
 
 	case 'r':
@@ -413,7 +417,7 @@ usage() {
     fprintf(stderr, "    %-20s %s\n", "-a", "don't run cpp");
     fprintf(stderr, "    %-20s %s\n", "-b", "-b basefilename");
     fprintf(stderr, "    %-20s %s\n", "-c",
-	    "generate clock from FPGA's internal OSC");
+	    "set clock name, or default to FPGA's internal OSC");
     fprintf(stderr, "    %-20s %s\n", "-dn", "set debug level");
     fprintf(stderr, "    %-20s %s\n", "-fno-carry-select",
 	    "use ripple carry adders and counters (smaller/slower)");
@@ -583,7 +587,7 @@ struct variable *CreateVariable(char *s, int width, struct varlist **list, struc
           else
               asprintf(&b->name, "%s%s", CurrentDeclarationScope->name, s);
         }
-        if(debug & 2) fprintf(stderr, "CreateVariable: s(%s) bit(%s)\n", s, b->name);
+        if(debug & 2) printf("CreateVariable: s(%s) bit(%s)\n", s, b->name);
     }
     nvariables++;
     return (v);
@@ -604,14 +608,14 @@ struct variable *findvariable(char *s, int flag, int width, struct varlist **lis
     if(flag == COPYOFEXISTS) {
         v = (struct variable *) s;
 v = v->copyof;
-        if(debug & 2) fprintf(stderr, "findvariable: v(%s) on list(0x%08x)\n", v->name, list);
+        if(debug & 2) printf("findvariable: v(%s) on list(0x%08x)\n", v->name, list);
         flag = MUSTEXIST;
     } else {
         // first find variable by that name on provided scope's list
-        if(debug & 2) fprintf(stderr, "findvariable: s(%s) on list(0x%08x)\n", s, list);
+        if(debug & 2) printf("findvariable: s(%s) on list(0x%08x)\n", s, list);
         for(var = *list; var; var = var->next) {
             if(!strcmp(var->variable->name, s)) {
-                if(debug & 2) fprintf(stderr, "findvariable: located(%s) at variable(0x%08x)\n", s, var->variable);
+                if(debug & 2) printf("findvariable: located(%s) at variable(0x%08x)\n", s, var->variable);
                 v = var->variable;
                 break;
             }
@@ -643,7 +647,7 @@ v = v->copyof;
 
                     makeff(var->variable->copyof);
                     v = ffoutput(var->variable->copyof);
-                    if(debug & 2) fprintf(stderr, "findvariable: ticked s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
+                    if(debug & 2) printf("findvariable: ticked s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
                     return (v);
                 }
                 return (var->variable);
@@ -663,13 +667,13 @@ v = v->copyof;
                 v->flags |= SYM_TEMP;
                 modifiedvar(v);
             }
-            if(debug & 2) fprintf(stderr, "findvariable: s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
+            if(debug & 2) printf("findvariable: s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
         }
         return (v);
     }
     if(flag == MUSTEXIST)
         error2(s, "has not been declared");
-    if(debug & 2) fprintf(stderr, "findvariable: s(%s) not found\n", s);
+    if(debug & 2) printf("findvariable: s(%s) not found\n", s);
     return (CreateVariable(s, width, list, currentscope, 0));
 }
 
@@ -2586,8 +2590,7 @@ prune() {
     while (changed) {
 	changed = 0;
         for(b = bits; b; b=b->next) {
-	    if(b->flags &
-		(SYM_AFFECTSOUTPUT | SYM_OUTPUTPORT | SYM_BUSPORT)) {
+	    if(b->flags & (SYM_AFFECTSOUTPUT | SYM_OUTPUTPORT | SYM_BUSPORT)) {
 		b->flags |= SYM_AFFECTSOUTPUT;
 		optimizebit(b);
 		for(bl = b->primaries; bl; bl = bl->next) {
@@ -4294,8 +4297,16 @@ struct_tag:     IDENTIFIER leftcurly
                 struct_members
                 {
                     struct varlist *vl = TagScopeStack->variable->members;
+		    struct bitlist *bl;
 
                     while(vl) {
+		        // first free/disable the bits so they don't end up in the netlist
+		        bl = vl->variable->bits;
+		        while(bl){
+		            bl->bit->flags = 0;
+		            bl->bit->variable = 0;
+		            bl = bl->next;
+		        }
                         vl->variable->offset = TagScopeStack->variable->width;
                         TagScopeStack->variable->width += vl->variable->width;
                         vl = vl->next;

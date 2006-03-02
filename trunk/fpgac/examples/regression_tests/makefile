@@ -1,7 +1,7 @@
-tests: loops4 loops7 loops8 loops9 regression
+tests: loops4 loops7 loops8 loops9 ioports1 regression
 
 clean:
-	rm -f *.cnf *.xnf test.c
+	rm -f *.cnf *.xnf *.ucf test.c
 
 loops4: loops_4_for.c loops_4_while.c
 	cp loops_4_for.c   test.c; fpgac -target cnf test.c; mv test.cnf loops_4_for.cnf
@@ -27,6 +27,9 @@ loops9: loops_9_for.c loops_9_while.c
 	rm -f test.c
 	-diff loops_9*.cnf
 
+ioports1: ioports_1.c
+	-fpgac -target cnf ioports_1.c
+
 regression:
 	-diff loops_4_for.cnf loops_4_for.cnf.orig
 	-diff loops_4_while.cnf loops_4_while.cnf.orig
@@ -36,6 +39,7 @@ regression:
 	-diff loops_8_while.cnf loops_8_while.cnf.orig
 	-diff loops_9_for.cnf loops_9_for.cnf.orig
 	-diff loops_9_while.cnf loops_9_while.cnf.orig
+	-diff ioports_1.cnf ioports_1.cnf.orig
 
 
 orig:  tests
@@ -47,3 +51,4 @@ orig:  tests
 	mv loops_8_while.cnf loops_8_while.cnf.orig
 	mv loops_9_for.cnf loops_9_for.cnf.orig
 	mv loops_9_while.cnf loops_9_while.cnf.orig
+	mv ioports_1.cnf ioports_1.cnf.orig

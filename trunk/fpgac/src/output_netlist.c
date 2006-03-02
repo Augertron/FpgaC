@@ -104,6 +104,9 @@ output_CNF() {
     if (partname) {
         fprintf(outputfile, "// part=%s\n", partname);
     }
+    if(!clockname[0]) {
+        clockname = "CLK";
+    }
 
     printed = 0;
     for(b=bits; b; b=b->next) {
@@ -123,9 +126,9 @@ output_CNF() {
             if(b->pin)
                 fprintf(outputfile, "port(%s,\"%s\")", b->name, b->pin+1);
             else
-                fprintf(outputfile, "port(%s)", b->name);
+                fprintf(outputfile, "port(%s)", b->name+1);
 	} else if (b->flags & SYM_BUSPORT) {
-	    fprintf(outputfile, "out%s", bitname(b));
+	    fprintf(outputfile, "port(%s) = %s", bitname(b), bitname(b));
         } else if ((b->flags & SYM_FF) && b->variable->arraysize) {
             struct varlist *vl;
 
@@ -174,7 +177,7 @@ output_CNF() {
             if(b->pin)
                 fprintf(outputfile, "port(%s,\"%s\");\n", b->name, b->pin+1);
             else
-                fprintf(outputfile, "port(%s);\n", b->name);
+                fprintf(outputfile, "port(%s);\n", b->name+1);
 	    continue;
 	    break;
 
@@ -212,7 +215,8 @@ output_CNF() {
 	if (b->flags & SYM_OUTPUTPORT)
 	    noutpins++;
 
-	if ((b->flags & (SYM_OUTPUTPORT | SYM_BUSPORT)) && !(b->flags & BIT_HASFF))
+//	if ((b->flags & (SYM_OUTPUTPORT | SYM_BUSPORT)) && !(b->flags & BIT_HASFF))
+	if ((b->flags & (SYM_OUTPUTPORT)) && !(b->flags & BIT_HASFF))
 	    b->flags &= ~SYM_FF;
 
 	if ((b->flags & SYM_ARRAY))

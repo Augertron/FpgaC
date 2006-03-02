@@ -9,15 +9,13 @@
  *
  *       * Add in burst mode support
  *
- *       * Do parity check and error assertion
- *
  *       * Finish application interface to my Dini demos
  *
  *       * Setup a multifunction PCI device with spoof of parallel port
  *         and xilinx config prom so the Dini eeprom can be programed
  *         directly from ISE, and not have to use the Dini utility.
  *
- *       * think more about master mode
+ *       * continue on to implement master mode too
  */
 
 #pragma fpgac_clock(pci_clk)

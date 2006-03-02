@@ -1,4 +1,4 @@
-// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Tue Feb 28 02:38:49 2006"
+// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Thu Mar  2 03:30:55 2006"
 // part=4003pc84
 test_Running^CLK = VCC;
 test_main_S0_a^CLK = port(_test_main_S0_a,"a9");

@@ -9,6 +9,7 @@ clean:
 	cd pipelines; make clean
 	cd tmcc; make clean
 	cd regression_tests; make clean
+	cd pci; make clean
 
 orig: testit
 	cd pipelines; make orig
