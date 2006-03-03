@@ -188,7 +188,7 @@ main(int argc, char *argv[]) {
 
 	case 'd':
 	    if(argv[1][2] == '\0')
-		debug = 1;
+		debug = 2;
 	    else if((argv[1][2] >= '0')
 		     && (argv[1][2] <= '9'))
 		debug = atoi(&argv[1][2]);
@@ -258,7 +258,7 @@ main(int argc, char *argv[]) {
 	    break;
 
 	case 's':
-	    verbose = 1;
+	    debug = verbose = 1;
 	    break;
 
 	case 't':
@@ -587,7 +587,7 @@ struct variable *CreateVariable(char *s, int width, struct varlist **list, struc
           else
               asprintf(&b->name, "%s%s", CurrentDeclarationScope->name, s);
         }
-        if(debug & 2) printf("CreateVariable: s(%s) bit(%s)\n", s, b->name);
+        if(debug & 4) printf("CreateVariable: s(%s) bit(%s)\n", s, b->name);
     }
     nvariables++;
     return (v);
@@ -608,14 +608,14 @@ struct variable *findvariable(char *s, int flag, int width, struct varlist **lis
     if(flag == COPYOFEXISTS) {
         v = (struct variable *) s;
 v = v->copyof;
-        if(debug & 2) printf("findvariable: v(%s) on list(0x%08x)\n", v->name, list);
+        if(debug & 4) printf("findvariable: v(%s) on list(0x%08x)\n", v->name, list);
         flag = MUSTEXIST;
     } else {
         // first find variable by that name on provided scope's list
-        if(debug & 2) printf("findvariable: s(%s) on list(0x%08x)\n", s, list);
+        if(debug & 4) printf("findvariable: s(%s) on list(0x%08x)\n", s, list);
         for(var = *list; var; var = var->next) {
             if(!strcmp(var->variable->name, s)) {
-                if(debug & 2) printf("findvariable: located(%s) at variable(0x%08x)\n", s, var->variable);
+                if(debug & 4) printf("findvariable: located(%s) at variable(0x%08x)\n", s, var->variable);
                 v = var->variable;
                 break;
             }
@@ -647,7 +647,7 @@ v = v->copyof;
 
                     makeff(var->variable->copyof);
                     v = ffoutput(var->variable->copyof);
-                    if(debug & 2) printf("findvariable: ticked s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
+                    if(debug & 4) printf("findvariable: ticked s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
                     return (v);
                 }
                 return (var->variable);
@@ -667,13 +667,13 @@ v = v->copyof;
                 v->flags |= SYM_TEMP;
                 modifiedvar(v);
             }
-            if(debug & 2) printf("findvariable: s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
+            if(debug & 4) printf("findvariable: s(%s) returning copy(%s,0x%08x)\n", s, v->name, v);
         }
         return (v);
     }
     if(flag == MUSTEXIST)
         error2(s, "has not been declared");
-    if(debug & 2) printf("findvariable: s(%s) not found\n", s);
+    if(debug & 4) printf("findvariable: s(%s) not found\n", s);
     return (CreateVariable(s, width, list, currentscope, 0));
 }
 
@@ -694,7 +694,7 @@ changewidth(struct variable *v, int width) {
     v->bits = NULL;
     v->width = width;
 
-    if(debug & 0x0004)
+    if(debug & 4)
 	printf("Width of '%s' is now %d\n", v->name, width);
 
     for(i = 0; i < width; i++) {
@@ -1005,7 +1005,7 @@ struct bit *freezebit(struct bit *b) {
 modifiedvar(struct variable *v) {
     struct varlist *temp;
 
-    if((debug & 1) && v->bits && v->bits->bit) {
+    if((debug & 8) && v->bits && v->bits->bit) {
 	printf("   push modified ");
 	printbit(v->bits->bit);
     }
@@ -1163,7 +1163,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     int i, j, k, n;
     int leftcount, rightcount, newcount;
 
-    if(debug & 1) {
+    if(debug & 8) {
 	printf("twoop1bit line %d\n", inputlineno);
 	printbit(left);
 	printbit(right);
@@ -1173,7 +1173,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     if((left->flags & SYM_KNOWNVALUE) && (right->flags & SYM_KNOWNVALUE)) {
 	temp->truth[0] = (*func) (left->truth[0], right->truth[0]);
 	temp->flags = SYM_KNOWNVALUE;
-	if(debug & 1)
+	if(debug & 8)
 	    printbit(temp);
 	return;
     }
@@ -1187,7 +1187,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
 	for(i = 0; i < 16; i++)
 	    temp->truth[i] = (*func) (left->truth[i], right->truth[0]);
 	optimizebit(temp);
-	if(debug & 1)
+	if(debug & 8)
 	    printbit(temp);
 	return;
     }
@@ -1232,7 +1232,7 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
 	temp->truth[i] = (*func) (left->truth[j], right->truth[k]);
     }
     optimizebit(temp);
-    if(debug & 1)
+    if(debug & 8)
 	printbit(temp);
 }
 
@@ -1332,7 +1332,7 @@ optimizebit(struct bit *b) {
 		break;
 	}
 	if(i == (1 << nprimaries)) {
-	    if(debug & 1) {
+	    if(debug & 8) {
 		printf("optimizing %s out of %s\n",
 		       bitname((*p)->bit), bitname(b));
 		printf("nprimaries %d i %d bit 0x%x\n", nprimaries, i,
@@ -1647,7 +1647,7 @@ addtoff(struct variable *ff, struct variable *state, struct variable *value) {
     struct bitlist *fbl, *sbl, *vbl, *tbl;
     struct variable *temp;
 
-    if(debug & 1) {
+    if(debug & 8) {
 	printf("addtoff ff %s state %s value %s\n", ff->name,
 	       state->name, value->name);
     }
@@ -1997,7 +1997,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 #define MUXBIT_B		2
 #define MUXBIT_CONDITION	3
 
-    if(debug & 1) {
+    if(debug & 8) {
 	printf("muxbit line %d\n", inputlineno);
 	printbit(condition);
 	printbit(a);
@@ -2008,7 +2008,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	    setbit(result, a);
 	else
 	    setbit(result, b);
-	if(debug & 1)
+	if(debug & 8)
 	    printbit(result);
 	return;
     }
@@ -2026,7 +2026,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	    complementbit(tempbit3, condition);
 	    twoop1bit(tempbit2, b, tempbit3, and);
 	    twoop1bit(result, tempbit1, tempbit2, or);
-	    if(debug & 1)
+	    if(debug & 8)
 		printbit(result);
 	    return;
 	}
@@ -2459,7 +2459,7 @@ struct bit *dupcheck(struct bit *b, int depth) {
     hashval = hashval % nbits;
     while (hash[hashval]) {
 	if(bitequal(hash[hashval], b)) {
-	    if(debug & 1) {
+	    if(debug & 8) {
 		printf("duplicate bit deleted\n");
 		printbit(b);
 		printbit(hash[hashval]);
@@ -2510,7 +2510,8 @@ finddepth(struct bit *bit, int top) {
     /* Check for logic loop causing infinite recursion */
 
     if(bit->flags & SYM_UPTODATE)
-	return (1000000);
+//	return (1000000);
+        return(0);
     bit->flags |= SYM_UPTODATE;
     depth = 0;
     nprimaries = 0;
@@ -2633,7 +2634,7 @@ prune() {
                     }
                 }
                 if(b->variable && (b->variable->flags & SYM_ARRAY)) {
-                    if(debug & 4) printf( "prune: looking at SYM_ARRAY(%s)\n",b->variable->copyof->index->name);
+                    if(debug & 8) printf( "prune: looking at SYM_ARRAY(%s)\n",b->variable->copyof->index->name);
                     for(i=0,bl = b->variable->copyof->index->bits;i<b->variable->arrayparent->copyof->arrayaddrbits;i++) {
                         if(!(bl->bit->flags & SYM_AFFECTSOUTPUT)) {
                             bl->bit->flags |= SYM_AFFECTSOUTPUT;
@@ -2704,19 +2705,19 @@ printtree(struct bit *b, int offset) {
     struct bitlist *bl;
 
     for(i = 0; i < offset; i++)
-	putchar(' ');
-    if(offset > 100 || ((offset > 30) && (b->flags & SYM_UPTODATE))) {
-	printf("...\n");
+	fprintf(stderr, " ");
+    if(offset > 150 || ((offset > 80) && (b->flags & SYM_UPTODATE))) {
+	fprintf(stderr, "...\n");
 	return;
     }
     b->flags |= SYM_UPTODATE;
-    printf("%s\n", bitname(b));
+    fprintf(stderr, "%s\n", bitname(b));
     if((b->flags & (SYM_INPUTPORT | SYM_BUSPORT)) == SYM_INPUTPORT)
 	return;
     if(offset && (b->flags & SYM_FF))
 	return;
     for(bl = b->primaries; bl; bl = bl->next)
-	printtree(bl->bit, offset + 4);
+	if(bl->bit != b) printtree(bl->bit, offset + 4);
 }
 
 debugoutput() {
@@ -2735,30 +2736,31 @@ debugoutput() {
 		maxdepth = b->depth;
 		deepest = b;
 	    }
+            printf("%6d %s\n", b->depth, bitname(b));
 	}
     }
-    if(debug >= 0) {
+    if(debug >= 8)
         for(b = bits; b; b=b->next)
 	    printbit(b);
-    }
     clearflag(SYM_UPTODATE);
     for(b = bits; b; b=b->next) {
-	if(!(b->flags & SYM_AFFECTSOUTPUT))
-	    continue;
-	if(b->flags & (SYM_OUTPUTPORT | SYM_FF)) {
-	    putchar('\n');
-	    printtree(b, 0);
-	}
+        if(!(b->flags & SYM_AFFECTSOUTPUT)) continue;
+        if(b->flags & (SYM_OUTPUTPORT | SYM_FF)) {
+            fprintf(stderr, "\n");
+            printtree(b, 0);
+        }
     }
     printf("\n");
-    printf("%d variables %d bits\n", nvariables, nbits);
-    printf("maximum depth %d driving %s\n", maxdepth, bitname(deepest));
-    printf("%d roms, %d flipflops,", nroms, nff);
-    printf(" %d I/O signals (%d input, %d output, %d bidir)\n",
+    if(debug >= 4) {
+        printf("%d variables %d bits\n", nvariables, nbits);
+        printf("maximum depth %d driving %s\n", maxdepth, bitname(deepest));
+        printf("%d roms, %d flipflops,", nroms, nff);
+        printf(" %d I/O signals (%d input, %d output, %d bidir)\n",
 	   ninpins + noutpins + nbidirpins, ninpins, noutpins, nbidirpins);
-    printf("Inputs  #roms\n");
-    for(i = 0; i < 5; i++)
-	printf("%4d %8d\n", i, inputcounts[i]);
+        printf("Inputs  #roms\n");
+        for(i = 0; i < 5; i++)
+            printf("%4d %8d\n", i, inputcounts[i]);
+    }
 
     if(verbose) {
 	if(output_format == XNFGATES)
@@ -2900,9 +2902,9 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
     char *func;
     struct variable *temp;
 
-    if(debug & 1) {
-        fprintf(stderr, "DoOp: (%s/%d)(%d)(%s/%d)\n", arg1->copyof->name, arg1->width, op, arg2->copyof->name, arg2->width);
-        fprintf(stderr, "DoOp types: (%x)(%d)(%x)\n", arg1->type, op, arg2->type);
+    if(debug & 4) {
+        printf("DoOp: (%s/%d)(%d)(%s/%d)\n", arg1->copyof->name, arg1->width, op, arg2->copyof->name, arg2->width);
+        printf("DoOp types: (%x)(%d)(%x)\n", arg1->type, op, arg2->type);
     }
 
     /*

@@ -46,7 +46,7 @@ fpgac_process pci() {
     char assert_par;
     char assert_par64;
 
-    next_target_sm = PCI_SM_Target_Idle;	// Default next state is idle
+    next_target_sm = 0;	// Default next state is idle
 
     if(pci_bus.rst_ == 0) {
 
@@ -99,59 +99,57 @@ fpgac_process pci() {
 
     } 
 
-    {
-        pci_state.frame  = ~pci_bus.frame_;	// Make active high copies (get optimized away)
-        pci_state.trdy   = ~pci_bus.trdy_;
-        pci_state.irdy   = ~pci_bus.irdy_;
-        pci_state.stop   = ~pci_bus.stop_;
-        pci_state.devsel = ~pci_bus.devsel_;
-        pci_state.gnt    = ~pci_bus.gnt_;
-        pci_state.req64  = ~pci_bus.req64_;
-        pci_state.ack64  = ~pci_bus.ack64_;
+    pci_state.frame  = ~pci_bus.frame_;	// Make active high copies (get optimized away)
+    pci_state.trdy   = ~pci_bus.trdy_;
+    pci_state.irdy   = ~pci_bus.irdy_;
+    pci_state.stop   = ~pci_bus.stop_;
+    pci_state.devsel = ~pci_bus.devsel_;
+    pci_state.gnt    = ~pci_bus.gnt_;
+    pci_state.req64  = ~pci_bus.req64_;
+    pci_state.ack64  = ~pci_bus.ack64_;
 
-            pci_state.par = ( pci_bus.ad_b0    &1) ^ ((pci_bus.ad_b0>>1)&1)
-                          ^ ((pci_bus.ad_b0>>2)&1) ^ ((pci_bus.ad_b0>>3)&1)
-                          ^ ((pci_bus.ad_b0>>4)&1) ^ ((pci_bus.ad_b0>>5)&1)
-                          ^ ((pci_bus.ad_b0>>6)&1) ^ ((pci_bus.ad_b0>>7)&1)
-                          ^ ( pci_bus.ad_b1    &1) ^ ((pci_bus.ad_b1>>1)&1)
-                          ^ ((pci_bus.ad_b1>>2)&1) ^ ((pci_bus.ad_b1>>3)&1)
-                          ^ ((pci_bus.ad_b1>>4)&1) ^ ((pci_bus.ad_b1>>5)&1)
-                          ^ ((pci_bus.ad_b1>>6)&1) ^ ((pci_bus.ad_b1>>7)&1)
-                          ^ ( pci_bus.ad_b2    &1) ^ ((pci_bus.ad_b2>>1)&1)
-                          ^ ((pci_bus.ad_b2>>2)&1) ^ ((pci_bus.ad_b2>>3)&1)
-                          ^ ((pci_bus.ad_b2>>4)&1) ^ ((pci_bus.ad_b2>>5)&1)
-                          ^ ((pci_bus.ad_b2>>6)&1) ^ ((pci_bus.ad_b2>>7)&1)
-                          ^ ( pci_bus.ad_b3    &1) ^ ((pci_bus.ad_b3>>1)&1)
-                          ^ ((pci_bus.ad_b3>>2)&1) ^ ((pci_bus.ad_b3>>3)&1)
-                          ^ ((pci_bus.ad_b3>>4)&1) ^ ((pci_bus.ad_b3>>5)&1)
-                          ^ ((pci_bus.ad_b3>>6)&1) ^ ((pci_bus.ad_b3>>7)&1);
-        if(assert_par) {
-            pci_bus.par = pci_state.par;
-        } else {
+    pci_state.par = ( pci_bus.ad_b0    &1) ^ ((pci_bus.ad_b0>>1)&1)
+                  ^ ((pci_bus.ad_b0>>2)&1) ^ ((pci_bus.ad_b0>>3)&1)
+                  ^ ((pci_bus.ad_b0>>4)&1) ^ ((pci_bus.ad_b0>>5)&1)
+                  ^ ((pci_bus.ad_b0>>6)&1) ^ ((pci_bus.ad_b0>>7)&1)
+                  ^ ( pci_bus.ad_b1    &1) ^ ((pci_bus.ad_b1>>1)&1)
+                  ^ ((pci_bus.ad_b1>>2)&1) ^ ((pci_bus.ad_b1>>3)&1)
+                  ^ ((pci_bus.ad_b1>>4)&1) ^ ((pci_bus.ad_b1>>5)&1)
+                  ^ ((pci_bus.ad_b1>>6)&1) ^ ((pci_bus.ad_b1>>7)&1)
+                  ^ ( pci_bus.ad_b2    &1) ^ ((pci_bus.ad_b2>>1)&1)
+                  ^ ((pci_bus.ad_b2>>2)&1) ^ ((pci_bus.ad_b2>>3)&1)
+                  ^ ((pci_bus.ad_b2>>4)&1) ^ ((pci_bus.ad_b2>>5)&1)
+                  ^ ((pci_bus.ad_b2>>6)&1) ^ ((pci_bus.ad_b2>>7)&1)
+                  ^ ( pci_bus.ad_b3    &1) ^ ((pci_bus.ad_b3>>1)&1)
+                  ^ ((pci_bus.ad_b3>>2)&1) ^ ((pci_bus.ad_b3>>3)&1)
+                  ^ ((pci_bus.ad_b3>>4)&1) ^ ((pci_bus.ad_b3>>5)&1)
+                  ^ ((pci_bus.ad_b3>>6)&1) ^ ((pci_bus.ad_b3>>7)&1);
+    if(assert_par) {
+        pci_bus.par = pci_state.par;
+    } else {
 #pragma fpgac_bus_idle(pci_bus.par)
-        }
+    }
 
-          pci_state.par64 = ( pci_bus.ad_b4    &1) ^ ((pci_bus.ad_b4>>1)&1)
-                          ^ ((pci_bus.ad_b4>>2)&1) ^ ((pci_bus.ad_b4>>3)&1)
-                          ^ ((pci_bus.ad_b4>>4)&1) ^ ((pci_bus.ad_b4>>5)&1)
-                          ^ ((pci_bus.ad_b4>>6)&1) ^ ((pci_bus.ad_b4>>7)&1)
-                          ^ ( pci_bus.ad_b5    &1) ^ ((pci_bus.ad_b5>>1)&1)
-                          ^ ((pci_bus.ad_b5>>2)&1) ^ ((pci_bus.ad_b5>>3)&1)
-                          ^ ((pci_bus.ad_b5>>4)&1) ^ ((pci_bus.ad_b5>>5)&1)
-                          ^ ((pci_bus.ad_b5>>6)&1) ^ ((pci_bus.ad_b5>>7)&1)
-                          ^ ( pci_bus.ad_b6    &1) ^ ((pci_bus.ad_b6>>1)&1)
-                          ^ ((pci_bus.ad_b6>>2)&1) ^ ((pci_bus.ad_b6>>3)&1)
-                          ^ ((pci_bus.ad_b6>>4)&1) ^ ((pci_bus.ad_b6>>5)&1)
-                          ^ ((pci_bus.ad_b6>>6)&1) ^ ((pci_bus.ad_b6>>7)&1)
-                          ^ ( pci_bus.ad_b7    &1) ^ ((pci_bus.ad_b7>>1)&1)
-                          ^ ((pci_bus.ad_b7>>2)&1) ^ ((pci_bus.ad_b7>>3)&1)
-                          ^ ((pci_bus.ad_b7>>4)&1) ^ ((pci_bus.ad_b7>>5)&1)
-                          ^ ((pci_bus.ad_b7>>6)&1) ^ ((pci_bus.ad_b7>>7)&1);
-        if(assert_par64) {
-            pci_bus.par64 = pci_state.par64;
-        } else {
+  pci_state.par64 = ( pci_bus.ad_b4    &1) ^ ((pci_bus.ad_b4>>1)&1)
+                  ^ ((pci_bus.ad_b4>>2)&1) ^ ((pci_bus.ad_b4>>3)&1)
+                  ^ ((pci_bus.ad_b4>>4)&1) ^ ((pci_bus.ad_b4>>5)&1)
+                  ^ ((pci_bus.ad_b4>>6)&1) ^ ((pci_bus.ad_b4>>7)&1)
+                  ^ ( pci_bus.ad_b5    &1) ^ ((pci_bus.ad_b5>>1)&1)
+                  ^ ((pci_bus.ad_b5>>2)&1) ^ ((pci_bus.ad_b5>>3)&1)
+                  ^ ((pci_bus.ad_b5>>4)&1) ^ ((pci_bus.ad_b5>>5)&1)
+                  ^ ((pci_bus.ad_b5>>6)&1) ^ ((pci_bus.ad_b5>>7)&1)
+                  ^ ( pci_bus.ad_b6    &1) ^ ((pci_bus.ad_b6>>1)&1)
+                  ^ ((pci_bus.ad_b6>>2)&1) ^ ((pci_bus.ad_b6>>3)&1)
+                  ^ ((pci_bus.ad_b6>>4)&1) ^ ((pci_bus.ad_b6>>5)&1)
+                  ^ ((pci_bus.ad_b6>>6)&1) ^ ((pci_bus.ad_b6>>7)&1)
+                  ^ ( pci_bus.ad_b7    &1) ^ ((pci_bus.ad_b7>>1)&1)
+                  ^ ((pci_bus.ad_b7>>2)&1) ^ ((pci_bus.ad_b7>>3)&1)
+                  ^ ((pci_bus.ad_b7>>4)&1) ^ ((pci_bus.ad_b7>>5)&1)
+                  ^ ((pci_bus.ad_b7>>6)&1) ^ ((pci_bus.ad_b7>>7)&1);
+    if(assert_par64) {
+        pci_bus.par64 = pci_state.par64;
+    } else {
 #pragma fpgac_bus_idle(pci_bus.par64)
-        }
     }
 
     if(target_sm & PCI_SM_Target_Idle) {
@@ -190,7 +188,7 @@ fpgac_process pci() {
                 pci_state.bar0 = pci_bus.ad_b3 == ((pci_config.Bar0>>23) & 0xff);
                 pci_state.bar1 = pci_bus.ad_b3 == ((pci_config.Bar1>>23) & 0xff);
                 if(pci_state.bar0 | pci_state.bar1) {
-                    next_target_sm = PCI_SM_Target_B_Busy;
+                    next_target_sm |= PCI_SM_Target_B_Busy;
                     pci_bus.devsel_ = 0;         // Now driving, must be tristated at end of cycle
                     if(pci_state.req64)
                         pci_bus.ack64_ = 0;      // Now driving, must be tristated at end of cycle
@@ -199,18 +197,18 @@ fpgac_process pci() {
             } else {                             // IO or Config space access
                 pci_state.bar0 = pci_state.bar1 = 0;
                 if(pci_bus.idsel && ((pci_state.cmd & 0xfe) == PCI_CMD_Config_Read))  // Config RW
-                    next_target_sm = PCI_SM_Target_Config;
+                    next_target_sm |= PCI_SM_Target_Config;
             }
         } else ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
     if(target_sm & PCI_SM_Target_B_Busy) {
-        next_target_sm = PCI_SM_Target_Comp_Addr;
+        next_target_sm |= PCI_SM_Target_Comp_Addr;
     }
 
     if(target_sm & PCI_SM_Target_Comp_Addr) {
         if(pci_state.bar0 | pci_state.bar1)
-             next_target_sm = PCI_SM_Target_S_Data;
+             next_target_sm |= PCI_SM_Target_S_Data;
         else ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
@@ -250,14 +248,14 @@ fpgac_process pci() {
             assert_par = 1;                     // assert par after next clock
             assert_par64 = 1;                   // assert par64 after next clock
         }
-        if(!(pci_state.irdy)) next_target_sm = PCI_SM_Target_S_Data;
-        else if(pci_state.irdy & pci_state.frame) next_target_sm = PCI_SM_Target_BackOff;
+        if(!(pci_state.irdy)) next_target_sm |= PCI_SM_Target_S_Data;
+        else if(pci_state.irdy & pci_state.frame) next_target_sm |= PCI_SM_Target_BackOff;
         else ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
     if(target_sm & PCI_SM_Target_BackOff) {
-        if(pci_state.frame) next_target_sm = PCI_SM_Target_BackOff;
-        else next_target_sm = PCI_SM_Target_Turn_Ar;
+        if(pci_state.frame) next_target_sm |= PCI_SM_Target_BackOff;
+        else next_target_sm |= PCI_SM_Target_Turn_Ar;
     }
 
     if(target_sm & PCI_SM_Target_Config) {
@@ -297,9 +295,9 @@ fpgac_process pci() {
         pci_bus.trdy_ = pci_bus.devsel_ = 0; // Now driving, must be tristated at end of cycle
 
         if(!pci_state.irdy)
-            next_target_sm = PCI_SM_Target_Config;   // Loop in Config waiting for host
+            next_target_sm |= PCI_SM_Target_Config;   // Loop in Config waiting for host
         else if(pci_state.irdy & pci_state.frame)
-            next_target_sm = PCI_SM_Target_BackOff;  // Done, finish cycle
+            next_target_sm |= PCI_SM_Target_BackOff;  // Done, finish cycle
         else ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
@@ -315,6 +313,10 @@ fpgac_process pci() {
         ;// next_target_sm = PCI_SM_Target_Idle;
     }
 
-    target_sm = next_target_sm;
+    if(next_target_sm)
+        target_sm = next_target_sm;
+    else
+        target_sm = PCI_SM_Target_Idle;
+
     pci_state.lastframe = pci_state.frame;
 }
