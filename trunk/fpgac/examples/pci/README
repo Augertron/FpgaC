@@ -1,4 +1,4 @@
-PCI Target Mode demo code -- work in progress
+PCI Target Mode demo code -- Work Still in Progress
 
 This is an example of interfacing to a synchronous bus with FpgaC.
 
@@ -29,3 +29,14 @@ normal char/int C variable. There is also an excess of masking to
 trim bits (particularly the sign bits), and shifts which are not
 done at runtime, but by the compiler, thus they are "free" since
 they do not create additional logic.
+
+The worst case logic depth results from the pci bus tristate enable
+terms. While it appears the pci FSM can run above 70mhz, there are
+two solutions necessary to cutting that in half. First is to enable
+the bus earlier with a shorter conditional path. The second is that
+their are some logic optimizations which need to be made to how FpgaC
+partitions terms into LUT's. The current solution was inherited from
+TMCC which does it early, and mistakenly allows the same terms to be
+replicated, chewing up LUT inputs and pushing the tree deeper than
+necessary. The solution path to fix that is the same as the MUX
+project, so this will become a beta-3 project priority.

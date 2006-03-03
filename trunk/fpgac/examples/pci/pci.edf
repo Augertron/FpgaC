@@ -5,7 +5,7 @@
     (keywordLevel 0))
   (status
     (written
-      (timeStamp 106 3 2 6 58 25)
+      (timeStamp 106 3 2 17 5 24)
       (author "ALDEC")
       (program "Xnf2Edf - Aldec's Edif 2.0.0 Netlist Generator"
         (version "2.0.3.28"))))
@@ -1817,59 +1817,59 @@
               (cellRef EQN))
             (property EQN (string "((I0*~I1)+(I0*I2)+(I1*I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_24
+          (instance PCI_PCI_C5_S0_S8_DATA_24
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_24_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_24_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_25
+          (instance PCI_PCI_C5_S0_S8_DATA_25
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_25_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_25_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_26
+          (instance PCI_PCI_C5_S0_S8_DATA_26
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_26_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_26_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_27
+          (instance PCI_PCI_C5_S0_S8_DATA_27
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_27_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_27_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_28
+          (instance PCI_PCI_C5_S0_S8_DATA_28
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_28_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_28_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_29
+          (instance PCI_PCI_C5_S0_S8_DATA_29
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_29_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_29_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_30
+          (instance PCI_PCI_C5_S0_S8_DATA_30
             (viewRef net
               (cellRef FDCP))
             (property LIBVER (string "2.0.0")))
-          (instance PCI_PCI_C5_S0_S5_DATA_30_FFIN
+          (instance PCI_PCI_C5_S0_S8_DATA_30_FFIN
             (viewRef net
               (cellRef BUF))
             (property LIBVER (string "2.0.0")))
@@ -1879,7 +1879,8 @@
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_0_FFIN
             (viewRef net
-              (cellRef BUF))
+              (cellRef EQN))
+            (property EQN (string "((~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_1
             (viewRef net
@@ -1887,7 +1888,8 @@
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_1_FFIN
             (viewRef net
-              (cellRef BUF))
+              (cellRef EQN))
+            (property EQN (string "((I0*I1)+(I0*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_2
             (viewRef net
@@ -1895,7 +1897,8 @@
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_2_FFIN
             (viewRef net
-              (cellRef BUF))
+              (cellRef EQN))
+            (property EQN (string "((I0*I1)+(I0*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_3
             (viewRef net
@@ -1904,7 +1907,7 @@
           (instance PCI_PCI_C5_S0_TARGET_SM_3_FFIN
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*~I1)+(I0*I2)+(I1*I2))"))
+            (property EQN (string "((I0*I1)+(I0*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_4
             (viewRef net
@@ -1912,7 +1915,8 @@
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_4_FFIN
             (viewRef net
-              (cellRef BUF))
+              (cellRef EQN))
+            (property EQN (string "((I0*I1)+(I0*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_5
             (viewRef net
@@ -1928,7 +1932,8 @@
             (property LIBVER (string "2.0.0")))
           (instance PCI_PCI_C5_S0_TARGET_SM_6_FFIN
             (viewRef net
-              (cellRef BUF))
+              (cellRef EQN))
+            (property EQN (string "((I0*I1)+(I0*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance PCI_RUNNING
             (viewRef net
@@ -2759,85 +2764,10 @@
               (cellRef EQN))
             (property EQN (string "((I0*~I1)+(I0*I2)+(I1*I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F0
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0)+(I1)+(I2))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F1
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I1*~I2*~I3)+(I0*~I2*~I3)+(I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F2
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0)+(I1)+(I2))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F3
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0*~I3)+(~I0*I1)+(~I2))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F4
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*~I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F5
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_0F6
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*~I2)+(I0*~I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_1F2
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0*I1*I2*I3))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_1F3
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*~I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_1F4
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_1F5
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*~I2)+(I0*~I1))"))
-            (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_2F0
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0*I1*I2)+(I0*I1*I3))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_2F1
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0*I1)+(I1*I2)+(I0*I3)+(I1*I3))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_2F2
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*~I2)+(I0*~I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_3F0
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0*I1*I2*I3))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_3F1
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*I1*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_4F0
             (viewRef net
@@ -2849,25 +2779,10 @@
               (cellRef EQN))
             (property EQN (string "((~I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_5F0
+          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_4F3
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I0*~I1*I2*I3))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_5F1
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*I2*~I3)+(I0*I1*I2)+(I1*I2*I3))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_5F2
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_5F3
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*~I2)+(I0*~I1))"))
+            (property EQN (string "((~I2*~I3)+(I0*~I2)+(I1*~I3)+(I0*I1)+(I0*I3))"))
             (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_6F0
             (viewRef net
@@ -2882,262 +2797,257 @@
           (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_6F2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I0*I1*I2*I3))"))
+            (property EQN (string "((I1*I2*I3)+(I0))"))
             (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_6F3
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I1*~I2*~I3)+(~I0*I1))"))
+            (property EQN (string "((I0*I1*I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_6F4
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T2_WORD_2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
+            (property EQN (string "((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_NEXT_TARGET_SM_6F5
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T40_TREE2_4
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*~I2)+(I0*~I1))"))
+            (property EQN (string "((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S1_T215_WORD_1
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T40_TREE2_7
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
+            (property EQN (string "((I0)+(I1)+(I2)+(I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S1_T215_WORD_2
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T43_TREE2_0
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*I1)+(I1*I2))"))
+            (property EQN (string "((I0)+(I1)+(I2)+(I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S1_T219_TREE2_0
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T50_TREE2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
+            (property EQN (string "((~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S1_T441_WORD_1
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T85_TREE2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
+            (property EQN (string "((~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S1_T441_WORD_2
+          (instance SYMPCI_PCI_C5_S0_S10_S0_T9_TREE2_0
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*I1)+(I1*I2))"))
+            (property EQN (string "((I0)+(I1)+(I2)+(I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S1_T445_TREE2_0
+          (instance SYMPCI_PCI_C5_S0_S10_T26_ELSE_0
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
+            (property EQN (string "((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T13_WORD_1
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T13_WORD_2
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T13_WORD_1
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T13_WORD_3
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T13_WORD_2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T13_WORD_5
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T13_WORD_3
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T13_WORD_6
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T13_WORD_5
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T13_WORD_7
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T13_WORD_6
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T17_TREE2_1
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T13_WORD_7
+            (viewRef net
+              (cellRef EQN))
+            (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
+            (property LIBVER (string "2.0.0")))
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T17_TREE2_1
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T17_TREE2_5
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T17_TREE2_5
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T17_TREE2_7
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T17_TREE2_7
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0)+(I1)+(I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T36_WORD_1
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T36_WORD_1
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T36_WORD_2
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T36_WORD_2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T36_WORD_3
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T36_WORD_3
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T36_WORD_5
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T36_WORD_5
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T36_WORD_6
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T36_WORD_6
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T36_WORD_7
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T36_WORD_7
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*I1*I2)+(I0*~I2)+(I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T40_TREE2_1
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T40_TREE2_1
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T40_TREE2_5
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T40_TREE2_5
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(I0))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T40_TREE2_7
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T40_TREE2_7
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0)+(I1)+(I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S1_T51_TREE2
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S1_T51_TREE2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0)+(I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S2_T3_WORD_1
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S2_T3_WORD_1
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I2)+(~I1)+(~I0))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_S0_S2_T7_TREE2_0
+          (instance SYMPCI_PCI_C5_S0_S5_S0_S2_T7_TREE2_0
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I2)+(~I0)+(I1)+(I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S2_T12_TREE2
+          (instance SYMPCI_PCI_C5_S0_S5_T12_TREE2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((~I0*~I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S5_T12_THEN_0
+          (instance SYMPCI_PCI_C5_S0_S8_T12_THEN_0
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0*~I1*I2*I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S5_T16_THEN_0
+          (instance SYMPCI_PCI_C5_S0_S8_T16_THEN_0
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0*~I1*I2*I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S5_T4_TREE2
+          (instance SYMPCI_PCI_C5_S0_S8_T4_TREE2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T2_WORD_2
+          (instance SYMPCI_PCI_C5_S0_T1036_WORD_1
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))"))
+            (property EQN (string "((I0*~I1)+(I0*I2)+(I1*I2)+(I0*I3)+(I1*I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T40_TREE2_4
+          (instance SYMPCI_PCI_C5_S0_T1036_WORD_2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))"))
+            (property EQN (string "((I0*I1*I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T40_TREE2_7
+          (instance SYMPCI_PCI_C5_S0_T1036_WORD_3
+            (viewRef net
+              (cellRef EQN))
+            (property EQN (string "((I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*I1))"))
+            (property LIBVER (string "2.0.0")))
+          (instance SYMPCI_PCI_C5_S0_T1040_TREE2_0
+            (viewRef net
+              (cellRef EQN))
+            (property EQN (string "((I1*I2*I3)+(I0*I2))"))
+            (property LIBVER (string "2.0.0")))
+          (instance SYMPCI_PCI_C5_S0_T1040_TREE2_4
+            (viewRef net
+              (cellRef EQN))
+            (property EQN (string "((I0*~I1)+(I0*I2)+(I1*I2))"))
+            (property LIBVER (string "2.0.0")))
+          (instance SYMPCI_PCI_C5_S0_T1043_TREE2_0
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0)+(I1)+(I2)+(I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T43_TREE2_0
+          (instance SYMPCI_PCI_C5_S0_T398_WORD_1
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0)+(I1)+(I2)+(I3))"))
+            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T50_TREE2
+          (instance SYMPCI_PCI_C5_S0_T398_WORD_2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I0*~I1))"))
+            (property EQN (string "((I0*I1)+(I1*I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T85_TREE2
+          (instance SYMPCI_PCI_C5_S0_T402_TREE2_0
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I0*~I1))"))
+            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_S0_T9_TREE2_0
+          (instance SYMPCI_PCI_C5_S0_T624_WORD_1
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I0)+(I1)+(I2)+(I3))"))
+            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_S7_T26_ELSE_0
+          (instance SYMPCI_PCI_C5_S0_T624_WORD_2
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((~I1*I2*I3)+(~I0*~I3)+(~I0*~I2)+(~I0*~I1))"))
+            (property EQN (string "((I0*I1)+(I1*I2))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_T334_TREE2
+          (instance SYMPCI_PCI_C5_S0_T628_TREE2_0
+            (viewRef net
+              (cellRef EQN))
+            (property EQN (string "((I0*I2)+(I1*I2)+(I2*I3))"))
+            (property LIBVER (string "2.0.0")))
+          (instance SYMPCI_PCI_C5_S0_T809_TREE2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0*I1))"))
             (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_T349_TREE2
+          (instance SYMPCI_PCI_C5_S0_T911_TREE2
             (viewRef net
               (cellRef EQN))
             (property EQN (string "((I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_T451_TREE2
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_TARGET_SM_0F0
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
             (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_S0_TARGET_SM_1F0
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_TARGET_SM_2F0
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_TARGET_SM_4F0
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((I0*~I2*~I3)+(I1*~I3)+(~I0*I1))"))
+            (property EQN (string "((I0*I1*I2))"))
             (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_S0_TARGET_SM_5F0
             (viewRef net
               (cellRef EQN))
-            (property EQN (string "((I1*I2*~I3)+(~I0*I1))"))
-            (property LIBVER (string "2.0.0")))
-          (instance SYMPCI_PCI_C5_S0_TARGET_SM_6F0
-            (viewRef net
-              (cellRef EQN))
-            (property EQN (string "((~I0*I1)+(I1*I2)+(I0*I3)+(I1*I3))"))
+            (property EQN (string "((I0*I2*I3)+(I1*I2*I3))"))
             (property LIBVER (string "2.0.0")))
           (instance SYMPCI_PCI_C5_T0_INIT
             (viewRef net
@@ -3272,19 +3182,19 @@
               (portRef I
                 (instanceRef pci_bus_intd_))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_24_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_24_FFin))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_25_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_25_FFin))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_26_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_26_FFin))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_27_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_27_FFin))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_28_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_28_FFin))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_29_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_29_FFin))
               (portRef I
-                (instanceRef pci_pci_C5_S0_S5_data_30_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_30_FFin))
               (portRef GROUND
                 (instanceRef I1_from_net_GND))))
           (net PCI_BUS_ACK64_
@@ -3760,9 +3670,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_1))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_0F0))
               (portRef I0
@@ -3792,9 +3702,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_1))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_1))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_1))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_1F0))
               (portRef I0
@@ -3824,9 +3734,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_2))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_2))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_2))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_2F0))
               (portRef I0
@@ -3856,9 +3766,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_3))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_3))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_3))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_3F0))
               (portRef I0
@@ -3888,9 +3798,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_4))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_5))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_5))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_4F0))
               (portRef I0
@@ -3920,9 +3830,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_5))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_5))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_5))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_5F0))
               (portRef I0
@@ -3952,9 +3862,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_6))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_6))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_6))
               (portRef I1
                 (instanceRef SYMpci_bus_ad_b3_6F0))
               (portRef I0
@@ -3984,9 +3894,9 @@
               (portRef I
                 (instanceRef pci_bus_ad_b3_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_7))))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_7))))
           (net PCI_BUS_AD_B3_7_FF
             (joined 
               (portRef I
@@ -4606,7 +4516,7 @@
               (portRef I
                 (instanceRef pci_bus_cbe__1))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T7_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T7_tree2_0))
               (portRef I0
                 (instanceRef SYMpci_bus_T1_enableF0))
               (portRef I2
@@ -4630,13 +4540,11 @@
               (portRef I
                 (instanceRef pci_bus_cbe__2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T7_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T7_tree2_0))
               (portRef I1
                 (instanceRef SYMpci_bus_T21_enableF1))
               (portRef I0
                 (instanceRef SYMpci_bus_T14_enableF0))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F1))
               (portRef I0
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F0))
               (portRef I2
@@ -4666,7 +4574,7 @@
               (portRef I
                 (instanceRef pci_bus_cbe__3))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T7_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T7_tree2_0))
               (portRef I0
                 (instanceRef SYMpci_bus_T3_enableF0))
               (portRef I2
@@ -4704,7 +4612,7 @@
               (portRef I
                 (instanceRef pci_bus_cbe__4))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T7_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T7_tree2_0))
               (portRef I0
                 (instanceRef SYMpci_bus_T4_enableF0))))
           (net PCI_BUS_CBE__4_FF
@@ -4726,7 +4634,7 @@
               (portRef I
                 (instanceRef pci_bus_cbe__5))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T3_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T3_word_1))
               (portRef I0
                 (instanceRef SYMpci_bus_T5_enableF0))))
           (net PCI_BUS_CBE__5_FF
@@ -4748,7 +4656,7 @@
               (portRef I
                 (instanceRef pci_bus_cbe__6))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T3_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T3_word_1))
               (portRef I0
                 (instanceRef SYMpci_bus_T6_enableF0))))
           (net PCI_BUS_CBE__6_FF
@@ -4770,7 +4678,7 @@
               (portRef I
                 (instanceRef pci_bus_cbe__7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T3_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T3_word_1))
               (portRef I0
                 (instanceRef SYMpci_bus_T7_enableF0))))
           (net PCI_BUS_CBE__7_FF
@@ -4812,7 +4720,7 @@
               (portRef I
                 (instanceRef pci_state_lastframe_FFin))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_T12_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S5_T12_tree2))
               (portRef I3
                 (instanceRef SYMpci_state_rwF0))
               (portRef I3
@@ -4832,41 +4740,17 @@
               (portRef I3
                 (instanceRef SYMpci_state_addr_b0_7F0))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F2))
-              (portRef I2
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F1))
               (portRef I2
                 (instanceRef SYMpci_bus_T14_enableF1))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F5))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F4))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F1))
-              (portRef I2
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F2))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F4))
               (portRef I1
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F1))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F0))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F3))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F1))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_target_sm_0F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_target_sm_2F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_target_sm_4F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_target_sm_6F0))))
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_2))))
           (net PCI_BUS_FRAME__FF
             (joined 
               (portRef I
@@ -4893,8 +4777,6 @@
                 (instanceRef aldecInstance_230))
               (portRef I
                 (instanceRef pci_bus_idsel))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F0))
               (portRef I1
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F0))))
           (net PCI_BUS_IDSEL_FF
@@ -4956,31 +4838,13 @@
               (portRef I
                 (instanceRef pci_bus_irdy_))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F5))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F4))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F1))
-              (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F2))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F4))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F3))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_target_sm_0F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_target_sm_2F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_target_sm_4F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_target_sm_6F0))))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_1))))
           (net PCI_BUS_IRDY__FF
             (joined 
               (portRef I
@@ -5126,77 +4990,67 @@
               (portRef I0
                 (instanceRef pci_bus_T20_enable_FFin))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_2))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S1_T219_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T402_tree2_0))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_2))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S1_T445_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T628_tree2_0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_3))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_5))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_6))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_7))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_1))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_5))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_3))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_5))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_6))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_7))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_1))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_5))
               (portRef I2
                 (instanceRef SYMpci_bus_T21_enableF0))
               (portRef I2
                 (instanceRef SYMpci_bus_T21_enableF1))
               (portRef I2
                 (instanceRef SYMpci_bus_T21_enableF2))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_T334_tree2))
               (portRef I2
                 (instanceRef SYMpci_state_bar0F2))
               (portRef I2
                 (instanceRef SYMpci_state_bar1F2))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F3))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F2))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_T349_tree2))
+                (instanceRef SYMpci_pci_C5_S0_T809_tree2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S5_T4_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S8_T4_tree2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S5_T12_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T12_then_0))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S5_T16_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T16_then_0))
               (portRef I2
                 (instanceRef SYMpci_bus_T7_enableF0))
               (portRef I1
@@ -5231,8 +5085,6 @@
                 (instanceRef SYMpci_bus_T0_enableF1))
               (portRef I0
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F1))
               (portRef I1
                 (instanceRef SYMpci_pci_C5_S0_assert_par_0F0))
               (portRef I2
@@ -5296,11 +5148,11 @@
               (portRef I0
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_T451_tree2))
+                (instanceRef SYMpci_pci_C5_S0_T911_tree2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T2_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T2_word_2))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_4))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_4))
               (portRef I2
                 (instanceRef SYMpci_config_Bar0_24F0))
               (portRef I2
@@ -5348,23 +5200,13 @@
               (portRef I2
                 (instanceRef SYMpci_config_Bar0_30F1))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S7_T26_else_0))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F6))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F5))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F2))
+                (instanceRef SYMpci_pci_C5_S0_S10_T26_else_0))
               (portRef I2
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F1))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F3))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F5))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F0))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F1))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))
               (portRef I2
                 (instanceRef SYMpci_bus_T14_enableF2))
               (portRef I2
@@ -5399,6 +5241,16 @@
                 (instanceRef SYMpci_config_Bar1_29F2))
               (portRef I2
                 (instanceRef SYMpci_config_Bar1_30F2))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_2))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_3))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_0))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))
               (portRef I2
                 (instanceRef SYMpci_config_Bar1_23F2))
               (portRef I2
@@ -5632,9 +5484,11 @@
               (portRef O
                 (instanceRef SYMpci_bus_T14_enableF1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F2))
+                (instanceRef SYMpci_bus_T14_enableF2))
               (portRef I1
-                (instanceRef SYMpci_bus_T14_enableF2))))
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_0))
+              (portRef I0
+                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))))
           (net PCI_BUS_T14_ENABLEF2
             (joined 
               (portRef I0
@@ -6332,19 +6186,19 @@
               (portRef C
                 (instanceRef pci_pci_C5_S0_assert_par64_7))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_24))
+                (instanceRef pci_pci_C5_S0_S8_data_24))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_25))
+                (instanceRef pci_pci_C5_S0_S8_data_25))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_26))
+                (instanceRef pci_pci_C5_S0_S8_data_26))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_27))
+                (instanceRef pci_pci_C5_S0_S8_data_27))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_28))
+                (instanceRef pci_pci_C5_S0_S8_data_28))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_29))
+                (instanceRef pci_pci_C5_S0_S8_data_29))
               (portRef C
-                (instanceRef pci_pci_C5_S0_S5_data_30))))
+                (instanceRef pci_pci_C5_S0_S8_data_30))))
           (net PCI_CLK_CLK
             (joined 
               (portRef O
@@ -6360,7 +6214,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_23))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_1))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_23F0))
               (portRef I3
@@ -6396,7 +6250,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_24))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_1))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_24F1))
               (portRef I3
@@ -6440,7 +6294,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_25))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_2))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_25F1))
               (portRef I3
@@ -6484,7 +6338,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_26))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_3))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_26F1))
               (portRef I3
@@ -6528,7 +6382,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_27))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_5))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_27F1))
               (portRef I3
@@ -6572,7 +6426,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_28))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_5))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_28F1))
               (portRef I3
@@ -6616,7 +6470,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_29))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_6))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_29F1))
               (portRef I3
@@ -6660,7 +6514,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar0_30))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_7))
               (portRef I3
                 (instanceRef SYMpci_config_Bar0_30F1))
               (portRef I3
@@ -6704,7 +6558,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_23))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_1))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_23F0))
               (portRef I3
@@ -6740,7 +6594,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_24))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_1))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_24F1))
               (portRef I3
@@ -6776,7 +6630,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_25))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_2))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_25F1))
               (portRef I3
@@ -6812,7 +6666,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_26))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_3))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_26F1))
               (portRef I3
@@ -6848,7 +6702,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_27))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_5))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_27F1))
               (portRef I3
@@ -6884,7 +6738,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_28))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_5))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_28F1))
               (portRef I3
@@ -6920,7 +6774,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_29))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_6))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_29F1))
               (portRef I3
@@ -6956,7 +6810,7 @@
               (portRef Q
                 (instanceRef pci_config_Bar1_30))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_7))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_30F1))
               (portRef I3
@@ -6992,9 +6846,9 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S1_T445_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T628_tree2_0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S5_T12_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T12_then_0))
               (portRef I2
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_0F0))))
           (net PCI_PCI_C5_S0_ASSERT_PAR64_0_FFIN
@@ -7020,7 +6874,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S1_T445_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T628_tree2_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_1F0))
               (portRef I2
@@ -7048,7 +6902,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_2))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S1_T445_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T628_tree2_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_2F0))
               (portRef I2
@@ -7076,7 +6930,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_3))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_1))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_3F0))
               (portRef I2
@@ -7104,7 +6958,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_4))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_1))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_4F0))
               (portRef I2
@@ -7132,7 +6986,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_5))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_1))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_5F0))
               (portRef I2
@@ -7160,7 +7014,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_6))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_2))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_2))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_6F0))
               (portRef I2
@@ -7188,7 +7042,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par64_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_2))
+                (instanceRef SYMpci_pci_C5_S0_T624_word_2))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_7F0))
               (portRef I2
@@ -7216,9 +7070,9 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S1_T219_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T402_tree2_0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S5_T16_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T16_then_0))
               (portRef I2
                 (instanceRef SYMpci_pci_C5_S0_assert_par_0F0))))
           (net PCI_PCI_C5_S0_ASSERT_PAR_0_FFIN
@@ -7250,7 +7104,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S1_T219_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T402_tree2_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_1F0))
               (portRef I2
@@ -7294,7 +7148,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_2))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S1_T219_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_T402_tree2_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_2F0))
               (portRef I2
@@ -7338,7 +7192,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_3))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_1))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_3F0))
               (portRef I2
@@ -7382,7 +7236,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_4))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_1))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_4F0))
               (portRef I2
@@ -7426,7 +7280,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_5))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_1))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_1))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_5F0))
               (portRef I2
@@ -7470,7 +7324,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_6))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_2))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_2))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_6F0))
               (portRef I2
@@ -7514,7 +7368,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_assert_par_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_2))
+                (instanceRef SYMpci_pci_C5_S0_T398_word_2))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_7F0))
               (portRef I2
@@ -7553,102 +7407,14 @@
                 (instanceRef pci_pci_C5_S0_assert_par_7_FFin))
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_assert_par_7F3))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F0
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F1))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F1
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F1))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F2))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F2
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F3))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F3
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F3))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F4))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F4
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F4))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F5))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F5
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F5))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F6))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_0F6
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F6))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_target_sm_0F0))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_1F2
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F3))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_1F3
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F3))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F4))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_1F4
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F4))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F5))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_1F5
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F5))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))))
           (net PCI_PCI_C5_S0_NEXT_TARGET_SM_2F0
             (joined 
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F1))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_2F1
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F1))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_1))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F2))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_2F2
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_target_sm_2F0))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_3F0
-            (joined 
-              (portRef I2
-                (instanceRef pci_pci_C5_S0_target_sm_3_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F0))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_3F1
-            (joined 
-              (portRef I0
-                (instanceRef pci_pci_C5_S0_target_sm_3_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F1))))
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_1))))
           (net PCI_PCI_C5_S0_NEXT_TARGET_SM_4F0
             (joined 
               (portRef O
@@ -7660,31 +7426,17 @@
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_target_sm_4F0))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_5F0
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F0))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F1))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_5F1
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F1))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F2))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_5F2
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F2))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F3))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F3))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_5F3
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F3))
+              (portRef I0
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_3))))
+          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_4F3
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F3))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F3))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))))
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_3))))
           (net PCI_PCI_C5_S0_NEXT_TARGET_SM_6F0
             (joined 
               (portRef O
@@ -7696,313 +7448,349 @@
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F1))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
+              (portRef I0
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))))
           (net PCI_PCI_C5_S0_NEXT_TARGET_SM_6F2
             (joined 
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_4))))
           (net PCI_PCI_C5_S0_NEXT_TARGET_SM_6F3
             (joined 
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F4))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_6F4
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F4))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F5))))
-          (net PCI_PCI_C5_S0_NEXT_TARGET_SM_6F5
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_4))))
+          (net PCI_PCI_C5_S0_S10_S0_T2_WORD_2
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F5))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T2_word_2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_target_sm_6F0))))
-          (net PCI_PCI_C5_S0_S1_T215_WORD_1
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T9_tree2_0))))
+          (net PCI_PCI_C5_S0_S10_S0_T40_TREE2_4
             (joined 
-              (portRef I1
-                (instanceRef pci_bus_T9_enable_FFin))
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_1))))
-          (net PCI_PCI_C5_S0_S1_T215_WORD_2
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_4))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_7))))
+          (net PCI_PCI_C5_S0_S10_S0_T40_TREE2_7
             (joined 
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_7))
               (portRef I0
-                (instanceRef pci_bus_T9_enable_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S1_T215_word_2))))
-          (net PCI_PCI_C5_S0_S1_T219_TREE2_0
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T50_tree2))
+              (portRef I0
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T85_tree2))
+              (portRef I0
+                (instanceRef SYMpci_config_Bar1_23F0))
+              (portRef I0
+                (instanceRef SYMpci_config_Bar0_23F0))))
+          (net PCI_PCI_C5_S0_S10_S0_T43_TREE2_0
             (joined 
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T43_tree2_0))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T50_tree2))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_23F0))))
+          (net PCI_PCI_C5_S0_S10_S0_T50_TREE2
+            (joined 
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T50_tree2))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_24F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_25F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_26F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_27F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_28F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_29F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar0_30F1))))
+          (net PCI_PCI_C5_S0_S10_S0_T85_TREE2
+            (joined 
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T85_tree2))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_24F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_25F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_26F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_27F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_28F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_29F1))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_30F1))))
+          (net PCI_PCI_C5_S0_S10_S0_T9_TREE2_0
+            (joined 
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T9_tree2_0))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T85_tree2))
+              (portRef I1
+                (instanceRef SYMpci_config_Bar1_23F0))))
+          (net PCI_PCI_C5_S0_S10_T26_ELSE_0
+            (joined 
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_S10_T26_else_0))
               (portRef I2
-                (instanceRef pci_bus_T9_enable_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S1_T219_tree2_0))))
-          (net PCI_PCI_C5_S0_S1_T441_WORD_1
-            (joined 
-              (portRef I1
-                (instanceRef pci_bus_T19_enable_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_1))))
-          (net PCI_PCI_C5_S0_S1_T441_WORD_2
-            (joined 
-              (portRef I0
-                (instanceRef pci_bus_T19_enable_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S1_T441_word_2))))
-          (net PCI_PCI_C5_S0_S1_T445_TREE2_0
-            (joined 
+                (instanceRef SYMpci_pci_C5_S0_assert_par_0F1))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_assert_par_0F2))
               (portRef I2
-                (instanceRef pci_bus_T19_enable_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S1_T445_tree2_0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T13_WORD_1
+                (instanceRef SYMpci_pci_C5_S0_assert_par64_0F1))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T13_WORD_1
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_1))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_1))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T13_WORD_2
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_1))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T13_WORD_2
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_2))
               (portRef I2
                 (instanceRef SYMpci_state_bar0F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T13_WORD_3
+          (net PCI_PCI_C5_S0_S5_S0_S1_T13_WORD_3
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_3))
               (portRef I1
                 (instanceRef SYMpci_state_bar0F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T13_WORD_5
+          (net PCI_PCI_C5_S0_S5_S0_S1_T13_WORD_5
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_5))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_5))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T13_WORD_6
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_5))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T13_WORD_6
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_6))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_7))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T13_WORD_7
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_7))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T13_WORD_7
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T13_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T13_word_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_7))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T17_TREE2_1
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_7))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T17_TREE2_1
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_1))
               (portRef I3
                 (instanceRef SYMpci_state_bar0F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T17_TREE2_5
+          (net PCI_PCI_C5_S0_S5_S0_S1_T17_TREE2_5
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_5))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_7))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T17_TREE2_7
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_7))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T17_TREE2_7
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T17_tree2_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T17_tree2_7))
               (portRef I0
                 (instanceRef SYMpci_state_bar0F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T36_WORD_1
+          (net PCI_PCI_C5_S0_S5_S0_S1_T36_WORD_1
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_1))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_1))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T36_WORD_2
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_1))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T36_WORD_2
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_2))
               (portRef I2
                 (instanceRef SYMpci_state_bar1F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T36_WORD_3
+          (net PCI_PCI_C5_S0_S5_S0_S1_T36_WORD_3
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_3))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_3))
               (portRef I1
                 (instanceRef SYMpci_state_bar1F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T36_WORD_5
+          (net PCI_PCI_C5_S0_S5_S0_S1_T36_WORD_5
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_5))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_5))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T36_WORD_6
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_5))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T36_WORD_6
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_6))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_6))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_7))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T36_WORD_7
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_7))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T36_WORD_7
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T36_word_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T36_word_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_7))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T40_TREE2_1
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_7))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T40_TREE2_1
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_1))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_1))
               (portRef I3
                 (instanceRef SYMpci_state_bar1F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T40_TREE2_5
+          (net PCI_PCI_C5_S0_S5_S0_S1_T40_TREE2_5
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_5))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_5))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_7))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T40_TREE2_7
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_7))))
+          (net PCI_PCI_C5_S0_S5_S0_S1_T40_TREE2_7
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T40_tree2_7))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T40_tree2_7))
               (portRef I0
                 (instanceRef SYMpci_state_bar1F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S1_T51_TREE2
+          (net PCI_PCI_C5_S0_S5_S0_S1_T51_TREE2
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T51_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T51_tree2))
               (portRef I0
                 (instanceRef SYMpci_bus_T21_enableF0))))
-          (net PCI_PCI_C5_S0_S2_S0_S2_T3_WORD_1
+          (net PCI_PCI_C5_S0_S5_S0_S2_T3_WORD_1
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T3_word_1))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F0))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T3_word_1))
               (portRef I2
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F0))))
-          (net PCI_PCI_C5_S0_S2_S0_S2_T7_TREE2_0
+          (net PCI_PCI_C5_S0_S5_S0_S2_T7_TREE2_0
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S2_T7_tree2_0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F0))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S2_T7_tree2_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F0))))
-          (net PCI_PCI_C5_S0_S2_T12_TREE2
+          (net PCI_PCI_C5_S0_S5_T12_TREE2
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S2_T12_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S5_T12_tree2))
               (portRef I1
                 (instanceRef SYMpci_bus_T21_enableF2))
               (portRef I1
                 (instanceRef SYMpci_state_bar1F1))
               (portRef I1
                 (instanceRef SYMpci_state_bar0F1))))
-          (net PCI_PCI_C5_S0_S5_DATA_24
+          (net PCI_PCI_C5_S0_S8_DATA_24
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_24))
+                (instanceRef pci_pci_C5_S0_S8_data_24))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_0F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_24_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_24_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_24_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_24_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_24))))
-          (net PCI_PCI_C5_S0_S5_DATA_25
+                (instanceRef pci_pci_C5_S0_S8_data_24))))
+          (net PCI_PCI_C5_S0_S8_DATA_25
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_25))
+                (instanceRef pci_pci_C5_S0_S8_data_25))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_1F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_25_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_25_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_25_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_25_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_25))))
-          (net PCI_PCI_C5_S0_S5_DATA_26
+                (instanceRef pci_pci_C5_S0_S8_data_25))))
+          (net PCI_PCI_C5_S0_S8_DATA_26
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_26))
+                (instanceRef pci_pci_C5_S0_S8_data_26))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_2F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_26_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_26_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_26_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_26_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_26))))
-          (net PCI_PCI_C5_S0_S5_DATA_27
+                (instanceRef pci_pci_C5_S0_S8_data_26))))
+          (net PCI_PCI_C5_S0_S8_DATA_27
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_27))
+                (instanceRef pci_pci_C5_S0_S8_data_27))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_3F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_27_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_27_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_27_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_27_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_27))))
-          (net PCI_PCI_C5_S0_S5_DATA_28
+                (instanceRef pci_pci_C5_S0_S8_data_27))))
+          (net PCI_PCI_C5_S0_S8_DATA_28
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_28))
+                (instanceRef pci_pci_C5_S0_S8_data_28))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_4F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_28_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_28_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_28_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_28_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_28))))
-          (net PCI_PCI_C5_S0_S5_DATA_29
+                (instanceRef pci_pci_C5_S0_S8_data_28))))
+          (net PCI_PCI_C5_S0_S8_DATA_29
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_29))
+                (instanceRef pci_pci_C5_S0_S8_data_29))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_5F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_29_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_29_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_29_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_29_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_29))))
-          (net PCI_PCI_C5_S0_S5_DATA_30
+                (instanceRef pci_pci_C5_S0_S8_data_29))))
+          (net PCI_PCI_C5_S0_S8_DATA_30
             (joined 
               (portRef Q
-                (instanceRef pci_pci_C5_S0_S5_data_30))
+                (instanceRef pci_pci_C5_S0_S8_data_30))
               (portRef I3
                 (instanceRef SYMpci_bus_ad_b3_6F0))))
-          (net PCI_PCI_C5_S0_S5_DATA_30_FFIN
+          (net PCI_PCI_C5_S0_S8_DATA_30_FFIN
             (joined 
               (portRef O
-                (instanceRef pci_pci_C5_S0_S5_data_30_FFin))
+                (instanceRef pci_pci_C5_S0_S8_data_30_FFin))
               (portRef D
-                (instanceRef pci_pci_C5_S0_S5_data_30))))
-          (net PCI_PCI_C5_S0_S5_T12_THEN_0
+                (instanceRef pci_pci_C5_S0_S8_data_30))))
+          (net PCI_PCI_C5_S0_S8_T12_THEN_0
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S5_T12_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T12_then_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_0F1))))
-          (net PCI_PCI_C5_S0_S5_T16_THEN_0
+          (net PCI_PCI_C5_S0_S8_T16_THEN_0
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S5_T16_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T16_then_0))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_assert_par_0F1))))
-          (net PCI_PCI_C5_S0_S5_T4_TREE2
+          (net PCI_PCI_C5_S0_S8_T4_TREE2
             (joined 
               (portRef I
                 (instanceRef pci_state_rw_FFin))
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S5_T4_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S8_T4_tree2))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S5_T12_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T12_then_0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S5_T16_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T16_then_0))
               (portRef I0
                 (instanceRef SYMpci_bus_ad_b3_0F0))
               (portRef I0
@@ -8117,103 +7905,111 @@
                 (instanceRef SYMpci_bus_T0_enableF3))
               (portRef I1
                 (instanceRef SYMpci_pci_C5_S0_assert_par_0F2))))
-          (net PCI_PCI_C5_S0_S7_S0_T2_WORD_2
+          (net PCI_PCI_C5_S0_T1036_WORD_1
             (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T2_word_2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T9_tree2_0))))
-          (net PCI_PCI_C5_S0_S7_S0_T40_TREE2_4
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_4))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_7))))
-          (net PCI_PCI_C5_S0_S7_S0_T40_TREE2_7
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_7))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T50_tree2))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T85_tree2))
-              (portRef I0
-                (instanceRef SYMpci_config_Bar1_23F0))
-              (portRef I0
-                (instanceRef SYMpci_config_Bar0_23F0))))
-          (net PCI_PCI_C5_S0_S7_S0_T43_TREE2_0
-            (joined 
+                (instanceRef pci_pci_C5_S0_target_sm_2_FFin))
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T43_tree2_0))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T50_tree2))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_23F0))))
-          (net PCI_PCI_C5_S0_S7_S0_T50_TREE2
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T50_tree2))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_24F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_25F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_26F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_27F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_28F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_29F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar0_30F1))))
-          (net PCI_PCI_C5_S0_S7_S0_T85_TREE2
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T85_tree2))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_24F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_25F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_26F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_27F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_28F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_29F1))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_30F1))))
-          (net PCI_PCI_C5_S0_S7_S0_T9_TREE2_0
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T9_tree2_0))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T85_tree2))
-              (portRef I1
-                (instanceRef SYMpci_config_Bar1_23F0))))
-          (net PCI_PCI_C5_S0_S7_T26_ELSE_0
-            (joined 
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_S7_T26_else_0))
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_1))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_assert_par_0F1))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_assert_par_0F2))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_assert_par64_0F1))))
-          (net PCI_PCI_C5_S0_T334_TREE2
+                (instanceRef SYMpci_pci_C5_S0_T1043_tree2_0))))
+          (net PCI_PCI_C5_S0_T1036_WORD_2
+            (joined 
+              (portRef I0
+                (instanceRef pci_pci_C5_S0_target_sm_3_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_2))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_T1043_tree2_0))))
+          (net PCI_PCI_C5_S0_T1036_WORD_3
+            (joined 
+              (portRef I0
+                (instanceRef pci_pci_C5_S0_target_sm_4_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_3))
+              (portRef I0
+                (instanceRef SYMpci_pci_C5_S0_T1043_tree2_0))))
+          (net PCI_PCI_C5_S0_T1040_TREE2_0
             (joined 
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_T334_tree2))
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_0))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_T1043_tree2_0))))
+          (net PCI_PCI_C5_S0_T1040_TREE2_4
+            (joined 
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F4))
+                (instanceRef pci_pci_C5_S0_target_sm_0_FFin))
+              (portRef I1
+                (instanceRef pci_pci_C5_S0_target_sm_1_FFin))
+              (portRef I1
+                (instanceRef pci_pci_C5_S0_target_sm_2_FFin))
+              (portRef I1
+                (instanceRef pci_pci_C5_S0_target_sm_3_FFin))
+              (portRef I1
+                (instanceRef pci_pci_C5_S0_target_sm_4_FFin))
+              (portRef I1
+                (instanceRef pci_pci_C5_S0_target_sm_6_FFin))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F3))
+                (instanceRef pci_pci_C5_S0_target_sm_6_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_4))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))))
-          (net PCI_PCI_C5_S0_T349_TREE2
+                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))))
+          (net PCI_PCI_C5_S0_T1043_TREE2_0
+            (joined 
+              (portRef I1
+                (instanceRef pci_pci_C5_S0_target_sm_0_FFin))
+              (portRef I2
+                (instanceRef pci_pci_C5_S0_target_sm_1_FFin))
+              (portRef I2
+                (instanceRef pci_pci_C5_S0_target_sm_2_FFin))
+              (portRef I2
+                (instanceRef pci_pci_C5_S0_target_sm_3_FFin))
+              (portRef I2
+                (instanceRef pci_pci_C5_S0_target_sm_4_FFin))
+              (portRef I2
+                (instanceRef pci_pci_C5_S0_target_sm_6_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T1043_tree2_0))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))))
+          (net PCI_PCI_C5_S0_T398_WORD_1
+            (joined 
+              (portRef I1
+                (instanceRef pci_bus_T9_enable_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T398_word_1))))
+          (net PCI_PCI_C5_S0_T398_WORD_2
+            (joined 
+              (portRef I0
+                (instanceRef pci_bus_T9_enable_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T398_word_2))))
+          (net PCI_PCI_C5_S0_T402_TREE2_0
+            (joined 
+              (portRef I2
+                (instanceRef pci_bus_T9_enable_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T402_tree2_0))))
+          (net PCI_PCI_C5_S0_T624_WORD_1
+            (joined 
+              (portRef I1
+                (instanceRef pci_bus_T19_enable_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T624_word_1))))
+          (net PCI_PCI_C5_S0_T624_WORD_2
+            (joined 
+              (portRef I0
+                (instanceRef pci_bus_T19_enable_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T624_word_2))))
+          (net PCI_PCI_C5_S0_T628_TREE2_0
+            (joined 
+              (portRef I2
+                (instanceRef pci_bus_T19_enable_FFin))
+              (portRef O
+                (instanceRef SYMpci_pci_C5_S0_T628_tree2_0))))
+          (net PCI_PCI_C5_S0_T809_TREE2
             (joined 
               (portRef I1
                 (instanceRef pci_pci_C5_S0_assert_par64_1_FFin))
@@ -8230,17 +8026,7 @@
               (portRef I1
                 (instanceRef pci_pci_C5_S0_assert_par64_7_FFin))
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_T349_tree2))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F5))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F4))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F1))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F2))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F4))
+                (instanceRef SYMpci_pci_C5_S0_T809_tree2))
               (portRef I0
                 (instanceRef SYMpci_bus_T0_enableF2))
               (portRef I0
@@ -8288,11 +8074,11 @@
               (portRef I0
                 (instanceRef SYMpci_bus_T4_enableF2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_assert_par64_0F1))))
-          (net PCI_PCI_C5_S0_T451_TREE2
-            (joined 
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_1))
               (portRef I1
-                (instanceRef pci_pci_C5_S0_target_sm_3_FFin))
+                (instanceRef SYMpci_pci_C5_S0_assert_par64_0F1))))
+          (net PCI_PCI_C5_S0_T911_TREE2
+            (joined 
               (portRef I1
                 (instanceRef pci_pci_C5_S0_assert_par_1_FFin))
               (portRef I1
@@ -8308,7 +8094,7 @@
               (portRef I1
                 (instanceRef pci_pci_C5_S0_assert_par_7_FFin))
               (portRef O
-                (instanceRef SYMpci_pci_C5_S0_T451_tree2))
+                (instanceRef SYMpci_pci_C5_S0_T911_tree2))
               (portRef I0
                 (instanceRef SYMpci_bus_T3_enableF3))
               (portRef I0
@@ -8317,18 +8103,8 @@
                 (instanceRef SYMpci_bus_T1_enableF3))
               (portRef I0
                 (instanceRef SYMpci_bus_T0_enableF3))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_target_sm_0F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_target_sm_2F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_target_sm_4F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_target_sm_6F0))
+              (portRef I1
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_4))
               (portRef I0
                 (instanceRef SYMpci_pci_C5_S0_assert_par_0F2))))
           (net PCI_PCI_C5_S0_TARGET_SM_0
@@ -8344,17 +8120,11 @@
               (portRef I3
                 (instanceRef SYMpci_state_bar1F2))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F3))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F2))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S5_T4_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S8_T4_tree2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S5_T12_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T12_then_0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S5_T16_then_0))
+                (instanceRef SYMpci_pci_C5_S0_S8_T16_then_0))
               (portRef I1
                 (instanceRef SYMpci_bus_T7_enableF0))
               (portRef I0
@@ -8448,13 +8218,21 @@
               (portRef I0
                 (instanceRef SYMpci_pci_C5_S0_assert_par64_7F1))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T2_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T2_word_2))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_4))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_4))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S7_T26_else_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_T26_else_0))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))
               (portRef I3
                 (instanceRef SYMpci_bus_T14_enableF2))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_0))
+              (portRef I2
+                (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))
               (portRef I1
                 (instanceRef SYMpci_bus_T11_enableF0))
               (portRef I3
@@ -8481,26 +8259,14 @@
                 (instanceRef pci_pci_C5_S0_target_sm_0_FFin))
               (portRef D
                 (instanceRef pci_pci_C5_S0_target_sm_0))))
-          (net PCI_PCI_C5_S0_TARGET_SM_0F0
-            (joined 
-              (portRef I
-                (instanceRef pci_pci_C5_S0_target_sm_0_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_target_sm_0F0))))
           (net PCI_PCI_C5_S0_TARGET_SM_1
             (joined 
               (portRef Q
                 (instanceRef pci_pci_C5_S0_target_sm_1))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F3))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F2))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F2))
+                (instanceRef SYMpci_pci_C5_S0_T1040_tree2_0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F0))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F1))))
+                (instanceRef SYMpci_pci_C5_S0_target_sm_5F0))))
           (net PCI_PCI_C5_S0_TARGET_SM_1_FFIN
             (joined 
               (portRef O
@@ -8509,7 +8275,7 @@
                 (instanceRef pci_pci_C5_S0_target_sm_1))))
           (net PCI_PCI_C5_S0_TARGET_SM_1F0
             (joined 
-              (portRef I
+              (portRef I0
                 (instanceRef pci_pci_C5_S0_target_sm_1_FFin))
               (portRef O
                 (instanceRef SYMpci_pci_C5_S0_target_sm_1F0))))
@@ -8518,7 +8284,7 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_target_sm_2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_T349_tree2))
+                (instanceRef SYMpci_pci_C5_S0_T809_tree2))
               (portRef I1
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F0))
               (portRef I3
@@ -8541,12 +8307,6 @@
                 (instanceRef pci_pci_C5_S0_target_sm_2_FFin))
               (portRef D
                 (instanceRef pci_pci_C5_S0_target_sm_2))))
-          (net PCI_PCI_C5_S0_TARGET_SM_2F0
-            (joined 
-              (portRef I
-                (instanceRef pci_pci_C5_S0_target_sm_2_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_target_sm_2F0))))
           (net PCI_PCI_C5_S0_TARGET_SM_3
             (joined 
               (portRef I2
@@ -8577,44 +8337,22 @@
             (joined 
               (portRef Q
                 (instanceRef pci_pci_C5_S0_target_sm_4))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F6))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F5))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F2))
               (portRef I3
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_4F1))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F3))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F5))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_3F1))))
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_2))))
           (net PCI_PCI_C5_S0_TARGET_SM_4_FFIN
             (joined 
               (portRef O
                 (instanceRef pci_pci_C5_S0_target_sm_4_FFin))
               (portRef D
                 (instanceRef pci_pci_C5_S0_target_sm_4))))
-          (net PCI_PCI_C5_S0_TARGET_SM_4F0
-            (joined 
-              (portRef I
-                (instanceRef pci_pci_C5_S0_target_sm_4_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_target_sm_4F0))))
           (net PCI_PCI_C5_S0_TARGET_SM_5
             (joined 
               (portRef Q
                 (instanceRef pci_pci_C5_S0_target_sm_5))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_T334_tree2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F1))))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))))
           (net PCI_PCI_C5_S0_TARGET_SM_5_FFIN
             (joined 
               (portRef O
@@ -8634,7 +8372,9 @@
               (portRef Q
                 (instanceRef pci_pci_C5_S0_target_sm_6))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_T451_tree2))
+                (instanceRef SYMpci_pci_C5_S0_T911_tree2))
+              (portRef I3
+                (instanceRef SYMpci_pci_C5_S0_T1036_word_3))
               (portRef I3
                 (instanceRef SYMpci_config_Bar1_23F2))
               (portRef I3
@@ -8675,12 +8415,6 @@
                 (instanceRef pci_pci_C5_S0_target_sm_6_FFin))
               (portRef D
                 (instanceRef pci_pci_C5_S0_target_sm_6))))
-          (net PCI_PCI_C5_S0_TARGET_SM_6F0
-            (joined 
-              (portRef I
-                (instanceRef pci_pci_C5_S0_target_sm_6_FFin))
-              (portRef O
-                (instanceRef SYMpci_pci_C5_S0_target_sm_6F0))))
           (net PCI_PCI_C5_T0_INIT
             (joined 
               (portRef CE
@@ -8870,9 +8604,9 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_0_FFin))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T9_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T9_tree2_0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T43_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T43_tree2_0))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_0F1))))
           (net PCI_STATE_ADDR_B0_1
@@ -8900,9 +8634,9 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_1_FFin))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T9_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T9_tree2_0))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T43_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T43_tree2_0))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_1F1))))
           (net PCI_STATE_ADDR_B0_2
@@ -8912,7 +8646,7 @@
               (portRef I0
                 (instanceRef SYMpci_state_addr_b0_2F0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T2_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T2_word_2))
               (portRef I0
                 (instanceRef SYMpci_state_addr_b0_2F1))))
           (net PCI_STATE_ADDR_B0_2_FFIN
@@ -8926,7 +8660,7 @@
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_2F0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T2_word_2))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T2_word_2))
               (portRef I1
                 (instanceRef SYMpci_state_addr_b0_2F1))))
           (net PCI_STATE_ADDR_B0_2F1
@@ -8934,7 +8668,7 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_2_FFin))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T43_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T43_tree2_0))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_2F1))))
           (net PCI_STATE_ADDR_B0_3
@@ -8962,9 +8696,9 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_3_FFin))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T9_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T9_tree2_0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T43_tree2_0))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T43_tree2_0))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_3F1))))
           (net PCI_STATE_ADDR_B0_4
@@ -8974,7 +8708,7 @@
               (portRef I0
                 (instanceRef SYMpci_state_addr_b0_4F0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_4))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_4))
               (portRef I0
                 (instanceRef SYMpci_state_addr_b0_4F1))))
           (net PCI_STATE_ADDR_B0_4_FFIN
@@ -8988,7 +8722,7 @@
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_4F0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_4))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_4))
               (portRef I1
                 (instanceRef SYMpci_state_addr_b0_4F1))))
           (net PCI_STATE_ADDR_B0_4F1
@@ -9022,7 +8756,7 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_5_FFin))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_7))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_7))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_5F1))))
           (net PCI_STATE_ADDR_B0_6
@@ -9050,7 +8784,7 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_6_FFin))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_7))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_7))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_6F1))))
           (net PCI_STATE_ADDR_B0_7
@@ -9078,7 +8812,7 @@
               (portRef I
                 (instanceRef pci_state_addr_b0_7_FFin))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_S0_T40_tree2_7))
+                (instanceRef SYMpci_pci_C5_S0_S10_S0_T40_tree2_7))
               (portRef O
                 (instanceRef SYMpci_state_addr_b0_7F1))))
           (net PCI_STATE_BAR0
@@ -9100,11 +8834,9 @@
               (portRef O
                 (instanceRef SYMpci_state_bar0F0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T51_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T51_tree2))
               (portRef I2
                 (instanceRef SYMpci_bus_T14_enableF0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F1))
               (portRef I3
                 (instanceRef SYMpci_state_bar0F1))))
           (net PCI_STATE_BAR0F1
@@ -9119,16 +8851,8 @@
                 (instanceRef pci_state_bar0_FFin))
               (portRef O
                 (instanceRef SYMpci_state_bar0F2))
-              (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F0))
               (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F4))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F3))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))
-              (portRef I3
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))))
           (net PCI_STATE_BAR1
             (joined 
               (portRef Q
@@ -9148,11 +8872,9 @@
               (portRef O
                 (instanceRef SYMpci_state_bar1F0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_S0_S1_T51_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S5_S0_S1_T51_tree2))
               (portRef I1
                 (instanceRef SYMpci_bus_T14_enableF0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F1))
               (portRef I3
                 (instanceRef SYMpci_state_bar1F1))))
           (net PCI_STATE_BAR1F1
@@ -9167,22 +8889,14 @@
                 (instanceRef pci_state_bar1_FFin))
               (portRef O
                 (instanceRef SYMpci_state_bar1F2))
-              (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_5F0))
               (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F4))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_1F3))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))
-              (portRef I2
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F3))))
+                (instanceRef SYMpci_pci_C5_S0_next_target_sm_2F0))))
           (net PCI_STATE_LASTFRAME
             (joined 
               (portRef Q
                 (instanceRef pci_state_lastframe))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S2_T12_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S5_T12_tree2))
               (portRef I2
                 (instanceRef SYMpci_state_rwF0))
               (portRef I2
@@ -9202,8 +8916,6 @@
               (portRef I2
                 (instanceRef SYMpci_state_addr_b0_7F0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_next_target_sm_0F2))
-              (portRef I1
                 (instanceRef SYMpci_pci_C5_S0_next_target_sm_6F1))
               (portRef I1
                 (instanceRef SYMpci_bus_T14_enableF1))))
@@ -9220,9 +8932,9 @@
               (portRef I0
                 (instanceRef SYMpci_state_rwF0))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S5_T4_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S8_T4_tree2))
               (portRef I0
-                (instanceRef SYMpci_pci_C5_S0_S7_T26_else_0))))
+                (instanceRef SYMpci_pci_C5_S0_S10_T26_else_0))))
           (net PCI_STATE_RW_FFIN
             (joined 
               (portRef O
@@ -9234,27 +8946,27 @@
               (portRef O
                 (instanceRef SYMpci_state_rwF0))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S5_T4_tree2))
+                (instanceRef SYMpci_pci_C5_S0_S8_T4_tree2))
               (portRef I1
-                (instanceRef SYMpci_pci_C5_S0_S7_T26_else_0))))
+                (instanceRef SYMpci_pci_C5_S0_S10_T26_else_0))))
           (net VCC
             (joined 
               (portRef CE
                 (instanceRef pci_Running))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_24))
+                (instanceRef pci_pci_C5_S0_S8_data_24))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_25))
+                (instanceRef pci_pci_C5_S0_S8_data_25))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_26))
+                (instanceRef pci_pci_C5_S0_S8_data_26))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_27))
+                (instanceRef pci_pci_C5_S0_S8_data_27))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_28))
+                (instanceRef pci_pci_C5_S0_S8_data_28))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_29))
+                (instanceRef pci_pci_C5_S0_S8_data_29))
               (portRef CE
-                (instanceRef pci_pci_C5_S0_S5_data_30))
+                (instanceRef pci_pci_C5_S0_S8_data_30))
               (portRef VCC
                 (instanceRef I0_from_net_VCC))))))))
   (design pci
