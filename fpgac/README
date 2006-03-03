@@ -29,10 +29,10 @@ output from FpgaC, so you can test your installation.
 WHO DID THIS ?
 
 The original work was done by Dave Galloway for the Transmogrifier 1 (TM-1)
-field-programmable system consisting of FPGAs, RAMs and programmable interconnect
-chips.  It was designed and built at the Department of Electrical and Computer
-Engineering, University of Toronto, by Dave Karchmer under the supervision of
-Jonathan Rose, Paul Chow, David Lewis, and Dave Galloway.
+field-programmable system consisting of FPGAs, RAMs and programmable
+interconnect chips.  It was designed and built at the Department of Electrical
+and Computer Engineering, University of Toronto, by Dave Karchmer under the
+supervision of Jonathan Rose, Paul Chow, David Lewis, and Dave Galloway.
 
 TMCC was extended to accept more common C syntax by John Bass (jbass@dmsd.com
 AKA totally_lost) to aid in the porting of existing C code, renamed FpgaC and
@@ -43,25 +43,31 @@ user community. Over 400 copies have been downloaded since the initial beta
 release, and a half dozen developers are now actively learning and working
 on the project.
 
-There are MANY sub-projects which need be completed for FpgaC to reach maturity,
-so other developers are welcome to join us.  See the sourceforge forums and
-feature requests if there is a feature you would like to contribute.
+There are MANY sub-projects which need be completed for FpgaC to reach
+maturity, so other developers are welcome to join us.  See the sourceforge
+forums and feature requests if there is a feature you would like to contribute.
 
 
 IS THIS USEFUL ?
 
-The compiler has been used by a handful of people.  The original TMCC was used
-in the summers of 1994/95 to produce several circuits that did graphics on LCD
-screens.  The largest circuit was about 1200 lines of tmcc code, and fit
-into four XC4010s.  The circuits work.
+FpgaC is useful for both reconfigurable computing projects and complex FSM
+based hardware designs. See the examples/pci directory for a snapshot toward
+the development of a PCI Target Mode core which is nearing completion.
+
+The compiler has been used by a handful of people.  The original TMCC was
+used in the summers of 1994/95 to produce several circuits that did graphics
+on LCD screens.  The largest circuit was about 1200 lines of tmcc code, and
+fit into four XC4010s. It had been used for other TMCC projects.  The circuits
+work.
 
 As FpgaC several demonstration for reconfigurable computing projects have
 been completed during 2004/2005, and the projects work.
 
-FpgaC is not be a replacement for VHDL or Verilog for people who are serious
-about producing a minimal circuit design on time, and under budget.  FpgaC in
-it's current subset form is functional in this beta release for general testing
-and development. However, FpgaC will grow to that maturity in the near future.
+FpgaC is not currently a replacement for VHDL or Verilog for people who are
+serious about producing a minimal circuit design on time, and under budget.
+FpgaC in it's current subset form is functional in this beta release for
+general testing and development. However, FpgaC will grow to that maturity
+in the near future.
 
 FpgaC is interesting to someone who does know C, and wants to throw together
 a project in a couple of days to investigate its properties, or get an upper
@@ -77,8 +83,9 @@ FpgaC, and for conversion to other formats.
 
 KNOWN BUGS
 
-There may be some rare cases where the compiler does not properly see logic which
-affects the outputs, and deletes it. This seems to happen mostly for conditionals.
+There may be some rare cases where the compiler does not properly see logic
+which affects the outputs, and deletes it. This seems to happen rarely for
+conditionals.
 
 The language subset is not yet a complete and proper subset of C.
 
@@ -124,8 +131,11 @@ CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2F
 - FOR loops and DO while loops have been added as alpha test by Rahul Menon
   please report any suprises.
 
-- Integer Multiply, Divide, and Mod/Remainder have been added as alpha test
-  for this release by John Bass. See users manual for details.
+- Integer Multiply, Divide, and Mod/Remainder function interfaces have been
+  added as alpha test for this release by John Bass. See users manual for
+  details.
+
+- Preliminary intrinsic stubs for Floating point are now in the compiler.
 
 - Small LUT/BRAM based arrays and structures have been added as alpha test
   for this release by John Bass. See users manual for details.
