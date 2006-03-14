@@ -152,7 +152,8 @@ EXTFIX struct bit {
 	long int flags;
 	int temp;
 	char *pin;
-	char truth[16];
+	long *truth;
+	int pcnt;
 	struct bitlist *primaries;
 	struct bit *copyof;
 	struct variable *variable;
@@ -215,8 +216,13 @@ typedef struct {
     unsigned char covered;	/* this term is covered by a simpler one */
 } QMtab;
 
-#define QMtabSize 128
+#define QMtabSize (1024*8)
+#define MAXPRI     4
 
 #define IGNORE_FORLOOP 1
+
+#define Get_Bit(longvector, bit)  ((longvector[(bit)>>5]>>((bit)&0x1f))&1)
+#define Set_Bit(longvector, bit)  (longvector[(bit)>>5] |= 1<<((bit)&0x1f))
+#define Clr_Bit(longvector, bit)  (longvector[(bit)>>5] &= ~(1<<((bit)&0x1f)))
 
 EXTFIX int debug;

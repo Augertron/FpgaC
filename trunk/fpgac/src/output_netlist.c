@@ -215,7 +215,6 @@ output_CNF() {
 	if (b->flags & SYM_OUTPUTPORT)
 	    noutpins++;
 
-//	if ((b->flags & (SYM_OUTPUTPORT | SYM_BUSPORT)) && !(b->flags & BIT_HASFF))
 	if ((b->flags & (SYM_OUTPUTPORT)) && !(b->flags & BIT_HASFF))
 	    b->flags &= ~SYM_FF;
 
@@ -227,12 +226,12 @@ output_CNF() {
         if (count <= 0) {
             if (!(b->flags & SYM_ARRAY)) {
                 if (count == 0) {
-                    if (b->truth[0])
+                    if (Get_Bit(b->truth,0))
                         fprintf(outputfile, "~%s;\n", bitname(b->primaries->bit));
                     else
                         fprintf(outputfile, "%s;\n", bitname(b->primaries->bit));
                 } else {
-                    if (b->truth[0])
+                    if (Get_Bit(b->truth,0))
                         fprintf(outputfile, "VCC;\n");
                     else
                         fprintf(outputfile, "GND;\n");
@@ -287,7 +286,7 @@ static printROM(struct bit *b, int count) {
 
     fprintf(outputfile, " \"");
     for (i = 0; i < (1 << (count + 1)); i++)
-        fprintf(outputfile, "%d", b->truth[i] & 1);
+        fprintf(outputfile, "%d", Get_Bit(b->truth,i));
     fprintf(outputfile, "\"[");
     for (i = 3; i > count; --i)
 	fprintf(outputfile, "GND,", i);
@@ -303,8 +302,8 @@ static printROM(struct bit *b, int count) {
 static printEQN(struct bit *b, int count) {
     int first = 1, i, j, first_in_term, top;
     struct bitlist *bl;
-    QMtab table[128];
-    char *names[4], **p = names;
+    QMtab table[QMtabSize];
+    char *names[MAXPRI], **p = names;
 
     QMtruthToTable(b->truth, table, &top, count + 1);
     if (simpleQM(table, &top, QMtabSize, count + 1) != 0) {
@@ -353,7 +352,7 @@ static printGates(struct bit *b, int count) {
     int used_terms = 0;
     int posCnt = 0;
     int subOr = 0, oldSubOr;
-    QMtab table[128];
+    QMtab table[QMtabSize];
 
     /* The idea is to produce an AND or a BUF for each term
      * and then OR them together. If only one

@@ -114,7 +114,7 @@ int simpleQM (table, top, max_tab_size, bits)
 }
 	    	    
 QMtruthToTable (truth, table, top, bits)
-	char truth[16];
+	long *truth;
 	QMtab *table;
 	int *top;
 	int bits;
@@ -124,7 +124,7 @@ QMtruthToTable (truth, table, top, bits)
     *top = -1;
     
     for (i=0; i<(1<<bits); i++) {
-        if(truth[i]) {
+        if(Get_Bit(truth,i)) {
             (*top) += 1;
             table[*top].value = (unsigned char) i;
             table[*top].dc = table[*top].covered = 0;

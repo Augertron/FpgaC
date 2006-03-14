@@ -318,7 +318,7 @@ void output_vqm(char *familyname)
                fprintf(outputfile, "assign \\%s  = ", bitname(b));
             }
 
-            if(b->truth[0]) {
+            if(Get_Bit(b->truth,0)) {
                fprintf(outputfile, "~ \\%s ;\n", bitname(b->primaries->bit));
             }
             else {
@@ -373,7 +373,7 @@ void output_vqm(char *familyname)
          count = countlist(b->primaries);
          hex = 0;
          for(i=0; i < (1<<count); i++) {
-            hex |= (b->truth[i]<<i);
+            hex |= (Get_Bit(b->truth,i)<<i);
          }
          fprintf(outputfile, "defparam \\%s~I .lut_mask = \"%04X\";\n",
                         bitname(b), hex);

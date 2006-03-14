@@ -58,7 +58,7 @@ EXTFIX char *clockname;
 EXTFIX char *resetname;
 
 EXTFIX int nroms, nff, ninpins, noutpins, nbidirpins;
-EXTFIX int inputcounts[5];
+EXTFIX int inputcounts[MAXPRI+1];
 
 /* Values for output_format */
 #define XNFROMS		0

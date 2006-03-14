@@ -487,9 +487,6 @@ PopDeclarationScope() {
 
 char *bitname(struct bit *b) {
 
-//    if(b->name && !(b->flags & BIT_WORD)) {
-//        return (b->name);
-//    }
     if(!b->name) {
         b->name = (char *) calloc(1,MAXNAMELEN);
         if(!b->name) {
@@ -517,6 +514,11 @@ struct bit *newbit() {
 
     b = (struct bit *) calloc(1, sizeof (struct bit));
     if(!b) {
+        fprintf(stderr, "fpgac: Memory allocation error\n");
+        exit(1);
+    }
+    b->truth = (long *) calloc(1, (1<<MAXPRI)/8);
+    if(!b->truth) {
         fprintf(stderr, "fpgac: Memory allocation error\n");
         exit(1);
     }
@@ -740,7 +742,10 @@ struct variable *intconstant(int value) {
 	b = bl->bit;
 	bl = bl->next;
 	b->flags |= SYM_KNOWNVALUE;
-	b->truth[0] = temp & 0x1;
+        if(temp & 0x1)
+            Set_Bit(b->truth, 0);
+        else
+            Clr_Bit(b->truth, 0);
 	temp = temp >> 1;
     }
     return (v);
@@ -962,9 +967,10 @@ struct variable *ffoutput(struct variable *v) {
     bl = v->bits;
     bl2 = result->bits;
     for(i = 0; i < v->width; i++) {
-	bl2->bit->truth[0] = 0;
-	bl2->bit->truth[1] = 1;
+        Clr_Bit(bl2->bit->truth, 0);
+        Set_Bit(bl2->bit->truth, 1);
 	addtolist(&bl2->bit->primaries, bl->bit);
+        bl2->bit->pcnt = countlist(bl2->bit->primaries);
 	bl = bl->next;
 	bl2 = bl2->next;
     }
@@ -984,20 +990,27 @@ struct bit *freezebit(struct bit *b) {
     sprintf(temp->name, "%sF%d", bitname(b->copyof), b->copyof->temp++);
     if(b->flags & BIT_TEMP) {
 	addtolist(&temp->primaries, b);
-	temp->truth[0] = 0;
-	temp->truth[1] = 1;
+	temp->pcnt = countlist(temp->primaries);
+        Clr_Bit(temp->truth, 0);
+        Set_Bit(temp->truth, 1);
 	return (temp);
     } else {
 	/* Keep the original variable at the top of the tree, and
 	 * push the new temporary down.
 	 */
 	temp->primaries = b->primaries;
-	for(i = 0; i < 16; i++)
-	    temp->truth[i] = b->truth[i];
+	temp->pcnt = countlist(temp->primaries);
+	for(i = 0; i < (1 << MAXPRI); i++) {
+            if(Get_Bit(b->truth, i))
+                Set_Bit(temp->truth, i);
+            else
+                Clr_Bit(temp->truth, i);
+        }
 	b->primaries = (struct bitlist *) NULL;
 	addtolist(&b->primaries, temp);
-	b->truth[0] = 0;
-	b->truth[1] = 1;
+        b->pcnt = countlist(b->primaries);
+        Clr_Bit(b->truth, 0);
+        Set_Bit(b->truth, 1);
 	return (b);
     }
 }
@@ -1024,10 +1037,15 @@ setbit(struct bit *b, struct bit *value) {
 
     b->primaries = (struct bitlist *) NULL;
     mergelists(&b->primaries, value->primaries);
+    b->pcnt = countlist(b->primaries);
     b->flags &= ~(SYM_KNOWNVALUE);
     b->flags |= value->flags & (SYM_KNOWNVALUE);
-    for(i = 0; i < 16; i++)
-	b->truth[i] = value->truth[i];
+    for(i = 0; i < (1 << MAXPRI); i++) {
+        if(Get_Bit(value->truth, i))
+            Set_Bit(b->truth, i);
+        else
+            Clr_Bit(b->truth, i);
+    }
     b->modifying_states = (struct bitlist *) NULL;
     mergelists(&b->modifying_states, value->modifying_states);
     b->suppressing_states = (struct bitlist *) NULL;
@@ -1061,7 +1079,7 @@ bitequal(struct bit *x, struct bit *y) {
 	return (0);
     count = 1 << countlist(x->primaries);
     for(i = 0; i < count; i++) {
-	if(x->truth[i] != y->truth[i])
+	if(Get_Bit(x->truth,i) != Get_Bit(y->truth,i))
 	    return (0);
     }
     return (1);
@@ -1133,10 +1151,16 @@ makefunction(struct variable *v, int width) {
 complementbit(struct bit *newbit, struct bit *oldbit) {
     int i;
 
-    for(i = 0; i < 16; i++)
-	newbit->truth[i] = !oldbit->truth[i];
+    oldbit->pcnt = countlist(oldbit->primaries);
+    for(i = 0; i < (1 << MAXPRI); i++) {
+        if(Get_Bit(oldbit->truth, i))
+            Clr_Bit(newbit->truth, i);
+        else
+            Set_Bit(newbit->truth, i);
+    }
     newbit->flags |= (oldbit->flags & SYM_KNOWNVALUE);
     mergelists(&newbit->primaries, oldbit->primaries);
+    newbit->pcnt = countlist(newbit->primaries);
 }
 
 struct variable *complement(struct variable *v) {
@@ -1161,7 +1185,6 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     struct bit *temp2;
     struct bitlist *r, *t;
     int i, j, k, n;
-    int leftcount, rightcount, newcount;
 
     if(debug & 8) {
 	printf("twoop1bit line %d\n", inputlineno);
@@ -1171,7 +1194,10 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     temp->flags &= ~SYM_KNOWNVALUE;
     temp->primaries = 0;
     if((left->flags & SYM_KNOWNVALUE) && (right->flags & SYM_KNOWNVALUE)) {
-	temp->truth[0] = (*func) (left->truth[0], right->truth[0]);
+	if((*func) (Get_Bit(left->truth,0), Get_Bit(right->truth,0)))
+	    Set_Bit(temp->truth,0);
+        else
+	    Clr_Bit(temp->truth,0);
 	temp->flags = SYM_KNOWNVALUE;
 	if(debug & 8)
 	    printbit(temp);
@@ -1184,52 +1210,58 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     }
     if(right->flags & SYM_KNOWNVALUE) {
 	mergelists(&temp->primaries, left->primaries);
-	for(i = 0; i < 16; i++)
-	    temp->truth[i] = (*func) (left->truth[i], right->truth[0]);
+	temp->pcnt = countlist(temp->primaries);
+	for(i = 0; i < (1 << MAXPRI); i++) {
+            if((*func) (Get_Bit(left->truth,i), Get_Bit(right->truth,0)))
+                Set_Bit(temp->truth,i);
+            else
+                Clr_Bit(temp->truth,i);
+        }
 	optimizebit(temp);
 	if(debug & 8)
 	    printbit(temp);
 	return;
     }
-    leftcount = countlist(left->primaries);
-    rightcount = countlist(right->primaries);
-    if(rightcount > leftcount) {
+    left->pcnt = countlist(left->primaries);
+    right->pcnt = countlist(right->primaries);
+    if(right->pcnt > left->pcnt) {
 	temp2 = left;
 	left = right;
 	right = temp2;
-	i = leftcount;
-	leftcount = rightcount;
-	rightcount = i;
     }
     mergelists(&temp->primaries, left->primaries);
     mergelists(&temp->primaries, right->primaries);
-    newcount = countlist(temp->primaries);
+    temp->pcnt = countlist(temp->primaries);
 
-    if(newcount > 4) {
+    if(temp->pcnt > MAXPRI) {
 	left = freezebit(left);
-	leftcount = 1;
+	left->pcnt = 1;
 	temp->primaries = (struct bitlist *) NULL;
 	mergelists(&temp->primaries, left->primaries);
-	if(rightcount == 4) {
+	temp->pcnt = countlist(temp->primaries);
+	if(right->pcnt == MAXPRI) {
 	    right = freezebit(right);
-	    rightcount = 1;
+	    right->pcnt = 1;
 	}
 	mergelists(&temp->primaries, right->primaries);
-	newcount = countlist(temp->primaries);
+	temp->pcnt = countlist(temp->primaries);
     }
-    for(i = 0; i < (1 << newcount); i++) {
-	j = i >> (newcount - leftcount);
+    for(i = 0; i < (1 << temp->pcnt); i++) {
+	j = i >> (temp->pcnt - left->pcnt);
 	k = 0;
 	for(r = right->primaries; r; r = r->next) {
 	    k = k << 1;
-	    n = newcount - 1;
+	    n = temp->pcnt - 1;
 	    for(t = temp->primaries; t; t = t->next) {
 		if(r->bit == t->bit)
 		    k |= ((i & (1 << n)) > 0);
 		--n;
 	    }
 	}
-	temp->truth[i] = (*func) (left->truth[j], right->truth[k]);
+        if((*func) (Get_Bit(left->truth,j), Get_Bit(right->truth,k)))
+            Set_Bit(temp->truth,i);
+        else
+            Clr_Bit(temp->truth,i);
     }
     optimizebit(temp);
     if(debug & 8)
@@ -1321,56 +1353,107 @@ struct variable *twoopexpn(struct variable *left, struct variable *right, int (*
 /* Remove any primaries that have no effect on the output of b */
 
 optimizebit(struct bit *b) {
-    int i, nprimaries, bit, j;
+    int i, bit, j;
     struct bitlist **p;
 
-    nprimaries = countlist(b->primaries);
-    bit = 1 << (nprimaries - 1);
+    b->pcnt = countlist(b->primaries);
+    bit = 1 << (b->pcnt - 1);
     for(p = &b->primaries; *p;) {
-	for(i = 0; i < (1 << nprimaries); i++) {
-	    if(b->truth[i] != b->truth[i ^ bit])
+	for(i = 0; i < (1 << b->pcnt); i++) {
+	    if(Get_Bit(b->truth,i) != Get_Bit(b->truth,i ^ bit))
 		break;
 	}
-	if(i == (1 << nprimaries)) {
+	if(i == (1 << b->pcnt)) {
 	    if(debug & 8) {
 		printf("optimizing %s out of %s\n",
 		       bitname((*p)->bit), bitname(b));
-		printf("nprimaries %d i %d bit 0x%x\n", nprimaries, i,
+		printf("nprimaries %d i %d bit 0x%x\n", b->pcnt, i,
 		       bit);
 		printbit(b);
 	    }
 	    *p = (*p)->next;
-	    for(i = 0; i < (1 << (nprimaries - 1)); i++) {
+	    for(i = 0; i < (1 << (b->pcnt - 1)); i++) {
 		switch (bit) {
-                case 0x8:
-		    j = i;
+                case 0x8000:
+		    j = (i & 0x7FFF) | ((i << 1) & 0x0000);
 		    break;
 
-                case 0x4:
-		    j = (i & 0x3) | ((i << 1) & 0x8);
+                case 0x4000:
+		    j = (i & 0x3FFF) | ((i << 1) & 0x8000);
 		    break;
 
-                case 0x2:
-		    j = (i & 0x1) | ((i << 1) & 0xC);
+                case 0x2000:
+		    j = (i & 0x1FFF) | ((i << 1) & 0xC000);
 		    break;
 
-                case 0x1:
+                case 0x1000:
+		    j = (i & 0x0FFF) | ((i << 1) & 0xE000);
+		    break;
+
+                case 0x0800:
+		    j = (i & 0x07FF) | ((i << 1) & 0xF000);
+		    break;
+
+                case 0x0400:
+		    j = (i & 0x03FF) | ((i << 1) & 0xF800);
+		    break;
+
+                case 0x0200:
+		    j = (i & 0x01FF) | ((i << 1) & 0xFC00);
+		    break;
+
+                case 0x0100:
+		    j = (i & 0x00FF) | ((i << 1) & 0xFE00);
+		    break;
+
+                case 0x0080:
+		    j = (i & 0x007F) | ((i << 1) & 0xFF00);
+		    break;
+
+                case 0x0040:
+		    j = (i & 0x003F) | ((i << 1) & 0xFF80);
+		    break;
+
+                case 0x0020:
+		    j = (i & 0x001F) | ((i << 1) & 0xFFC0);
+		    break;
+
+                case 0x0010:
+		    j = (i & 0x000F) | ((i << 1) & 0xFFE0);
+		    break;
+
+                case 0x0008:
+		    j = (i & 0x0007) | ((i << 1) & 0xFFF0);
+		    break;
+
+                case 0x0004:
+		    j = (i & 0x0003) | ((i << 1) & 0xFFF8);
+		    break;
+
+                case 0x0002:
+		    j = (i & 0x0001) | ((i << 1) & 0xFFFC);
+		    break;
+
+                case 0x0001:
 		    j = i << 1;
 		    break;
 		}
-		b->truth[i] = b->truth[j];
+                if(Get_Bit(b->truth,j))
+		    Set_Bit(b->truth,i);
+                else
+		    Clr_Bit(b->truth,i);
 	    }
-	    nprimaries--;
+	    b->pcnt--;
 	} else {
 	    p = &((*p)->next);
 	}
 	bit /= 2;
     }
-    if(nprimaries == 0)
+    if(b->pcnt == 0)
 	b->flags |= SYM_KNOWNVALUE;
     else
 	b->flags &= ~SYM_KNOWNVALUE;
-    if(nprimaries == 1 && !(b->flags & (SYM_DONTPULLUP | SYM_FF))
+    if(b->pcnt == 1 && !(b->flags & (SYM_DONTPULLUP | SYM_FF))
 	&& !(b->primaries->bit->flags
 	     & (SYM_INPUTPORT | SYM_FF | SYM_DONTPULLUP))) {
 
@@ -1378,12 +1461,16 @@ optimizebit(struct bit *b) {
 	 * other bit.  Eliminate it altogether.
 	 */
 
-	if(b->truth[1])
+	if(Get_Bit(b->truth,1))
 	    setbit(b, b->primaries->bit);
 	else {
 	    setbit(b, b->primaries->bit);
-	    for(i = 0; i < 16; i++)
-		b->truth[i] = !b->truth[i];
+            for(i = 0; i < (1 << MAXPRI); i++) {
+                if(Get_Bit(b->truth,i))
+		    Clr_Bit(b->truth,i);
+                else
+		    Set_Bit(b->truth,i);
+            }
 	}
     }
 }
@@ -1448,7 +1535,7 @@ struct variable *wordop(struct bitlist *bl, int (*func) ()) {
     width = countlist(bl);
 
     /* Use first fit bin packing to pack the bits into a small
-     * number of 4 input ROMS.
+     * number of MAXPRI input ROMS.
      */
     for(i = 0; i < width; i++)
 	used[i] = 0;
@@ -1468,7 +1555,7 @@ struct variable *wordop(struct bitlist *bl, int (*func) ()) {
 		temp = (struct bitlist *) NULL;
 		mergelists(&temp, t2bl->bit->primaries);
 		mergelists(&temp, vbl->bit->primaries);
-		if(countlist(temp) <= 4) {
+		if(countlist(temp) <= MAXPRI) {
 		    twoop1bit(tbl->bit, t2bl->bit, vbl->bit, func);
 		    t2bl = t2bl->next;
 		    setbit(t2bl->bit, tbl->bit);
@@ -1518,7 +1605,7 @@ makeff(struct variable *v) {
 	    error2("This should not happen: makeff found inputs in", bitname(b->bit));
 	if(ffs_zero_at_powerup) {
 	    b->bit->flags |= SYM_KNOWNVALUE;
-	    b->bit->truth[0] = 0;
+	    Clr_Bit(b->bit->truth,0);
 	}
     }
     v->flags |= SYM_FF;
@@ -1539,8 +1626,9 @@ inputport(struct variable *v, struct varlist *vl) {
 	    b->pin = (char *) NULL;
 	b->primaries = (struct bitlist *) NULL;
 	addtolist(&b->primaries, b);
-	b->truth[0] = 0;
-	b->truth[1] = 1;
+        b->pcnt = countlist(b->primaries);
+	Clr_Bit(b->truth,0);
+	Set_Bit(b->truth,1);
 	if(vl)
 	    vl = vl->next;
 	if(vl && !bl->next)
@@ -1666,15 +1754,15 @@ addtoff(struct variable *ff, struct variable *state, struct variable *value) {
 	 * we know that it powered up as zero, then ...
 	 */
 	if(!((countlist(vbl->bit->primaries) == 1)
-	      && (vbl->bit->truth[1] == 1)
+	      && (Get_Bit(vbl->bit->truth,1))
 	      && (vbl->bit->primaries->bit == fbl->bit))
 	    && !(ffs_zero_at_powerup
 		 && bitequal(sbl->bit, powerup_state->bits->bit)
 		 && (vbl->bit->flags & SYM_KNOWNVALUE)
-		 && !vbl->bit->truth[0])
+		 && !Get_Bit(vbl->bit->truth,0))
 	    ) {
 	    if(!(vbl->bit->flags & SYM_KNOWNVALUE)
-		|| !vbl->bit->truth[0])
+		|| !Get_Bit(vbl->bit->truth,0))
 		addtolistwithduplicates(&fbl->bit->suppressing_states,
 					sbl->bit);
 	    addtolistwithduplicates(&fbl->bit->modifying_states, sbl->bit);
@@ -1741,8 +1829,9 @@ struct variable *CreateArrayRef(struct variable *array) {
         b->pin = (char *) NULL;
         b->primaries = (struct bitlist *) NULL;
         addtolist(&b->primaries, b);
-        b->truth[0] = 0;
-        b->truth[1] = 1;
+        b->pcnt = countlist(b->primaries);
+        Clr_Bit(b->truth,0);
+        Set_Bit(b->truth,1);
         b->bitnumber = bl->bit->bitnumber;
     }
 
@@ -1761,7 +1850,6 @@ CreateArray(struct variable *array, int index) {
     array->arraysize = index;
     array->arrayaddrbits = sizelog2(index);
     array->arraywrite = CreateArrayRef(array);     // create first port, read/write
-//    CreateArrayRef(array);                         // create second read port
 }
 
 struct variable * ArrayReference(struct variable *array, struct variable *index) {
@@ -2004,7 +2092,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	printbit(b);
     }
     if(condition->flags & SYM_KNOWNVALUE) {
-	if(condition->truth[0])
+	if(Get_Bit(condition->truth,0))
 	    setbit(result, a);
 	else
 	    setbit(result, b);
@@ -2021,7 +2109,7 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	/* If the whole thing will fit into one LUT, then just
 	 * call twoop1bit and complementbit to do the work
 	 */
-	if(countlist(tempbl) <= 4) {
+	if(countlist(tempbl) <= MAXPRI) {
 	    twoop1bit(tempbit1, a, condition, and);
 	    complementbit(tempbit3, condition);
 	    twoop1bit(tempbit2, b, tempbit3, and);
@@ -2198,7 +2286,7 @@ struct variable *shift(struct variable *v, int nbits) {
 	if(nbits >= 0)
 	    break;
 	bl2->bit->flags |= SYM_KNOWNVALUE;
-	bl2->bit->truth[0] = 0;
+	Clr_Bit(bl2->bit->truth,0);
 	nbits++;
     }
     for(; bl2; bl2 = bl2->next) {
@@ -2260,7 +2348,7 @@ struct variable *shiftbyvar(struct variable *v, struct variable *shiftby, int le
 	if(left)
 	    shiftamount = -shiftamount;
 	if(x->bits->bit->flags & SYM_KNOWNVALUE) {
-	    if(x->bits->bit->truth[0])
+	    if(Get_Bit(x->bits->bit->truth,0))
 		result = shift(result, shiftamount);
 	} else {
 	    temp1 = twoop(x, shift(result, shiftamount), and);
@@ -2293,7 +2381,7 @@ struct variable *equals(struct variable *x, struct variable *y) {
 	bt = bt->next;
     }
     if((x->width > y->width) && (oldy->flags & SYM_LITERAL)) {
-	if(signy->truth[0]) {	/* Original Y was a positive constant */
+	if(Get_Bit(signy->truth,0)) {	/* Original Y was a positive constant */
 	    for(; bx; bx = bx->next) {
 		setbit(bt->bit, bx->bit);
 		bt = bt->next;
@@ -2372,7 +2460,7 @@ makeffinputs() {
 	     * Makes the output easier to understand.
 	     */
 	    b->clock_enable = b->modifying_states->bit;
-	    if((countlist(b->clock_enable->primaries) == 1) && (b->clock_enable->truth[1] == 1))
+	    if((countlist(b->clock_enable->primaries) == 1) && (Get_Bit(b->clock_enable->truth,1)))
 		b->clock_enable = b->clock_enable->primaries->bit;
 	    setbit(b, b->modifying_values->bit);
 	    continue;
@@ -2385,8 +2473,9 @@ makeffinputs() {
 
 	b->flags &= ~SYM_KNOWNVALUE;
 	addtolist(&b->primaries, b);
-	b->truth[0] = 0;
-	b->truth[1] = 1;
+        b->pcnt = countlist(b->primaries);
+	Clr_Bit(b->truth,0);
+	Set_Bit(b->truth,1);
 
 	if(countlist(b->modifying_values) > 2) {
 	    temp = newtempvar("makeffinputs", 1);
@@ -2510,7 +2599,6 @@ finddepth(struct bit *bit, int top) {
     /* Check for logic loop causing infinite recursion */
 
     if(bit->flags & SYM_UPTODATE)
-//	return (1000000);
         return(0);
     bit->flags |= SYM_UPTODATE;
     depth = 0;
@@ -2692,9 +2780,9 @@ printbit(struct bit *b) {
 	printf("FF ");
     else
 	printf("   ");
-    nprimaries = countlist(b->primaries);
-    for(j = 0; j < (1 << nprimaries); j++)
-	printf("%d ", b->truth[j]);
+    b->pcnt = countlist(b->primaries);
+    for(j = 0; j < (1 << b->pcnt); j++)
+	printf("%d ", Get_Bit(b->truth,j));
     for(bl = b->primaries; bl; bl = bl->next)
 	printf("%s ", bitname(bl->bit));
     printf("\n");
@@ -2706,7 +2794,8 @@ printtree(struct bit *b, int offset) {
 
     for(i = 0; i < offset; i++)
 	fprintf(stderr, " ");
-    if(offset > 150 || ((offset > 80) && (b->flags & SYM_UPTODATE))) {
+// was 150 and 80
+    if(offset > 500 || ((offset > 500) && (b->flags & SYM_UPTODATE))) {
 	fprintf(stderr, "...\n");
 	return;
     }
@@ -2758,7 +2847,7 @@ debugoutput() {
         printf(" %d I/O signals (%d input, %d output, %d bidir)\n",
 	   ninpins + noutpins + nbidirpins, ninpins, noutpins, nbidirpins);
         printf("Inputs  #roms\n");
-        for(i = 0; i < 5; i++)
+        for(i = 0; i <= MAXPRI; i++)
             printf("%4d %8d\n", i, inputcounts[i]);
     }
 
@@ -2773,7 +2862,7 @@ debugoutput() {
 		ninpins + noutpins + nbidirpins, ninpins, noutpins,
 		nbidirpins);
 	fprintf(stderr, "Lookup table details: (Inputs, #LUTs)\n");
-	for(i = 0; i < 5; i++)
+	for(i = 0; i <= MAXPRI; i++)
 	    fprintf(stderr, "%4d %8d\n", i, inputcounts[i]);
 	fprintf(stderr, "Maximum depth: %d levels to produce %s\n", maxdepth, bitname(deepest));
     }
@@ -3554,8 +3643,6 @@ leftcurly:	LEFTCURLY
 
                     oldscope = CurrentDeclarationScope;
                     asprintf(&thisname, "%s_S%d", oldscope->name, oldscope->dscnt++);
-//fprintf(stderr, "LEFTCURLY: new scope(%s_S%d)\n", oldscope->name, oldscope->dscnt++);
-
                     CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
                     CurrentDeclarationScope->flags |= SYM_TEMP;
 		    CurrentDeclarationScope->parent = oldscope;
@@ -3575,7 +3662,6 @@ rightcurly:	RIGHTCURLY
                             break;
                         }
                     }
-//fprintf(stderr, "rightCURLY: new scope(%s)\n", CurrentDeclarationScope->name);
 		}
 
 pinlist:	/* Empty */
@@ -3878,10 +3964,7 @@ returnstmt:	RETURN
 expn:		term
 
 		| expn AND expn
-		{
-//fprintf(stderr, "expn AND expn: (%s)(%d)(%s)\n", $1.v->copyof->name, AND, $3.v->copyof->name);
-		    $$.v = DoOp(AND, $1.v, $3.v);
-		}
+		{ $$.v = DoOp(AND, $1.v, $3.v); }
 
 		| expn OR expn
 		{ $$.v = DoOp(OR, $1.v, $3.v); }
