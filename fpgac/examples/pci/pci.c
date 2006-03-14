@@ -173,6 +173,8 @@ fpgac_process pci() {
         if(pci_state.frame & !pci_state.lastframe) {
             pci_state.cmd     = ~pci_bus.cbe_;	// Latch cmd and address when frame asserted
             pci_state.rw      = (~pci_bus.cbe_) & 1;
+            pci_state.bar0 = pci_bus.ad_b3 == ((pci_config.Bar0>>23) & 0xff);
+            pci_state.bar1 = pci_bus.ad_b3 == ((pci_config.Bar1>>23) & 0xff);
             pci_state.addr_b0 = pci_bus.ad_b0;
             pci_state.addr_b1 = pci_bus.ad_b1;
             pci_state.addr_b2 = pci_bus.ad_b2;
@@ -185,8 +187,6 @@ fpgac_process pci() {
             }
 
             if(pci_state.cmd & PCI_CMD_Memory) { // Memory RW, so check if our addresses
-                pci_state.bar0 = pci_bus.ad_b3 == ((pci_config.Bar0>>23) & 0xff);
-                pci_state.bar1 = pci_bus.ad_b3 == ((pci_config.Bar1>>23) & 0xff);
                 if(pci_state.bar0 | pci_state.bar1) {
                     next_target_sm |= PCI_SM_Target_B_Busy;
                     pci_bus.devsel_ = 0;         // Now driving, must be tristated at end of cycle

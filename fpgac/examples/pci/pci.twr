@@ -27,7 +27,7 @@ INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths
  !                                                                      !
  ! Signal                            Driver            Load             !
  ! --------------------------------  ----------------  ---------------- !
- ! PCI_PCI_C5_T0_INIT                CLB_R79C83.S0.Y   CLB_R79C83.S0.G1 !
+ ! PCI_PCI_C5_T0_INIT                CLB_R79C86.S1.Y   CLB_R79C86.S1.G3 !
   ---------------------------------------------------------------------- 
 
 
@@ -41,14 +41,14 @@ Timing constraint: NET "PCI_CLK" PERIOD =  15.152 nS   HIGH 50.000000 % ;
 Timing constraint: TS00 = MAXDELAY FROM TIMEGRP "FFS" TO TIMEGRP "FFS" 30 nS  ; 
 
  1694 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Maximum delay is  13.364ns.
+ Maximum delay is  13.517ns.
 --------------------------------------------------------------------------------
 
 ================================================================================
 Timing constraint: TS02 = MAXDELAY FROM TIMEGRP "FFS" TO TIMEGRP "PADS" 11 nS  ; 
 
  85 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
- Maximum delay is  10.416ns.
+ Maximum delay is  10.430ns.
 --------------------------------------------------------------------------------
 
 
@@ -64,91 +64,91 @@ Clock PCI_CLK_PAD to Pad
                    | clk (edge) |                  |  Clock |
 Destination        | to PAD     |Internal Clock(s) |  Phase |
 -------------------+------------+------------------+--------+
-PCI_BUS_ACK64__PAD |   10.534(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_0_PAD|   10.588(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_1_PAD|   11.501(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_2_PAD|   10.617(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_3_PAD|   10.572(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_4_PAD|   11.249(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_5_PAD|   11.572(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_6_PAD|   11.057(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B0_7_PAD|   10.539(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_0_PAD|   10.946(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_1_PAD|   14.750(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_2_PAD|   13.757(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_3_PAD|   10.664(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_4_PAD|   10.489(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_5_PAD|   10.997(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_6_PAD|   10.664(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B1_7_PAD|   10.722(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_0_PAD|   10.351(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_1_PAD|   10.866(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_2_PAD|   10.866(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_3_PAD|   10.908(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_4_PAD|   10.908(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_5_PAD|   11.317(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_6_PAD|   11.317(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B2_7_PAD|   11.782(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_0_PAD|   11.306(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_1_PAD|   11.254(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_2_PAD|   10.512(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_3_PAD|   10.555(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_4_PAD|   11.306(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_5_PAD|   11.695(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_6_PAD|   11.695(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B3_7_PAD|   11.254(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_0_PAD|   13.210(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_1_PAD|   13.153(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_2_PAD|   13.025(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_3_PAD|   13.084(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_4_PAD|   12.830(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_5_PAD|   12.830(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_6_PAD|   12.633(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B4_7_PAD|   12.243(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_0_PAD|   11.377(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_1_PAD|   11.867(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_2_PAD|   11.851(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_3_PAD|   10.639(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_4_PAD|   10.848(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_5_PAD|   10.268(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_6_PAD|   10.462(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B5_7_PAD|   10.900(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_0_PAD|   11.308(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_1_PAD|   11.655(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_2_PAD|   10.347(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_3_PAD|   11.546(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_4_PAD|   11.203(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_5_PAD|   10.983(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_6_PAD|   11.308(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B6_7_PAD|   11.774(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_0_PAD|   11.558(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_1_PAD|   12.406(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_2_PAD|   11.055(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_3_PAD|   11.046(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_4_PAD|   10.994(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_5_PAD|   11.046(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_6_PAD|   10.994(R)|PCI_CLK           |   0.000|
-PCI_BUS_AD_B7_7_PAD|   11.496(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__0_PAD |   11.057(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__1_PAD |   12.377(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__2_PAD |   13.225(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__3_PAD |   11.906(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__4_PAD |   13.151(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__5_PAD |   11.777(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__6_PAD |   11.762(R)|PCI_CLK           |   0.000|
-PCI_BUS_CBE__7_PAD |   12.274(R)|PCI_CLK           |   0.000|
-PCI_BUS_DEVSEL__PAD|   10.130(R)|PCI_CLK           |   0.000|
-PCI_BUS_FRAME__PAD |    9.996(R)|PCI_CLK           |   0.000|
-PCI_BUS_IDSEL_PAD  |    9.983(R)|PCI_CLK           |   0.000|
-PCI_BUS_IRDY__PAD  |   10.123(R)|PCI_CLK           |   0.000|
-PCI_BUS_PAR64_PAD  |    9.007(R)|PCI_CLK           |   0.000|
-PCI_BUS_PAR_PAD    |    8.952(R)|PCI_CLK           |   0.000|
-PCI_BUS_PERR__PAD  |   10.617(R)|PCI_CLK           |   0.000|
-PCI_BUS_REQ64__PAD |   10.060(R)|PCI_CLK           |   0.000|
-PCI_BUS_REQ__PAD   |   10.042(R)|PCI_CLK           |   0.000|
-PCI_BUS_SERR__PAD  |    9.939(R)|PCI_CLK           |   0.000|
-PCI_BUS_STOP__PAD  |    9.997(R)|PCI_CLK           |   0.000|
-PCI_BUS_TRDY__PAD  |   10.129(R)|PCI_CLK           |   0.000|
+PCI_BUS_ACK64__PAD |   10.395(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_0_PAD|   10.431(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_1_PAD|   10.788(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_2_PAD|   10.308(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_3_PAD|   10.266(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_4_PAD|   10.191(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_5_PAD|   10.767(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_6_PAD|   10.771(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B0_7_PAD|   10.461(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_0_PAD|   10.806(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_1_PAD|   14.611(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_2_PAD|   13.533(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_3_PAD|   10.464(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_4_PAD|   10.349(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_5_PAD|   10.774(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_6_PAD|   10.464(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B1_7_PAD|   10.536(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_0_PAD|   10.498(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_1_PAD|   10.576(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_2_PAD|   10.576(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_3_PAD|   10.534(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_4_PAD|   10.534(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_5_PAD|   10.976(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_6_PAD|   10.730(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B2_7_PAD|   11.355(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_0_PAD|   11.162(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_1_PAD|   11.111(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_2_PAD|   10.350(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_3_PAD|   10.368(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_4_PAD|   11.162(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_5_PAD|   11.552(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_6_PAD|   11.552(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B3_7_PAD|   11.111(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_0_PAD|   13.057(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_1_PAD|   13.000(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_2_PAD|   12.872(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_3_PAD|   12.931(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_4_PAD|   12.677(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_5_PAD|   12.677(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_6_PAD|   12.480(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B4_7_PAD|   12.090(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_0_PAD|   11.224(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_1_PAD|   11.714(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_2_PAD|   11.698(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_3_PAD|   10.486(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_4_PAD|   10.695(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_5_PAD|   10.115(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_6_PAD|   10.309(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B5_7_PAD|   10.856(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_0_PAD|   11.155(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_1_PAD|   11.502(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_2_PAD|   10.194(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_3_PAD|   11.393(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_4_PAD|   11.050(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_5_PAD|   10.830(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_6_PAD|   11.155(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B6_7_PAD|   11.786(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_0_PAD|   11.405(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_1_PAD|   12.253(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_2_PAD|   10.902(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_3_PAD|   10.893(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_4_PAD|   10.841(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_5_PAD|   10.893(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_6_PAD|   10.841(R)|PCI_CLK           |   0.000|
+PCI_BUS_AD_B7_7_PAD|   11.343(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__0_PAD |   10.898(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__1_PAD |   12.033(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__2_PAD |   12.769(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__3_PAD |   11.753(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__4_PAD |   12.998(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__5_PAD |   11.624(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__6_PAD |   11.609(R)|PCI_CLK           |   0.000|
+PCI_BUS_CBE__7_PAD |   12.121(R)|PCI_CLK           |   0.000|
+PCI_BUS_DEVSEL__PAD|   10.500(R)|PCI_CLK           |   0.000|
+PCI_BUS_FRAME__PAD |    9.849(R)|PCI_CLK           |   0.000|
+PCI_BUS_IDSEL_PAD  |    9.836(R)|PCI_CLK           |   0.000|
+PCI_BUS_IRDY__PAD  |    9.849(R)|PCI_CLK           |   0.000|
+PCI_BUS_PAR64_PAD  |    8.854(R)|PCI_CLK           |   0.000|
+PCI_BUS_PAR_PAD    |    8.799(R)|PCI_CLK           |   0.000|
+PCI_BUS_PERR__PAD  |   10.480(R)|PCI_CLK           |   0.000|
+PCI_BUS_REQ64__PAD |    9.907(R)|PCI_CLK           |   0.000|
+PCI_BUS_REQ__PAD   |    9.929(R)|PCI_CLK           |   0.000|
+PCI_BUS_SERR__PAD  |    9.917(R)|PCI_CLK           |   0.000|
+PCI_BUS_STOP__PAD  |    9.991(R)|PCI_CLK           |   0.000|
+PCI_BUS_TRDY__PAD  |    9.844(R)|PCI_CLK           |   0.000|
 -------------------+------------+------------------+--------+
 
 Clock to Setup on destination clock PCI_CLK_PAD
@@ -156,7 +156,7 @@ Clock to Setup on destination clock PCI_CLK_PAD
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-PCI_CLK_PAD    |   13.364|         |         |         |
+PCI_CLK_PAD    |   13.517|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 
@@ -168,11 +168,11 @@ Timing errors: 0  Score: 0
 Constraints cover 1779 paths, 0 nets, and 1152 connections
 
 Design statistics:
-   Minimum period:  13.364ns (Maximum frequency:  74.828MHz)
-   Maximum path delay from/to any node:  13.364ns
+   Minimum period:  13.517ns (Maximum frequency:  73.981MHz)
+   Maximum path delay from/to any node:  13.517ns
 
 
-Analysis completed Thu Mar  2 17:06:29 2006
+Analysis completed Fri Mar  3 13:19:30 2006
 --------------------------------------------------------------------------------
 
 Peak Memory Usage: 93 MB
