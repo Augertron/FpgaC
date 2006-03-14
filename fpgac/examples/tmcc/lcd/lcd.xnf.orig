@@ -1,7 +1,7 @@
 LCANET, 6
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Mar  2 03:29:11 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:49 2006"
 PART, 4003pc84
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
@@ -4252,7 +4252,7 @@ PIN, I1, I, lcd_main_S0_count1_9F0
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
 PIN, O, O, lcd_T1654_tree2_0
 END
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Mar  2 03:29:10 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:48 2006"
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
 END
@@ -7201,7 +7201,7 @@ PIN, I1, I, 1_T70_word_2
 PIN, I0, I, 1_T70_word_3
 PIN, O, O, 1_T77_tree2_0
 END
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Mar  2 03:29:10 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:49 2006"
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
 END
