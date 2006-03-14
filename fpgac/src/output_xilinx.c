@@ -154,9 +154,9 @@ output_XNF() {
     }
     if(!clockname[0]) {
         clockname = "CLK";
-	fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", bitname(b));
-	fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	fprintf(outputfile, "PIN, O, O, %s_clk\n", bitname(b));
+	fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", clockname);
+	fprintf(outputfile, "PIN, I, I, %s_pad\n", clockname);
+	fprintf(outputfile, "PIN, O, O, %s_clk\n", clockname);
 	fprintf(outputfile, "END\n");
 	fprintf(outputfile, "SYM, CLK-AA, BUFG, LIBVER=2.0.0\n");
 	fprintf(outputfile, "PIN, I, I, CLK_clk\n");
@@ -311,7 +311,7 @@ output_XNF() {
                     fprintf(outputfile, "SYM, %s_RAMin, ", bitname(b));
 		} else
 		    fprintf(outputfile, "SYM, %s, ", bitname(b));
-		if (b->truth[0])
+		if (Get_Bit(b->truth,0))
 		    fprintf(outputfile, "INV, LIBVER=2.0.0\n");
 		else
 		    fprintf(outputfile, "BUF, LIBVER=2.0.0\n");
@@ -355,16 +355,6 @@ output_XNF() {
 	    fprintf(outputfile, "END\n");
 
             if (b->flags & SYM_FF && b->variable->arraysize) {
-                    // loop for number of read ports 
-                    // debug print 
-
-                    // for temp debug
-//                    for ( ;array_read_reference_list!=NULL ;array_read_reference_list = array_read_reference_list->next) { 
-//                            printf(" array _ref %s \n",array_read_reference_list->variable->name);
-//                    }
-//                    printf(" ---------\n");
-                    // => that there is only single port 
-                    // hence instance a signle port SRAM block
                     if ( b->variable->arrayref->variable  == b->variable->arraywrite ) 
                     {
                             if (b->variable->arraysize <= 16) {
@@ -526,11 +516,10 @@ static printROM(struct bit *b, int count) {
 	fprintf(outputfile, "SYM, %s, ROM, ", bitname(b));
     hex = 0;
     for (i = 0; i < (1 << (count + 1)); i++)
-	hex |= (b->truth[i] << i);
+	hex |= (Get_Bit(b->truth,i) << i);
     fprintf(outputfile, "INIT=%04X, LIBVER=2.0.0\n", hex);
     for (i = 3; i > count; --i)
 	fprintf(outputfile, "PIN, A%d, I, GND\n", i);
-// TODO: tag array ports and flop here
     for (bl = b->primaries; bl; bl = bl->next) {
 	fprintf(outputfile, "PIN, A%d, I, %s\n", count, bitname(bl->bit));
 	--count;
@@ -584,7 +573,6 @@ static printEQN(struct bit *b, int count) {
     if (first)			/* no terms were true */
 	fprintf(outputfile, "GND");
     fprintf(outputfile, "), LIBVER=2.0.0\n");
-// TODO: tag array ports and flop here
     for (bl = b->primaries; bl; bl = bl->next) {
 	fprintf(outputfile, "PIN, I%d, I, %s\n",
 		count--, bitname(bl->bit));

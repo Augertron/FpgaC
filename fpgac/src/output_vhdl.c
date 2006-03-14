@@ -366,13 +366,13 @@ void output_vhdl(void) {
                fprintf(outputfile, "	%s <= ", bitname(b));
             }
             if(count == -1) {
-               if(b->truth[0])
+               if(Get_Bit(b->truth,0))
                   fprintf(outputfile, "'1';\n");
                else
                   fprintf(outputfile, "'0';\n");
             }
             if(count == 0) {
-               if(b->truth[0])
+               if(Get_Bit(b->truth,0))
                   fprintf(outputfile, "not %s;\n", bitname(b->primaries->bit));
                else
                   fprintf(outputfile, "%s;\n", bitname(b->primaries->bit));
