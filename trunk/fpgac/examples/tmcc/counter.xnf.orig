@@ -1,13 +1,15 @@
 LCANET, 6
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Thu Mar  2 03:29:13 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:48 2006"
 PART, 4003pc84
+SYM, OSC4, OSC4, LIBVER=2.0.0
+PIN, F15, O, CLKin
+END
 SYM, CLK-AA, BUFGS, LIBVER=2.0.0
-PIN, I, I, CLK_pad
+PIN, I, I, CLKin
 PIN, O, O, CLK
 END
-EXT, CLK_pad, I
 SYM, counter_Running_FFin, INV, LIBVER=2.0.0
 PIN, I, I, GND
 PIN, O, O, counter_Running_FFin

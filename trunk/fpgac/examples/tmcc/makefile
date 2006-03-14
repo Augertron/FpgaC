@@ -1,8 +1,8 @@
 all:	testit testlcd
 
 testit:
-	fpgac -target xnf -S counter.c
-	fpgac -target xnf -S countup.c
+	fpgac -target xnf -S -c counter.c
+	fpgac -target xnf -S -c countup.c
 	@echo 'Only the date should change in the following two diffs:'
 	-diff counter.xnf.orig counter.xnf
 	-diff countup.xnf.orig countup.xnf
