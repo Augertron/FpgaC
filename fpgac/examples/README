@@ -16,7 +16,9 @@ directories:
            FPGAs.  Easily portable to other cards with FPGA PCI
            interfaces.
 
+   crypto - An example of a highly parallel AES encryption core
+           in FpgaC with both sequential and pipelined with
+           testbench.
+
    regression_tests - A small, but growing, collection of netlist
            checks for verifing correct netlist generation.
-
-   lcd   - this directory was moved to tmcc

@@ -1,0 +1,26 @@
+This example includes both sequential and pipelined implementations.
+It also provides and example of setting up test benches for FpgaC
+applications.
+
+The round key code is inline, and for best performance needs to either
+be moved out of line, or rearranged in the pipeline.
+
+The test bench produces the following outputs for the FIPS example:
+
+	Round 1 data after Mix Columns
+	    04 e0 48 28
+	    66 cb f8 06
+	    81 19 d3 26
+	    e5 9a 7a 4c  Round 1 data is correct
+
+	Round 2 data after Mix Columns
+	    58 1b db 1b
+	    4d 4b e7 6b
+	    ca 5a ca b0
+	    f1 ac a8 e5  Round 2 data is correct
+
+	Round 11 final output data
+	    39 02 dc 19
+	    25 dc 11 6a
+	    84 09 85 0b
+	    1d fb 97 32  Round 11 final output data is correct
