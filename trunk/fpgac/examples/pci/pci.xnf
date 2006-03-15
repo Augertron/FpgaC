@@ -1,7 +1,7 @@
 LCANET, 6
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Fri Mar  3 13:18:21 2006"
+PROG, fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Tue Mar 14 21:55:34 2006"
 PART, xcv2000e-bg560-8
 SYM, pci_Running_FFin, INV, LIBVER=2.0.0
 PIN, I, I, GND

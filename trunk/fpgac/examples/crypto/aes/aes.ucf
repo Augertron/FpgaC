@@ -1,0 +1,6 @@
+# ********************************************************
+TIMESPEC TS00=FROM:FFS:TO:FFS = 6 ns;
+TIMESPEC TS01=FROM:PADS:TO:FFS = 6 ns;
+TIMESPEC TS02=FROM:FFS:TO:PADS = 6 ns;
+NET "aes_clk" PERIOD = 66 Mhz;
+

@@ -1,0 +1,926 @@
+--------------------------------------------------------------------------------
+Release 6.2.03i Trace G.28
+Copyright (c) 1995-2004 Xilinx, Inc.  All rights reserved.
+
+/raid/xilinx/bin/lin/trce -intstyle ise -e 3 -l 3 -xml aes aes.ncd -o aes.twr
+aes.pcf
+
+
+Design file:              aes.ncd
+Physical constraint file: aes.pcf
+Device,speed:             xcv2000e,-8 (PRODUCTION 1.69 2003-12-13)
+Report level:             error report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths
+   option. All paths that are not constrained will be reported in the
+   unconstrained paths section(s) of the report.
+1 logic loop found and disabled.
+
+  ----------------------------------------------------------------------
+ ! Warning: The following connections close logic loops, and some paths !
+ !          through these connections may not be analyzed.              !
+ !                                                                      !
+ ! Signal                            Driver            Load             !
+ ! --------------------------------  ----------------  ---------------- !
+ ! AES_AES_ENCRYPT_T0_INIT           SLICE.Y           SLICE.G1         !
+  ---------------------------------------------------------------------- 
+
+
+================================================================================
+Timing constraint: NET "AES_CLK" PERIOD =  15.152 nS   HIGH 50.000000 % ;
+
+ 0 items analyzed, 0 timing errors detected.
+--------------------------------------------------------------------------------
+
+================================================================================
+Timing constraint: TS00 = MAXDELAY FROM TIMEGRP "FFS" TO TIMEGRP "FFS" 6 nS  ; 
+
+ 128 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Maximum delay is   2.940ns.
+--------------------------------------------------------------------------------
+
+================================================================================
+Timing constraint: TS01 = MAXDELAY FROM TIMEGRP "PADS" TO TIMEGRP "FFS" 6 nS  ; 
+
+ 2888159488 items analyzed, 128 timing errors detected. (128 setup errors, 0 hold errors)
+ Maximum delay is  43.611ns.
+--------------------------------------------------------------------------------
+Slack:                  -37.611ns (requirement - data path)
+  Source:               A012_1_PAD (PAD)
+  Destination:          A1120_1 (FF)
+  Requirement:          6.000ns
+  Data Path Delay:      43.611ns (Levels of Logic = 42)
+  Destination Clock:    AES_CLK rising at 0.000ns
+
+  Data Path: A012_1_PAD to A1120_1
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    IOB.I                Tiopi                 0.744   A012_1_PAD
+                                                       A012_1_PAD
+                                                       A012_1
+    SLICE.G4             net (fanout=5)     e  0.612   A012_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T95_TWOOP_2
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T95_TWOOP_2
+    SLICE.X              Tilo                  0.398   A111_2F0
+                                                       SYMA111_2F0
+    SLICE.F4             net (fanout=2)     e  0.612   A111_2F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_B1_3F1
+                                                       SYMAES_AES_ENCRYPT_S0_S4_B1_3F1
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_B1_3F1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_B1_3F1
+                                                       SYMAES_AES_ENCRYPT_S0_S4_B1_3F2
+    SLICE.F1             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S4_B1_3F2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T94_TWOOP_3
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_T94_TWOOP_3
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+    SLICE.G4             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S15_B1_4F1
+                                                       SYMAES_AES_ENCRYPT_S0_S11_B1_4F1
+    SLICE.F3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S11_B1_4F1
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T94_TWOOP_4
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S11_T94_TWOOP_4
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+    SLICE.G2             net (fanout=3)     e  0.612   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T93_TWOOP_5
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T93_TWOOP_5
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T95_TWOOP_5
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T95_TWOOP_5
+    SLICE.X              Tilo                  0.398   A412_5F0
+                                                       SYMA412_5F0
+    SLICE.G3             net (fanout=5)     e  0.612   A412_5F0
+    SLICE.Y              Tilo                  0.398   A412_5F0
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T93_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T93_TWOOP_6
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T95_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T95_TWOOP_6
+    SLICE.X              Tilo                  0.398   A511_6F0
+                                                       SYMA511_6F0
+    SLICE.G3             net (fanout=4)     e  0.612   A511_6F0
+    SLICE.Y              Tilo                  0.398   A511_6F0
+                                                       SYMAES_AES_ENCRYPT_S0_S20_A1_6F0
+    SLICE.F3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S20_A1_6F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T99_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T99_TWOOP_6
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+                                                       SYMA620_6F0
+    SLICE.F3             net (fanout=4)     e  0.612   A620_6F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_B2_7F0
+                                                       SYMAES_AES_ENCRYPT_S0_S26_B2_7F0
+    SLICE.G1             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S26_B2_7F0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_B2_7F0
+                                                       SYMAES_AES_ENCRYPT_S0_S26_T98_TWOOP_7
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S26_T98_TWOOP_7
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+                                                       SYMAES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+                                                       SYMAES_AES_ENCRYPT_S0_S28_A2_7F0
+    SLICE.F1             net (fanout=13)    e  0.612   AES_AES_ENCRYPT_S0_S28_A2_7F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+                                                       SYMAES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+                                                       SYMAES_AES_ENCRYPT_S0_S28_T99_TWOOP_0
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S28_T99_TWOOP_0
+    SLICE.X              Tilo                  0.398   A820_0F0
+                                                       SYMA820_0F0
+    SLICE.F4             net (fanout=2)     e  0.612   A820_0F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_B2_1F1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_B2_1F1
+    SLICE.G3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S34_B2_1F1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_B2_1F1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_B2_1F2
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_B2_1F2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T99_TWOOP_1
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T99_TWOOP_1
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+                                                       SYMA922_1F0
+    SLICE.F3             net (fanout=1)     e  0.612   A922_1F0
+    SLICE.X              Tilo                  0.398   A1020_1F0
+                                                       SYMA1020_1F0
+    SLICE.G4             net (fanout=1)     e  0.612   A1020_1F0
+    SLICE.Y              Tilo                  0.398   A1020_1F0
+                                                       SYMA1120_1F0
+    IOB.O                net (fanout=1)     e  0.612   A1120_1F0
+    IOB.CLK              Tioock                0.845   A1120_1_PAD
+                                                       A1120_1
+    -------------------------------------------------  ---------------------------
+    Total                                     43.611ns (17.907ns logic, 25.704ns route)
+                                                       (41.1% logic, 58.9% route)
+
+--------------------------------------------------------------------------------
+Slack:                  -37.611ns (requirement - data path)
+  Source:               A012_1_PAD (PAD)
+  Destination:          A1120_1 (FF)
+  Requirement:          6.000ns
+  Data Path Delay:      43.611ns (Levels of Logic = 42)
+  Destination Clock:    AES_CLK rising at 0.000ns
+
+  Data Path: A012_1_PAD to A1120_1
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    IOB.I                Tiopi                 0.744   A012_1_PAD
+                                                       A012_1_PAD
+                                                       A012_1
+    SLICE.G4             net (fanout=5)     e  0.612   A012_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T95_TWOOP_2
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T95_TWOOP_2
+    SLICE.X              Tilo                  0.398   A111_2F0
+                                                       SYMA111_2F0
+    SLICE.F4             net (fanout=2)     e  0.612   A111_2F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_B1_3F1
+                                                       SYMAES_AES_ENCRYPT_S0_S4_B1_3F1
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_B1_3F1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_B1_3F1
+                                                       SYMAES_AES_ENCRYPT_S0_S4_B1_3F2
+    SLICE.F1             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S4_B1_3F2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T94_TWOOP_3
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_T94_TWOOP_3
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+    SLICE.G4             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S11_A1_3F0
+    SLICE.F1             net (fanout=5)     e  0.612   AES_AES_ENCRYPT_S0_S11_A1_3F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T94_TWOOP_4
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S11_T94_TWOOP_4
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+    SLICE.G2             net (fanout=3)     e  0.612   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T93_TWOOP_5
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T93_TWOOP_5
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T95_TWOOP_5
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T95_TWOOP_5
+    SLICE.X              Tilo                  0.398   A412_5F0
+                                                       SYMA412_5F0
+    SLICE.G3             net (fanout=5)     e  0.612   A412_5F0
+    SLICE.Y              Tilo                  0.398   A412_5F0
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T93_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T93_TWOOP_6
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T95_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T95_TWOOP_6
+    SLICE.X              Tilo                  0.398   A511_6F0
+                                                       SYMA511_6F0
+    SLICE.G3             net (fanout=4)     e  0.612   A511_6F0
+    SLICE.Y              Tilo                  0.398   A511_6F0
+                                                       SYMAES_AES_ENCRYPT_S0_S20_A1_6F0
+    SLICE.F3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S20_A1_6F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T99_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T99_TWOOP_6
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+                                                       SYMA620_6F0
+    SLICE.F3             net (fanout=4)     e  0.612   A620_6F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_B2_7F0
+                                                       SYMAES_AES_ENCRYPT_S0_S26_B2_7F0
+    SLICE.G1             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S26_B2_7F0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_B2_7F0
+                                                       SYMAES_AES_ENCRYPT_S0_S26_T98_TWOOP_7
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S26_T98_TWOOP_7
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+                                                       SYMAES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+                                                       SYMAES_AES_ENCRYPT_S0_S28_A2_7F0
+    SLICE.F1             net (fanout=13)    e  0.612   AES_AES_ENCRYPT_S0_S28_A2_7F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+                                                       SYMAES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+                                                       SYMAES_AES_ENCRYPT_S0_S28_T99_TWOOP_0
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S28_T99_TWOOP_0
+    SLICE.X              Tilo                  0.398   A820_0F0
+                                                       SYMA820_0F0
+    SLICE.F4             net (fanout=2)     e  0.612   A820_0F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_B2_1F1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_B2_1F1
+    SLICE.G3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S34_B2_1F1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_B2_1F1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_B2_1F2
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_B2_1F2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T99_TWOOP_1
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T99_TWOOP_1
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+                                                       SYMA922_1F0
+    SLICE.F3             net (fanout=1)     e  0.612   A922_1F0
+    SLICE.X              Tilo                  0.398   A1020_1F0
+                                                       SYMA1020_1F0
+    SLICE.G4             net (fanout=1)     e  0.612   A1020_1F0
+    SLICE.Y              Tilo                  0.398   A1020_1F0
+                                                       SYMA1120_1F0
+    IOB.O                net (fanout=1)     e  0.612   A1120_1F0
+    IOB.CLK              Tioock                0.845   A1120_1_PAD
+                                                       A1120_1
+    -------------------------------------------------  ---------------------------
+    Total                                     43.611ns (17.907ns logic, 25.704ns route)
+                                                       (41.1% logic, 58.9% route)
+
+--------------------------------------------------------------------------------
+Slack:                  -37.611ns (requirement - data path)
+  Source:               A012_1_PAD (PAD)
+  Destination:          A1120_1 (FF)
+  Requirement:          6.000ns
+  Data Path Delay:      43.611ns (Levels of Logic = 42)
+  Destination Clock:    AES_CLK rising at 0.000ns
+
+  Data Path: A012_1_PAD to A1120_1
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    IOB.I                Tiopi                 0.744   A012_1_PAD
+                                                       A012_1_PAD
+                                                       A012_1
+    SLICE.G4             net (fanout=5)     e  0.612   A012_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T93_TWOOP_2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S1_T94_TWOOP_2
+                                                       SYMAES_AES_ENCRYPT_S0_S1_T95_TWOOP_2
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S1_T95_TWOOP_2
+    SLICE.X              Tilo                  0.398   A111_2F0
+                                                       SYMA111_2F0
+    SLICE.F4             net (fanout=2)     e  0.612   A111_2F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_B1_3F1
+                                                       SYMAES_AES_ENCRYPT_S0_S4_B1_3F1
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_B1_3F1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_B1_3F1
+                                                       SYMAES_AES_ENCRYPT_S0_S4_B1_3F2
+    SLICE.F1             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S4_B1_3F2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T93_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T94_TWOOP_3
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S4_T94_TWOOP_3
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+                                                       SYMAES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+    SLICE.G4             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S4_T95_TWOOP_3
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S15_B1_4F1
+                                                       SYMAES_AES_ENCRYPT_S0_S11_B1_4F1
+    SLICE.F3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S11_B1_4F1
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+    SLICE.G3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T93_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T94_TWOOP_4
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S11_T94_TWOOP_4
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+    SLICE.G2             net (fanout=3)     e  0.612   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S11_T95_TWOOP_4
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T93_TWOOP_5
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T93_TWOOP_5
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S14_T94_TWOOP_5
+                                                       SYMAES_AES_ENCRYPT_S0_S14_T95_TWOOP_5
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S14_T95_TWOOP_5
+    SLICE.X              Tilo                  0.398   A412_5F0
+                                                       SYMA412_5F0
+    SLICE.G3             net (fanout=5)     e  0.612   A412_5F0
+    SLICE.Y              Tilo                  0.398   A412_5F0
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T93_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T93_TWOOP_6
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S17_T94_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S17_T95_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S17_T95_TWOOP_6
+    SLICE.X              Tilo                  0.398   A511_6F0
+                                                       SYMA511_6F0
+    SLICE.G3             net (fanout=4)     e  0.612   A511_6F0
+    SLICE.Y              Tilo                  0.398   A511_6F0
+                                                       SYMAES_AES_ENCRYPT_S0_S20_A1_6F0
+    SLICE.F3             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S20_A1_6F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T98_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T99_TWOOP_6
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T99_TWOOP_6
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+                                                       SYMAES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S20_T100_TWOOP_6
+                                                       SYMA620_6F0
+    SLICE.F3             net (fanout=4)     e  0.612   A620_6F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_B2_7F0
+                                                       SYMAES_AES_ENCRYPT_S0_S26_B2_7F0
+    SLICE.G1             net (fanout=2)     e  0.612   AES_AES_ENCRYPT_S0_S26_B2_7F0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_B2_7F0
+                                                       SYMAES_AES_ENCRYPT_S0_S26_T98_TWOOP_7
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S26_T98_TWOOP_7
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+                                                       SYMAES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S26_T100_TWOOP_7
+                                                       SYMAES_AES_ENCRYPT_S0_S28_A2_7F0
+    SLICE.F1             net (fanout=13)    e  0.612   AES_AES_ENCRYPT_S0_S28_A2_7F0
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+                                                       SYMAES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S28_T98_TWOOP_0
+                                                       SYMAES_AES_ENCRYPT_S0_S28_T99_TWOOP_0
+    SLICE.F3             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S28_T99_TWOOP_0
+    SLICE.X              Tilo                  0.398   A820_0F0
+                                                       SYMA820_0F0
+    SLICE.G4             net (fanout=2)     e  0.612   A820_0F0
+    SLICE.Y              Tilo                  0.398   A820_0F0
+                                                       SYMAES_AES_ENCRYPT_S0_S34_A2_0F0
+    SLICE.G1             net (fanout=5)     e  0.612   AES_AES_ENCRYPT_S0_S34_A2_0F0
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_B2_1F1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_B2_1F2
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_B2_1F2
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T98_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T99_TWOOP_1
+    SLICE.F4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T99_TWOOP_1
+    SLICE.X              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+                                                       SYMAES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+    SLICE.G4             net (fanout=1)     e  0.612   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+    SLICE.Y              Tilo                  0.398   AES_AES_ENCRYPT_S0_S34_T100_TWOOP_1
+                                                       SYMA922_1F0
+    SLICE.F3             net (fanout=1)     e  0.612   A922_1F0
+    SLICE.X              Tilo                  0.398   A1020_1F0
+                                                       SYMA1020_1F0
+    SLICE.G4             net (fanout=1)     e  0.612   A1020_1F0
+    SLICE.Y              Tilo                  0.398   A1020_1F0
+                                                       SYMA1120_1F0
+    IOB.O                net (fanout=1)     e  0.612   A1120_1F0
+    IOB.CLK              Tioock                0.845   A1120_1_PAD
+                                                       A1120_1
+    -------------------------------------------------  ---------------------------
+    Total                                     43.611ns (17.907ns logic, 25.704ns route)
+                                                       (41.1% logic, 58.9% route)
+
+--------------------------------------------------------------------------------
+
+================================================================================
+Timing constraint: TS02 = MAXDELAY FROM TIMEGRP "FFS" TO TIMEGRP "PADS" 6 nS  ; 
+
+ 128 items analyzed, 0 timing errors detected. (0 setup errors, 0 hold errors)
+ Maximum delay is   4.136ns.
+--------------------------------------------------------------------------------
+
+
+1 constraint not met.
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Setup/Hold to clock AES_CLK_PAD
+------------+------------+------------+------------------+--------+
+            |  Setup to  |  Hold to   |                  |  Clock |
+Source      | clk (edge) | clk (edge) |Internal Clock(s) |  Phase |
+------------+------------+------------+------------------+--------+
+A000_0_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A000_1_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A000_2_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A000_3_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A000_4_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A000_5_PAD  |   40.229(R)|  -10.773(R)|AES_CLK           |   0.000|
+A000_6_PAD  |   40.229(R)|  -10.494(R)|AES_CLK           |   0.000|
+A000_7_PAD  |   40.229(R)|   -9.484(R)|AES_CLK           |   0.000|
+A001_0_PAD  |   40.229(R)|   -9.484(R)|AES_CLK           |   0.000|
+A001_1_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A001_2_PAD  |   41.239(R)|   -8.474(R)|AES_CLK           |   0.000|
+A001_3_PAD  |   39.219(R)|  -10.494(R)|AES_CLK           |   0.000|
+A001_4_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A001_5_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A001_6_PAD  |   40.229(R)|   -8.474(R)|AES_CLK           |   0.000|
+A001_7_PAD  |   41.239(R)|   -8.474(R)|AES_CLK           |   0.000|
+A002_0_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A002_1_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A002_2_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A002_3_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A002_4_PAD  |   37.317(R)|   -9.484(R)|AES_CLK           |   0.000|
+A002_5_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A002_6_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A002_7_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A003_0_PAD  |   36.189(R)|  -10.494(R)|AES_CLK           |   0.000|
+A003_1_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A003_2_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A003_3_PAD  |   39.219(R)|  -11.504(R)|AES_CLK           |   0.000|
+A003_4_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A003_5_PAD  |   37.199(R)|  -10.494(R)|AES_CLK           |   0.000|
+A003_6_PAD  |   40.229(R)|   -9.484(R)|AES_CLK           |   0.000|
+A003_7_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A010_0_PAD  |   36.189(R)|  -10.494(R)|AES_CLK           |   0.000|
+A010_1_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A010_2_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A010_3_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A010_4_PAD  |   36.307(R)|  -10.494(R)|AES_CLK           |   0.000|
+A010_5_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A010_6_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A010_7_PAD  |   38.327(R)|   -9.484(R)|AES_CLK           |   0.000|
+A011_0_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A011_1_PAD  |   37.317(R)|   -8.474(R)|AES_CLK           |   0.000|
+A011_2_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A011_3_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A011_4_PAD  |   40.229(R)|  -10.494(R)|AES_CLK           |   0.000|
+A011_5_PAD  |   40.229(R)|  -10.494(R)|AES_CLK           |   0.000|
+A011_6_PAD  |   40.229(R)|   -9.484(R)|AES_CLK           |   0.000|
+A011_7_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A012_0_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A012_1_PAD  |   41.239(R)|   -7.464(R)|AES_CLK           |   0.000|
+A012_2_PAD  |   39.337(R)|  -10.494(R)|AES_CLK           |   0.000|
+A012_3_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A012_4_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A012_5_PAD  |   40.229(R)|  -10.494(R)|AES_CLK           |   0.000|
+A012_6_PAD  |   41.239(R)|  -10.494(R)|AES_CLK           |   0.000|
+A012_7_PAD  |   40.229(R)|   -9.484(R)|AES_CLK           |   0.000|
+A013_0_PAD  |   36.189(R)|   -8.474(R)|AES_CLK           |   0.000|
+A013_1_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A013_2_PAD  |   37.199(R)|   -8.474(R)|AES_CLK           |   0.000|
+A013_3_PAD  |   36.307(R)|   -9.484(R)|AES_CLK           |   0.000|
+A013_4_PAD  |   38.209(R)|   -9.763(R)|AES_CLK           |   0.000|
+A013_5_PAD  |   38.209(R)|   -8.753(R)|AES_CLK           |   0.000|
+A013_6_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A013_7_PAD  |   37.317(R)|   -7.464(R)|AES_CLK           |   0.000|
+A020_0_PAD  |   37.199(R)|   -8.474(R)|AES_CLK           |   0.000|
+A020_1_PAD  |   37.199(R)|   -7.464(R)|AES_CLK           |   0.000|
+A020_2_PAD  |   37.317(R)|   -9.484(R)|AES_CLK           |   0.000|
+A020_3_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A020_4_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A020_5_PAD  |   39.219(R)|  -10.494(R)|AES_CLK           |   0.000|
+A020_6_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A020_7_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A021_0_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A021_1_PAD  |   37.317(R)|   -8.474(R)|AES_CLK           |   0.000|
+A021_2_PAD  |   36.307(R)|  -10.494(R)|AES_CLK           |   0.000|
+A021_3_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A021_4_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A021_5_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A021_6_PAD  |   38.327(R)|   -9.484(R)|AES_CLK           |   0.000|
+A021_7_PAD  |   39.219(R)|   -8.474(R)|AES_CLK           |   0.000|
+A022_0_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A022_1_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A022_2_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A022_3_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A022_4_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A022_5_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A022_6_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A022_7_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A023_0_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A023_1_PAD  |   39.219(R)|   -8.474(R)|AES_CLK           |   0.000|
+A023_2_PAD  |   38.327(R)|   -9.484(R)|AES_CLK           |   0.000|
+A023_3_PAD  |   39.219(R)|  -10.494(R)|AES_CLK           |   0.000|
+A023_4_PAD  |   40.229(R)|  -10.494(R)|AES_CLK           |   0.000|
+A023_5_PAD  |   40.229(R)|  -10.494(R)|AES_CLK           |   0.000|
+A023_6_PAD  |   39.219(R)|  -10.494(R)|AES_CLK           |   0.000|
+A023_7_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A030_0_PAD  |   39.219(R)|  -11.504(R)|AES_CLK           |   0.000|
+A030_1_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A030_2_PAD  |   40.229(R)|  -11.504(R)|AES_CLK           |   0.000|
+A030_3_PAD  |   39.219(R)|  -11.504(R)|AES_CLK           |   0.000|
+A030_4_PAD  |   38.209(R)|  -11.504(R)|AES_CLK           |   0.000|
+A030_5_PAD  |   38.327(R)|  -11.504(R)|AES_CLK           |   0.000|
+A030_6_PAD  |   39.219(R)|  -11.504(R)|AES_CLK           |   0.000|
+A030_7_PAD  |   40.229(R)|  -11.504(R)|AES_CLK           |   0.000|
+A031_0_PAD  |   36.524(R)|   -9.484(R)|AES_CLK           |   0.000|
+A031_1_PAD  |   36.189(R)|   -8.474(R)|AES_CLK           |   0.000|
+A031_2_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A031_3_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A031_4_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A031_5_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A031_6_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A031_7_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A032_0_PAD  |   37.534(R)|   -9.484(R)|AES_CLK           |   0.000|
+A032_1_PAD  |   36.189(R)|   -8.474(R)|AES_CLK           |   0.000|
+A032_2_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A032_3_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A032_4_PAD  |   38.209(R)|  -10.494(R)|AES_CLK           |   0.000|
+A032_5_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A032_6_PAD  |   38.209(R)|   -9.484(R)|AES_CLK           |   0.000|
+A032_7_PAD  |   40.229(R)|   -8.474(R)|AES_CLK           |   0.000|
+A033_0_PAD  |   37.199(R)|   -9.484(R)|AES_CLK           |   0.000|
+A033_1_PAD  |   37.317(R)|   -7.464(R)|AES_CLK           |   0.000|
+A033_2_PAD  |   38.209(R)|   -7.464(R)|AES_CLK           |   0.000|
+A033_3_PAD  |   38.209(R)|   -7.464(R)|AES_CLK           |   0.000|
+A033_4_PAD  |   38.209(R)|   -8.474(R)|AES_CLK           |   0.000|
+A033_5_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+A033_6_PAD  |   39.219(R)|   -8.474(R)|AES_CLK           |   0.000|
+A033_7_PAD  |   39.219(R)|   -9.484(R)|AES_CLK           |   0.000|
+RK000_0_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK000_1_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK000_2_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK000_3_PAD |   38.209(R)|   -2.693(R)|AES_CLK           |   0.000|
+RK000_4_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK000_5_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK000_6_PAD |   40.229(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK000_7_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK001_0_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK001_1_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK001_2_PAD |   41.239(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK001_3_PAD |   39.219(R)|   -3.703(R)|AES_CLK           |   0.000|
+RK001_4_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK001_5_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK001_6_PAD |   40.229(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK001_7_PAD |   41.239(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK002_0_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK002_1_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK002_2_PAD |   37.199(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK002_3_PAD |   38.209(R)|   -5.444(R)|AES_CLK           |   0.000|
+RK002_4_PAD |   37.317(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK002_5_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK002_6_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK002_7_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK003_0_PAD |   36.189(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK003_1_PAD |   37.199(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK003_2_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK003_3_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK003_4_PAD |   38.209(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK003_5_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK003_6_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK003_7_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK010_0_PAD |   36.189(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK010_1_PAD |   37.199(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK010_2_PAD |   38.209(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK010_3_PAD |   38.209(R)|   -2.693(R)|AES_CLK           |   0.000|
+RK010_4_PAD |   36.307(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK010_5_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK010_6_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK010_7_PAD |   38.327(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_0_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_1_PAD |   37.317(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_2_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_3_PAD |   39.219(R)|   -2.693(R)|AES_CLK           |   0.000|
+RK011_4_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_5_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_6_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK011_7_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK012_0_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_1_PAD |   41.239(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_2_PAD |   39.337(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_3_PAD |   39.219(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_4_PAD |   39.219(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_5_PAD |   40.229(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_6_PAD |   41.239(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK012_7_PAD |   40.229(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK013_0_PAD |   36.189(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK013_1_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK013_2_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK013_3_PAD |   36.307(R)|   -2.693(R)|AES_CLK           |   0.000|
+RK013_4_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK013_5_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK013_6_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK013_7_PAD |   37.317(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_0_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_1_PAD |   37.199(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK020_2_PAD |   37.317(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_3_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_4_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_5_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_6_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK020_7_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_0_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_1_PAD |   37.317(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_2_PAD |   36.307(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_3_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_4_PAD |   37.199(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK021_5_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_6_PAD |   38.327(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK021_7_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK022_0_PAD |   39.219(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK022_1_PAD |   37.199(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK022_2_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK022_3_PAD |   38.209(R)|   -3.703(R)|AES_CLK           |   0.000|
+RK022_4_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK022_5_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK022_6_PAD |   39.219(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK022_7_PAD |   39.219(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK023_0_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK023_1_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK023_2_PAD |   38.327(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK023_3_PAD |   39.219(R)|   -2.693(R)|AES_CLK           |   0.000|
+RK023_4_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK023_5_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK023_6_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK023_7_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK030_0_PAD |   39.219(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK030_1_PAD |   38.209(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK030_2_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK030_3_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK030_4_PAD |   38.209(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK030_5_PAD |   38.327(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK030_6_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK030_7_PAD |   40.229(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK031_0_PAD |   36.524(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK031_1_PAD |   36.189(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK031_2_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK031_3_PAD |   39.219(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK031_4_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK031_5_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK031_6_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK031_7_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK032_0_PAD |   37.534(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK032_1_PAD |   36.189(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK032_2_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK032_3_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK032_4_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK032_5_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK032_6_PAD |   38.209(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK032_7_PAD |   40.229(R)|   -4.434(R)|AES_CLK           |   0.000|
+RK033_0_PAD |   37.199(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK033_1_PAD |   37.317(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK033_2_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK033_3_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK033_4_PAD |   38.209(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK033_5_PAD |   39.219(R)|   -2.414(R)|AES_CLK           |   0.000|
+RK033_6_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+RK033_7_PAD |   39.219(R)|   -3.424(R)|AES_CLK           |   0.000|
+------------+------------+------------+------------------+--------+
+
+Clock AES_CLK_PAD to Pad
+------------+------------+------------------+--------+
+            | clk (edge) |                  |  Clock |
+Destination | to PAD     |Internal Clock(s) |  Phase |
+------------+------------+------------------+--------+
+A1100_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1100_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1101_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1102_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1103_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1110_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1111_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1112_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1113_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1120_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1121_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1122_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1123_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1130_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1131_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1132_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_0_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_1_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_2_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_3_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_4_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_5_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_6_PAD |    6.508(R)|AES_CLK           |   0.000|
+A1133_7_PAD |    6.508(R)|AES_CLK           |   0.000|
+------------+------------+------------------+--------+
+
+Clock to Setup on destination clock AES_CLK_PAD
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+AES_CLK_PAD    |    2.940|         |         |         |
+---------------+---------+---------+---------+---------+
+
+
+Timing summary:
+---------------
+
+Timing errors: 128  Score: 4346762
+
+Constraints cover 2888159744 paths, 0 nets, and 18544 connections
+
+Design statistics:
+   Minimum period:  43.611ns (Maximum frequency:  22.930MHz)
+   Maximum path delay from/to any node:  43.611ns
+
+
+Analysis completed Tue Mar 14 22:36:55 2006
+--------------------------------------------------------------------------------
+
+Peak Memory Usage: 104 MB

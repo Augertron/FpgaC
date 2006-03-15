@@ -5,7 +5,7 @@
     (keywordLevel 0))
   (status
     (written
-      (timeStamp 106 3 3 13 18 23)
+      (timeStamp 106 3 14 21 55 35)
       (author "ALDEC")
       (program "Xnf2Edf - Aldec's Edif 2.0.0 Netlist Generator"
         (version "2.0.3.28"))))
