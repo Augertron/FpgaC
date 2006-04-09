@@ -33,11 +33,13 @@ hardware circuits.<br>
 <br>
 <h3>The FpgaC Project Team<br>
 </h3>
+The beta-3 release includes project work by John Bass.&nbsp; See the
+top level README file for other contributions and project history.<br>
+<br>
 The beta-2 release includes project
 work since the initial beta release
 by Isaac Pentinmaki,&nbsp; Rahul Menon, and John Bass.&nbsp; Supporting
-work setting up CVS/SVN done by Mark Phillips.&nbsp; See the
-top level README file for other contributions and project history.<br>
+work setting up CVS/SVN done by Mark Phillips.&nbsp; <br>
 <br>
 The core developers for this project are not employer supported, and
 most of us are self employed consultants that take time from our
@@ -237,11 +239,14 @@ pointers. You can not use
 recursion.&nbsp; Structures are implemented, but unions, structure
 assignments
 and structure arrays are not currently supported. Variable
-initialization, including strings is not currently supported.<br>
+initialization is supported, but initialized structures, arrays and
+strings are not currently supported.&nbsp; Constant expressions are
+evaluated at compile time to avoid multiply, divide, and remainder
+operations at runtime where possible.<br>
 <br>
-New to this beta release are small one dimensional arrays
+New to the beta-2 release was small one dimensional arrays which
 are
-implemented as LUT RAMs which may be single or dual ported depending on
+implemented as LUT RAMs that may be single or dual ported depending on
 the number of references in a clock cycle.&nbsp; Depending on the
 target technology, sizes may be limited to 16, 32 or 64.&nbsp; Multiple
 references
