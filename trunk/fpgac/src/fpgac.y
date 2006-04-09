@@ -67,7 +67,7 @@
 
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
-%token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID REGISTER EXTERN
+%token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC  REGISTER EXTERN
 %token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS
 %token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
@@ -143,7 +143,7 @@ int optimization = 1;
 int use_carry_select_adders = 1;
 int use_dupcheck = 1;
 
-struct variable *powerup_state, *running;
+struct variable *powerup_state, *running, *startstate;
 
 char *thread;
 int verbose = 0;
@@ -2192,12 +2192,15 @@ struct variable *initialstate, *loopstate, *endloopexpn;
 }
 
 init() {
-    struct variable *v, *vcc, *myzeroff;
+    struct variable *v, *vcc, *myzeroff, *currentstate;
     char *buf, *mbuf, *rbuf;
 
-    /* Running is a FF whose output is 0 initially, and is 1 thereafter.
-     * The initial state is the inverse of the FF output, so is 1 on the
-     * first clock cycle, and 0 thereafter.
+    /*
+     * Running is a FF whose output is 0 initially, and is 1 thereafter.
+     * The !Running state is used to initialize global and static variables
+     * at the first clock.
+     *
+     * Processes start on the next clock edge, as startstate is asserted.
      */
     if(!thread) thread=inputfilename;
     asprintf(&buf, "_%s", thread);
@@ -2216,14 +2219,28 @@ init() {
     running->flags |= SYM_STATE;
     setvar(running, ffoutput(intconstant(1)));
     running->bits->bit->flags |= SYM_STATE | SYM_DONTPULLUP;
+
+    v = CreateVariable(CURRENTSTATE, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
+    v->flags |= SYM_STATE;
+    assignment(v, complement(ffoutput(running)));
+
+    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+    tick(currentstate);
+    startstate = newtempvar("_Start", 1);
+    startstate->flags = SYM_STATE;
+    makeff(startstate);
+    setvar(startstate, currentstate);
+    assignment(currentstate, ffoutput(startstate));
+    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+    tick(currentstate);
+
     v = CreateVariable("_main", 0, &DeclarationScopeStack, CurrentDeclarationScope, 0);
     declarefunction(v, 0);
     v->flags |= SYM_FUNCTIONEXISTS;
     v->initialstate->bits->bit->flags &= ~SYM_FF;
-    setvar(v->initialstate, complement(ffoutput(running)));
+    setvar(v->initialstate, ffoutput(currentstate));
     powerup_state = v->initialstate;
-    v = CreateVariable(CURRENTSTATE, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
-    v->flags |= SYM_STATE;
+
 }
 
 halt() {
@@ -3248,7 +3265,7 @@ function:	functionhead leftcurly funcbody rightcurly
 			 * a process starts with the first clock
 			 */
 		        $1.v->initialstate->bits->bit->flags &= ~SYM_FF;
-		        setvar($1.v->initialstate, complement(ffoutput(running)));
+		        setvar($1.v->initialstate, ffoutput(startstate));
 
 			/*
 			 * and loops indefinately by ORing the final state to the initial state
@@ -3533,12 +3550,17 @@ typename:	VOID
 
 		| UNSIGNED typename
 		{
-		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED;
+		    $$.type = currenttype = $2.type | TYPE_INTEGER | TYPE_UNSIGNED;
 		}
 
 		| SIGNED typename
 		{
 		    $$.type = currenttype = TYPE_INTEGER;
+		}
+
+		| STATIC typename
+		{
+		    $$.type = currenttype = $2.type | TYPE_STATIC;
 		}
 
 structvarlist:  /* empty case */
@@ -3575,7 +3597,16 @@ varlistmember:	newidentifier
 		{ pushtargetwidth($1.v); }
 
 		expn
-		{ assignmentstmt($1.v, $4.v); }
+		{
+		    if($1.v->type & TYPE_STATIC) {
+		        $$.v = copyvar($1.v);
+		        setvar($$.v, $4.v);
+		        makeff($$.v->copyof);
+		        addtoff($$.v->copyof, complement(ffoutput(running)), $$.v);
+		        modifiedvar(ffoutput($$.v->copyof));
+		    } else
+		        assignmentstmt($1.v, $4.v);
+		}
 
 		| funcidentifier LEFTPAREN RIGHTPAREN
 		{ declarefunction($1.v, currentwidth); }
