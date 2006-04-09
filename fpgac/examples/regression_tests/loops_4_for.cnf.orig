@@ -1,14 +1,16 @@
-// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Sat Apr  8 19:36:53 2006"
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Sat Apr  8 23:04:28 2006"
 // part=4003pc84
 test_Running^CLK = VCC;
+test_T1__Start^CLK = ~test_Running;
+test__state_C1 = test_T1__Start;
 test_main_S0_a^CLK = port(_test_main_S0_a,"a9");
-port(_test_main_S0_outs,"a12")^CLK = (test_T9_twoop*test_main_S0_b*test_main_S0_a)+(test_main_S0_T24_looptop*test_main_S0_b*test_main_S0_a)+(test_T9_twoop*~test_main_S0_T24_looptop);
+port(_test_main_S0_outs,"a12")^CLK = (test_T10_twoop*test_main_S0_b*test_main_S0_a)+(test_main_S0_T24_looptop*test_main_S0_b*test_main_S0_a)+(test_T10_twoop*~test_main_S0_T24_looptop);
 port(_test_main_S0_outs1,"a12")^(CLK*test_main_S0_S0_T2_looptop) = (test_main_S0_c*test_main_S0_a);
 test_main_S0_b^CLK = port(_test_main_S0_b,"a10");
 test_main_S0_c^CLK = port(_test_main_S0_c,"a11");
-test_main_S0_T11_looptop^CLK = (~test_Running*test_main_S0_c)+(test_main_S0_S0_T3_endloop*test_main_S0_c)+(~test_Running*test_main_S0_b)+(test_main_S0_S0_T3_endloop*test_main_S0_b);
-test_main_S0_T12_endloop^CLK = (~test_Running*~test_main_S0_c*~test_main_S0_b)+(test_main_S0_S0_T3_endloop*~test_main_S0_c*~test_main_S0_b);
+test_main_S0_T11_looptop^CLK = (test_main_S0_S0_T3_endloop*test_main_S0_c)+(test__state_C1*test_main_S0_c)+(test_main_S0_S0_T3_endloop*test_main_S0_b)+(test__state_C1*test_main_S0_b);
+test_main_S0_T12_endloop^CLK = (test_main_S0_S0_T3_endloop*~test_main_S0_c*~test_main_S0_b)+(test__state_C1*~test_main_S0_c*~test_main_S0_b);
 test_main_S0_S0_T2_looptop^CLK = (test_main_S0_S0_T2_looptop*test_main_S0_a)+(test_main_S0_a*test_main_S0_T11_looptop);
 test_main_S0_S0_T3_endloop^CLK = (test_main_S0_S0_T2_looptop*~test_main_S0_a)+(~test_main_S0_a*test_main_S0_T11_looptop);
 test_main_S0_T24_looptop^CLK = (test_main_S0_T24_looptop*test_main_S0_b)+(test_main_S0_T12_endloop*test_main_S0_b)+(test_main_S0_T24_looptop*test_main_S0_a)+(test_main_S0_T12_endloop*test_main_S0_a);
-test_T9_twoop = (test_main_S0_outs*test_main_S0_c*test_main_S0_b)+(test_main_S0_T11_looptop*test_main_S0_c*test_main_S0_b)+(test_main_S0_outs*~test_main_S0_T11_looptop);
+test_T10_twoop = (test_main_S0_outs*test_main_S0_c*test_main_S0_b)+(test_main_S0_T11_looptop*test_main_S0_c*test_main_S0_b)+(test_main_S0_outs*~test_main_S0_T11_looptop);
