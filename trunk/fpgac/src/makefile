@@ -5,6 +5,7 @@ BIN=$(HOME)/bin
 LIB=$(HOME)/lib
 MAN=$(HOME)/man/man1
 
+#CFLAGS= -O -ggdb -pg
 CFLAGS= -O -ggdb
 YFLAGS= -d
 YLIBS= -ly -ll
