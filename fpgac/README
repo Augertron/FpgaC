@@ -119,6 +119,11 @@ SVN with the following commands:
 
    svn co https://svn.sourceforge.net/svnroot/fpgac/trunk/fpgac fpgac
 
+CHANGES FROM FpgaC 1.0-beta-2F to 1.0-beta-3A
+
+- Fixed some last minute Beta-2 changes which broke the default clock
+
+- Added initialization of global integer variables
 
 CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2F
 
