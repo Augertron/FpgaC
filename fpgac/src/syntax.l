@@ -318,6 +318,8 @@ float				return(newtoken(FLOAT));
 
 double				return(newtoken(DOUBLE));
 
+static				return(newtoken(STATIC));
+
 register			return(newtoken(REGISTER));
 
 extern				return(newtoken(EXTERN));

@@ -65,6 +65,7 @@ typedef enum {
 #define TYPE_PROCESS    0x0100
 #define TYPE_UNSIGNED   0x1000
 #define TYPE_BITSERIAL  0x2000
+#define TYPE_STATIC	0x4000
 
 
 #define MAXNAMELEN	128
