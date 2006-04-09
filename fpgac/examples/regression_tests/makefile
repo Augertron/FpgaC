@@ -1,4 +1,4 @@
-tests: loops4 loops7 loops8 loops9 ioports1 regression
+tests: loops4 loops7 loops8 loops9 ioports1 initializers1 regression
 
 clean:
 	rm -f *.cnf *.xnf *.ucf test.c
@@ -30,6 +30,9 @@ loops9: loops_9_for.c loops_9_while.c
 ioports1: ioports_1.c
 	-fpgac -target cnf ioports_1.c
 
+initializers1: initializers_1.c
+	-fpgac -target cnf initializers_1.c
+
 regression:
 	-diff loops_4_for.cnf loops_4_for.cnf.orig
 	-diff loops_4_while.cnf loops_4_while.cnf.orig
@@ -40,7 +43,7 @@ regression:
 	-diff loops_9_for.cnf loops_9_for.cnf.orig
 	-diff loops_9_while.cnf loops_9_while.cnf.orig
 	-diff ioports_1.cnf ioports_1.cnf.orig
-
+	-diff initializers_1.cnf initializers_1.cnf.orig
 
 orig:  tests
 	mv loops_4_for.cnf loops_4_for.cnf.orig
@@ -52,3 +55,4 @@ orig:  tests
 	mv loops_9_for.cnf loops_9_for.cnf.orig
 	mv loops_9_while.cnf loops_9_while.cnf.orig
 	mv ioports_1.cnf ioports_1.cnf.orig
+	mv initializers_1.cnf initializers_1.cnf.orig

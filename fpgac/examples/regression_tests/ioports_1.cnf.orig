@@ -1,4 +1,4 @@
-// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Thu Mar  2 03:30:56 2006"
+// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Sat Apr  8 19:36:53 2006"
 // part=4003pc84
 ioports_1_Running^CLK = VCC;
 if(~ioports_1_T4_enable) port(t) = t^(CLK*ioports_1_main_S0_T1_endloop) = port(t);

@@ -1,0 +1,7 @@
+// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Sat Apr  8 19:36:53 2006"
+// part=4003pc84
+initializers_1_Running^CLK = VCC;
+port(o)^(CLK*initializers_1_main__state_C1) = gvar;
+gvar^(CLK*initializers_1_T4_comp) = VCC;
+initializers_1_T4_comp = ~initializers_1_Running;
+initializers_1_main__state_C1 = ~initializers_1_Running;
