@@ -3598,7 +3598,10 @@ varlistmember:	newidentifier
 
 		expn
 		{
-		    if($1.v->type & TYPE_STATIC) {
+		    if($1.v->flags & SYM_ARRAY)
+		        error2("initialization of array variables not supported", "");
+
+		    if(($1.v->type & TYPE_STATIC) && ($1.v->type & TYPE_INTEGER)) {
 		        $$.v = copyvar($1.v);
 		        setvar($$.v, $4.v);
 		        makeff($$.v->copyof);
