@@ -737,7 +737,7 @@ struct variable *intconstant(int value) {
     v->type = TYPE_INTEGER;
     v->flags |= SYM_LITERAL;
     bl = v->bits;
-    temp = value;
+    v->value = temp = value;
     for(i = 0; i < width; i++) {
 	b = bl->bit;
 	bl = bl->next;
@@ -3138,6 +3138,40 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
 // TODO: both twoop and twoopexpn were being used, which is correct?
 
     if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_INTEGER)) {
+
+        // if both constants, return a constant for the expression
+        if((arg1->flags & SYM_LITERAL) && (arg2->flags & SYM_LITERAL)) 
+            switch(op) {
+            case ADD:		return(intconstant(arg1->value + arg2->value));
+            case SUB:		return(intconstant(arg1->value - arg2->value));
+            case UNARYMINUS:	return(intconstant(0-arg1->value));
+            case MULTIPLY:	return(intconstant(arg1->value * arg2->value));
+            case DIVIDE:	return(intconstant(arg1->value / arg2->value));
+            case REMAINDER:	return(intconstant(arg1->value % arg2->value));
+
+            case TILDE:		return(intconstant(~arg1->value));
+            case NOT:		return(intconstant(!(arg1->value)));
+            case AND:		return(intconstant(arg1->value & arg2->value));
+            case OR:		return(intconstant(arg1->value | arg2->value));
+            case XOR:		return(intconstant(arg1->value ^ arg2->value));
+
+            case SHIFTRIGHT:	return(intconstant(arg1->value >> arg2->value));
+            case SHIFTLEFT:	return(intconstant(arg1->value << arg2->value));
+
+            case EQUALEQUAL:	return(intconstant(arg1->value == arg2->value));
+            case NOTEQUAL:	return(intconstant(arg1->value != arg2->value));
+            case GREATER:	return(intconstant(arg1->value > arg2->value));
+            case GREATEROREQUAL:return(intconstant(arg1->value >= arg2->value));
+            case LESSTHAN:      return(intconstant(arg1->value < arg2->value));
+            case LESSTHANOREQUAL:return(intconstant(arg1->value <= arg2->value));
+ 
+            case ANDAND:	return(intconstant(arg1->value && arg2->value));
+            case OROR:		return(intconstant(arg1->value || arg2->value));
+
+            default:
+                                ;
+            }
+
         switch(op) {
         case ADD:		return(add(arg1,arg2));
         case SUB:		return(sub(arg1,arg2));
@@ -3553,7 +3587,26 @@ globalvarlist:	 globalvarlistmember
 globalvarlistmember: newidentifier
 
 		| newidentifier EQUAL expn
-		{ error2("initialization of global variables not supported", ""); }
+		{
+		    if(!($3.v->flags & SYM_LITERAL))
+		        error2("global variables require initialization with a constant expression", "");
+
+		    if($1.v->flags & SYM_ARRAY)
+		        error2("initialization of global array variables not supported", "");
+
+		    if($1.v->type == TYPE_FLOAT)
+		        error2("initialization of global floating point variables not supported", "");
+
+		    /*
+		     * Build an assignment from the constant to occur at load
+		     * just before main and fpgac_process functions start
+		     */
+		    $$.v = copyvar($1.v);
+		    setvar($$.v, $3.v);
+		    makeff($$.v->copyof);
+		    addtoff($$.v->copyof, complement(ffoutput(running)), $$.v);
+		    modifiedvar(ffoutput($$.v->copyof));
+		}
 
 		| functionname LEFTPAREN parameterlist RIGHTPAREN
 		{
