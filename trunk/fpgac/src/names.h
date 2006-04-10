@@ -54,8 +54,14 @@ typedef enum {
     shiftright_op, sub_op, while_op, xor_op
 } op_types;
 
-#define TYPE_INTEGER    0x0001
-#define TYPE_FLOAT      0x0002
+/*
+ * types with bit zero a one, are defined below.
+ * types with bit zero a zero, are pointers to a typed variable
+ */
+
+#define TYPE_DEFINED    0x0001
+#define TYPE_INTEGER    0x0002
+#define TYPE_FLOAT      0x0004
 
 #define TYPE_INPUT      0x0010
 #define TYPE_OUTPUT     0x0020
@@ -63,6 +69,7 @@ typedef enum {
 #define TYPE_MAILBOX    0x0080
 
 #define TYPE_PROCESS    0x0100
+#define TYPE_VOLATILE   0x0200
 
 #define TYPE_UNSIGNED   0x1000
 #define TYPE_BITSERIAL  0x2000
@@ -111,6 +118,7 @@ EXTFIX struct variable {
 	long int flags;
 	int width;
 	int type;
+	int assigned;
 	long value;
 	struct bitlist *bits;
 	struct variable *scope;

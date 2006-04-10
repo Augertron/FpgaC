@@ -67,8 +67,8 @@
 
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
-%token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC  REGISTER EXTERN
-%token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS
+%token		CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC REGISTER EXTERN
+%token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS VOLATILE
 %token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
@@ -939,6 +939,7 @@ struct variable *copyvar(struct variable *v) {
     temp->flags |= (v->flags & (SYM_TEMP|SYM_STRUCT_MEMBER|SYM_STATE));
     temp->copyof = v->copyof;
     temp->type = v->type;
+    temp->assigned = v->assigned;
     temp->parent = v->parent;
     temp->members = v->members;
     temp->arraysize = v->arraysize;
@@ -2271,6 +2272,7 @@ assertoutputs(struct variable *currentstate) {
             if(debug & 4) printf( "assertoutputs: assigned(%s) to %s in state(%s)\n",v->name, v->copyof->name, currentstate->name);
 	    addtoff(v->copyof, currentstate, v);
 	    modifiedvar(ffoutput(v->copyof));
+            v->assigned = 0;
 	}
 	v->copyof->flags |= SYM_UPTODATE;
         if(v->copyof->flags & SYM_ARRAY_INDEX) {
@@ -3073,7 +3075,22 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
     }
 
     if(op == EQUAL) {
-	if(arg1->type & TYPE_INTEGER) return(assignmentstmt(arg1, arg2));
+	if(arg1->type & TYPE_INTEGER) {
+            struct variable *temp, *currentstate, *volstate;
+
+            if(arg1->assigned) {
+                currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+                tick(currentstate);
+                volstate = newtempvar("volatile", 1);
+                volstate->flags = SYM_STATE;
+                makeff(volstate);
+                setvar(volstate, currentstate);
+                assignment(currentstate, ffoutput(volstate));
+            }
+
+            arg1->assigned = 1;
+            return(assignmentstmt(arg1, arg2));
+	}
     }
 
     if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_FLOAT)) {
@@ -3502,7 +3519,6 @@ enum_list:	leftcurly
                         vl->variable->width = 0;
 		        temp = vl->variable->value;
 		        width = sizelog2(temp+1) + 1;
-fprintf(stderr, "Creating s(%s) as value(%d) and width(%d)\n",vl->variable->name, temp, width);
 		        var = CreateVariable(vl->variable->name, width, ScopeStack->scope, CurrentDeclarationScope, 0);
 		        var->type = TYPE_INTEGER;
 		        var->flags |= SYM_LITERAL;
@@ -3512,7 +3528,6 @@ fprintf(stderr, "Creating s(%s) as value(%d) and width(%d)\n",vl->variable->name
 		            b = bl->bit;
 		            bl = bl->next;
 		            b->flags |= SYM_KNOWNVALUE;
-fprintf(stderr, "setting s(%s) as value(%d)\n",b->name, temp&1);
 		            if(temp & 0x1)
 		                Set_Bit(b->truth, 0);
 		            else
@@ -3780,6 +3795,11 @@ typename:	VOID
 		| STATIC typename
 		{
 		    $$.type = currenttype = $2.type | TYPE_STATIC;
+		}
+
+		| VOLATILE typename
+		{
+		    $$.type = currenttype = $2.type | TYPE_VOLATILE;
 		}
 		    
 varlist:	varlistmember
