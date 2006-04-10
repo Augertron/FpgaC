@@ -193,11 +193,12 @@ char&nbsp;&nbsp;&nbsp; int</span><span style="font-family: monospace;"></span><s
  style="font-family: monospace;">&nbsp;&nbsp; &nbsp; float&nbsp;&nbsp;
 double&nbsp; short&nbsp;&nbsp;
 long&nbsp;&nbsp;&nbsp; long long<br>
-</span><span style="font-family: monospace;">void&nbsp;&nbsp;&nbsp;
-static&nbsp;
-signed&nbsp; unsigned&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; long double</span><br>
-</div>
+</span><span style="font-family: monospace;">enum&nbsp;&nbsp;&nbsp;
+void&nbsp;&nbsp;&nbsp; signed&nbsp;
+unsigned&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; long double<br>
+static<br>
+</span></div>
 <div style="margin-left: 80px;"><span style="font-family: monospace;"></span></div>
 <br>
 These C operators and keywords are not implemented by the FpgaC
@@ -214,8 +215,8 @@ compiler:<br>
 goto<br>
 sizeof&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; union</span><span
  style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-typedef&nbsp;&nbsp;&nbsp; </span><span style="font-family: monospace;">enum
-&nbsp; &nbsp; &nbsp;&nbsp; </span><span style="font-family: monospace;">"strings"
+typedef</span><span style="font-family: monospace;"> &nbsp;&nbsp; </span><span
+ style="font-family: monospace;">"strings"
 &nbsp; (casts)</span><br>
 <span style="font-family: monospace;">switch</span><span
  style="font-family: monospace;">
@@ -226,15 +227,15 @@ case &nbsp; &nbsp;&nbsp;&nbsp; </span><span
 </div>
 <br>
 In other words, FpgaC has 8, 16, 32, and 64 bit integer variables, plus
-floating variables of lengths 32, 64, and 128, and
-constants, expressions and assignment statements for these.&nbsp; It
+floating variables of lengths 32, 64, and 128, constants,&nbsp; enum,
+expressions and assignment statements for these.&nbsp; It
 has <span style="font-weight: bold;">if</span> statements, <span
  style="font-weight: bold;">for</span> loops, <span
  style="font-weight: bold;">while</span> loops, <span
  style="font-weight: bold;">do</span>{}<span style="font-weight: bold;">while</span>()
 loops, and function calls. You
 can also use any of the cpp # directives and macros. It
-does not currently have switch/case/default, continue, or&nbsp;
+does not currently have switch/case/default, continue, or
 pointers. You can not use
 recursion.&nbsp; Structures are implemented, but unions, structure
 assignments
