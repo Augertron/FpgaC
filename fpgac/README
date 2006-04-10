@@ -129,6 +129,8 @@ CHANGES FROM FpgaC 1.0-beta-2F to 1.0-beta-3A
   Also implemented STATIC type. All FpgaC temporary variables are static
   anyway, but required adding the correct initialization hooks for them.
 
+- Added enum support
+
 CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2F
 
 - A new html users manual has been updated for this release by John Bass.
