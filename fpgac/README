@@ -119,6 +119,7 @@ SVN with the following commands:
 
    svn co https://svn.sourceforge.net/svnroot/fpgac/trunk/fpgac fpgac
 
+
 CHANGES FROM FpgaC 1.0-beta-2F to 1.0-beta-3A
 
 - Fixed some last minute Beta-2 changes which broke the default clock
@@ -130,6 +131,18 @@ CHANGES FROM FpgaC 1.0-beta-2F to 1.0-beta-3A
   anyway, but required adding the correct initialization hooks for them.
 
 - Added enum support
+
+- Added volatile support which is defined as no more than one write to a
+  volatile object per clock. Feature request #1450719 by frief
+
+- Feature Requests as found in the FpgaC project:
+
+    Request ID   Summary                                            Developer
+    ----------   -------------------------------------------------- ---------
+    1450719      add the standard C keyword "volatile"              totally_lost
+    1409676      Initialized variables                              totally_lost
+    1373009      adding grammar for 'enum'                          totally_lost
+
 
 CHANGES FROM FpgaC 1.0-beta to 1.0-beta-2F
 

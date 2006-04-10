@@ -197,7 +197,7 @@ long&nbsp;&nbsp;&nbsp; long long<br>
 void&nbsp;&nbsp;&nbsp; signed&nbsp;
 unsigned&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; long double<br>
-static<br>
+static&nbsp; volatile<br>
 </span></div>
 <div style="margin-left: 80px;"><span style="font-family: monospace;"></span></div>
 <br>
@@ -241,7 +241,8 @@ recursion.&nbsp; Structures are implemented, but unions, structure
 assignments
 and structure arrays are not currently supported. Variable
 initialization is supported, but initialized structures, arrays and
-strings are not currently supported.&nbsp; Constant expressions are
+strings are not currently supported.&nbsp; Constant expressions
+(including enum variable references) are
 evaluated at compile time to avoid multiply, divide, and remainder
 operations at runtime where possible.<br>
 <br>
