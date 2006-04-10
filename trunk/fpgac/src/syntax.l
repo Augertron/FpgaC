@@ -320,6 +320,8 @@ double				return(newtoken(DOUBLE));
 
 static				return(newtoken(STATIC));
 
+auto				return(newtoken(AUTO));
+
 register			return(newtoken(REGISTER));
 
 extern				return(newtoken(EXTERN));
