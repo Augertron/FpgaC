@@ -63,9 +63,11 @@ typedef enum {
 #define TYPE_MAILBOX    0x0080
 
 #define TYPE_PROCESS    0x0100
+
 #define TYPE_UNSIGNED   0x1000
 #define TYPE_BITSERIAL  0x2000
 #define TYPE_STATIC	0x4000
+#define TYPE_ENUM	0x8000
 
 
 #define MAXNAMELEN	128
@@ -103,7 +105,7 @@ typedef enum {
 EXTFIX struct variable {
 	char name[MAXNAMELEN];
 	int lineno;
-	int temp;
+	long temp;
 	int dscnt;
 	struct variable *next;
 	long int flags;

@@ -2756,7 +2756,13 @@ prune() {
 }
 
 sizelog2(int size) {
-        if(size <= 16) {
+        if(size <= 2) {
+            return 1;
+        } else if(size <= 4) {
+            return 2;
+        } else if(size <= 8) {
+            return 3;
+        } else if(size <= 16) {
             return 4;
         } else if(size <= 32) {
             return 5;
@@ -3424,20 +3430,233 @@ globaldeclaration:	optionaltype globalvarlist SEMICOLON
 
 		| structdecl
 
+		| enumdecl
+
 		| pragma
 
 declaration:	 typename varlist SEMICOLON
 
 		| structdecl
 
+		| enumdecl
+
 		| pragma
+
+enumdecl:	ENUM enum_tag
+		{
+		    $$.type = currenttype = (int) $2.v;
+		}
+		enum_varlist SEMICOLON
+
+
+		/*
+		 * An enum_tag has three forms:
+		 *      1) just an enum_list, such as "enum {a, b, c} enumvar;"
+		 *      2) an IDENTIFIER tag with enum_list, such as "enum enumtag {a, b, c} enumvar;"
+		 *      3) and just a previously declared IDENTIFIER tag, "enum enumtag enumvar2;"
+		 */
+
+enum_tag:	/* empty */
+		{
+		    char *buf;
+
+		    asprintf(&buf, "%s_T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, "enum");
+		    currenttype = (int)CreateVariable(buf, 0, &TagScopeStack, CurrentDeclarationScope, 1);
+		}
+		enum_list
+
+		| IDENTIFIER
+                {
+		    currenttype = (int)CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 1);
+		}
+		enum_list
+
+		| IDENTIFIER
+                {
+		    currenttype = (int)findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+		}
+
+
+		/*
+		 * An enum_list is stored in the members field during parsing for future use.
+		 * They are scanned to determine the word width needed for the type, and each
+		 * is then added to the current declaration scope as a named constant.
+		 */
+
+enum_list:	leftcurly
+		{
+                    PushDeclarationScope(&(((struct variable *)currenttype)->members));
+		}
+
+		enum_listmembers rightcurly
+		{
+		    int i, width, temp;
+                    struct varlist *vl = TagScopeStack->variable->members;
+		    struct variable *var;
+		    struct bitlist *bl;
+		    struct bit *b;
+
+                    PopDeclarationScope();
+
+                    while(vl) {
+                        vl->variable->width = 0;
+		        temp = vl->variable->value;
+		        width = sizelog2(temp+1) + 1;
+fprintf(stderr, "Creating s(%s) as value(%d) and width(%d)\n",vl->variable->name, temp, width);
+		        var = CreateVariable(vl->variable->name, width, ScopeStack->scope, CurrentDeclarationScope, 0);
+		        var->type = TYPE_INTEGER;
+		        var->flags |= SYM_LITERAL;
+		        bl = var->bits;
+		        var->value = temp;
+		        for(i = 0; i < width; i++) {
+		            b = bl->bit;
+		            bl = bl->next;
+		            b->flags |= SYM_KNOWNVALUE;
+fprintf(stderr, "setting s(%s) as value(%d)\n",b->name, temp&1);
+		            if(temp & 0x1)
+		                Set_Bit(b->truth, 0);
+		            else
+		                Clr_Bit(b->truth, 0);
+		            temp = temp >> 1;
+		        }
+
+                        vl = vl->next;
+                    }
+                    TagScopeStack->variable->flags |= SYM_STRUCT;
+		    currentwidth = sizelog2(((struct variable *)currenttype)->temp) + 1;
+		}
+
+enum_listmembers: enum_listmember
+
+		| enum_listmembers COMMA enum_listmember
+
+		/*
+		 * An enum_listmember may be declared with a value, such as "a = 1"
+		 * or default to the next value in sequence starting at zero.
+		 */
+
+enum_listmember: IDENTIFIER
+		{
+		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->value = ((struct variable *)currenttype)->value++;
+		    if(((struct variable *)currenttype)->temp < ((struct variable *)currenttype)->value)
+		        ((struct variable *)currenttype)->temp = ((struct variable *)currenttype)->value;
+		}
+
+		| IDENTIFIER EQUAL INTEGER
+		{
+		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
+		    ((struct variable *)currenttype)->value = ($$.v->value = atoi($3.s)) + 1;
+		    if(((struct variable *)currenttype)->temp < ((struct variable *)currenttype)->value)
+		        ((struct variable *)currenttype)->temp = ((struct variable *)currenttype)->value;
+		}
+
+enum_varlist:	/* empty case */
+
+		| enum_varlistmember
+
+		| enum_varlist COMMA enum_varlistmember
+
+		/*
+		 * Create each instance of the enum as an integer for now. The standard says
+		 * this should be it's own type with integer properties, which is a little
+		 * harder for now, as we don't implement strict typing.
+		 */
+
+enum_varlistmember: IDENTIFIER
+		{
+                    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
+                    $$.v->type = TYPE_INTEGER;
+		}
+
 
 structdecl:     STRUCT struct_tag
 		{
 		    $$.type = currenttype = (int) $2.v;
 		    currentwidth = $2.v->width;
 		}
-		structvarlist SEMICOLON
+		struct_varlist SEMICOLON
+
+		/*
+		 * The struct_members list is stored in the members field during parsing.
+		 * They are summed to determine the word width needed for the whole structure.
+		 * The bit storage allocated tag members during parsing of the struct_tag is
+		 * discarded, as that is not an instance of the structure.
+		 */
+
+struct_tag:     IDENTIFIER leftcurly
+                {
+
+                    $$.v = CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 0);
+                    PushDeclarationScope(&($$.v->members));
+                }
+                struct_members
+                {
+                    struct varlist *vl = TagScopeStack->variable->members;
+		    struct bitlist *bl;
+
+                    while(vl) {
+		        // first free/disable the bits so they don't end up in the netlist
+		        bl = vl->variable->bits;
+		        while(bl){
+		            bl->bit->flags = 0;
+		            bl->bit->variable = 0;
+		            bl = bl->next;
+		        }
+                        vl->variable->offset = TagScopeStack->variable->width;
+                        TagScopeStack->variable->width += vl->variable->width;
+                        vl = vl->next;
+                    }
+                    TagScopeStack->variable->flags |= SYM_STRUCT;
+                }
+                rightcurly
+                {
+                    PopDeclarationScope();
+                    $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+                }
+
+                | IDENTIFIER
+                { $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope); }
+
+struct_members: declaration
+
+                | struct_members declaration
+
+struct_varlist:  /* empty case */
+
+		| struct_varlistmember
+
+		| struct_varlist COMMA struct_varlistmember
+
+		/*
+		 * The struct_members list was stored in the members field during parsing.
+		 * We walk that list for each instance of the struct_varlistmember being 
+		 * declared to declare the members and allocate their storage.
+		 *
+		 * Since the name space for members is relative to the structure instance,
+		 * we push the struct's members list onto the declaration stack as the
+		 * structure instance is created.
+		 */
+
+struct_varlistmember: IDENTIFIER
+		{
+		    struct varlist *junk = 0;
+		    struct variable *oldscope = CurrentDeclarationScope;
+
+		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
+
+		    if(CurrentDeclarationScope && (CurrentDeclarationScope->parent == GLOBALSCOPE)) {
+		        CurrentDeclarationScope = CreateVariable($1.s, 0, &junk, 0, 0);
+        	        CurrentDeclarationScope->flags |= SYM_TEMP;
+                    }
+		    PushDeclarationScope(&($$.v->members));
+
+		    MapStructureVars($$.v, ((struct variable *)currenttype)->members);
+
+		    PopDeclarationScope();
+		    CurrentDeclarationScope = oldscope;
+		}
+
 
 optionaltype:	/* empty */
                 {
@@ -3561,30 +3780,6 @@ typename:	VOID
 		| STATIC typename
 		{
 		    $$.type = currenttype = $2.type | TYPE_STATIC;
-		}
-
-structvarlist:  /* empty case */
-		| structvarlistmember
-
-		| structvarlist COMMA structvarlistmember
-
-structvarlistmember: IDENTIFIER
-		{
-		    struct varlist *junk = 0;
-		    struct variable *oldscope = CurrentDeclarationScope;
-
-		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
-
-		    if(CurrentDeclarationScope && (CurrentDeclarationScope->parent == GLOBALSCOPE)) {
-		        CurrentDeclarationScope = CreateVariable($1.s, 0, &junk, 0, 0);
-        	        CurrentDeclarationScope->flags |= SYM_TEMP;
-                    }
-		    PushDeclarationScope(&($$.v->members));
-
-		    MapStructureVars($$.v, ((struct variable *)currenttype)->members);
-
-		    PopDeclarationScope();
-		    CurrentDeclarationScope = oldscope;
 		}
 		    
 varlist:	varlistmember
@@ -3722,6 +3917,14 @@ stmt:	SEMICOLON
 		| expn SEMICOLON
 
 		| leftcurly declarations stmts rightcurly
+
+		/*
+		 * Since each statement block defined between "{" and "}" may have local
+		 * declarations, nested declaration scopes are required. On entry to a
+		 * block, we push a new scope name prefix, which is popped on exit. This
+		 * prefix is used to produce unique object names in the global namespace
+		 * for each variable declared inside this block.
+		 */
 
 leftcurly:	LEFTCURLY
 		{
@@ -4047,6 +4250,12 @@ returnstmt:	RETURN
 		    neverstate = newtempvar("never", 1);
 		    assignment(currentstate, neverstate);
 		}
+
+		/*
+		 * The productions for all expressions are passed to DoOp to handle
+		 * data type converstions and intrinsic function implementation of
+		 * more complex operations, such as multiply and divide.
+		 */
 
 expn:		term
 
@@ -4456,44 +4665,6 @@ int_expr:	INTEGER
 
 		| int_expr OR int_expr
 		{ $$.s = intop($1.s, $3.s, or); }
-
-struct_members: declaration
-                | struct_members declaration
-
-struct_tag:     IDENTIFIER leftcurly
-                {
-
-                    $$.v = CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 0);
-                    PushDeclarationScope(&($$.v->members));
-                }
-                struct_members
-                {
-                    struct varlist *vl = TagScopeStack->variable->members;
-		    struct bitlist *bl;
-
-                    while(vl) {
-		        // first free/disable the bits so they don't end up in the netlist
-		        bl = vl->variable->bits;
-		        while(bl){
-		            bl->bit->flags = 0;
-		            bl->bit->variable = 0;
-		            bl = bl->next;
-		        }
-                        vl->variable->offset = TagScopeStack->variable->width;
-                        TagScopeStack->variable->width += vl->variable->width;
-                        vl = vl->next;
-                    }
-                    TagScopeStack->variable->flags |= SYM_STRUCT;
-                }
-                rightcurly
-                {
-                    PopDeclarationScope();
-                    $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
-                }
-
-                | IDENTIFIER
-                { $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope); }
-
 
 %%
 
