@@ -1,4 +1,4 @@
-// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Apr 10 15:54:15 2006"
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Sun May 14 05:34:54 2006"
 // part=4003pc84
 enum_1_Running^CLK = VCC;
 enum_1_T1__Start^CLK = ~enum_1_Running;
