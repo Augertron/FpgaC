@@ -1,4 +1,4 @@
-tests: loops ioports initializers enum volatile regression
+tests: loops ioports initializers enum volatile sixtyfourbit regression
 
 clean:
 	rm -f *.cnf *.xnf *.ucf test.c
@@ -64,6 +64,11 @@ volatile: volatile1
 volatile1: volatile_1.c
 	-fpgac -target cnf volatile_1.c
 
+sixtyfourbit: sixtyfourbit1
+
+sixtyfourbit1: sixtyfourbit_1.c
+	-fpgac -target cnf sixtyfourbit_1.c
+
 regression:
 	-diff loops_4_for.cnf loops_4_for.cnf.orig
 	-diff loops_4_while.cnf loops_4_while.cnf.orig
@@ -82,6 +87,7 @@ regression:
 	-diff enum_3.cnf enum_3.cnf.orig
 	-diff enum_4.cnf enum_4.cnf.orig
 	-diff volatile_1.cnf volatile_1.cnf.orig
+	-diff sixtyfourbit_1.cnf sixtyfourbit_1.cnf.orig
 
 orig:  tests
 	mv loops_4_for.cnf loops_4_for.cnf.orig
@@ -101,3 +107,4 @@ orig:  tests
 	mv enum_3.cnf enum_3.cnf.orig
 	mv enum_4.cnf enum_4.cnf.orig
 	mv volatile_1.cnf volatile_1.cnf.orig
+	mv sixtyfourbit_1.cnf sixtyfourbit_1.cnf.orig
