@@ -439,30 +439,44 @@ return				return(newtoken(RETURN));
 				    return(newtoken(INTEGER));
 				}
 
-0[0-7]+|0[xX][0-9a-fA-F]+	{
+0[0-7]+				{
 				    char *buf;
-				    int temp;
+				    long long temp;
 
 				    if((buf = (char *) malloc(strlen(yytext)*2+1)) == (char *) NULL) {
 					fprintf(stderr, "fpgac: malloc returned NULL\n");
 					exit(1);
 				    }
-				    sscanf(yytext, "%i", &temp);
-				    sprintf(buf, "%d", temp);
+				    sscanf(yytext, "%Li", &temp);
+				    sprintf(buf, "%lld", temp);
+				    yylval.s = buf;
+				    return(newtoken(INTEGER));
+				}
+
+0[xX][0-9a-fA-F]+		{   // %Li is broken, does not convert long longs
+				    char *buf;
+				    long long temp;
+
+				    if((buf = (char *) malloc(strlen(yytext)*2+1)) == (char *) NULL) {
+					fprintf(stderr, "fpgac: malloc returned NULL\n");
+					exit(1);
+				    }
+				    sscanf(yytext, "%Lx", &temp);
+				    sprintf(buf, "%lld", temp);
 				    yylval.s = buf;
 				    return(newtoken(INTEGER));
 				}
 
 0[bB][0-1]+                     {
 				    char *buf,*ebuf;
-				    int temp;
+				    long long temp;
 
 				    if((buf = (char *) malloc(strlen(yytext)*2+1)) == (char *) NULL) {
 					fprintf(stderr, "fpgac: malloc returned NULL\n");
 					exit(1);
 				    }
-				    temp = strtol(yytext+2,&ebuf,2);
-				    sprintf(buf, "%d", temp);
+				    temp = strtoll(yytext+2,&ebuf,2);
+				    sprintf(buf, "%lld", temp);
 				    yylval.s = buf;
 				    return(newtoken(INTEGER));
 				}

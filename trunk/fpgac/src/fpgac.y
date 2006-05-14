@@ -733,7 +733,7 @@ struct variable *intconstant(long long value) {
     /* Add one bit for the sign bit */
     width++;
 
-    sprintf(buf, "_constant_0x%xll", value);
+    sprintf(buf, "_constant_0x%llx", value);
     v = findvariable(buf, MAYEXIST, width, &ThreadScopeStack, CurrentReferenceScope);
     v->type = TYPE_INTEGER;
     v->flags |= SYM_LITERAL;
