@@ -151,7 +151,7 @@ ripple_add(left, right, cin, coutp)
 	propagate = twoop(left, right, xor);
 	generate = twoop(left, right, and);
 	temp3 = newtempvar("addt3", MAX(left->width, right->width));
-	carryin = intconstant(cin);
+	carryin = intconstant((long long)cin);
 
 	resultb = result->bits;
 	carryb = carry->bits;
@@ -219,7 +219,7 @@ ripple_sub(left, right, cin, coutp)
 	propbar = complement(propagate);
 	generate = twoop(complement(left), right, and);
 	temp3 = newtempvar("addt3", MAX(left->width, right->width));
-	carryin = intconstant(cin);
+	carryin = intconstant((long long)cin);
 
 	resultb = result->bits;
 	setbit(resultb->bit, propagate->bits->bit);

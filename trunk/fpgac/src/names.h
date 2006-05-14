@@ -119,7 +119,8 @@ EXTFIX struct variable {
 	int width;
 	int type;
 	int assigned;
-	long value;
+	long long value;
+	long *vector;
 	struct bitlist *bits;
 	struct variable *scope;
 	struct variable *dscope;
@@ -209,6 +210,7 @@ typedef union {
 	struct varlist *vl;
 	char *s;
 	int type;
+	long long intval;
 } YYSTYPE;
 
 #define MAX(a,b)	(((a) > (b)) ? (a) : (b))

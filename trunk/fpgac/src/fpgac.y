@@ -715,8 +715,9 @@ changewidth(struct variable *v, int width) {
     }
 }
 
-struct variable *intconstant(int value) {
-    int i, temp, width;
+struct variable *intconstant(long long value) {
+    long long temp;
+    int i, width;
     char buf[MAXNAMELEN];
     struct variable *v;
     struct bitlist *bl;
@@ -732,7 +733,7 @@ struct variable *intconstant(int value) {
     /* Add one bit for the sign bit */
     width++;
 
-    sprintf(buf, "_constant_%d", value);
+    sprintf(buf, "_constant_0x%xll", value);
     v = findvariable(buf, MAYEXIST, width, &ThreadScopeStack, CurrentReferenceScope);
     v->type = TYPE_INTEGER;
     v->flags |= SYM_LITERAL;
@@ -1119,7 +1120,7 @@ struct variable *assignmentstmt(struct variable *v, struct variable *value) {
     poptargetwidth();
     result = assignment(v, value);
     if(v->copyof->flags & SYM_BUSPORT)
-	assignment(v->copyof->enable, intconstant(1));
+	assignment(v->copyof->enable, intconstant(1LL));
     return (result);
 }
 
@@ -1687,7 +1688,7 @@ busport(struct variable *v, struct varlist *vl) {
 
 busidle(struct variable *v) {
     if(v->copyof->enable)
-	assignment(v->copyof->enable, intconstant(0));
+	assignment(v->copyof->enable, intconstant(0LL));
     else
 	error2(v->copyof->name, "not a bus_port");
 }
@@ -2218,7 +2219,7 @@ init() {
     running = CreateVariable(rbuf, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
     makeff(running);
     running->flags |= SYM_STATE;
-    setvar(running, ffoutput(intconstant(1)));
+    setvar(running, ffoutput(intconstant(1LL)));
     running->bits->bit->flags |= SYM_STATE | SYM_DONTPULLUP;
 
     v = CreateVariable(CURRENTSTATE, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
@@ -2503,7 +2504,7 @@ makeffinputs() {
 	    if(b->suppressing_states)
 		states = wordop(b->suppressing_states, or);
 	    else
-		states = intconstant(0);
+		states = intconstant(0LL);
 	    temp1 = complement(states);
 	    temp2 = ffoutput(temp);
 	    states = twoop(temp1, temp2, and);
@@ -3070,7 +3071,7 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
 
 // TODO: other types of variables need a solution/strategy here.
 // basically need an assignmentstmt function that doesn't diddle with width
-        return(intconstant(0));
+        return(intconstant(0LL));
 
     }
 
@@ -3184,7 +3185,7 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
             switch(op) {
             case ADD:		return(intconstant(arg1->value + arg2->value));
             case SUB:		return(intconstant(arg1->value - arg2->value));
-            case UNARYMINUS:	return(intconstant(0-arg1->value));
+            case UNARYMINUS:	return(intconstant(0LL-arg1->value));
             case MULTIPLY:	return(intconstant(arg1->value * arg2->value));
             case DIVIDE:	return(intconstant(arg1->value / arg2->value));
             case REMAINDER:	return(intconstant(arg1->value % arg2->value));
@@ -3198,15 +3199,15 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
             case SHIFTRIGHT:	return(intconstant(arg1->value >> arg2->value));
             case SHIFTLEFT:	return(intconstant(arg1->value << arg2->value));
 
-            case EQUALEQUAL:	return(intconstant(arg1->value == arg2->value));
-            case NOTEQUAL:	return(intconstant(arg1->value != arg2->value));
-            case GREATER:	return(intconstant(arg1->value > arg2->value));
-            case GREATEROREQUAL:return(intconstant(arg1->value >= arg2->value));
-            case LESSTHAN:      return(intconstant(arg1->value < arg2->value));
-            case LESSTHANOREQUAL:return(intconstant(arg1->value <= arg2->value));
+            case EQUALEQUAL:	return(intconstant((long long)(arg1->value == arg2->value)));
+            case NOTEQUAL:	return(intconstant((long long)(arg1->value != arg2->value)));
+            case GREATER:	return(intconstant((long long)(arg1->value > arg2->value)));
+            case GREATEROREQUAL:return(intconstant((long long)(arg1->value >= arg2->value)));
+            case LESSTHAN:      return(intconstant((long long)(arg1->value < arg2->value)));
+            case LESSTHANOREQUAL:return(intconstant((long long)(arg1->value <= arg2->value)));
  
-            case ANDAND:	return(intconstant(arg1->value && arg2->value));
-            case OROR:		return(intconstant(arg1->value || arg2->value));
+            case ANDAND:	return(intconstant((long long)(arg1->value && arg2->value)));
+            case OROR:		return(intconstant((long long)(arg1->value || arg2->value)));
 
             default:
                                 ;
@@ -3252,7 +3253,7 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
         return(IFuncTwoArgs(temp, arg1, arg2));
     }
 
-    return(intconstant(0));
+    return(intconstant(0LL));
 }
 
 %}
@@ -3507,7 +3508,8 @@ enum_list:	leftcurly
 
 		enum_listmembers rightcurly
 		{
-		    int i, width, temp;
+		    long long temp;
+		    int i, width;
                     struct varlist *vl = TagScopeStack->variable->members;
 		    struct variable *var;
 		    struct bitlist *bl;
@@ -3561,7 +3563,7 @@ enum_listmember: IDENTIFIER
 		| IDENTIFIER EQUAL INTEGER
 		{
 		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
-		    ((struct variable *)currenttype)->value = ($$.v->value = atoi($3.s)) + 1;
+		    ((struct variable *)currenttype)->value = ($$.v->value = atoll($3.s)) + 1;
 		    if(((struct variable *)currenttype)->temp < ((struct variable *)currenttype)->value)
 		        ((struct variable *)currenttype)->temp = ((struct variable *)currenttype)->value;
 		}
@@ -4122,7 +4124,7 @@ dowhileloop:	DO
                 {
 		    // FormLoop(expn, initialstate, loopstate, endloopexpn)
 		    // always do once, $2 is DO CURRENTSTATE, $3 is looping_state, $7 is replayloopexpn
-		    FormLoop(intconstant(1), $2.v, $3.v, $7.v);
+		    FormLoop(intconstant(1LL), $2.v, $3.v, $7.v);
 		}
 
 forloop:        FOR
@@ -4172,7 +4174,7 @@ forloop:        FOR
 
 expnloop:	/* empty -- for loops assume true with a null conditional */
 		{
-		    $$.v = intconstant(1);
+		    $$.v = intconstant(1LL);
 		}
 
 		| expn
@@ -4344,7 +4346,7 @@ expn:		term
 		{ $$.v = DoOp(REMAINDER, $1.v, $3.v); }
 
 		| SUB expn %prec UNARYMINUS
-		{ $$.v = DoOp(UNARYMINUS, intconstant(0), $2.v); }
+		{ $$.v = DoOp(UNARYMINUS, intconstant(0LL), $2.v); }
 
 		| TILDE expn
 		{ $$.v = DoOp(TILDE, $2.v, $2.v); }
@@ -4355,27 +4357,27 @@ expn:		term
 		| PLUSPLUS lhsidentifier
 		{
 		    pushtargetwidth($2.v);
-		    $$.v = DoOp(PLUSEQUAL, $2.v, intconstant(1));
+		    $$.v = DoOp(PLUSEQUAL, $2.v, intconstant(1LL));
 		}
 
 		| MINUSMINUS lhsidentifier
 		{
 		    pushtargetwidth($2.v);
-		    $$.v = DoOp(MINUSEQUAL, $2.v, intconstant(1));
+		    $$.v = DoOp(MINUSEQUAL, $2.v, intconstant(1LL));
 		}
 
 		| lhsidentifier PLUSPLUS
 		{
 		    $$.v = $1.v;
 		    pushtargetwidth($1.v);
-		    DoOp(PLUSEQUAL, $1.v, intconstant(1));
+		    DoOp(PLUSEQUAL, $1.v, intconstant(1LL));
 		}
 
 		| lhsidentifier MINUSMINUS
 		{
 		    $$.v = $1.v;
 		    pushtargetwidth($1.v);
-		    DoOp(MINUSEQUAL, $1.v, intconstant(1));
+		    DoOp(MINUSEQUAL, $1.v, intconstant(1LL));
 		}
 
 		| lhsidentifier EQUAL
@@ -4437,7 +4439,7 @@ expn:		term
 		{ $$.v = $3.v; }
 
 term:		INTEGER
-		{ $$.v = intconstant(atoi($1.s)); }
+		{ $$.v = intconstant(atoll($1.s)); }
 
 		| oldidentifier
 
