@@ -73,7 +73,7 @@
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
 %token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
-%token		ANDAND OROR BUS_PORT BUS_IDLE STRING PORTFLAGS PLUSEQUAL
+%token		ANDAND OROR BUS_PORT BUS_IDLE STRING PORTFLAGS PLUSEQUAL QUESTION
 %token		MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL
 %token		MULTIPLY MULTIPLYEQUAL DIVIDE DIVIDEEQUAL REMAINDER REMAINDEREQUAL
 %token		OREQUAL LEFTBRACE RIGHTBRACE ENUM STRUCT UNION TYPEDEF
@@ -81,6 +81,7 @@
 %right	EQUAL PLUSEQUAL MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL OREQUAL MULTIPLYEQUAL DIVIDEEQUAL REMAINDEREQUAL
 
 %left   COMMA
+%left   QUESTION
 %left	OROR
 %left	ANDAND
 %left	OR
@@ -1293,21 +1294,6 @@ struct variable *twoop(struct variable *left, struct variable *right, int (*func
     return (temp);
 }
 
-/* Good only for integers up to sizeof(int).  Used only in portflags() calls */
-
-char *intop(char *left, char *right, int (*func) ()) {
-    char temp[32], *result;
-
-    sprintf(temp, "%d", func(atoi(left), atoi(right)));
-    result = calloc(1,strlen(temp) + 1);
-    if(!result) {
-	fprintf(stderr, "fpgac: Memory allocation error\n");
-        exit(1);
-    }
-    strcpy(result, temp);
-    return (result);
-}
-
 struct variable *thistick(struct variable *v) {
     struct variable *result;
     struct varlist *scope;
@@ -1698,18 +1684,15 @@ busidle(struct variable *v) {
  * inputports and outputports have pins, but only outputports have FFs.
  */
 
-portflags(struct variable *v, char *s) {
-    int flag, flag2;
+portflags(struct variable *v, int flag) {
+    int flag2;
     struct bitlist *bl;
     struct bit *b;
 
-    if(!
-	(v->copyof->
-	 flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | SYM_BUSPORT))) {
+    if(!(v->copyof->flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | SYM_BUSPORT))) {
 	error2(v->copyof->name, "is not a port variable");
 	return;
     }
-    flag = atoi(s);
     if((flag < 0) || (flag > PORT_MAXFLAG)) {
 	error2(v->copyof->name, "unrecognized flag bits");
 	return;
@@ -1725,8 +1708,7 @@ portflags(struct variable *v, char *s) {
 	flag2 |= BIT_HASPULLDOWN;
     for(bl = v->bits; bl; bl = bl->next) {
 	b = bl->bit->copyof;
-	b->flags &=
-	    ~(BIT_HASPIN | BIT_HASFF | BIT_HASPULLUP | BIT_HASPULLDOWN);
+	b->flags &= ~(BIT_HASPIN | BIT_HASFF | BIT_HASPULLUP | BIT_HASPULLDOWN);
 	b->flags |= flag2;
     }
 }
@@ -3913,19 +3895,24 @@ pragma:         INTBITS INTEGER
 		}
 
                 | INPUTPORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
-                        { inputport($3.v, $4.v->junk); }
+                { inputport($3.v, $4.v->junk); }
 
                 | OUTPUTPORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
-                        { outputport($3.v, $4.v->junk); }
+                { outputport($3.v, $4.v->junk); }
 
                 | BUS_PORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
-                        { busport($3.v, $4.v->junk); }
+                { busport($3.v, $4.v->junk); }
 
                 | BUS_IDLE LEFTPAREN oldidentifier RIGHTPAREN
-                        { busidle($3.v); }
+                { busidle($3.v); }
 
-                | PORTFLAGS LEFTPAREN oldidentifier COMMA int_expr RIGHTPAREN
-                        { portflags($3.v, $5.s); }
+                | PORTFLAGS LEFTPAREN oldidentifier COMMA expn RIGHTPAREN
+                {
+		    if($5.v->flags & SYM_LITERAL)
+		        portflags($3.v, (int)($5.v->value));
+		    else
+		        error2("portflags must be a constant expression:", $3.v->name+1);
+		}
 
 
 stmts:		/* empty */
@@ -4692,12 +4679,6 @@ funcidentifier:	IDENTIFIER COLON INTEGER
 		    $$.v = findvariable($1.s, MAYEXIST, currentwidth, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v->type = currenttype;
 		}
-
-int_expr:	INTEGER
-
-		| int_expr OR int_expr
-		{ $$.s = intop($1.s, $3.s, or); }
-
 %%
 
 yyerror(char *s) {
