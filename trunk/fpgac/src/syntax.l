@@ -260,6 +260,8 @@ pop_input_token(int n ) {
 
 ":"				return(newtoken(COLON));
 
+"?"				return(newtoken(QUESTION));
+
 ";"				return(newtoken(SEMICOLON));
 
 "="				return(newtoken(EQUAL));
