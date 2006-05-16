@@ -4570,30 +4570,11 @@ arglist2:	expn
 		    addtovlistwithduplicates(&$$.v->junk, $3.v);
 		}
 
-lhsidentifier:  IDENTIFIER COLON INTEGER
-                {
-                    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope);
-		    if($$.v->members)
-		        error2("Structure assignments are not supported:", $1.v->name+1);
-                    changewidth($$.v->copyof, atoi($3.s));
-                    changewidth($$.v, atoi($3.s));
-                }
-
-                | IDENTIFIER LEFTBRACE expn RIGHTBRACE COLON INTEGER
-                {
-                    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope);
-		    if($$.v->members)
-		        error2("Structure arrays are not supported:", $1.v->name+1);
-                    changewidth($$.v->copyof, atoi($6.s));
-                    changewidth($$.v, atoi($6.s));
-		    ArrayAssignment($$.v, $3.v);
-                }
-
-                | IDENTIFIER
-                {
+lhsidentifier:	IDENTIFIER
+		{
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
-		        error2("Structure assignments are not supported:", $1.v->name+1);
+			error2("Structure assignments are not supported:", $1.v->name+1);
 		}
 
                 | IDENTIFIER LEFTBRACE expn RIGHTBRACE
@@ -4611,26 +4592,7 @@ lhsidentifier:  IDENTIFIER COLON INTEGER
 		        error2("Structure assignments are not supported:", $1.v->copyof->name+1);
 		}
 
-oldidentifier:	IDENTIFIER COLON INTEGER
-		{
-		    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope);
-		    if($1.v->members)
-		        error2("Structure references not supported:", $1.v->copyof->name+1);
-		    changewidth($$.v->copyof, atoi($3.s));
-		    changewidth($$.v, atoi($3.s));
-		}
-
-		| IDENTIFIER LEFTBRACE expn RIGHTBRACE COLON INTEGER
-		{
-		    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope);
-		    if($$.v->members)
-		        error2("Structure arrays are not supported:", $1.v->name+1);
-		    changewidth($$.v->copyof, atoi($6.s));
-		    changewidth($$.v, atoi($6.s));
-		    $$.v = ArrayReference($$.v, $3.v);
-		}
-
-		| IDENTIFIER
+oldidentifier:	IDENTIFIER
 		{
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
