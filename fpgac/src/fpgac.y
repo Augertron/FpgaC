@@ -63,6 +63,27 @@
 #include "outputvars.h"
 #include "output_vhdl.h"
 
+/*
+ * Operators
+ * Precedence   Associativity    Operators 
+ * ----------   -------------    ---------------------------------
+ *    1 Highest   L-->R          function() [] -> .
+ *    2           L<--R          ! ~ ++ -- + - * & (type) sizeof
+ *    3           L-->R          * / %
+ *    4           L-->R          + -
+ *    5           L-->R          << >>
+ *    6           L-->R          < <= > >=
+ *    7           L-->R          == !=
+ *    8           L-->R          &
+ *    9           L-->R          ^
+ *   10           L-->R          |
+ *   11           L-->R          &&
+ *   12           L-->R          ||
+ *   13           L<--R          ?:
+ *   14           L<--R          = += -= *= /= %= &= ^= |= <<= >>=
+ *   15 Lowest    L-->R          , 
+ */
+
 %}
 
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
@@ -76,23 +97,11 @@
 %token		ANDAND OROR BUS_PORT BUS_IDLE STRING PORTFLAGS PLUSEQUAL QUESTION
 %token		MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL
 %token		MULTIPLY MULTIPLYEQUAL DIVIDE DIVIDEEQUAL REMAINDER REMAINDEREQUAL
-%token		OREQUAL LEFTBRACE RIGHTBRACE ENUM STRUCT UNION TYPEDEF
+%token		OREQUAL LEFTBRACE RIGHTBRACE ENUM STRUCT UNION TYPEDEF PLUSPLUS MINUSMINUS
 
-%right	EQUAL PLUSEQUAL MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL OREQUAL MULTIPLYEQUAL DIVIDEEQUAL REMAINDEREQUAL
+%right  EQUAL PLUSEQUAL MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL OREQUAL MULTIPLYEQUAL DIVIDEEQUAL REMAINDEREQUAL
 
 %left   COMMA
-%left   QUESTION
-%left	OROR
-%left	ANDAND
-%left	OR
-%left	XOR
-%left	AND
-%left	EQUALEQUAL NOTEQUAL
-%left	GREATEROREQUAL GREATER LESSTHAN LESSTHANOREQUAL
-%left	SHIFTRIGHT SHIFTLEFT
-%left	ADD SUB
-%left	MULTIPLY DIVIDE REMAINDER
-%left	TILDE UNARYMINUS NOT MINUSMINUS PLUSPLUS
 
 %{
 
@@ -4276,82 +4285,15 @@ returnstmt:	RETURN
 		 * more complex operations, such as multiply and divide.
 		 */
 
-expn:		term
+precedence_1:	INTEGER				//  1 L-->R function() [] -> .
+		{ $$.v = intconstant(atoll($1.s)); }
 
-		| expn AND expn
-		{ $$.v = DoOp(AND, $1.v, $3.v); }
+		| oldidentifier
 
-		| expn OR expn
-		{ $$.v = DoOp(OR, $1.v, $3.v); }
+		| LEFTPAREN expn RIGHTPAREN
+		{ $$ = $2; }
 
-		| expn ANDAND expn
-		{ $$.v = DoOp(ANDAND, $1.v, $3.v); }
-
-		| expn OROR expn
-		{ $$.v = DoOp(OROR, $1.v, $3.v); }
-
-		| expn XOR expn
-		{ $$.v = DoOp(XOR, $1.v, $3.v); }
-
-		| expn ADD expn
-		{ $$.v = DoOp(ADD, $1.v, $3.v); }
-
-		| expn SUB expn
-		{ $$.v = DoOp(SUB, $1.v, $3.v); }
-
-		| expn EQUALEQUAL expn
-		{ $$.v = DoOp(EQUALEQUAL, $1.v, $3.v); }
-
-		| expn NOTEQUAL expn
-		{ $$.v = DoOp(NOTEQUAL, $1.v, $3.v); }
-
-		| expn GREATEROREQUAL expn
-		{ $$.v = DoOp(GREATEROREQUAL, $1.v, $3.v); }
-
-		| expn GREATER expn
-		{ $$.v = DoOp(GREATER, $1.v, $3.v); }
-
-		| expn LESSTHANOREQUAL expn
-		{ $$.v = DoOp(LESSTHANOREQUAL, $1.v, $3.v); }
-
-		| expn LESSTHAN expn
-		{ $$.v = DoOp(LESSTHAN, $1.v, $3.v); }
-
-		| expn SHIFTRIGHT expn
-		{ $$.v = DoOp(SHIFTRIGHT, $1.v, $3.v); }
-
-		| expn SHIFTLEFT expn
-		{ $$.v = DoOp(SHIFTLEFT, $1.v, $3.v); }
-
-		| expn MULTIPLY expn
-		{ $$.v = DoOp(MULTIPLY, $1.v, $3.v); }
-
-		| expn DIVIDE expn
-		{ $$.v = DoOp(DIVIDE, $1.v, $3.v); }
-
-		| expn REMAINDER expn
-		{ $$.v = DoOp(REMAINDER, $1.v, $3.v); }
-
-		| SUB expn %prec UNARYMINUS
-		{ $$.v = DoOp(UNARYMINUS, intconstant(0LL), $2.v); }
-
-		| TILDE expn
-		{ $$.v = DoOp(TILDE, $2.v, $2.v); }
-
-		| NOT expn
-		{ $$.v = DoOp(NOT, $2.v, $2.v); }
-
-		| PLUSPLUS lhsidentifier
-		{
-		    pushtargetwidth($2.v);
-		    $$.v = DoOp(PLUSEQUAL, $2.v, intconstant(1LL));
-		}
-
-		| MINUSMINUS lhsidentifier
-		{
-		    pushtargetwidth($2.v);
-		    $$.v = DoOp(MINUSEQUAL, $2.v, intconstant(1LL));
-		}
+		| functioncall
 
 		| lhsidentifier PLUSPLUS
 		{
@@ -4367,73 +4309,172 @@ expn:		term
 		    DoOp(MINUSEQUAL, $1.v, intconstant(1LL));
 		}
 
+precedence_2:	precedence_1				//  2 L<--R ! ~ ++ -- + - * & (type) sizeof
+
+		| NOT precedence_2
+		{ $$.v = DoOp(NOT, $2.v, $2.v); }
+
+		| TILDE precedence_2
+		{ $$.v = DoOp(TILDE, $2.v, $2.v); }
+
+		| PLUSPLUS lhsidentifier
+		{
+		    pushtargetwidth($2.v);
+		    $$.v = DoOp(PLUSEQUAL, $2.v, intconstant(1LL));
+		}
+
+		| MINUSMINUS lhsidentifier
+		{
+		    pushtargetwidth($2.v);
+		    $$.v = DoOp(MINUSEQUAL, $2.v, intconstant(1LL));
+		}
+
+		| SUB precedence_2 %prec UNARYMINUS
+		{ $$.v = DoOp(UNARYMINUS, intconstant(0LL), $2.v); }
+
+precedence_3:	precedence_2				//  3 L-->R * / %
+
+		| precedence_3 MULTIPLY precedence_2
+		{ $$.v = DoOp(MULTIPLY, $1.v, $3.v); }
+
+		| precedence_3 DIVIDE precedence_2
+		{ $$.v = DoOp(DIVIDE, $1.v, $3.v); }
+
+		| precedence_3 REMAINDER precedence_2
+		{ $$.v = DoOp(REMAINDER, $1.v, $3.v); }
+
+precedence_4:	precedence_3				//  4 L-->R + -
+
+		| precedence_4 ADD precedence_3
+		{ $$.v = DoOp(ADD, $1.v, $3.v); }
+
+		| precedence_4 SUB precedence_3
+		{ $$.v = DoOp(SUB, $1.v, $3.v); }
+
+precedence_5:	precedence_4				//  5 L-->R << >>
+
+		| precedence_5 SHIFTLEFT precedence_4
+		{ $$.v = DoOp(SHIFTLEFT, $1.v, $3.v); }
+
+		| precedence_5 SHIFTRIGHT precedence_4
+		{ $$.v = DoOp(SHIFTRIGHT, $1.v, $3.v); }
+
+precedence_6:	precedence_5				//  6 L-->R < <= > >=
+
+		| precedence_6 LESSTHAN precedence_5
+		{ $$.v = DoOp(LESSTHAN, $1.v, $3.v); }
+
+		| precedence_6 LESSTHANOREQUAL precedence_5
+		{ $$.v = DoOp(LESSTHANOREQUAL, $1.v, $3.v); }
+
+		| precedence_6 GREATER precedence_5
+		{ $$.v = DoOp(GREATER, $1.v, $3.v); }
+
+		| precedence_6 GREATEROREQUAL precedence_5
+		{ $$.v = DoOp(GREATEROREQUAL, $1.v, $3.v); }
+
+precedence_7:	precedence_6				//  7 L-->R == !=
+
+		| precedence_7 EQUALEQUAL precedence_6
+		{ $$.v = DoOp(EQUALEQUAL, $1.v, $3.v); }
+
+		| precedence_7 NOTEQUAL precedence_6
+		{ $$.v = DoOp(NOTEQUAL, $1.v, $3.v); }
+
+precedence_8:	precedence_7				//  8 L-->R &
+
+		| precedence_8 AND precedence_7
+		{ $$.v = DoOp(AND, $1.v, $3.v); }
+
+precedence_9:	precedence_8				//  9 L-->R ^
+
+		| precedence_9 XOR precedence_8
+		{ $$.v = DoOp(XOR, $1.v, $3.v); }
+
+precedence_10:	precedence_9				// 10 L-->R |
+
+		| precedence_10 OR precedence_9
+		{ $$.v = DoOp(OR, $1.v, $3.v); }
+
+precedence_11:	precedence_10				// 11 L-->R &&
+
+		| precedence_11 ANDAND precedence_10
+		{ $$.v = DoOp(ANDAND, $1.v, $3.v); }
+
+precedence_12:	precedence_11				// 12 L-->R ||
+
+		| precedence_12 OROR precedence_11
+		{ $$.v = DoOp(OROR, $1.v, $3.v); }
+
+
+precedence_13:	precedence_12				// 13 L<--R ? :
+
+		| precedence_12 QUESTION expn COLON precedence_13
+		{
+		    $$.v = $3.v;
+		    error2("conditional ? true : false not implemented", "");
+		}
+
+precedence_14:	precedence_13				// 14 L<--R = += -= *= /= %= &= ^= |= <<= >>=
+
 		| lhsidentifier EQUAL
 		{ pushtargetwidth($1.v); }
-		expn
+		precedence_14
 		{ $$.v = DoOp(EQUAL, $1.v, $4.v); }
 
 		| lhsidentifier PLUSEQUAL
 		{ pushtargetwidth($1.v); }
-		expn
+		precedence_14
 		{ $$.v = DoOp(PLUSEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier MINUSEQUAL
 		{ pushtargetwidth($1.v); }
-		expn
+		precedence_14
 		{ $$.v = DoOp(MINUSEQUAL, $1.v, $4.v); }
-
-		| lhsidentifier SHIFTRIGHTEQUAL
-		{ pushtargetwidth($1.v); }
-		expn
-		{ $$.v = DoOp(SHIFTRIGHTEQUAL, $1.v, $4.v); }
-
-		| lhsidentifier SHIFTLEFTEQUAL
-		{ pushtargetwidth($1.v); }
-		expn
-		{ $$.v = DoOp(SHIFTLEFTEQUAL, $1.v, $4.v); }
-
-		| lhsidentifier ANDEQUAL
-		{ pushtargetwidth($1.v); }
-		expn
-		{ $$.v = DoOp(ANDEQUAL, $1.v, $4.v); }
-
-		| lhsidentifier XOREQUAL
-		{ pushtargetwidth($1.v); }
-		expn
-		{ $$.v = DoOp(XOREQUAL, $1.v, $4.v); }
-
-		| lhsidentifier OREQUAL
-		{ pushtargetwidth($1.v); }
-		expn
-		{ $$.v = DoOp(OREQUAL, $1.v, $4.v); }
 
 		| lhsidentifier MULTIPLYEQUAL
 		{ pushtargetwidth($1.v); }
-		expn
+		precedence_14
 		{ $$.v = DoOp(MULTIPLYEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier DIVIDEEQUAL
 		{ pushtargetwidth($1.v); }
-		expn
+		precedence_14
 		{ $$.v = DoOp(DIVIDEEQUAL, $1.v, $4.v); }
 
 		| lhsidentifier REMAINDEREQUAL
 		{ pushtargetwidth($1.v); }
-		expn
+		precedence_14
 		{ $$.v = DoOp(REMAINDEREQUAL, $1.v, $4.v); }
 
-		| expn COMMA expn
+		| lhsidentifier ANDEQUAL
+		{ pushtargetwidth($1.v); }
+		precedence_14
+		{ $$.v = DoOp(ANDEQUAL, $1.v, $4.v); }
+
+		| lhsidentifier XOREQUAL
+		{ pushtargetwidth($1.v); }
+		precedence_14
+		{ $$.v = DoOp(XOREQUAL, $1.v, $4.v); }
+
+		| lhsidentifier OREQUAL
+		{ pushtargetwidth($1.v); }
+		precedence_14
+		{ $$.v = DoOp(OREQUAL, $1.v, $4.v); }
+
+		| lhsidentifier SHIFTLEFTEQUAL
+		{ pushtargetwidth($1.v); }
+		precedence_14
+		{ $$.v = DoOp(SHIFTLEFTEQUAL, $1.v, $4.v); }
+
+		| lhsidentifier SHIFTRIGHTEQUAL
+		{ pushtargetwidth($1.v); }
+		precedence_14
+		{ $$.v = DoOp(SHIFTRIGHTEQUAL, $1.v, $4.v); }
+
+expn:		precedence_14				// 15 L-->R ,
+		| expn COMMA precedence_14
 		{ $$.v = $3.v; }
-
-term:		INTEGER
-		{ $$.v = intconstant(atoll($1.s)); }
-
-		| oldidentifier
-
-		| LEFTPAREN expn RIGHTPAREN
-		{ $$ = $2; }
-
-		| functioncall
 
 functioncall:	funcidentifier LEFTPAREN argumentlist RIGHTPAREN
 		{
