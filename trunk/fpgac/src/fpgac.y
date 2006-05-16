@@ -4415,12 +4415,6 @@ precedence_13:	precedence_12				// 13 L<--R ? :
 		    error2("conditional ? true : false not implemented", "");
 		}
 
-//constant_expn:	precedence_13
-//		{
-//		    if(!($$.v->flags & SYM_LITERAL))
-//		        error2("constant expression required", "");
-//		}
-
 precedence_14:	precedence_13				// 14 L<--R = += -= *= /= %= &= ^= |= <<= >>=
 
 		| lhsidentifier EQUAL
@@ -4576,12 +4570,31 @@ arglist2:	expn
 		    addtovlistwithduplicates(&$$.v->junk, $3.v);
 		}
 
-lhsidentifier:  IDENTIFIER
+lhsidentifier:  IDENTIFIER COLON INTEGER
                 {
-                    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+                    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
 		        error2("Structure assignments are not supported:", $1.v->name+1);
+                    changewidth($$.v->copyof, atoi($3.s));
+                    changewidth($$.v, atoi($3.s));
                 }
+
+                | IDENTIFIER LEFTBRACE expn RIGHTBRACE COLON INTEGER
+                {
+                    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure arrays are not supported:", $1.v->name+1);
+                    changewidth($$.v->copyof, atoi($6.s));
+                    changewidth($$.v, atoi($6.s));
+		    ArrayAssignment($$.v, $3.v);
+                }
+
+                | IDENTIFIER
+                {
+		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure assignments are not supported:", $1.v->name+1);
+		}
 
                 | IDENTIFIER LEFTBRACE expn RIGHTBRACE
                 {
@@ -4598,11 +4611,30 @@ lhsidentifier:  IDENTIFIER
 		        error2("Structure assignments are not supported:", $1.v->copyof->name+1);
 		}
 
-oldidentifier:	IDENTIFIER
+oldidentifier:	IDENTIFIER COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    $$.v = findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope);
 		    if($1.v->members)
 		        error2("Structure references not supported:", $1.v->copyof->name+1);
+		    changewidth($$.v->copyof, atoi($3.s));
+		    changewidth($$.v, atoi($3.s));
+		}
+
+		| IDENTIFIER LEFTBRACE expn RIGHTBRACE COLON INTEGER
+		{
+		    $$.v = findvariable($1.s, MUSTEXIST, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure arrays are not supported:", $1.v->name+1);
+		    changewidth($$.v->copyof, atoi($6.s));
+		    changewidth($$.v, atoi($6.s));
+		    $$.v = ArrayReference($$.v, $3.v);
+		}
+
+		| IDENTIFIER
+		{
+		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
+		    if($$.v->members)
+		        error2("Structure references not supported:", $1.v->name+1);
 		}
 
 		| IDENTIFIER LEFTBRACE expn RIGHTBRACE
@@ -4637,7 +4669,26 @@ structref:      IDENTIFIER PERIOD IDENTIFIER
                 }
 
 
-newidentifier:	IDENTIFIER
+newidentifier:	IDENTIFIER COLON INTEGER
+		{
+		    $$.v = CreateVariable($1.s, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->type = currenttype;
+		    if(currenttype & TYPE_INPUT)
+                        inputport(findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope), 0);
+		    else if(currenttype & TYPE_OUTPUT)
+                        outputport($$.v, 0);
+		    else if(currenttype & TYPE_BUS)
+                        busport(findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope), 0);
+		}
+
+		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE COLON INTEGER
+		{
+		    $$.v = CreateVariable($1.s, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->type = currenttype;
+		    CreateArray($$.v, atoi($3.s));
+		}
+
+		| IDENTIFIER
 		{
 		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
@@ -4656,7 +4707,15 @@ newidentifier:	IDENTIFIER
 		    CreateArray($$.v, atoi($3.s));
 		}
 
-funcidentifier:	IDENTIFIER
+funcidentifier:	IDENTIFIER COLON INTEGER
+		{
+		    $$.v = findvariable($1.s, MAYEXIST, atoi($3.s), &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v->type = currenttype;
+		    changewidth($$.v->copyof, atoi($3.s));
+		    changewidth($$.v, atoi($3.s));
+		}
+
+		| IDENTIFIER
 		{
 		    $$.v = findvariable($1.s, MAYEXIST, currentwidth, &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v->type = currenttype;
