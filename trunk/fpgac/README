@@ -135,6 +135,14 @@ CHANGES FROM FpgaC 1.0-beta-2F to 1.0-beta-3A
 - Added volatile support which is defined as no more than one write to a
   volatile object per clock. Feature request #1450719 by frief
 
+- Grammar changes toward ANSI C compliance -- More to do for this.
+
+- Bug fixes as found in the FpgaC project:
+
+    Request ID   Summary                                            Developer
+    ----------   -------------------------------------------------- ---------
+    1530213      minor fix to avoid using free'd memory             Robert Vesetas
+
 - Feature Requests as found in the FpgaC project:
 
     Request ID   Summary                                            Developer
