@@ -4415,6 +4415,12 @@ precedence_13:	precedence_12				// 13 L<--R ? :
 		    error2("conditional ? true : false not implemented", "");
 		}
 
+//constant_expn:	precedence_13			 // reference using    (int)($2.v->value)
+//		{
+//		    if(!($$.v->flags & SYM_LITERAL))
+//		        error2("must be a constant expression:", $$.v->name+1);
+//		}
+
 precedence_14:	precedence_13				// 14 L<--R = += -= *= /= %= &= ^= |= <<= >>=
 
 		| lhsidentifier EQUAL
@@ -4631,56 +4637,43 @@ structref:      IDENTIFIER PERIOD IDENTIFIER
                 }
 
 
-newidentifier:	IDENTIFIER COLON INTEGER
+newidentifier:	IDENTIFIER opt_width
 		{
-		    $$.v = CreateVariable($1.s, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v = CreateVariable($1.s, atoi($2.s), ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
 		    if(currenttype & TYPE_INPUT)
-                        inputport(findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope), 0);
+                        inputport(findvariable($1.s, MUSTEXIST, atoi($2.s), ScopeStack->scope, CurrentDeclarationScope), 0);
 		    else if(currenttype & TYPE_OUTPUT)
                         outputport($$.v, 0);
 		    else if(currenttype & TYPE_BUS)
-                        busport(findvariable($1.s, MUSTEXIST, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope), 0);
+                        busport(findvariable($1.s, MUSTEXIST, atoi($2.s), ScopeStack->scope, CurrentDeclarationScope), 0);
 		}
 
-		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE COLON INTEGER
+		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE opt_width
 		{
-		    $$.v = CreateVariable($1.s, atoi($6.s), ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v = CreateVariable($1.s, atoi($5.s), ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
 		    CreateArray($$.v, atoi($3.s));
 		}
 
-		| IDENTIFIER
+funcidentifier:	IDENTIFIER opt_width
 		{
-		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v = findvariable($1.s, MAYEXIST, atoi($2.s), &DeclarationScopeStack, CurrentDeclarationScope);
 		    $$.v->type = currenttype;
-		    if(currenttype & TYPE_INPUT)
-                        inputport(findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope), 0);
-		    else if(currenttype & TYPE_OUTPUT)
-                        outputport($$.v, 0);
-		    else if(currenttype & TYPE_BUS)
-                        busport(findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope), 0);
+		    changewidth($$.v->copyof, atoi($2.s));
+		    changewidth($$.v, atoi($2.s));
 		}
 
-		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE
-		{
-		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
-		    $$.v->type = currenttype;
-		    CreateArray($$.v, atoi($3.s));
+opt_width:	{ // empty case - simply pass back current width as a string
+		    char *val;
+		    asprintf(&val, "%s", currentwidth);
+		    $$.s = val;
 		}
 
-funcidentifier:	IDENTIFIER COLON INTEGER
+		|
+		COLON INTEGER
 		{
-		    $$.v = findvariable($1.s, MAYEXIST, atoi($3.s), &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v->type = currenttype;
-		    changewidth($$.v->copyof, atoi($3.s));
-		    changewidth($$.v, atoi($3.s));
-		}
-
-		| IDENTIFIER
-		{
-		    $$.v = findvariable($1.s, MAYEXIST, currentwidth, &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v->type = currenttype;
+		    $$ = $2;
 		}
 %%
 
