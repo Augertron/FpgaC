@@ -1,7 +1,7 @@
 LCANET, 6
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:48 2006"
+PROG, fpgac, 1.0.beta-3A  SVN: $Revision$, "Sun May 14 01:07:58 2006"
 PART, 4003pc84
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
@@ -19,6 +19,16 @@ PIN, D, I, counter_Running_FFin
 PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, counter_Running
+END
+SYM, counter_T1__Start_FFin, INV, LIBVER=2.0.0
+PIN, I, I, counter_Running
+PIN, O, O, counter_T1__Start_FFin
+END
+SYM, counter_T1__Start, DFF, LIBVER=2.0.0
+PIN, D, I, counter_T1__Start_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, counter_T1__Start
 END
 SYM, counter_main_S0_lights_0-OBUF, OBUF, LIBVER=2.0.0
 PIN, I, I, counter_main_S0_lights_0
@@ -236,8 +246,8 @@ PIN, C, I, CLK
 PIN, CE, I, counter_main_S0_T1_looptop
 PIN, Q, O, counter_main_S0_count_7
 END
-SYM, counter_main_S0_T1_looptop_FFin, EQN, EQN=((~I1)+(I0)), LIBVER=2.0.0
-PIN, I1, I, counter_Running
+SYM, counter_main_S0_T1_looptop_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, counter_T1__Start
 PIN, I0, I, counter_main_S0_T1_looptop
 PIN, O, O, counter_main_S0_T1_looptop_FFin
 END
