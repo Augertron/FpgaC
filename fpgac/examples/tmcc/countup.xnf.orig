@@ -1,7 +1,7 @@
 LCANET, 6
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:48 2006"
+PROG, fpgac, 1.0.beta-3A  SVN: $Revision$, "Sun May 14 01:07:58 2006"
 PART, 4003pc84
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
@@ -20,6 +20,16 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_Running
 END
+SYM, countup_T1__Start_FFin, INV, LIBVER=2.0.0
+PIN, I, I, countup_Running
+PIN, O, O, countup_T1__Start_FFin
+END
+SYM, countup_T1__Start, DFF, LIBVER=2.0.0
+PIN, D, I, countup_T1__Start_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_T1__Start
+END
 SYM, countup_seven_seg_T0_init_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, countup_twodigit_S0_T78_calling
 PIN, I1, I, countup_seven_seg_T2_final
@@ -32,65 +42,59 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_seven_seg_T0_init
 END
-SYM, countup_seven_seg_T1_retval_0, INV, LIBVER=2.0.0
-PIN, I, I, GND
+SYM, SYMcountup_seven_seg_T1_retval_0, EQN, EQN=((~I1)+(I0)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_result_0F4
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
 PIN, O, O, countup_seven_seg_T1_retval_0
 END
-SYM, SYMcountup_seven_seg_T1_retval_1, EQN, EQN=((I0*I1*~I2*~I3)+(~I0*I1*I2*I3)+(~I0*~I1*~I2)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_1, EQN, EQN=((~I0*~I1)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_T369_tree2
+PIN, I0, I, countup_seven_seg_S0_T377_else_1
 PIN, O, O, countup_seven_seg_T1_retval_1
 END
-SYM, SYMcountup_seven_seg_T1_retval_2, EQN, EQN=((I0*I1*~I2*I3)+(~I0*~I1*I2)+(~I0*~I1*I3)+(~I0*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_2, EQN, EQN=((~I1*~I2*~I3)+(I0*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T369_tree2
+PIN, I2, I, countup_seven_seg_S0_T346_tree2
+PIN, I1, I, countup_seven_seg_S0_T354_else_2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
 PIN, O, O, countup_seven_seg_T1_retval_2
 END
-SYM, SYMcountup_seven_seg_T1_retval_3, EQN, EQN=((~I0*I1*~I2)+(~I1*~I2*I3)+(~I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_3, EQN, EQN=((~I1*~I2)+(I0*~I2)), LIBVER=2.0.0
+PIN, I2, I, countup_seven_seg_S0_T369_tree2
+PIN, I1, I, countup_seven_seg_S0_result_3F3
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
 PIN, O, O, countup_seven_seg_T1_retval_3
 END
-SYM, SYMcountup_seven_seg_T1_retval_4, EQN, EQN=((~I0*I1*~I2*~I3)+(I0*~I1*I2*~I3)+(~I0*~I1*~I2*I3)+(I1*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_4, EQN, EQN=((~I2*~I3)+(I1*~I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T346_tree2
+PIN, I2, I, countup_seven_seg_S0_result_4F4
+PIN, I1, I, countup_seven_seg_S0_T346_tree2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
 PIN, O, O, countup_seven_seg_T1_retval_4
 END
-SYM, SYMcountup_seven_seg_T1_retval_5, EQN, EQN=((~I0*~I1*I2*~I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_5, EQN, EQN=((~I1)+(I0)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_result_5F4
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
 PIN, O, O, countup_seven_seg_T1_retval_5
 END
-SYM, SYMcountup_seven_seg_T1_retval_6, EQN, EQN=((~I0*I1*~I2*I3)+(I0*I1*~I3)+(I1*I2*~I3)+(I0*I1*I2)+(I0*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_6, EQN, EQN=((~I2)+(I0)+(I1)), LIBVER=2.0.0
+PIN, I2, I, countup_seven_seg_S0_result_6F4
+PIN, I1, I, countup_seven_seg_S0_T346_tree2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
 PIN, O, O, countup_seven_seg_T1_retval_6
 END
-SYM, SYMcountup_seven_seg_T1_retval_7, EQN, EQN=((~I0*I1*~I2*~I3)+(~I0*~I1*~I2*I3)+(I0*I1*~I2*I3)+(I0*~I1*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_seven_seg_x_0
-PIN, I2, I, countup_seven_seg_x_1
-PIN, I1, I, countup_seven_seg_x_2
-PIN, I0, I, countup_seven_seg_x_3
+SYM, SYMcountup_seven_seg_T1_retval_7, EQN, EQN=((~I0*~I1)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_T369_tree2
+PIN, I0, I, countup_seven_seg_S0_T377_else_7
 PIN, O, O, countup_seven_seg_T1_retval_7
 END
-SYM, countup_seven_seg_T2_final, BUF, LIBVER=2.0.0
-PIN, I, I, countup_seven_seg_T0_init
+SYM, SYMcountup_seven_seg_T2_final, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T24_iftick
 PIN, O, O, countup_seven_seg_T2_final
 END
 SYM, countup_seven_seg_x_0_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T9_twoop
+PIN, I3, I, countup_T10_twoop
 PIN, I2, I, countup_twodigit_S0_T78_calling
 PIN, I1, I, countup_seven_seg_T2_final
 PIN, I0, I, countup_twodigit_y_0
@@ -103,7 +107,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_seven_seg_x_0
 END
 SYM, countup_seven_seg_x_1_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T18_twoop
+PIN, I3, I, countup_T19_twoop
 PIN, I2, I, countup_twodigit_S0_T78_calling
 PIN, I1, I, countup_seven_seg_T2_final
 PIN, I0, I, countup_twodigit_y_1
@@ -116,7 +120,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_seven_seg_x_1
 END
 SYM, countup_seven_seg_x_2_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T27_twoop
+PIN, I3, I, countup_T28_twoop
 PIN, I2, I, countup_twodigit_S0_T78_calling
 PIN, I1, I, countup_seven_seg_T2_final
 PIN, I0, I, countup_twodigit_y_2
@@ -129,7 +133,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_seven_seg_x_2
 END
 SYM, countup_seven_seg_x_3_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T36_twoop
+PIN, I3, I, countup_T37_twoop
 PIN, I2, I, countup_twodigit_S0_T78_calling
 PIN, I1, I, countup_seven_seg_T2_final
 PIN, I0, I, countup_twodigit_y_3
@@ -141,9 +145,720 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_seven_seg_x_3
 END
-SYM, countup_delay_T0_init_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, countup_main_S0_S0_T2_calling
-PIN, I0, I, countup_twodigit_T2_final
+SYM, countup_seven_seg_S0_result_0_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T54_tree2_0
+PIN, I0, I, countup_T50_word_1
+PIN, O, O, countup_seven_seg_S0_result_0_FFin
+END
+SYM, countup_seven_seg_S0_result_0, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_0_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_0
+END
+SYM, countup_seven_seg_S0_result_1_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T69_tree2_0
+PIN, I0, I, countup_T65_word_1
+PIN, O, O, countup_seven_seg_S0_result_1_FFin
+END
+SYM, countup_seven_seg_S0_result_1, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_1_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_1
+END
+SYM, countup_seven_seg_S0_result_2_FFin, EQN, EQN=((I1*I3)+(I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_2F4
+PIN, I2, I, countup_seven_seg_S0_T19_volatile
+PIN, I1, I, countup_seven_seg_S0_T24_iftick
+PIN, I0, I, countup_T80_word_1
+PIN, O, O, countup_seven_seg_S0_result_2_FFin
+END
+SYM, countup_seven_seg_S0_result_2, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_2_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_2
+END
+SYM, countup_seven_seg_S0_result_3_FFin, EQN, EQN=((I1*I3)+(I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_3F4
+PIN, I2, I, countup_seven_seg_S0_T19_volatile
+PIN, I1, I, countup_seven_seg_S0_T24_iftick
+PIN, I0, I, countup_T95_word_1
+PIN, O, O, countup_seven_seg_S0_result_3_FFin
+END
+SYM, countup_seven_seg_S0_result_3, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_3_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_3
+END
+SYM, countup_seven_seg_S0_result_4_FFin, EQN, EQN=((I1*I3)+(I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_4F5
+PIN, I2, I, countup_seven_seg_S0_T19_volatile
+PIN, I1, I, countup_seven_seg_S0_T24_iftick
+PIN, I0, I, countup_T110_word_1
+PIN, O, O, countup_seven_seg_S0_result_4_FFin
+END
+SYM, countup_seven_seg_S0_result_4, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_4_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_4
+END
+SYM, countup_seven_seg_S0_result_5_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T129_tree2_0
+PIN, I0, I, countup_T125_word_1
+PIN, O, O, countup_seven_seg_S0_result_5_FFin
+END
+SYM, countup_seven_seg_S0_result_5, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_5_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_5
+END
+SYM, countup_seven_seg_S0_result_6_FFin, EQN, EQN=((I1*I3)+(I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_6F5
+PIN, I2, I, countup_seven_seg_S0_T19_volatile
+PIN, I1, I, countup_seven_seg_S0_T24_iftick
+PIN, I0, I, countup_T140_word_1
+PIN, O, O, countup_seven_seg_S0_result_6_FFin
+END
+SYM, countup_seven_seg_S0_result_6, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_6_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_6
+END
+SYM, countup_seven_seg_S0_result_7_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T159_tree2_0
+PIN, I0, I, countup_T155_word_1
+PIN, O, O, countup_seven_seg_S0_result_7_FFin
+END
+SYM, countup_seven_seg_S0_result_7, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_result_7_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_result_7
+END
+SYM, SYMcountup_seven_seg_S0_T14_tree2, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T14_tree2
+END
+SYM, countup_seven_seg_S0_T19_volatile_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_T14_tree2
+PIN, I0, I, countup_seven_seg_T0_init
+PIN, O, O, countup_seven_seg_S0_T19_volatile_FFin
+END
+SYM, countup_seven_seg_S0_T19_volatile, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_T19_volatile_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_T19_volatile
+END
+SYM, SYMcountup_seven_seg_S0_T20_comp, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T20_comp
+END
+SYM, countup_seven_seg_S0_T24_iftick_FFin, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_seven_seg_S0_T20_comp
+PIN, I0, I, countup_seven_seg_T0_init
+PIN, O, O, countup_seven_seg_S0_T24_iftick_FFin
+END
+SYM, countup_seven_seg_S0_T24_iftick, DFF, LIBVER=2.0.0
+PIN, D, I, countup_seven_seg_S0_T24_iftick_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_seven_seg_S0_T24_iftick
+END
+SYM, SYMcountup_seven_seg_S0_T47_tree2, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T47_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T55_else_5, EQN, EQN=((~I0*I2*I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_5
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T47_tree2
+PIN, O, O, countup_seven_seg_S0_T55_else_5
+END
+SYM, SYMcountup_seven_seg_S0_T55_else_6, EQN, EQN=((~I0*I2*I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_6
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T47_tree2
+PIN, O, O, countup_seven_seg_S0_T55_else_6
+END
+SYM, SYMcountup_seven_seg_S0_T70_tree2, EQN, EQN=((~I0*~I1*I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T70_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T78_else_1, EQN, EQN=((~I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_1
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T47_tree2
+PIN, I0, I, countup_seven_seg_S0_T70_tree2
+PIN, O, O, countup_seven_seg_S0_T78_else_1
+END
+SYM, SYMcountup_seven_seg_S0_result_2F0, EQN, EQN=((~I0*I2*I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_2
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T47_tree2
+PIN, O, O, countup_seven_seg_S0_result_2F0
+END
+SYM, SYMcountup_seven_seg_S0_result_3F0, EQN, EQN=((~I0*I2*I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_3
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T47_tree2
+PIN, O, O, countup_seven_seg_S0_result_3F0
+END
+SYM, SYMcountup_seven_seg_S0_result_4F0, EQN, EQN=((~I0*I2*I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_4
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T47_tree2
+PIN, O, O, countup_seven_seg_S0_result_4F0
+END
+SYM, SYMcountup_seven_seg_S0_result_7F0, EQN, EQN=((~I0*I2*I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_7
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T47_tree2
+PIN, O, O, countup_seven_seg_S0_result_7F0
+END
+SYM, SYMcountup_seven_seg_S0_T93_tree2, EQN, EQN=((~I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T93_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T101_else_4, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T70_tree2
+PIN, I2, I, countup_seven_seg_S0_result_4F0
+PIN, I1, I, countup_seven_seg_S0_T70_tree2
+PIN, I0, I, countup_seven_seg_S0_T93_tree2
+PIN, O, O, countup_seven_seg_S0_T101_else_4
+END
+SYM, SYMcountup_seven_seg_S0_T101_else_5, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T47_tree2
+PIN, I2, I, countup_seven_seg_S0_T55_else_5
+PIN, I1, I, countup_seven_seg_S0_T70_tree2
+PIN, I0, I, countup_seven_seg_S0_T93_tree2
+PIN, O, O, countup_seven_seg_S0_T101_else_5
+END
+SYM, SYMcountup_seven_seg_S0_T101_else_7, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T70_tree2
+PIN, I2, I, countup_seven_seg_S0_result_7F0
+PIN, I1, I, countup_seven_seg_S0_T70_tree2
+PIN, I0, I, countup_seven_seg_S0_T93_tree2
+PIN, O, O, countup_seven_seg_S0_T101_else_7
+END
+SYM, SYMcountup_seven_seg_S0_result_0F0, EQN, EQN=((~I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_0
+PIN, I2, I, countup_seven_seg_S0_T24_iftick
+PIN, I1, I, countup_seven_seg_S0_T47_tree2
+PIN, I0, I, countup_seven_seg_S0_T70_tree2
+PIN, O, O, countup_seven_seg_S0_result_0F0
+END
+SYM, SYMcountup_seven_seg_S0_result_6F0, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T70_tree2
+PIN, I2, I, countup_seven_seg_S0_T47_tree2
+PIN, I1, I, countup_seven_seg_S0_T55_else_6
+PIN, I0, I, countup_seven_seg_S0_T70_tree2
+PIN, O, O, countup_seven_seg_S0_result_6F0
+END
+SYM, SYMcountup_seven_seg_S0_T116_tree2, EQN, EQN=((~I0*I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T116_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T124_else_2, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_2F0
+PIN, I2, I, countup_seven_seg_S0_T70_tree2
+PIN, I1, I, countup_seven_seg_S0_T93_tree2
+PIN, I0, I, countup_seven_seg_S0_T116_tree2
+PIN, O, O, countup_seven_seg_S0_T124_else_2
+END
+SYM, SYMcountup_seven_seg_S0_T124_else_6, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T93_tree2
+PIN, I2, I, countup_seven_seg_S0_result_6F0
+PIN, I1, I, countup_seven_seg_S0_T93_tree2
+PIN, I0, I, countup_seven_seg_S0_T116_tree2
+PIN, O, O, countup_seven_seg_S0_T124_else_6
+END
+SYM, SYMcountup_seven_seg_S0_result_1F0, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T93_tree2
+PIN, I2, I, countup_seven_seg_S0_T70_tree2
+PIN, I1, I, countup_seven_seg_S0_T78_else_1
+PIN, I0, I, countup_seven_seg_S0_T93_tree2
+PIN, O, O, countup_seven_seg_S0_result_1F0
+END
+SYM, SYMcountup_seven_seg_S0_result_3F1, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T70_tree2
+PIN, I2, I, countup_seven_seg_S0_result_3F0
+PIN, I1, I, countup_seven_seg_S0_T70_tree2
+PIN, I0, I, countup_seven_seg_S0_T93_tree2
+PIN, O, O, countup_seven_seg_S0_result_3F1
+END
+SYM, SYMcountup_seven_seg_S0_T139_tree2, EQN, EQN=((~I0*I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T139_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T147_else_1, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T116_tree2
+PIN, I2, I, countup_seven_seg_S0_result_1F0
+PIN, I1, I, countup_seven_seg_S0_T116_tree2
+PIN, I0, I, countup_seven_seg_S0_T139_tree2
+PIN, O, O, countup_seven_seg_S0_T147_else_1
+END
+SYM, SYMcountup_seven_seg_S0_T147_else_4, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T93_tree2
+PIN, I2, I, countup_seven_seg_S0_T101_else_4
+PIN, I1, I, countup_seven_seg_S0_T116_tree2
+PIN, I0, I, countup_seven_seg_S0_T139_tree2
+PIN, O, O, countup_seven_seg_S0_T147_else_4
+END
+SYM, SYMcountup_seven_seg_S0_T147_else_7, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T93_tree2
+PIN, I2, I, countup_seven_seg_S0_T101_else_7
+PIN, I1, I, countup_seven_seg_S0_T116_tree2
+PIN, I0, I, countup_seven_seg_S0_T139_tree2
+PIN, O, O, countup_seven_seg_S0_T147_else_7
+END
+SYM, SYMcountup_seven_seg_S0_result_5F0, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T116_tree2
+PIN, I2, I, countup_seven_seg_S0_T93_tree2
+PIN, I1, I, countup_seven_seg_S0_T101_else_5
+PIN, I0, I, countup_seven_seg_S0_T116_tree2
+PIN, O, O, countup_seven_seg_S0_result_5F0
+END
+SYM, SYMcountup_seven_seg_S0_T162_tree2, EQN, EQN=((~I0*I1*I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T162_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T170_else_3, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_3F1
+PIN, I2, I, countup_seven_seg_S0_T116_tree2
+PIN, I1, I, countup_seven_seg_S0_T139_tree2
+PIN, I0, I, countup_seven_seg_S0_T162_tree2
+PIN, O, O, countup_seven_seg_S0_T170_else_3
+END
+SYM, SYMcountup_seven_seg_S0_T170_else_5, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T139_tree2
+PIN, I2, I, countup_seven_seg_S0_result_5F0
+PIN, I1, I, countup_seven_seg_S0_T139_tree2
+PIN, I0, I, countup_seven_seg_S0_T162_tree2
+PIN, O, O, countup_seven_seg_S0_T170_else_5
+END
+SYM, SYMcountup_seven_seg_S0_result_0F1, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_0F0
+PIN, I2, I, countup_seven_seg_S0_T93_tree2
+PIN, I1, I, countup_seven_seg_S0_T116_tree2
+PIN, I0, I, countup_seven_seg_S0_T139_tree2
+PIN, O, O, countup_seven_seg_S0_result_0F1
+END
+SYM, SYMcountup_seven_seg_S0_result_2F1, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T139_tree2
+PIN, I2, I, countup_seven_seg_S0_T116_tree2
+PIN, I1, I, countup_seven_seg_S0_T124_else_2
+PIN, I0, I, countup_seven_seg_S0_T139_tree2
+PIN, O, O, countup_seven_seg_S0_result_2F1
+END
+SYM, SYMcountup_seven_seg_S0_T185_tree2, EQN, EQN=((~I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T185_tree2
+END
+SYM, SYMcountup_seven_seg_S0_result_1F1, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T162_tree2
+PIN, I2, I, countup_seven_seg_S0_T139_tree2
+PIN, I1, I, countup_seven_seg_S0_T147_else_1
+PIN, I0, I, countup_seven_seg_S0_T162_tree2
+PIN, O, O, countup_seven_seg_S0_result_1F1
+END
+SYM, SYMcountup_seven_seg_S0_result_4F1, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T162_tree2
+PIN, I2, I, countup_seven_seg_S0_T139_tree2
+PIN, I1, I, countup_seven_seg_S0_T147_else_4
+PIN, I0, I, countup_seven_seg_S0_T162_tree2
+PIN, O, O, countup_seven_seg_S0_result_4F1
+END
+SYM, SYMcountup_seven_seg_S0_result_6F1, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T116_tree2
+PIN, I2, I, countup_seven_seg_S0_T124_else_6
+PIN, I1, I, countup_seven_seg_S0_T139_tree2
+PIN, I0, I, countup_seven_seg_S0_T162_tree2
+PIN, O, O, countup_seven_seg_S0_result_6F1
+END
+SYM, SYMcountup_seven_seg_S0_result_7F1, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T162_tree2
+PIN, I2, I, countup_seven_seg_S0_T139_tree2
+PIN, I1, I, countup_seven_seg_S0_T147_else_7
+PIN, I0, I, countup_seven_seg_S0_T162_tree2
+PIN, O, O, countup_seven_seg_S0_result_7F1
+END
+SYM, SYMcountup_seven_seg_S0_T208_tree2, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T208_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T216_else_3, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T162_tree2
+PIN, I2, I, countup_seven_seg_S0_T170_else_3
+PIN, I1, I, countup_seven_seg_S0_T185_tree2
+PIN, I0, I, countup_seven_seg_S0_T208_tree2
+PIN, O, O, countup_seven_seg_S0_T216_else_3
+END
+SYM, SYMcountup_seven_seg_S0_T216_else_6, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T185_tree2
+PIN, I2, I, countup_seven_seg_S0_result_6F1
+PIN, I1, I, countup_seven_seg_S0_T185_tree2
+PIN, I0, I, countup_seven_seg_S0_T208_tree2
+PIN, O, O, countup_seven_seg_S0_T216_else_6
+END
+SYM, SYMcountup_seven_seg_S0_T216_else_7, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T185_tree2
+PIN, I2, I, countup_seven_seg_S0_result_7F1
+PIN, I1, I, countup_seven_seg_S0_T185_tree2
+PIN, I0, I, countup_seven_seg_S0_T208_tree2
+PIN, O, O, countup_seven_seg_S0_T216_else_7
+END
+SYM, SYMcountup_seven_seg_S0_result_2F2, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T162_tree2
+PIN, I2, I, countup_seven_seg_S0_result_2F1
+PIN, I1, I, countup_seven_seg_S0_T162_tree2
+PIN, I0, I, countup_seven_seg_S0_T185_tree2
+PIN, O, O, countup_seven_seg_S0_result_2F2
+END
+SYM, SYMcountup_seven_seg_S0_result_5F1, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T185_tree2
+PIN, I2, I, countup_seven_seg_S0_T162_tree2
+PIN, I1, I, countup_seven_seg_S0_T170_else_5
+PIN, I0, I, countup_seven_seg_S0_T185_tree2
+PIN, O, O, countup_seven_seg_S0_result_5F1
+END
+SYM, SYMcountup_seven_seg_S0_T231_tree2, EQN, EQN=((I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T231_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T239_else_2, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T208_tree2
+PIN, I2, I, countup_seven_seg_S0_result_2F2
+PIN, I1, I, countup_seven_seg_S0_T208_tree2
+PIN, I0, I, countup_seven_seg_S0_T231_tree2
+PIN, O, O, countup_seven_seg_S0_T239_else_2
+END
+SYM, SYMcountup_seven_seg_S0_T239_else_5, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T208_tree2
+PIN, I2, I, countup_seven_seg_S0_result_5F1
+PIN, I1, I, countup_seven_seg_S0_T208_tree2
+PIN, I0, I, countup_seven_seg_S0_T231_tree2
+PIN, O, O, countup_seven_seg_S0_T239_else_5
+END
+SYM, SYMcountup_seven_seg_S0_result_0F2, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_0F1
+PIN, I2, I, countup_seven_seg_S0_T162_tree2
+PIN, I1, I, countup_seven_seg_S0_T185_tree2
+PIN, I0, I, countup_seven_seg_S0_T208_tree2
+PIN, O, O, countup_seven_seg_S0_result_0F2
+END
+SYM, SYMcountup_seven_seg_S0_result_1F2, EQN, EQN=((~I0*~I1*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T208_tree2
+PIN, I2, I, countup_seven_seg_S0_result_1F1
+PIN, I1, I, countup_seven_seg_S0_T185_tree2
+PIN, I0, I, countup_seven_seg_S0_T208_tree2
+PIN, O, O, countup_seven_seg_S0_result_1F2
+END
+SYM, SYMcountup_seven_seg_S0_result_4F2, EQN, EQN=((~I0*~I1*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T208_tree2
+PIN, I2, I, countup_seven_seg_S0_result_4F1
+PIN, I1, I, countup_seven_seg_S0_T185_tree2
+PIN, I0, I, countup_seven_seg_S0_T208_tree2
+PIN, O, O, countup_seven_seg_S0_result_4F2
+END
+SYM, SYMcountup_seven_seg_S0_T254_tree2, EQN, EQN=((I0*~I1*I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T254_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T262_else_1, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T231_tree2
+PIN, I2, I, countup_seven_seg_S0_result_1F2
+PIN, I1, I, countup_seven_seg_S0_T231_tree2
+PIN, I0, I, countup_seven_seg_S0_T254_tree2
+PIN, O, O, countup_seven_seg_S0_T262_else_1
+END
+SYM, SYMcountup_seven_seg_S0_T262_else_3, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T208_tree2
+PIN, I2, I, countup_seven_seg_S0_T216_else_3
+PIN, I1, I, countup_seven_seg_S0_T231_tree2
+PIN, I0, I, countup_seven_seg_S0_T254_tree2
+PIN, O, O, countup_seven_seg_S0_T262_else_3
+END
+SYM, SYMcountup_seven_seg_S0_result_6F2, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T231_tree2
+PIN, I2, I, countup_seven_seg_S0_T208_tree2
+PIN, I1, I, countup_seven_seg_S0_T216_else_6
+PIN, I0, I, countup_seven_seg_S0_T231_tree2
+PIN, O, O, countup_seven_seg_S0_result_6F2
+END
+SYM, SYMcountup_seven_seg_S0_result_7F2, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T231_tree2
+PIN, I2, I, countup_seven_seg_S0_T208_tree2
+PIN, I1, I, countup_seven_seg_S0_T216_else_7
+PIN, I0, I, countup_seven_seg_S0_T231_tree2
+PIN, O, O, countup_seven_seg_S0_result_7F2
+END
+SYM, SYMcountup_seven_seg_S0_T277_tree2, EQN, EQN=((I0*~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T277_tree2
+END
+SYM, SYMcountup_seven_seg_S0_result_2F3, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T254_tree2
+PIN, I2, I, countup_seven_seg_S0_T231_tree2
+PIN, I1, I, countup_seven_seg_S0_T239_else_2
+PIN, I0, I, countup_seven_seg_S0_T254_tree2
+PIN, O, O, countup_seven_seg_S0_result_2F3
+END
+SYM, SYMcountup_seven_seg_S0_result_4F3, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T231_tree2
+PIN, I2, I, countup_seven_seg_S0_result_4F2
+PIN, I1, I, countup_seven_seg_S0_T231_tree2
+PIN, I0, I, countup_seven_seg_S0_T254_tree2
+PIN, O, O, countup_seven_seg_S0_result_4F3
+END
+SYM, SYMcountup_seven_seg_S0_result_5F2, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T254_tree2
+PIN, I2, I, countup_seven_seg_S0_T231_tree2
+PIN, I1, I, countup_seven_seg_S0_T239_else_5
+PIN, I0, I, countup_seven_seg_S0_T254_tree2
+PIN, O, O, countup_seven_seg_S0_result_5F2
+END
+SYM, SYMcountup_seven_seg_S0_T300_tree2, EQN, EQN=((I0*I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T300_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T308_else_2, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T277_tree2
+PIN, I2, I, countup_seven_seg_S0_result_2F3
+PIN, I1, I, countup_seven_seg_S0_T277_tree2
+PIN, I0, I, countup_seven_seg_S0_T300_tree2
+PIN, O, O, countup_seven_seg_S0_T308_else_2
+END
+SYM, SYMcountup_seven_seg_S0_T308_else_4, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T277_tree2
+PIN, I2, I, countup_seven_seg_S0_result_4F3
+PIN, I1, I, countup_seven_seg_S0_T277_tree2
+PIN, I0, I, countup_seven_seg_S0_T300_tree2
+PIN, O, O, countup_seven_seg_S0_T308_else_4
+END
+SYM, SYMcountup_seven_seg_S0_result_0F3, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_0F2
+PIN, I2, I, countup_seven_seg_S0_T231_tree2
+PIN, I1, I, countup_seven_seg_S0_T254_tree2
+PIN, I0, I, countup_seven_seg_S0_T277_tree2
+PIN, O, O, countup_seven_seg_S0_result_0F3
+END
+SYM, SYMcountup_seven_seg_S0_result_1F3, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T277_tree2
+PIN, I2, I, countup_seven_seg_S0_T254_tree2
+PIN, I1, I, countup_seven_seg_S0_T262_else_1
+PIN, I0, I, countup_seven_seg_S0_T277_tree2
+PIN, O, O, countup_seven_seg_S0_result_1F3
+END
+SYM, SYMcountup_seven_seg_S0_result_3F2, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T277_tree2
+PIN, I2, I, countup_seven_seg_S0_T254_tree2
+PIN, I1, I, countup_seven_seg_S0_T262_else_3
+PIN, I0, I, countup_seven_seg_S0_T277_tree2
+PIN, O, O, countup_seven_seg_S0_result_3F2
+END
+SYM, SYMcountup_seven_seg_S0_result_6F3, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T254_tree2
+PIN, I2, I, countup_seven_seg_S0_result_6F2
+PIN, I1, I, countup_seven_seg_S0_T254_tree2
+PIN, I0, I, countup_seven_seg_S0_T277_tree2
+PIN, O, O, countup_seven_seg_S0_result_6F3
+END
+SYM, SYMcountup_seven_seg_S0_result_7F3, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T254_tree2
+PIN, I2, I, countup_seven_seg_S0_result_7F2
+PIN, I1, I, countup_seven_seg_S0_T254_tree2
+PIN, I0, I, countup_seven_seg_S0_T277_tree2
+PIN, O, O, countup_seven_seg_S0_result_7F3
+END
+SYM, SYMcountup_seven_seg_S0_T323_tree2, EQN, EQN=((I0*I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T323_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T331_else_3, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T300_tree2
+PIN, I2, I, countup_seven_seg_S0_result_3F2
+PIN, I1, I, countup_seven_seg_S0_T300_tree2
+PIN, I0, I, countup_seven_seg_S0_T323_tree2
+PIN, O, O, countup_seven_seg_S0_T331_else_3
+END
+SYM, SYMcountup_seven_seg_S0_result_5F3, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T277_tree2
+PIN, I2, I, countup_seven_seg_S0_result_5F2
+PIN, I1, I, countup_seven_seg_S0_T277_tree2
+PIN, I0, I, countup_seven_seg_S0_T300_tree2
+PIN, O, O, countup_seven_seg_S0_result_5F3
+END
+SYM, SYMcountup_seven_seg_S0_T346_tree2, EQN, EQN=((I0*I1*I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T346_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T354_else_2, EQN, EQN=((~I0*~I1*I2)+(~I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T300_tree2
+PIN, I2, I, countup_seven_seg_S0_T308_else_2
+PIN, I1, I, countup_seven_seg_S0_T323_tree2
+PIN, I0, I, countup_seven_seg_S0_T346_tree2
+PIN, O, O, countup_seven_seg_S0_T354_else_2
+END
+SYM, SYMcountup_seven_seg_S0_result_1F4, EQN, EQN=((~I0*~I1*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T323_tree2
+PIN, I2, I, countup_seven_seg_S0_result_1F3
+PIN, I1, I, countup_seven_seg_S0_T300_tree2
+PIN, I0, I, countup_seven_seg_S0_T323_tree2
+PIN, O, O, countup_seven_seg_S0_result_1F4
+END
+SYM, SYMcountup_seven_seg_S0_result_4F4, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T323_tree2
+PIN, I2, I, countup_seven_seg_S0_T300_tree2
+PIN, I1, I, countup_seven_seg_S0_T308_else_4
+PIN, I0, I, countup_seven_seg_S0_T323_tree2
+PIN, O, O, countup_seven_seg_S0_result_4F4
+END
+SYM, SYMcountup_seven_seg_S0_result_6F4, EQN, EQN=((~I0*~I1*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T323_tree2
+PIN, I2, I, countup_seven_seg_S0_result_6F3
+PIN, I1, I, countup_seven_seg_S0_T300_tree2
+PIN, I0, I, countup_seven_seg_S0_T323_tree2
+PIN, O, O, countup_seven_seg_S0_result_6F4
+END
+SYM, SYMcountup_seven_seg_S0_result_7F4, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T300_tree2
+PIN, I2, I, countup_seven_seg_S0_result_7F3
+PIN, I1, I, countup_seven_seg_S0_T300_tree2
+PIN, I0, I, countup_seven_seg_S0_T323_tree2
+PIN, O, O, countup_seven_seg_S0_result_7F4
+END
+SYM, SYMcountup_seven_seg_S0_T369_tree2, EQN, EQN=((I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_x_0
+PIN, I2, I, countup_seven_seg_x_1
+PIN, I1, I, countup_seven_seg_x_2
+PIN, I0, I, countup_seven_seg_x_3
+PIN, O, O, countup_seven_seg_S0_T369_tree2
+END
+SYM, SYMcountup_seven_seg_S0_T377_else_1, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T346_tree2
+PIN, I2, I, countup_seven_seg_S0_result_1F4
+PIN, I1, I, countup_seven_seg_S0_T346_tree2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
+PIN, O, O, countup_seven_seg_S0_T377_else_1
+END
+SYM, SYMcountup_seven_seg_S0_T377_else_7, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T346_tree2
+PIN, I2, I, countup_seven_seg_S0_result_7F4
+PIN, I1, I, countup_seven_seg_S0_T346_tree2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
+PIN, O, O, countup_seven_seg_S0_T377_else_7
+END
+SYM, SYMcountup_seven_seg_S0_result_0F4, EQN, EQN=((~I0*~I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_0F3
+PIN, I2, I, countup_seven_seg_S0_T300_tree2
+PIN, I1, I, countup_seven_seg_S0_T323_tree2
+PIN, I0, I, countup_seven_seg_S0_T346_tree2
+PIN, O, O, countup_seven_seg_S0_result_0F4
+END
+SYM, SYMcountup_seven_seg_S0_result_3F3, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T346_tree2
+PIN, I2, I, countup_seven_seg_S0_T323_tree2
+PIN, I1, I, countup_seven_seg_S0_T331_else_3
+PIN, I0, I, countup_seven_seg_S0_T346_tree2
+PIN, O, O, countup_seven_seg_S0_result_3F3
+END
+SYM, SYMcountup_seven_seg_S0_result_5F4, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T323_tree2
+PIN, I2, I, countup_seven_seg_S0_result_5F3
+PIN, I1, I, countup_seven_seg_S0_T323_tree2
+PIN, I0, I, countup_seven_seg_S0_T346_tree2
+PIN, O, O, countup_seven_seg_S0_result_5F4
+END
+SYM, SYMcountup_seven_seg_S0_result_2F4, EQN, EQN=((~I0*I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T369_tree2
+PIN, I2, I, countup_seven_seg_S0_T346_tree2
+PIN, I1, I, countup_seven_seg_S0_T354_else_2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
+PIN, O, O, countup_seven_seg_S0_result_2F4
+END
+SYM, SYMcountup_seven_seg_S0_result_3F4, EQN, EQN=((~I0*I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, countup_seven_seg_S0_T369_tree2
+PIN, I1, I, countup_seven_seg_S0_result_3F3
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
+PIN, O, O, countup_seven_seg_S0_result_3F4
+END
+SYM, SYMcountup_seven_seg_S0_result_4F5, EQN, EQN=((~I0*~I1*I2)+(~I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T346_tree2
+PIN, I2, I, countup_seven_seg_S0_result_4F4
+PIN, I1, I, countup_seven_seg_S0_T346_tree2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
+PIN, O, O, countup_seven_seg_S0_result_4F5
+END
+SYM, SYMcountup_seven_seg_S0_result_6F5, EQN, EQN=((~I0*~I1*I2)), LIBVER=2.0.0
+PIN, I2, I, countup_seven_seg_S0_result_6F4
+PIN, I1, I, countup_seven_seg_S0_T346_tree2
+PIN, I0, I, countup_seven_seg_S0_T369_tree2
+PIN, O, O, countup_seven_seg_S0_result_6F5
+END
+SYM, countup_delay_T0_init_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_main_S0_S0_T69_volatile
+PIN, I0, I, countup_main_S0_S0_T73_iftick
 PIN, O, O, countup_delay_T0_init_FFin
 END
 SYM, countup_delay_T0_init, DFF, LIBVER=2.0.0
@@ -156,10 +871,10 @@ SYM, countup_delay_T2_final, BUF, LIBVER=2.0.0
 PIN, I, I, countup_delay_S0_T11_endloop
 PIN, O, O, countup_delay_T2_final
 END
-SYM, countup_delay_n_0_FFin, EQN, EQN=((I0*I1*I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T47_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_0_FFin, EQN, EQN=((I0*I1)+(I0*I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T168_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_0
 PIN, O, O, countup_delay_n_0_FFin
 END
@@ -169,10 +884,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_0
 END
-SYM, countup_delay_n_1_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T54_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_1_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T175_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_1
 PIN, O, O, countup_delay_n_1_FFin
 END
@@ -182,10 +897,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_1
 END
-SYM, countup_delay_n_2_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T63_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_2_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T184_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_2
 PIN, O, O, countup_delay_n_2_FFin
 END
@@ -195,10 +910,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_2
 END
-SYM, countup_delay_n_3_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T72_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_3_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T193_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_3
 PIN, O, O, countup_delay_n_3_FFin
 END
@@ -208,10 +923,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_3
 END
-SYM, countup_delay_n_4_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T81_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_4_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T202_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_4
 PIN, O, O, countup_delay_n_4_FFin
 END
@@ -221,10 +936,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_4
 END
-SYM, countup_delay_n_5_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T90_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_5_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T211_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_5
 PIN, O, O, countup_delay_n_5_FFin
 END
@@ -234,10 +949,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_5
 END
-SYM, countup_delay_n_6_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T99_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_6_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T220_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_6
 PIN, O, O, countup_delay_n_6_FFin
 END
@@ -247,10 +962,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_delay_n_6
 END
-SYM, countup_delay_n_7_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_T108_twoop
-PIN, I2, I, countup_main_S0_S0_T2_calling
-PIN, I1, I, countup_twodigit_T2_final
+SYM, countup_delay_n_7_FFin, EQN, EQN=((~I1*~I2*I3)+(I0*I1)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_T229_twoop
+PIN, I2, I, countup_main_S0_S0_T69_volatile
+PIN, I1, I, countup_main_S0_S0_T73_iftick
 PIN, I0, I, countup_main_S0_switches_7
 PIN, O, O, countup_delay_n_7_FFin
 END
@@ -401,7 +1116,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_y_1
 END
 SYM, countup_twodigit_y_2_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, countup_T128_twoop
+PIN, I2, I, countup_T249_twoop
 PIN, I1, I, countup_main_S0_count_2
 PIN, I0, I, countup_main_S0_T10_looptop
 PIN, O, O, countup_twodigit_y_2_FFin
@@ -413,7 +1128,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_y_2
 END
 SYM, countup_twodigit_y_3_FFin, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)), LIBVER=2.0.0
-PIN, I2, I, countup_T135_twoop
+PIN, I2, I, countup_T256_twoop
 PIN, I1, I, countup_main_S0_T10_looptop
 PIN, I0, I, countup_main_S0_count_3
 PIN, O, O, countup_twodigit_y_3_FFin
@@ -425,7 +1140,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_y_3
 END
 SYM, countup_twodigit_y_4_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, countup_T146_twoop
+PIN, I2, I, countup_T267_twoop
 PIN, I1, I, countup_main_S0_count_4
 PIN, I0, I, countup_main_S0_T10_looptop
 PIN, O, O, countup_twodigit_y_4_FFin
@@ -437,7 +1152,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_y_4
 END
 SYM, countup_twodigit_y_5_FFin, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)), LIBVER=2.0.0
-PIN, I2, I, countup_T153_twoop
+PIN, I2, I, countup_T274_twoop
 PIN, I1, I, countup_main_S0_T10_looptop
 PIN, I0, I, countup_main_S0_count_5
 PIN, O, O, countup_twodigit_y_5_FFin
@@ -449,7 +1164,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_y_5
 END
 SYM, countup_twodigit_y_6_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, countup_T164_twoop
+PIN, I2, I, countup_T285_twoop
 PIN, I1, I, countup_main_S0_count_6
 PIN, I0, I, countup_main_S0_T10_looptop
 PIN, O, O, countup_twodigit_y_6_FFin
@@ -461,7 +1176,7 @@ PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_y_6
 END
 SYM, countup_twodigit_y_7_FFin, EQN, EQN=((I0*I1)+(~I1*I2)+(I0*I2)), LIBVER=2.0.0
-PIN, I2, I, countup_T171_twoop
+PIN, I2, I, countup_T292_twoop
 PIN, I1, I, countup_main_S0_T10_looptop
 PIN, I0, I, countup_main_S0_count_7
 PIN, O, O, countup_twodigit_y_7_FFin
@@ -535,7 +1250,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_0, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_0_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_0
 END
 SYM, countup_twodigit_S0_leftdigit_1-OBUF, OBUF, LIBVER=2.0.0
@@ -550,7 +1265,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_1, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_1_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_1
 END
 SYM, countup_twodigit_S0_leftdigit_2-OBUF, OBUF, LIBVER=2.0.0
@@ -565,7 +1280,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_2, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_2_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_2
 END
 SYM, countup_twodigit_S0_leftdigit_3-OBUF, OBUF, LIBVER=2.0.0
@@ -580,7 +1295,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_3, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_3_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_3
 END
 SYM, countup_twodigit_S0_leftdigit_4-OBUF, OBUF, LIBVER=2.0.0
@@ -595,7 +1310,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_4, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_4_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_4
 END
 SYM, countup_twodigit_S0_leftdigit_5-OBUF, OBUF, LIBVER=2.0.0
@@ -610,7 +1325,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_5, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_5_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_5
 END
 SYM, countup_twodigit_S0_leftdigit_6-OBUF, OBUF, LIBVER=2.0.0
@@ -625,7 +1340,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_6, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_6_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_6
 END
 SYM, countup_twodigit_S0_leftdigit_7-OBUF, OBUF, LIBVER=2.0.0
@@ -640,7 +1355,7 @@ END
 SYM, countup_twodigit_S0_leftdigit_7, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_leftdigit_7_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C59
+PIN, CE, I, countup_twodigit_S0__state_C64
 PIN, Q, O, countup_twodigit_S0_leftdigit_7
 END
 SYM, countup_twodigit_S0_rightdigit_0-OBUF, OBUF, LIBVER=2.0.0
@@ -655,7 +1370,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_0, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_0_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_0
 END
 SYM, countup_twodigit_S0_rightdigit_1-OBUF, OBUF, LIBVER=2.0.0
@@ -670,7 +1385,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_1, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_1_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_1
 END
 SYM, countup_twodigit_S0_rightdigit_2-OBUF, OBUF, LIBVER=2.0.0
@@ -685,7 +1400,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_2, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_2_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_2
 END
 SYM, countup_twodigit_S0_rightdigit_3-OBUF, OBUF, LIBVER=2.0.0
@@ -700,7 +1415,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_3, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_3_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_3
 END
 SYM, countup_twodigit_S0_rightdigit_4-OBUF, OBUF, LIBVER=2.0.0
@@ -715,7 +1430,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_4, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_4_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_4
 END
 SYM, countup_twodigit_S0_rightdigit_5-OBUF, OBUF, LIBVER=2.0.0
@@ -730,7 +1445,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_5, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_5_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_5
 END
 SYM, countup_twodigit_S0_rightdigit_6-OBUF, OBUF, LIBVER=2.0.0
@@ -745,7 +1460,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_6, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_6_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_6
 END
 SYM, countup_twodigit_S0_rightdigit_7-OBUF, OBUF, LIBVER=2.0.0
@@ -760,7 +1475,7 @@ END
 SYM, countup_twodigit_S0_rightdigit_7, DFF, LIBVER=2.0.0
 PIN, D, I, countup_twodigit_S0_rightdigit_7_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_twodigit_S0__state_C60
+PIN, CE, I, countup_twodigit_S0__state_C65
 PIN, Q, O, countup_twodigit_S0_rightdigit_7
 END
 SYM, countup_twodigit_S0_T32_looptop_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
@@ -905,10 +1620,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_S0_T78_calling
 END
-SYM, SYMcountup_twodigit_S0__state_C59, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+SYM, SYMcountup_twodigit_S0__state_C64, EQN, EQN=((I0*I1)), LIBVER=2.0.0
 PIN, I1, I, countup_twodigit_S0_T78_calling
 PIN, I0, I, countup_seven_seg_T2_final
-PIN, O, O, countup_twodigit_S0__state_C59
+PIN, O, O, countup_twodigit_S0__state_C64
 END
 SYM, countup_twodigit_S0_T86_calling_FFin, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_twodigit_S0_T78_calling
@@ -922,89 +1637,105 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, countup_twodigit_S0_T86_calling
 END
-SYM, SYMcountup_twodigit_S0__state_C60, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+SYM, SYMcountup_twodigit_S0__state_C65, EQN, EQN=((I0*I1)), LIBVER=2.0.0
 PIN, I1, I, countup_twodigit_S0_T86_calling
 PIN, I0, I, countup_seven_seg_T2_final
-PIN, O, O, countup_twodigit_S0__state_C60
+PIN, O, O, countup_twodigit_S0__state_C65
 END
-SYM, countup_main_S0_count_0_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_0F0
+SYM, countup_main_S0_count_0_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, countup_T381_tree2_0
+PIN, I1, I, countup_T377_word_1
+PIN, I0, I, countup_T377_word_2
 PIN, O, O, countup_main_S0_count_0_FFin
 END
 SYM, countup_main_S0_count_0, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_0_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_0
 END
-SYM, countup_main_S0_count_1_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_1F0
+SYM, countup_main_S0_count_1_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T396_tree2_0
+PIN, I0, I, countup_T392_word_1
 PIN, O, O, countup_main_S0_count_1_FFin
 END
 SYM, countup_main_S0_count_1, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_1_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_1
 END
-SYM, countup_main_S0_count_2_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_2F0
+SYM, countup_main_S0_count_2_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, countup_T411_tree2_0
+PIN, I1, I, countup_T407_word_1
+PIN, I0, I, countup_T407_word_2
 PIN, O, O, countup_main_S0_count_2_FFin
 END
 SYM, countup_main_S0_count_2, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_2_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_2
 END
-SYM, countup_main_S0_count_3_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_3F1
+SYM, countup_main_S0_count_3_FFin, EQN, EQN=((I1*I3)+(I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_3F0
+PIN, I2, I, countup__stateF0
+PIN, I1, I, countup__stateF1
+PIN, I0, I, countup_T422_word_1
 PIN, O, O, countup_main_S0_count_3_FFin
 END
 SYM, countup_main_S0_count_3, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_3_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_3
 END
-SYM, countup_main_S0_count_4_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_4F0
+SYM, countup_main_S0_count_4_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T441_tree2_0
+PIN, I0, I, countup_T437_word_1
 PIN, O, O, countup_main_S0_count_4_FFin
 END
 SYM, countup_main_S0_count_4, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_4_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_4
 END
-SYM, countup_main_S0_count_5_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_5F0
+SYM, countup_main_S0_count_5_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, countup_T456_tree2_0
+PIN, I1, I, countup_T452_word_1
+PIN, I0, I, countup_T452_word_2
 PIN, O, O, countup_main_S0_count_5_FFin
 END
 SYM, countup_main_S0_count_5, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_5_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_5
 END
-SYM, countup_main_S0_count_6_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_6F1
+SYM, countup_main_S0_count_6_FFin, EQN, EQN=((I1*I3)+(I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_6F0
+PIN, I2, I, countup__stateF0
+PIN, I1, I, countup__stateF1
+PIN, I0, I, countup_T467_word_1
 PIN, O, O, countup_main_S0_count_6_FFin
 END
 SYM, countup_main_S0_count_6, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_6_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_6
 END
-SYM, countup_main_S0_count_7_FFin, BUF, LIBVER=2.0.0
-PIN, I, I, countup_main_S0_count_7F0
+SYM, countup_main_S0_count_7_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+PIN, I2, I, countup_T486_tree2_0
+PIN, I1, I, countup_T482_word_1
+PIN, I0, I, countup_T482_word_2
 PIN, O, O, countup_main_S0_count_7_FFin
 END
 SYM, countup_main_S0_count_7, DFF, LIBVER=2.0.0
 PIN, D, I, countup_main_S0_count_7_FFin
 PIN, C, I, CLK
-PIN, CE, I, countup_main_S0_S0__state_C67
+PIN, CE, I, VCC
 PIN, Q, O, countup_main_S0_count_7
 END
 SYM, countup_main_S0_switches_0, IBUF, LIBVER=2.0.0
@@ -1047,10 +1778,10 @@ PIN, I, I, countup_main_S0_switches_7_pad
 PIN, O, O, countup_main_S0_switches_7
 END
 EXT, countup_main_S0_switches_7_pad, I,, LOC=P19
-SYM, countup_main_S0_T10_looptop_FFin, EQN, EQN=((I1*I2)+(~I0)), LIBVER=2.0.0
-PIN, I2, I, countup_main_S0_S0_T78_calling
+SYM, countup_main_S0_T10_looptop_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
+PIN, I2, I, countup_main_S0_S0_T82_calling
 PIN, I1, I, countup_delay_T2_final
-PIN, I0, I, countup_Running
+PIN, I0, I, countup_T1__Start
 PIN, O, O, countup_main_S0_T10_looptop_FFin
 END
 SYM, countup_main_S0_T10_looptop, DFF, LIBVER=2.0.0
@@ -1126,10 +1857,11 @@ PIN, I1, I, countup_main_S0_S0_T33_car_4
 PIN, I0, I, countup_main_S0_S0_T41_sub_3
 PIN, O, O, countup_main_S0_S0_T65_tree2
 END
-SYM, SYMcountup_main_S0_S0__state_C67, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+SYM, SYMcountup__stateF0, EQN, EQN=((I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, countup_main_S0_S0_T65_tree2
 PIN, I1, I, countup_main_S0_S0_T2_calling
 PIN, I0, I, countup_twodigit_T2_final
-PIN, O, O, countup_main_S0_S0__state_C67
+PIN, O, O, countup__stateF0
 END
 SYM, SYMcountup_main_S0_count_3F0, EQN, EQN=((~I0*I1*I2*I3)+(I0*~I3)+(I0*~I2)+(I0*~I1)), LIBVER=2.0.0
 PIN, I3, I, countup_main_S0_count_1
@@ -1145,189 +1877,380 @@ PIN, I1, I, countup_main_S0_count_6
 PIN, I0, I, countup_main_S0_S0_T10_car_4
 PIN, O, O, countup_main_S0_count_6F0
 END
-SYM, SYMcountup_main_S0_count_0F0, EQN, EQN=((~I0*I1*~I2)+(~I0*I1*I3)+(~I0*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_S0_T48_sub_3
-PIN, I2, I, countup_main_S0_S0_T33_car_4
-PIN, I1, I, countup_main_S0_S0_T41_sub_3
-PIN, I0, I, countup_main_S0_count_0
-PIN, O, O, countup_main_S0_count_0F0
+SYM, countup_main_S0_S0_T69_volatile_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, countup__stateF0
+PIN, O, O, countup_main_S0_S0_T69_volatile_FFin
 END
-SYM, SYMcountup_main_S0_count_1F0, EQN, EQN=((~I0*I1*~I2)+(~I0*~I1*I2)), LIBVER=2.0.0
-PIN, I2, I, countup_main_S0_count_1
-PIN, I1, I, countup_main_S0_count_0
-PIN, I0, I, countup_main_S0_S0_T65_tree2
-PIN, O, O, countup_main_S0_count_1F0
-END
-SYM, SYMcountup_main_S0_count_2F0, EQN, EQN=((~I0*~I1*I2*I3)+(~I0*I1*~I3)+(~I0*I1*~I2)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_count_1
-PIN, I2, I, countup_main_S0_count_0
-PIN, I1, I, countup_main_S0_count_2
-PIN, I0, I, countup_main_S0_S0_T65_tree2
-PIN, O, O, countup_main_S0_count_2F0
-END
-SYM, SYMcountup_main_S0_count_3F1, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_S0_T48_sub_3
-PIN, I2, I, countup_main_S0_S0_T33_car_4
-PIN, I1, I, countup_main_S0_S0_T41_sub_3
-PIN, I0, I, countup_main_S0_count_3F0
-PIN, O, O, countup_main_S0_count_3F1
-END
-SYM, SYMcountup_main_S0_count_4F0, EQN, EQN=((~I0*I1*~I2)+(~I0*~I1*I2)), LIBVER=2.0.0
-PIN, I2, I, countup_main_S0_count_4
-PIN, I1, I, countup_main_S0_S0_T10_car_4
-PIN, I0, I, countup_main_S0_S0_T65_tree2
-PIN, O, O, countup_main_S0_count_4F0
-END
-SYM, SYMcountup_main_S0_count_5F0, EQN, EQN=((~I0*I1*I2*~I3)+(~I0*~I2*I3)+(~I0*~I1*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_count_5
-PIN, I2, I, countup_main_S0_count_4
-PIN, I1, I, countup_main_S0_S0_T10_car_4
-PIN, I0, I, countup_main_S0_S0_T65_tree2
-PIN, O, O, countup_main_S0_count_5F0
-END
-SYM, SYMcountup_main_S0_count_6F1, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_S0_T48_sub_3
-PIN, I2, I, countup_main_S0_S0_T33_car_4
-PIN, I1, I, countup_main_S0_S0_T41_sub_3
-PIN, I0, I, countup_main_S0_count_6F0
-PIN, O, O, countup_main_S0_count_6F1
-END
-SYM, SYMcountup_main_S0_count_7F0, EQN, EQN=((~I0*I1*~I2)+(~I0*I1*I3)+(~I0*I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_S0_T21_add_3
-PIN, I2, I, countup_main_S0_S0_T10_car_4
-PIN, I1, I, countup_main_S0_count_7
-PIN, I0, I, countup_main_S0_S0_T65_tree2
-PIN, O, O, countup_main_S0_count_7F0
-END
-SYM, countup_main_S0_S0_T78_calling_FFin, EQN, EQN=((~I0*I1)+(I2*I3)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_S0_T2_calling
-PIN, I2, I, countup_twodigit_T2_final
-PIN, I1, I, countup_main_S0_S0_T78_calling
-PIN, I0, I, countup_delay_T2_final
-PIN, O, O, countup_main_S0_S0_T78_calling_FFin
-END
-SYM, countup_main_S0_S0_T78_calling, DFF, LIBVER=2.0.0
-PIN, D, I, countup_main_S0_S0_T78_calling_FFin
+SYM, countup_main_S0_S0_T69_volatile, DFF, LIBVER=2.0.0
+PIN, D, I, countup_main_S0_S0_T69_volatile_FFin
 PIN, C, I, CLK
 PIN, CE, I, VCC
-PIN, Q, O, countup_main_S0_S0_T78_calling
+PIN, Q, O, countup_main_S0_S0_T69_volatile
 END
-SYM, SYMcountup_T9_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_main_S0_S0_T70_comp, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
+PIN, I2, I, countup_main_S0_S0_T48_sub_3
+PIN, I1, I, countup_main_S0_S0_T33_car_4
+PIN, I0, I, countup_main_S0_S0_T41_sub_3
+PIN, O, O, countup_main_S0_S0_T70_comp
+END
+SYM, SYMcountup__stateF1, EQN, EQN=((I0*I1*I2)), LIBVER=2.0.0
+PIN, I2, I, countup_main_S0_S0_T70_comp
+PIN, I1, I, countup_main_S0_S0_T2_calling
+PIN, I0, I, countup_twodigit_T2_final
+PIN, O, O, countup__stateF1
+END
+SYM, countup_main_S0_S0_T73_iftick_FFin, BUF, LIBVER=2.0.0
+PIN, I, I, countup__stateF1
+PIN, O, O, countup_main_S0_S0_T73_iftick_FFin
+END
+SYM, countup_main_S0_S0_T73_iftick, DFF, LIBVER=2.0.0
+PIN, D, I, countup_main_S0_S0_T73_iftick_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_main_S0_S0_T73_iftick
+END
+SYM, countup_main_S0_S0_T82_calling_FFin, EQN, EQN=((~I0*I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T69_volatile
+PIN, I2, I, countup_main_S0_S0_T73_iftick
+PIN, I1, I, countup_main_S0_S0_T82_calling
+PIN, I0, I, countup_delay_T2_final
+PIN, O, O, countup_main_S0_S0_T82_calling_FFin
+END
+SYM, countup_main_S0_S0_T82_calling, DFF, LIBVER=2.0.0
+PIN, D, I, countup_main_S0_S0_T82_calling_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, countup_main_S0_S0_T82_calling
+END
+SYM, SYMcountup_T10_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_twodigit_S0_T33_endloop
 PIN, I1, I, countup_seven_seg_x_0
 PIN, I0, I, countup_twodigit_S0_tens_0
-PIN, O, O, countup_T9_twoop
+PIN, O, O, countup_T10_twoop
 END
-SYM, SYMcountup_T18_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T19_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_twodigit_S0_T33_endloop
 PIN, I1, I, countup_seven_seg_x_1
 PIN, I0, I, countup_twodigit_S0_tens_1
-PIN, O, O, countup_T18_twoop
+PIN, O, O, countup_T19_twoop
 END
-SYM, SYMcountup_T27_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T28_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_twodigit_S0_T33_endloop
 PIN, I1, I, countup_seven_seg_x_2
 PIN, I0, I, countup_twodigit_S0_tens_2
-PIN, O, O, countup_T27_twoop
+PIN, O, O, countup_T28_twoop
 END
-SYM, SYMcountup_T36_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T37_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_twodigit_S0_T33_endloop
 PIN, I1, I, countup_seven_seg_x_3
 PIN, I0, I, countup_twodigit_S0_tens_3
-PIN, O, O, countup_T36_twoop
+PIN, O, O, countup_T37_twoop
 END
-SYM, SYMcountup_T47_twoop, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(~I0*I1*~I3)+(~I0*I1*~I2)), LIBVER=2.0.0
-PIN, I3, I, countup_main_S0_S0_T2_calling
-PIN, I2, I, countup_twodigit_T2_final
+SYM, SYMcountup_T48_comp, EQN, EQN=((~I0*~I1*~I3)+(~I0*~I2)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T14_tree2
+PIN, I2, I, countup_seven_seg_T0_init
+PIN, I1, I, countup_seven_seg_S0_T20_comp
+PIN, I0, I, countup_seven_seg_T2_final
+PIN, O, O, countup_T48_comp
+END
+SYM, SYMcountup_T50_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_0
+PIN, O, O, countup_T50_word_1
+END
+SYM, SYMcountup_T54_tree2_0, EQN, EQN=((I0*~I2*I3)+(I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_0F4
+PIN, I2, I, countup_seven_seg_S0_T369_tree2
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T24_iftick
+PIN, O, O, countup_T54_tree2_0
+END
+SYM, SYMcountup_T65_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_1
+PIN, O, O, countup_T65_word_1
+END
+SYM, SYMcountup_T69_tree2_0, EQN, EQN=((I0*I2)+(I1*I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T369_tree2
+PIN, I2, I, countup_seven_seg_S0_T377_else_1
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T24_iftick
+PIN, O, O, countup_T69_tree2_0
+END
+SYM, SYMcountup_T80_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_2
+PIN, O, O, countup_T80_word_1
+END
+SYM, SYMcountup_T95_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_3
+PIN, O, O, countup_T95_word_1
+END
+SYM, SYMcountup_T110_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_4
+PIN, O, O, countup_T110_word_1
+END
+SYM, SYMcountup_T125_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_5
+PIN, O, O, countup_T125_word_1
+END
+SYM, SYMcountup_T129_tree2_0, EQN, EQN=((I0*~I2*I3)+(I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_result_5F4
+PIN, I2, I, countup_seven_seg_S0_T369_tree2
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T24_iftick
+PIN, O, O, countup_T129_tree2_0
+END
+SYM, SYMcountup_T140_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_6
+PIN, O, O, countup_T140_word_1
+END
+SYM, SYMcountup_T155_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, countup_T48_comp
+PIN, I0, I, countup_seven_seg_S0_result_7
+PIN, O, O, countup_T155_word_1
+END
+SYM, SYMcountup_T159_tree2_0, EQN, EQN=((I0*I2)+(I1*I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_seven_seg_S0_T369_tree2
+PIN, I2, I, countup_seven_seg_S0_T377_else_7
+PIN, I1, I, countup_seven_seg_S0_T19_volatile
+PIN, I0, I, countup_seven_seg_S0_T24_iftick
+PIN, O, O, countup_T159_tree2_0
+END
+SYM, SYMcountup_T168_twoop, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T69_volatile
+PIN, I2, I, countup_main_S0_S0_T73_iftick
 PIN, I1, I, countup_delay_S0_T10_looptop
 PIN, I0, I, countup_delay_n_0
-PIN, O, O, countup_T47_twoop
+PIN, O, O, countup_T168_twoop
 END
-SYM, SYMcountup_T54_twoop, EQN, EQN=((I0*~I1*~I2)+(~I0*I2)+(I1*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T175_twoop, EQN, EQN=((I0*~I1*~I2)+(~I0*I2)+(I1*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_delay_n_1
 PIN, I1, I, countup_delay_n_0
 PIN, I0, I, countup_delay_S0_T10_looptop
-PIN, O, O, countup_T54_twoop
+PIN, O, O, countup_T175_twoop
 END
-SYM, SYMcountup_T63_twoop, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T184_twoop, EQN, EQN=((I0*~I1*~I2*~I3)+(~I0*I1)+(I1*I2)+(I1*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_delay_n_1
 PIN, I2, I, countup_delay_n_0
 PIN, I1, I, countup_delay_n_2
 PIN, I0, I, countup_delay_S0_T10_looptop
-PIN, O, O, countup_T63_twoop
+PIN, O, O, countup_T184_twoop
 END
-SYM, SYMcountup_T72_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T193_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_delay_S0_T10_looptop
 PIN, I1, I, countup_delay_n_3
 PIN, I0, I, countup_delay_n_3F0
-PIN, O, O, countup_T72_twoop
+PIN, O, O, countup_T193_twoop
 END
-SYM, SYMcountup_T81_twoop, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T202_twoop, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_delay_n_4
 PIN, I1, I, countup_delay_S0_T15_car_4
 PIN, I0, I, countup_delay_S0_T10_looptop
-PIN, O, O, countup_T81_twoop
+PIN, O, O, countup_T202_twoop
 END
-SYM, SYMcountup_T90_twoop, EQN, EQN=((I0*I1*~I2*~I3)+(~I1*I3)+(~I0*I3)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T211_twoop, EQN, EQN=((I0*I1*~I2*~I3)+(~I1*I3)+(~I0*I3)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_delay_n_5
 PIN, I2, I, countup_delay_n_4
 PIN, I1, I, countup_delay_S0_T15_car_4
 PIN, I0, I, countup_delay_S0_T10_looptop
-PIN, O, O, countup_T90_twoop
+PIN, O, O, countup_T211_twoop
 END
-SYM, SYMcountup_T99_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMcountup_T220_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, countup_delay_S0_T10_looptop
 PIN, I1, I, countup_delay_n_6
 PIN, I0, I, countup_delay_n_6F0
-PIN, O, O, countup_T99_twoop
+PIN, O, O, countup_T220_twoop
 END
-SYM, SYMcountup_T108_twoop, EQN, EQN=((I0*I2*I3)+(I1*~I2)+(~I0*I1)+(I1*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T229_twoop, EQN, EQN=((I0*I2*I3)+(I1*~I2)+(~I0*I1)+(I1*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_delay_S0_T30_sub_3
 PIN, I2, I, countup_delay_S0_T15_car_4
 PIN, I1, I, countup_delay_n_7
 PIN, I0, I, countup_delay_S0_T10_looptop
-PIN, O, O, countup_T108_twoop
+PIN, O, O, countup_T229_twoop
 END
-SYM, SYMcountup_T128_twoop, EQN, EQN=((~I0*I1*~I2*~I3)+(~I0*~I1*I3)+(~I0*I2*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T249_twoop, EQN, EQN=((~I0*I1*~I2*~I3)+(~I0*~I1*I3)+(~I0*I2*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_twodigit_y_2
 PIN, I2, I, countup_twodigit_y_1
 PIN, I1, I, countup_twodigit_S0_T32_looptop
 PIN, I0, I, countup_main_S0_T10_looptop
-PIN, O, O, countup_T128_twoop
+PIN, O, O, countup_T249_twoop
 END
-SYM, SYMcountup_T135_twoop, EQN, EQN=((I1*~I2*~I3)+(I0*~I1*I2)+(I0*~I1*I3)+(~I0*I1)), LIBVER=2.0.0
+SYM, SYMcountup_T256_twoop, EQN, EQN=((I1*~I2*~I3)+(I0*~I1*I2)+(I0*~I1*I3)+(~I0*I1)), LIBVER=2.0.0
 PIN, I3, I, countup_twodigit_y_2
 PIN, I2, I, countup_twodigit_y_1
 PIN, I1, I, countup_twodigit_y_3
 PIN, I0, I, countup_twodigit_S0_T32_looptop
-PIN, O, O, countup_T135_twoop
+PIN, O, O, countup_T256_twoop
 END
-SYM, SYMcountup_T146_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T267_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_twodigit_S0_T32_looptop
 PIN, I2, I, countup_twodigit_y_4
 PIN, I1, I, countup_twodigit_y_4F0
 PIN, I0, I, countup_main_S0_T10_looptop
-PIN, O, O, countup_T146_twoop
+PIN, O, O, countup_T267_twoop
 END
-SYM, SYMcountup_T153_twoop, EQN, EQN=((I0*I1*~I2*~I3)+(~I1*I3)+(~I0*I3)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T274_twoop, EQN, EQN=((I0*I1*~I2*~I3)+(~I1*I3)+(~I0*I3)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_twodigit_y_5
 PIN, I2, I, countup_twodigit_y_4
 PIN, I1, I, countup_twodigit_S0_S0_T26_car_4
 PIN, I0, I, countup_twodigit_S0_T32_looptop
-PIN, O, O, countup_T153_twoop
+PIN, O, O, countup_T274_twoop
 END
-SYM, SYMcountup_T164_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T285_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_twodigit_S0_T32_looptop
 PIN, I2, I, countup_twodigit_y_6
 PIN, I1, I, countup_twodigit_y_6F0
 PIN, I0, I, countup_main_S0_T10_looptop
-PIN, O, O, countup_T164_twoop
+PIN, O, O, countup_T285_twoop
 END
-SYM, SYMcountup_T171_twoop, EQN, EQN=((I0*I2*I3)+(I1*~I2)+(~I0*I1)+(I1*I3)), LIBVER=2.0.0
+SYM, SYMcountup_T292_twoop, EQN, EQN=((I0*I2*I3)+(I1*~I2)+(~I0*I1)+(I1*I3)), LIBVER=2.0.0
 PIN, I3, I, countup_twodigit_S0_S0_T41_sub_3
 PIN, I2, I, countup_twodigit_S0_S0_T26_car_4
 PIN, I1, I, countup_twodigit_y_7
 PIN, I0, I, countup_twodigit_S0_T32_looptop
-PIN, O, O, countup_T171_twoop
+PIN, O, O, countup_T292_twoop
+END
+SYM, SYMcountup_T369_word_1, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, countup_main_S0_S0_T69_volatile
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T369_word_1
+END
+SYM, SYMcountup_T373_tree2_0, EQN, EQN=((I1*I2*I3)+(I0)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T65_tree2
+PIN, I2, I, countup_main_S0_S0_T2_calling
+PIN, I1, I, countup_twodigit_T2_final
+PIN, I0, I, countup__stateF1
+PIN, O, O, countup_T373_tree2_0
+END
+SYM, SYMcountup_T377_word_1, EQN, EQN=((~I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T70_comp
+PIN, I2, I, countup_main_S0_S0_T2_calling
+PIN, I1, I, countup_twodigit_T2_final
+PIN, I0, I, countup_main_S0_count_0
+PIN, O, O, countup_T377_word_1
+END
+SYM, SYMcountup_T377_word_2, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_0
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T377_word_2
+END
+SYM, SYMcountup_T381_tree2_0, EQN, EQN=((~I0*I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T65_tree2
+PIN, I2, I, countup_main_S0_S0_T2_calling
+PIN, I1, I, countup_twodigit_T2_final
+PIN, I0, I, countup_main_S0_count_0
+PIN, O, O, countup_T381_tree2_0
+END
+SYM, SYMcountup_T392_word_1, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_1
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T392_word_1
+END
+SYM, SYMcountup_T396_tree2_0, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)+(I1*~I2*I3)+(~I1*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup__stateF0
+PIN, I2, I, countup_main_S0_count_1
+PIN, I1, I, countup_main_S0_count_0
+PIN, I0, I, countup__stateF1
+PIN, O, O, countup_T396_tree2_0
+END
+SYM, SYMcountup_T407_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_1
+PIN, I2, I, countup_main_S0_count_0
+PIN, I1, I, countup_main_S0_count_2
+PIN, I0, I, countup__stateF1
+PIN, O, O, countup_T407_word_1
+END
+SYM, SYMcountup_T407_word_2, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_2
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T407_word_2
+END
+SYM, SYMcountup_T411_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_1
+PIN, I2, I, countup_main_S0_count_0
+PIN, I1, I, countup_main_S0_count_2
+PIN, I0, I, countup__stateF0
+PIN, O, O, countup_T411_tree2_0
+END
+SYM, SYMcountup_T422_word_1, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_3
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T422_word_1
+END
+SYM, SYMcountup_T437_word_1, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_4
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T437_word_1
+END
+SYM, SYMcountup_T441_tree2_0, EQN, EQN=((I0*I2*~I3)+(I1*I2*~I3)+(I0*~I2*I3)+(I1*~I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_4
+PIN, I2, I, countup_main_S0_S0_T10_car_4
+PIN, I1, I, countup__stateF0
+PIN, I0, I, countup__stateF1
+PIN, O, O, countup_T441_tree2_0
+END
+SYM, SYMcountup_T452_word_1, EQN, EQN=((I0*I1*I2*~I3)+(I0*~I2*I3)+(I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_5
+PIN, I2, I, countup_main_S0_count_4
+PIN, I1, I, countup_main_S0_S0_T10_car_4
+PIN, I0, I, countup__stateF1
+PIN, O, O, countup_T452_word_1
+END
+SYM, SYMcountup_T452_word_2, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_5
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T452_word_2
+END
+SYM, SYMcountup_T456_tree2_0, EQN, EQN=((I0*I1*I2*~I3)+(I0*~I2*I3)+(I0*~I1*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_count_5
+PIN, I2, I, countup_main_S0_count_4
+PIN, I1, I, countup_main_S0_S0_T10_car_4
+PIN, I0, I, countup__stateF0
+PIN, O, O, countup_T456_tree2_0
+END
+SYM, SYMcountup_T467_word_1, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_6
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T467_word_1
+END
+SYM, SYMcountup_T482_word_1, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T21_add_3
+PIN, I2, I, countup_main_S0_S0_T10_car_4
+PIN, I1, I, countup_main_S0_count_7
+PIN, I0, I, countup__stateF1
+PIN, O, O, countup_T482_word_1
+END
+SYM, SYMcountup_T482_word_2, EQN, EQN=((I1*~I2*~I3)+(I0*I1)), LIBVER=2.0.0
+PIN, I3, I, countup_T373_tree2_0
+PIN, I2, I, countup_T369_word_1
+PIN, I1, I, countup_main_S0_count_7
+PIN, I0, I, countup_main_S0_S0_T73_iftick
+PIN, O, O, countup_T482_word_2
+END
+SYM, SYMcountup_T486_tree2_0, EQN, EQN=((I0*I1*~I2)+(I0*I1*I3)+(I0*I2*I3)), LIBVER=2.0.0
+PIN, I3, I, countup_main_S0_S0_T21_add_3
+PIN, I2, I, countup_main_S0_S0_T10_car_4
+PIN, I1, I, countup_main_S0_count_7
+PIN, I0, I, countup__stateF0
+PIN, O, O, countup_T486_tree2_0
 END
 EOF

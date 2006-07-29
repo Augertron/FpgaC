@@ -1,7 +1,7 @@
 LCANET, 6
 PWR, 1, VCC
 PWR, 0, GND
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:49 2006"
+PROG, fpgac, 1.0.beta-3A  SVN: $Revision$, "Sun May 14 01:07:56 2006"
 PART, 4003pc84
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
@@ -19,6 +19,20 @@ PIN, D, I, lcd_Running_FFin
 PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, lcd_Running
+END
+SYM, lcd_T1__Start_FFin, INV, LIBVER=2.0.0
+PIN, I, I, lcd_Running
+PIN, O, O, lcd_T1__Start_FFin
+END
+SYM, lcd_T1__Start, DFF, LIBVER=2.0.0
+PIN, D, I, lcd_T1__Start_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, lcd_T1__Start
+END
+SYM, lcd__state_C1, BUF, LIBVER=2.0.0
+PIN, I, I, lcd_T1__Start
+PIN, O, O, lcd__state_C1
 END
 SYM, lcd_flm-OBUF, OBUF, LIBVER=2.0.0
 PIN, I, I, lcd_flm
@@ -46,7 +60,7 @@ EXT, lcd_lp_pad, O
 SYM, lcd_lp_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, lcd_doframe_S0_S0_T32_calling
 PIN, I1, I, lcd_doscanline_T2_final
-PIN, I0, I, lcd_T28_word_1
+PIN, I0, I, lcd_T29_word_1
 PIN, O, O, lcd_lp_FFin
 END
 SYM, lcd_lp, DFF, LIBVER=2.0.0
@@ -160,7 +174,7 @@ END
 SYM, max716ev_on, DFF, LIBVER=2.0.0
 PIN, D, I, max716ev_on_FFin
 PIN, C, I, CLK
-PIN, CE, I, lcd_main__state_C38
+PIN, CE, I, lcd__state_C1
 PIN, Q, O, max716ev_on
 END
 SYM, max716ev_v4on-OBUF, OBUF, LIBVER=2.0.0
@@ -709,7 +723,7 @@ END
 SYM, sram_lcd_request_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, lcd_doscanline_S0_T70_looptop
-PIN, I0, I, lcd_T226_word_1
+PIN, I0, I, lcd_T227_word_1
 PIN, O, O, sram_lcd_request_FFin
 END
 SYM, sram_lcd_request, DFF, LIBVER=2.0.0
@@ -743,8 +757,8 @@ PIN, CE, I, lcd_doframe_T0_init
 PIN, Q, O, scan_addr_1
 END
 SYM, scan_addr_2_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T245_tree2_0
-PIN, I0, I, lcd_T241_word_1
+PIN, I1, I, lcd_T246_tree2_0
+PIN, I0, I, lcd_T242_word_1
 PIN, O, O, scan_addr_2_FFin
 END
 SYM, scan_addr_2, DFF, LIBVER=2.0.0
@@ -754,8 +768,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_2
 END
 SYM, scan_addr_3_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T260_tree2_0
-PIN, I0, I, lcd_T256_word_1
+PIN, I1, I, lcd_T261_tree2_0
+PIN, I0, I, lcd_T257_word_1
 PIN, O, O, scan_addr_3_FFin
 END
 SYM, scan_addr_3, DFF, LIBVER=2.0.0
@@ -765,10 +779,10 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_3
 END
 SYM, scan_addr_4_FFin, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, lcd_T275_tree2_0
-PIN, I2, I, lcd_T271_word_1
-PIN, I1, I, lcd_T271_word_2
-PIN, I0, I, lcd_T271_word_3
+PIN, I3, I, lcd_T276_tree2_0
+PIN, I2, I, lcd_T272_word_1
+PIN, I1, I, lcd_T272_word_2
+PIN, I0, I, lcd_T272_word_3
 PIN, O, O, scan_addr_4_FFin
 END
 SYM, scan_addr_4, DFF, LIBVER=2.0.0
@@ -778,8 +792,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_4
 END
 SYM, scan_addr_5_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T290_tree2_0
-PIN, I0, I, lcd_T286_word_1
+PIN, I1, I, lcd_T291_tree2_0
+PIN, I0, I, lcd_T287_word_1
 PIN, O, O, scan_addr_5_FFin
 END
 SYM, scan_addr_5, DFF, LIBVER=2.0.0
@@ -789,9 +803,9 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_5
 END
 SYM, scan_addr_6_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T305_tree2_0
-PIN, I1, I, lcd_T301_word_1
-PIN, I0, I, lcd_T301_word_2
+PIN, I2, I, lcd_T306_tree2_0
+PIN, I1, I, lcd_T302_word_1
+PIN, I0, I, lcd_T302_word_2
 PIN, O, O, scan_addr_6_FFin
 END
 SYM, scan_addr_6, DFF, LIBVER=2.0.0
@@ -801,10 +815,10 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_6
 END
 SYM, scan_addr_7_FFin, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, lcd_T320_tree2_0
-PIN, I2, I, lcd_T316_word_1
-PIN, I1, I, lcd_T316_word_2
-PIN, I0, I, lcd_T316_word_3
+PIN, I3, I, lcd_T321_tree2_0
+PIN, I2, I, lcd_T317_word_1
+PIN, I1, I, lcd_T317_word_2
+PIN, I0, I, lcd_T317_word_3
 PIN, O, O, scan_addr_7_FFin
 END
 SYM, scan_addr_7, DFF, LIBVER=2.0.0
@@ -814,8 +828,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_7
 END
 SYM, scan_addr_8_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T335_tree2_0
-PIN, I0, I, lcd_T331_word_1
+PIN, I1, I, lcd_T336_tree2_0
+PIN, I0, I, lcd_T332_word_1
 PIN, O, O, scan_addr_8_FFin
 END
 SYM, scan_addr_8, DFF, LIBVER=2.0.0
@@ -825,9 +839,9 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_8
 END
 SYM, scan_addr_9_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T350_tree2_0
-PIN, I1, I, lcd_T346_word_1
-PIN, I0, I, lcd_T346_word_2
+PIN, I2, I, lcd_T351_tree2_0
+PIN, I1, I, lcd_T347_word_1
+PIN, I0, I, lcd_T347_word_2
 PIN, O, O, scan_addr_9_FFin
 END
 SYM, scan_addr_9, DFF, LIBVER=2.0.0
@@ -837,10 +851,10 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_9
 END
 SYM, scan_addr_10_FFin, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, lcd_T365_tree2_0
-PIN, I2, I, lcd_T361_word_1
-PIN, I1, I, lcd_T361_word_2
-PIN, I0, I, lcd_T361_word_3
+PIN, I3, I, lcd_T366_tree2_0
+PIN, I2, I, lcd_T362_word_1
+PIN, I1, I, lcd_T362_word_2
+PIN, I0, I, lcd_T362_word_3
 PIN, O, O, scan_addr_10_FFin
 END
 SYM, scan_addr_10, DFF, LIBVER=2.0.0
@@ -850,8 +864,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_10
 END
 SYM, scan_addr_11_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T380_tree2_0
-PIN, I0, I, lcd_T376_word_1
+PIN, I1, I, lcd_T381_tree2_0
+PIN, I0, I, lcd_T377_word_1
 PIN, O, O, scan_addr_11_FFin
 END
 SYM, scan_addr_11, DFF, LIBVER=2.0.0
@@ -861,8 +875,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_11
 END
 SYM, scan_addr_12_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T395_tree2_0
-PIN, I0, I, lcd_T391_word_1
+PIN, I1, I, lcd_T396_tree2_0
+PIN, I0, I, lcd_T392_word_1
 PIN, O, O, scan_addr_12_FFin
 END
 SYM, scan_addr_12, DFF, LIBVER=2.0.0
@@ -872,8 +886,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_12
 END
 SYM, scan_addr_13_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T410_tree2_0
-PIN, I0, I, lcd_T406_word_1
+PIN, I1, I, lcd_T411_tree2_0
+PIN, I0, I, lcd_T407_word_1
 PIN, O, O, scan_addr_13_FFin
 END
 SYM, scan_addr_13, DFF, LIBVER=2.0.0
@@ -883,8 +897,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_13
 END
 SYM, scan_addr_14_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T425_tree2_0
-PIN, I0, I, lcd_T421_word_1
+PIN, I1, I, lcd_T426_tree2_0
+PIN, I0, I, lcd_T422_word_1
 PIN, O, O, scan_addr_14_FFin
 END
 SYM, scan_addr_14, DFF, LIBVER=2.0.0
@@ -894,8 +908,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_14
 END
 SYM, scan_addr_15_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T440_tree2_0
-PIN, I0, I, lcd_T436_word_1
+PIN, I1, I, lcd_T441_tree2_0
+PIN, I0, I, lcd_T437_word_1
 PIN, O, O, scan_addr_15_FFin
 END
 SYM, scan_addr_15, DFF, LIBVER=2.0.0
@@ -905,8 +919,8 @@ PIN, CE, I, VCC
 PIN, Q, O, scan_addr_15
 END
 SYM, scan_addr_16_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T455_tree2_0
-PIN, I0, I, lcd_T451_word_1
+PIN, I1, I, lcd_T456_tree2_0
+PIN, I0, I, lcd_T452_word_1
 PIN, O, O, scan_addr_16_FFin
 END
 SYM, scan_addr_16, DFF, LIBVER=2.0.0
@@ -1147,7 +1161,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_3
 END
 SYM, lcd_doscanline_S0_scan_data_4_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T620_twoop
+PIN, I2, I, lcd_T621_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_0
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_4_FFin
@@ -1159,7 +1173,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_4
 END
 SYM, lcd_doscanline_S0_scan_data_5_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T629_twoop
+PIN, I2, I, lcd_T630_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_1
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_5_FFin
@@ -1171,7 +1185,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_5
 END
 SYM, lcd_doscanline_S0_scan_data_6_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T638_twoop
+PIN, I2, I, lcd_T639_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_2
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_6_FFin
@@ -1183,7 +1197,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_6
 END
 SYM, lcd_doscanline_S0_scan_data_7_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T647_twoop
+PIN, I2, I, lcd_T648_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_3
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_7_FFin
@@ -1195,7 +1209,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_7
 END
 SYM, lcd_doscanline_S0_scan_data_8_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T656_twoop
+PIN, I2, I, lcd_T657_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_4
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_8_FFin
@@ -1207,7 +1221,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_8
 END
 SYM, lcd_doscanline_S0_scan_data_9_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T665_twoop
+PIN, I2, I, lcd_T666_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_5
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_9_FFin
@@ -1219,7 +1233,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_9
 END
 SYM, lcd_doscanline_S0_scan_data_10_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T674_twoop
+PIN, I2, I, lcd_T675_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_6
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_10_FFin
@@ -1231,7 +1245,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_10
 END
 SYM, lcd_doscanline_S0_scan_data_11_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T683_twoop
+PIN, I2, I, lcd_T684_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_7
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_11_FFin
@@ -1243,7 +1257,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_11
 END
 SYM, lcd_doscanline_S0_scan_data_12_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T692_twoop
+PIN, I2, I, lcd_T693_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_8
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_12_FFin
@@ -1255,7 +1269,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_12
 END
 SYM, lcd_doscanline_S0_scan_data_13_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T701_twoop
+PIN, I2, I, lcd_T702_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_9
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_13_FFin
@@ -1267,7 +1281,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_13
 END
 SYM, lcd_doscanline_S0_scan_data_14_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T710_twoop
+PIN, I2, I, lcd_T711_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_10
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_14_FFin
@@ -1279,7 +1293,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_14
 END
 SYM, lcd_doscanline_S0_scan_data_15_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T719_twoop
+PIN, I2, I, lcd_T720_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_11
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_15_FFin
@@ -1291,7 +1305,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_15
 END
 SYM, lcd_doscanline_S0_scan_data_16_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T728_twoop
+PIN, I2, I, lcd_T729_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_12
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_16_FFin
@@ -1303,7 +1317,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_16
 END
 SYM, lcd_doscanline_S0_scan_data_17_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T737_twoop
+PIN, I2, I, lcd_T738_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_13
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_17_FFin
@@ -1315,7 +1329,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_17
 END
 SYM, lcd_doscanline_S0_scan_data_18_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T746_twoop
+PIN, I2, I, lcd_T747_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_14
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_18_FFin
@@ -1327,7 +1341,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_18
 END
 SYM, lcd_doscanline_S0_scan_data_19_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T755_twoop
+PIN, I2, I, lcd_T756_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_15
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_19_FFin
@@ -1339,7 +1353,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_19
 END
 SYM, lcd_doscanline_S0_scan_data_20_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T764_twoop
+PIN, I2, I, lcd_T765_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_16
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_20_FFin
@@ -1351,7 +1365,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_20
 END
 SYM, lcd_doscanline_S0_scan_data_21_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T773_twoop
+PIN, I2, I, lcd_T774_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_17
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_21_FFin
@@ -1363,7 +1377,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_21
 END
 SYM, lcd_doscanline_S0_scan_data_22_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T782_twoop
+PIN, I2, I, lcd_T783_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_18
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_22_FFin
@@ -1375,7 +1389,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_22
 END
 SYM, lcd_doscanline_S0_scan_data_23_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T791_twoop
+PIN, I2, I, lcd_T792_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_19
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_23_FFin
@@ -1387,7 +1401,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_23
 END
 SYM, lcd_doscanline_S0_scan_data_24_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T800_twoop
+PIN, I2, I, lcd_T801_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_20
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_24_FFin
@@ -1399,7 +1413,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_24
 END
 SYM, lcd_doscanline_S0_scan_data_25_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T809_twoop
+PIN, I2, I, lcd_T810_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_21
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_25_FFin
@@ -1411,7 +1425,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_25
 END
 SYM, lcd_doscanline_S0_scan_data_26_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T818_twoop
+PIN, I2, I, lcd_T819_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_22
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_26_FFin
@@ -1423,7 +1437,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_26
 END
 SYM, lcd_doscanline_S0_scan_data_27_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T827_twoop
+PIN, I2, I, lcd_T828_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_23
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_27_FFin
@@ -1435,7 +1449,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_27
 END
 SYM, lcd_doscanline_S0_scan_data_28_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T836_twoop
+PIN, I2, I, lcd_T837_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_24
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_28_FFin
@@ -1447,7 +1461,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_28
 END
 SYM, lcd_doscanline_S0_scan_data_29_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T845_twoop
+PIN, I2, I, lcd_T846_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_25
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_29_FFin
@@ -1459,7 +1473,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_29
 END
 SYM, lcd_doscanline_S0_scan_data_30_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T854_twoop
+PIN, I2, I, lcd_T855_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_26
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_30_FFin
@@ -1471,7 +1485,7 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_doscanline_S0_scan_data_30
 END
 SYM, lcd_doscanline_S0_scan_data_31_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, lcd_T863_twoop
+PIN, I2, I, lcd_T864_twoop
 PIN, I1, I, lcd_doscanline_S0_scan_data_27
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
 PIN, O, O, lcd_doscanline_S0_scan_data_31_FFin
@@ -2990,15 +3004,11 @@ PIN, I1, I, lcd_doframe_S0_T18_word_2
 PIN, I0, I, lcd_doframe_S0_S0_T118_endloop
 PIN, O, O, lcd_doframe_S0_T27_twoop
 END
-SYM, lcd_main__state_C38, INV, LIBVER=2.0.0
-PIN, I, I, lcd_Running
-PIN, O, O, lcd_main__state_C38
-END
 SYM, lcd_main_S0_count1_0_FFin, EQN, EQN=((I1*~I3)+(I0*I1)+(I2*~I3)+(I0*I2)+(I0*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_S3_T13_endloop
-PIN, I0, I, lcd_T1513_comp
+PIN, I0, I, lcd_T1514_comp
 PIN, O, O, lcd_main_S0_count1_0_FFin
 END
 SYM, lcd_main_S0_count1_0, DFF, LIBVER=2.0.0
@@ -3008,8 +3018,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_0
 END
 SYM, lcd_main_S0_count1_1_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1534_tree2_0
-PIN, I0, I, lcd_T1530_word_1
+PIN, I1, I, lcd_T1535_tree2_0
+PIN, I0, I, lcd_T1531_word_1
 PIN, O, O, lcd_main_S0_count1_1_FFin
 END
 SYM, lcd_main_S0_count1_1, DFF, LIBVER=2.0.0
@@ -3019,8 +3029,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_1
 END
 SYM, lcd_main_S0_count1_2_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1549_tree2_2
-PIN, I0, I, lcd_T1545_word_3
+PIN, I1, I, lcd_T1550_tree2_2
+PIN, I0, I, lcd_T1546_word_3
 PIN, O, O, lcd_main_S0_count1_2_FFin
 END
 SYM, lcd_main_S0_count1_2, DFF, LIBVER=2.0.0
@@ -3030,8 +3040,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_2
 END
 SYM, lcd_main_S0_count1_3_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1564_tree2_1
-PIN, I0, I, lcd_T1560_word_2
+PIN, I1, I, lcd_T1565_tree2_1
+PIN, I0, I, lcd_T1561_word_2
 PIN, O, O, lcd_main_S0_count1_3_FFin
 END
 SYM, lcd_main_S0_count1_3, DFF, LIBVER=2.0.0
@@ -3041,8 +3051,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_3
 END
 SYM, lcd_main_S0_count1_4_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1579_tree2_0
-PIN, I0, I, lcd_T1575_word_1
+PIN, I1, I, lcd_T1580_tree2_0
+PIN, I0, I, lcd_T1576_word_1
 PIN, O, O, lcd_main_S0_count1_4_FFin
 END
 SYM, lcd_main_S0_count1_4, DFF, LIBVER=2.0.0
@@ -3053,9 +3063,9 @@ PIN, Q, O, lcd_main_S0_count1_4
 END
 SYM, lcd_main_S0_count1_5_FFin, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_T23_endloop
-PIN, I2, I, lcd_T1590_word_1
-PIN, I1, I, lcd_T1590_word_2
-PIN, I0, I, lcd_T1590_word_3
+PIN, I2, I, lcd_T1591_word_1
+PIN, I1, I, lcd_T1591_word_2
+PIN, I0, I, lcd_T1591_word_3
 PIN, O, O, lcd_main_S0_count1_5_FFin
 END
 SYM, lcd_main_S0_count1_5, DFF, LIBVER=2.0.0
@@ -3065,8 +3075,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_5
 END
 SYM, lcd_main_S0_count1_6_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1609_tree2_1
-PIN, I0, I, lcd_T1605_word_2
+PIN, I1, I, lcd_T1610_tree2_1
+PIN, I0, I, lcd_T1606_word_2
 PIN, O, O, lcd_main_S0_count1_6_FFin
 END
 SYM, lcd_main_S0_count1_6, DFF, LIBVER=2.0.0
@@ -3076,8 +3086,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_6
 END
 SYM, lcd_main_S0_count1_7_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1624_tree2_0
-PIN, I0, I, lcd_T1620_word_1
+PIN, I1, I, lcd_T1625_tree2_0
+PIN, I0, I, lcd_T1621_word_1
 PIN, O, O, lcd_main_S0_count1_7_FFin
 END
 SYM, lcd_main_S0_count1_7, DFF, LIBVER=2.0.0
@@ -3087,8 +3097,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_7
 END
 SYM, lcd_main_S0_count1_8_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1639_tree2_0
-PIN, I0, I, lcd_T1635_word_1
+PIN, I1, I, lcd_T1640_tree2_0
+PIN, I0, I, lcd_T1636_word_1
 PIN, O, O, lcd_main_S0_count1_8_FFin
 END
 SYM, lcd_main_S0_count1_8, DFF, LIBVER=2.0.0
@@ -3098,8 +3108,8 @@ PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_count1_8
 END
 SYM, lcd_main_S0_count1_9_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1654_tree2_0
-PIN, I0, I, lcd_T1650_word_1
+PIN, I1, I, lcd_T1655_tree2_0
+PIN, I0, I, lcd_T1651_word_1
 PIN, O, O, lcd_main_S0_count1_9_FFin
 END
 SYM, lcd_main_S0_count1_9, DFF, LIBVER=2.0.0
@@ -3247,8 +3257,8 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_T11_looptop
 END
-SYM, lcd_main_S0_T12_endloop_FFin, EQN, EQN=((~I1)+(I0)), LIBVER=2.0.0
-PIN, I1, I, lcd_Running
+SYM, lcd_main_S0_T12_endloop_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T1__Start
 PIN, I0, I, lcd_main_S0_T11_looptop
 PIN, O, O, lcd_main_S0_T12_endloop_FFin
 END
@@ -3629,630 +3639,630 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, lcd_main_S0_S4_T2_calling
 END
-SYM, SYMlcd_T28_word_1, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T29_word_1, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doframe_S0_S0_T61_endloop
 PIN, I1, I, lcd_main_S0_T79_endloop
 PIN, I0, I, lcd_lp
-PIN, O, O, lcd_T28_word_1
+PIN, O, O, lcd_T29_word_1
 END
-SYM, SYMlcd_T226_word_1, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T227_word_1, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doscanline_S0_T40_endloop
 PIN, I1, I, lcd_doscanline_S0_S0_T69_endloop
 PIN, I0, I, sram_lcd_request
-PIN, O, O, lcd_T226_word_1
+PIN, O, O, lcd_T227_word_1
 END
-SYM, SYMlcd_T239_comp, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
+SYM, SYMlcd_T240_comp, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_T0_init
 PIN, I2, I, lcd_doscanline_S0_T70_looptop
 PIN, I1, I, lcd_doscanline_S0_T71_endloop
 PIN, I0, I, lcd_doframe_T0_init
-PIN, O, O, lcd_T239_comp
+PIN, O, O, lcd_T240_comp
 END
-SYM, SYMlcd_T241_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T239_comp
+SYM, SYMlcd_T242_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_2
-PIN, O, O, lcd_T241_word_1
+PIN, O, O, lcd_T242_word_1
 END
-SYM, SYMlcd_T245_tree2_0, EQN, EQN=((I0*~I3)+(I1*~I3)+(I2*~I3)), LIBVER=2.0.0
+SYM, SYMlcd_T246_tree2_0, EQN, EQN=((I0*~I3)+(I1*~I3)+(I2*~I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_2
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, lcd_doscanline_S0_T70_looptop
 PIN, I0, I, lcd_doscanline_S0_T71_endloop
-PIN, O, O, lcd_T245_tree2_0
+PIN, O, O, lcd_T246_tree2_0
 END
-SYM, SYMlcd_T256_word_1, EQN, EQN=((I1*~I2*~I3)+(I0*I1*~I2)+(I1*I2*I3)+(I0*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T257_word_1, EQN, EQN=((I1*~I2*~I3)+(I0*I1*~I2)+(I1*I2*I3)+(I0*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_3
 PIN, I2, I, scan_addr_2
 PIN, I1, I, lcd_doscanline_S0_T71_endloop
-PIN, I0, I, lcd_T239_comp
-PIN, O, O, lcd_T256_word_1
+PIN, I0, I, lcd_T240_comp
+PIN, O, O, lcd_T257_word_1
 END
-SYM, SYMlcd_T260_tree2_0, EQN, EQN=((I0*I2*~I3)+(I1*I2*~I3)+(I0*~I2*I3)+(I1*~I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T261_tree2_0, EQN, EQN=((I0*I2*~I3)+(I1*I2*~I3)+(I0*~I2*I3)+(I1*~I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_3
 PIN, I2, I, scan_addr_2
 PIN, I1, I, lcd_doscanline_T0_init
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T260_tree2_0
+PIN, O, O, lcd_T261_tree2_0
 END
-SYM, SYMlcd_T271_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T272_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_3
 PIN, I2, I, scan_addr_2
 PIN, I1, I, scan_addr_4
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T271_word_1
+PIN, O, O, lcd_T272_word_1
 END
-SYM, SYMlcd_T271_word_2, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T272_word_2, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_3
 PIN, I2, I, scan_addr_2
 PIN, I1, I, scan_addr_4
 PIN, I0, I, lcd_doscanline_S0_T71_endloop
-PIN, O, O, lcd_T271_word_2
+PIN, O, O, lcd_T272_word_2
 END
-SYM, SYMlcd_T271_word_3, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T239_comp
+SYM, SYMlcd_T272_word_3, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_4
-PIN, O, O, lcd_T271_word_3
+PIN, O, O, lcd_T272_word_3
 END
-SYM, SYMlcd_T275_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T276_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_3
 PIN, I2, I, scan_addr_2
 PIN, I1, I, scan_addr_4
 PIN, I0, I, lcd_doscanline_T0_init
-PIN, O, O, lcd_T275_tree2_0
+PIN, O, O, lcd_T276_tree2_0
 END
-SYM, SYMlcd_T286_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T287_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_5F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_5
-PIN, O, O, lcd_T286_word_1
+PIN, O, O, lcd_T287_word_1
 END
-SYM, SYMlcd_T290_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T291_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_5F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_5F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T290_tree2_0
+PIN, O, O, lcd_T291_tree2_0
 END
-SYM, SYMlcd_T301_word_1, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T302_word_1, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doscanline_S0_T9_car_6
 PIN, I1, I, scan_addr_6
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T301_word_1
+PIN, O, O, lcd_T302_word_1
 END
-SYM, SYMlcd_T301_word_2, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T302_word_2, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doscanline_S0_T96_car_6
 PIN, I1, I, scan_addr_6
 PIN, I0, I, lcd_doscanline_S0_T71_endloop
-PIN, O, O, lcd_T301_word_2
+PIN, O, O, lcd_T302_word_2
 END
-SYM, SYMlcd_T305_tree2_0, EQN, EQN=((I1*I2*~I3)+(I1*~I2*I3)+(I0*I1*I3)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T306_tree2_0, EQN, EQN=((I1*I2*~I3)+(I1*~I2*I3)+(I0*I1*I3)+(I0*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T9_car_6
 PIN, I2, I, scan_addr_6
 PIN, I1, I, lcd_doscanline_T0_init
-PIN, I0, I, lcd_T239_comp
-PIN, O, O, lcd_T305_tree2_0
+PIN, I0, I, lcd_T240_comp
+PIN, O, O, lcd_T306_tree2_0
 END
-SYM, SYMlcd_T316_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T317_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T9_car_6
 PIN, I2, I, scan_addr_6
 PIN, I1, I, scan_addr_7
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T316_word_1
+PIN, O, O, lcd_T317_word_1
 END
-SYM, SYMlcd_T316_word_2, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T317_word_2, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T96_car_6
 PIN, I2, I, scan_addr_6
 PIN, I1, I, scan_addr_7
 PIN, I0, I, lcd_doscanline_S0_T71_endloop
-PIN, O, O, lcd_T316_word_2
+PIN, O, O, lcd_T317_word_2
 END
-SYM, SYMlcd_T316_word_3, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T239_comp
+SYM, SYMlcd_T317_word_3, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_7
-PIN, O, O, lcd_T316_word_3
+PIN, O, O, lcd_T317_word_3
 END
-SYM, SYMlcd_T320_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T321_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T9_car_6
 PIN, I2, I, scan_addr_6
 PIN, I1, I, scan_addr_7
 PIN, I0, I, lcd_doscanline_T0_init
-PIN, O, O, lcd_T320_tree2_0
+PIN, O, O, lcd_T321_tree2_0
 END
-SYM, SYMlcd_T331_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T332_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_8F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_8
-PIN, O, O, lcd_T331_word_1
+PIN, O, O, lcd_T332_word_1
 END
-SYM, SYMlcd_T335_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T336_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_8F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_8F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T335_tree2_0
+PIN, O, O, lcd_T336_tree2_0
 END
-SYM, SYMlcd_T346_word_1, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T347_word_1, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doscanline_S0_T9_car_9
 PIN, I1, I, scan_addr_9
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T346_word_1
+PIN, O, O, lcd_T347_word_1
 END
-SYM, SYMlcd_T346_word_2, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T347_word_2, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_doscanline_S0_T96_car_9
 PIN, I1, I, scan_addr_9
 PIN, I0, I, lcd_doscanline_S0_T71_endloop
-PIN, O, O, lcd_T346_word_2
+PIN, O, O, lcd_T347_word_2
 END
-SYM, SYMlcd_T350_tree2_0, EQN, EQN=((I1*I2*~I3)+(I1*~I2*I3)+(I0*I1*I3)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T351_tree2_0, EQN, EQN=((I1*I2*~I3)+(I1*~I2*I3)+(I0*I1*I3)+(I0*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T9_car_9
 PIN, I2, I, scan_addr_9
 PIN, I1, I, lcd_doscanline_T0_init
-PIN, I0, I, lcd_T239_comp
-PIN, O, O, lcd_T350_tree2_0
+PIN, I0, I, lcd_T240_comp
+PIN, O, O, lcd_T351_tree2_0
 END
-SYM, SYMlcd_T361_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T362_word_1, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T9_car_9
 PIN, I2, I, scan_addr_9
 PIN, I1, I, scan_addr_10
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T361_word_1
+PIN, O, O, lcd_T362_word_1
 END
-SYM, SYMlcd_T361_word_2, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T362_word_2, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T96_car_9
 PIN, I2, I, scan_addr_9
 PIN, I1, I, scan_addr_10
 PIN, I0, I, lcd_doscanline_S0_T71_endloop
-PIN, O, O, lcd_T361_word_2
+PIN, O, O, lcd_T362_word_2
 END
-SYM, SYMlcd_T361_word_3, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T239_comp
+SYM, SYMlcd_T362_word_3, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_10
-PIN, O, O, lcd_T361_word_3
+PIN, O, O, lcd_T362_word_3
 END
-SYM, SYMlcd_T365_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T366_tree2_0, EQN, EQN=((I0*~I1*I2*I3)+(I0*I1*~I3)+(I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T9_car_9
 PIN, I2, I, scan_addr_9
 PIN, I1, I, scan_addr_10
 PIN, I0, I, lcd_doscanline_T0_init
-PIN, O, O, lcd_T365_tree2_0
+PIN, O, O, lcd_T366_tree2_0
 END
-SYM, SYMlcd_T376_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T377_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_11F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_11
-PIN, O, O, lcd_T376_word_1
+PIN, O, O, lcd_T377_word_1
 END
-SYM, SYMlcd_T380_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T381_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_11F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_11F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T380_tree2_0
+PIN, O, O, lcd_T381_tree2_0
 END
-SYM, SYMlcd_T391_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T392_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_12F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_12
-PIN, O, O, lcd_T391_word_1
+PIN, O, O, lcd_T392_word_1
 END
-SYM, SYMlcd_T395_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T396_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_12F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_12F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T395_tree2_0
+PIN, O, O, lcd_T396_tree2_0
 END
-SYM, SYMlcd_T406_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T407_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_13F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_13
-PIN, O, O, lcd_T406_word_1
+PIN, O, O, lcd_T407_word_1
 END
-SYM, SYMlcd_T410_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T411_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_13F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_13F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T410_tree2_0
+PIN, O, O, lcd_T411_tree2_0
 END
-SYM, SYMlcd_T421_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T422_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_14F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_14
-PIN, O, O, lcd_T421_word_1
+PIN, O, O, lcd_T422_word_1
 END
-SYM, SYMlcd_T425_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T426_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_14F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_14F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T425_tree2_0
+PIN, O, O, lcd_T426_tree2_0
 END
-SYM, SYMlcd_T436_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T437_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_15F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_15
-PIN, O, O, lcd_T436_word_1
+PIN, O, O, lcd_T437_word_1
 END
-SYM, SYMlcd_T440_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T441_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_15F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_15F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T440_tree2_0
+PIN, O, O, lcd_T441_tree2_0
 END
-SYM, SYMlcd_T451_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T452_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_16F2
 PIN, I2, I, lcd_doscanline_S0_T71_endloop
-PIN, I1, I, lcd_T239_comp
+PIN, I1, I, lcd_T240_comp
 PIN, I0, I, scan_addr_16
-PIN, O, O, lcd_T451_word_1
+PIN, O, O, lcd_T452_word_1
 END
-SYM, SYMlcd_T455_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T456_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, scan_addr_16F0
 PIN, I2, I, lcd_doscanline_T0_init
 PIN, I1, I, scan_addr_16F0
 PIN, I0, I, lcd_doscanline_S0_T70_looptop
-PIN, O, O, lcd_T455_tree2_0
+PIN, O, O, lcd_T456_tree2_0
 END
-SYM, SYMlcd_T620_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T621_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_4
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_4
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T620_twoop
+PIN, O, O, lcd_T621_twoop
 END
-SYM, SYMlcd_T629_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T630_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_5
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_5
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T629_twoop
+PIN, O, O, lcd_T630_twoop
 END
-SYM, SYMlcd_T638_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T639_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_6
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_6
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T638_twoop
+PIN, O, O, lcd_T639_twoop
 END
-SYM, SYMlcd_T647_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T648_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_7
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_7
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T647_twoop
+PIN, O, O, lcd_T648_twoop
 END
-SYM, SYMlcd_T656_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T657_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_8
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_8
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T656_twoop
+PIN, O, O, lcd_T657_twoop
 END
-SYM, SYMlcd_T665_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T666_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_9
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_9
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T665_twoop
+PIN, O, O, lcd_T666_twoop
 END
-SYM, SYMlcd_T674_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T675_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_10
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_10
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T674_twoop
+PIN, O, O, lcd_T675_twoop
 END
-SYM, SYMlcd_T683_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T684_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_11
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_11
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T683_twoop
+PIN, O, O, lcd_T684_twoop
 END
-SYM, SYMlcd_T692_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T693_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_12
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_12
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T692_twoop
+PIN, O, O, lcd_T693_twoop
 END
-SYM, SYMlcd_T701_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T702_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_13
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_13
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T701_twoop
+PIN, O, O, lcd_T702_twoop
 END
-SYM, SYMlcd_T710_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T711_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_14
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_14
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T710_twoop
+PIN, O, O, lcd_T711_twoop
 END
-SYM, SYMlcd_T719_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T720_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_15
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_15
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T719_twoop
+PIN, O, O, lcd_T720_twoop
 END
-SYM, SYMlcd_T728_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T729_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_16
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_16
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T728_twoop
+PIN, O, O, lcd_T729_twoop
 END
-SYM, SYMlcd_T737_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T738_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_17
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_17
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T737_twoop
+PIN, O, O, lcd_T738_twoop
 END
-SYM, SYMlcd_T746_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T747_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_18
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_18
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T746_twoop
+PIN, O, O, lcd_T747_twoop
 END
-SYM, SYMlcd_T755_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T756_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_19
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_19
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T755_twoop
+PIN, O, O, lcd_T756_twoop
 END
-SYM, SYMlcd_T764_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T765_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_20
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_20
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T764_twoop
+PIN, O, O, lcd_T765_twoop
 END
-SYM, SYMlcd_T773_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T774_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_21
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_21
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T773_twoop
+PIN, O, O, lcd_T774_twoop
 END
-SYM, SYMlcd_T782_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T783_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_22
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_22
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T782_twoop
+PIN, O, O, lcd_T783_twoop
 END
-SYM, SYMlcd_T791_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T792_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_23
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_23
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T791_twoop
+PIN, O, O, lcd_T792_twoop
 END
-SYM, SYMlcd_T800_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T801_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_24
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_24
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T800_twoop
+PIN, O, O, lcd_T801_twoop
 END
-SYM, SYMlcd_T809_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T810_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_25
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_25
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T809_twoop
+PIN, O, O, lcd_T810_twoop
 END
-SYM, SYMlcd_T818_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T819_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_26
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_26
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T818_twoop
+PIN, O, O, lcd_T819_twoop
 END
-SYM, SYMlcd_T827_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T828_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_27
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_27
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T827_twoop
+PIN, O, O, lcd_T828_twoop
 END
-SYM, SYMlcd_T836_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T837_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_28
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_28
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T836_twoop
+PIN, O, O, lcd_T837_twoop
 END
-SYM, SYMlcd_T845_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T846_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_29
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_29
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T845_twoop
+PIN, O, O, lcd_T846_twoop
 END
-SYM, SYMlcd_T854_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T855_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_30
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_30
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T854_twoop
+PIN, O, O, lcd_T855_twoop
 END
-SYM, SYMlcd_T863_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T864_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1*I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_doscanline_S0_T70_looptop
 PIN, I2, I, lcd_doscanline_S0_scan_data_31
 PIN, I1, I, lcd_doscanline_S0_new_scan_data_31
 PIN, I0, I, lcd_doscanline_S0_S0_T68_looptop
-PIN, O, O, lcd_T863_twoop
+PIN, O, O, lcd_T864_twoop
 END
-SYM, SYMlcd_T1513_comp, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1514_comp, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_T23_endloop
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_T46_endloop
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1513_comp
+PIN, O, O, lcd_T1514_comp
 END
-SYM, SYMlcd_T1530_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1513_comp
+SYM, SYMlcd_T1531_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T1514_comp
 PIN, I0, I, lcd_main_S0_count1_1
-PIN, O, O, lcd_T1530_word_1
+PIN, O, O, lcd_T1531_word_1
 END
-SYM, SYMlcd_T1534_tree2_0, EQN, EQN=((I0*~I2*~I3)+(I1*~I2*~I3)+(I0*I2*I3)+(I1*I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1535_tree2_0, EQN, EQN=((I0*~I2*~I3)+(I1*~I2*~I3)+(I0*I2*I3)+(I1*I2*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_1
 PIN, I2, I, lcd_main_S0_count1_0
 PIN, I1, I, lcd_main_S0_T45_looptop
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1534_tree2_0
+PIN, O, O, lcd_T1535_tree2_0
 END
-SYM, SYMlcd_T1545_word_1, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1546_word_1, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_1
 PIN, I2, I, lcd_main_S0_count1_0
 PIN, I1, I, lcd_main_S0_count1_2
 PIN, I0, I, lcd_main_S0_T45_looptop
-PIN, O, O, lcd_T1545_word_1
+PIN, O, O, lcd_T1546_word_1
 END
-SYM, SYMlcd_T1545_word_2, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1546_word_2, EQN, EQN=((I0*~I1*~I2*~I3)+(I0*I1*I2)+(I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_1
 PIN, I2, I, lcd_main_S0_count1_0
 PIN, I1, I, lcd_main_S0_count1_2
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1545_word_2
+PIN, O, O, lcd_T1546_word_2
 END
-SYM, SYMlcd_T1545_word_3, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
+SYM, SYMlcd_T1546_word_3, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_S3_T13_endloop
 PIN, I0, I, lcd_main_S0_count1_2
-PIN, O, O, lcd_T1545_word_3
+PIN, O, O, lcd_T1546_word_3
 END
-SYM, SYMlcd_T1549_tree2_2, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1550_tree2_2, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_T23_endloop
 PIN, I2, I, lcd_main_S0_T46_endloop
-PIN, I1, I, lcd_T1545_word_1
-PIN, I0, I, lcd_T1545_word_2
-PIN, O, O, lcd_T1549_tree2_2
+PIN, I1, I, lcd_T1546_word_1
+PIN, I0, I, lcd_T1546_word_2
+PIN, O, O, lcd_T1550_tree2_2
 END
-SYM, SYMlcd_T1560_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+SYM, SYMlcd_T1561_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
 PIN, I1, I, lcd_main_S0_count1_3F0
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1560_word_1
+PIN, O, O, lcd_T1561_word_1
 END
-SYM, SYMlcd_T1560_word_2, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1561_word_2, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_T23_endloop
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_S3_T13_endloop
 PIN, I0, I, lcd_main_S0_count1_3
-PIN, O, O, lcd_T1560_word_2
+PIN, O, O, lcd_T1561_word_2
 END
-SYM, SYMlcd_T1564_tree2_1, EQN, EQN=((I2*I3)+(I0)+(I1)), LIBVER=2.0.0
+SYM, SYMlcd_T1565_tree2_1, EQN, EQN=((I2*I3)+(I0)+(I1)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_3F0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_T46_endloop
-PIN, I0, I, lcd_T1560_word_1
-PIN, O, O, lcd_T1564_tree2_1
+PIN, I0, I, lcd_T1561_word_1
+PIN, O, O, lcd_T1565_tree2_1
 END
-SYM, SYMlcd_T1575_word_1, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T1576_word_1, EQN, EQN=((I0*I1*~I2)+(I0*~I1*I2)), LIBVER=2.0.0
 PIN, I2, I, lcd_main_S0_S2_T3_car_4
 PIN, I1, I, lcd_main_S0_count1_4
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1575_word_1
+PIN, O, O, lcd_T1576_word_1
 END
-SYM, SYMlcd_T1579_tree2_0, EQN, EQN=((I1*I2*~I3)+(I1*~I2*I3)+(I0*I1*I3)+(I0*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T1580_tree2_0, EQN, EQN=((I1*I2*~I3)+(I1*~I2*I3)+(I0*I1*I3)+(I0*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_S2_T3_car_4
 PIN, I2, I, lcd_main_S0_count1_4
 PIN, I1, I, lcd_main_S0_T45_looptop
-PIN, I0, I, lcd_T1513_comp
-PIN, O, O, lcd_T1579_tree2_0
+PIN, I0, I, lcd_T1514_comp
+PIN, O, O, lcd_T1580_tree2_0
 END
-SYM, SYMlcd_T1590_word_1, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T1591_word_1, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_S2_T3_car_4
 PIN, I2, I, lcd_main_S0_count1_4
 PIN, I1, I, lcd_main_S0_count1_5
 PIN, I0, I, lcd_main_S0_T45_looptop
-PIN, O, O, lcd_T1590_word_1
+PIN, O, O, lcd_T1591_word_1
 END
-SYM, SYMlcd_T1590_word_2, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
+SYM, SYMlcd_T1591_word_2, EQN, EQN=((I0*~I1*~I2*I3)+(I0*I1*~I3)+(I0*I1*I2)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_S2_T3_car_4
 PIN, I2, I, lcd_main_S0_count1_4
 PIN, I1, I, lcd_main_S0_count1_5
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1590_word_2
+PIN, O, O, lcd_T1591_word_2
 END
-SYM, SYMlcd_T1590_word_3, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1591_word_3, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_T45_looptop
 PIN, I2, I, lcd_main_S0_T46_endloop
 PIN, I1, I, lcd_main_S0_S3_T13_endloop
 PIN, I0, I, lcd_main_S0_count1_5
-PIN, O, O, lcd_T1590_word_3
+PIN, O, O, lcd_T1591_word_3
 END
-SYM, SYMlcd_T1605_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+SYM, SYMlcd_T1606_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
 PIN, I1, I, lcd_main_S0_count1_6F0
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1605_word_1
+PIN, O, O, lcd_T1606_word_1
 END
-SYM, SYMlcd_T1605_word_2, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1606_word_2, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_T45_looptop
 PIN, I2, I, lcd_main_S0_T46_endloop
 PIN, I1, I, lcd_main_S0_S3_T13_endloop
 PIN, I0, I, lcd_main_S0_count1_6
-PIN, O, O, lcd_T1605_word_2
+PIN, O, O, lcd_T1606_word_2
 END
-SYM, SYMlcd_T1609_tree2_1, EQN, EQN=((I2*I3)+(I0)+(I1)), LIBVER=2.0.0
+SYM, SYMlcd_T1610_tree2_1, EQN, EQN=((I2*I3)+(I0)+(I1)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_6F0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_T23_endloop
-PIN, I0, I, lcd_T1605_word_1
-PIN, O, O, lcd_T1609_tree2_1
+PIN, I0, I, lcd_T1606_word_1
+PIN, O, O, lcd_T1610_tree2_1
 END
-SYM, SYMlcd_T1620_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1513_comp
+SYM, SYMlcd_T1621_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T1514_comp
 PIN, I0, I, lcd_main_S0_count1_7
-PIN, O, O, lcd_T1620_word_1
+PIN, O, O, lcd_T1621_word_1
 END
-SYM, SYMlcd_T1624_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1625_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_7F0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_count1_7F0
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1624_tree2_0
+PIN, O, O, lcd_T1625_tree2_0
 END
-SYM, SYMlcd_T1635_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1513_comp
+SYM, SYMlcd_T1636_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T1514_comp
 PIN, I0, I, lcd_main_S0_count1_8
-PIN, O, O, lcd_T1635_word_1
+PIN, O, O, lcd_T1636_word_1
 END
-SYM, SYMlcd_T1639_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1640_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_8F0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_count1_8F0
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1639_tree2_0
+PIN, O, O, lcd_T1640_tree2_0
 END
-SYM, SYMlcd_T1650_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
-PIN, I1, I, lcd_T1513_comp
+SYM, SYMlcd_T1651_word_1, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+PIN, I1, I, lcd_T1514_comp
 PIN, I0, I, lcd_main_S0_count1_9
-PIN, O, O, lcd_T1650_word_1
+PIN, O, O, lcd_T1651_word_1
 END
-SYM, SYMlcd_T1654_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYMlcd_T1655_tree2_0, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, lcd_main_S0_count1_9F0
 PIN, I2, I, lcd_main_S0_T45_looptop
 PIN, I1, I, lcd_main_S0_count1_9F0
 PIN, I0, I, lcd_main_S0_S3_T13_endloop
-PIN, O, O, lcd_T1654_tree2_0
+PIN, O, O, lcd_T1655_tree2_0
 END
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:48 2006"
+PROG, fpgac, 1.0.beta-3A  SVN: $Revision$, "Sun May 14 01:07:55 2006"
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
 END
@@ -4269,6 +4279,20 @@ PIN, D, I, 1_Running_FFin
 PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 1_Running
+END
+SYM, 1_T1__Start_FFin, INV, LIBVER=2.0.0
+PIN, I, I, 1_Running
+PIN, O, O, 1_T1__Start_FFin
+END
+SYM, 1_T1__Start, DFF, LIBVER=2.0.0
+PIN, D, I, 1_T1__Start_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 1_T1__Start
+END
+SYM, 1__state_C1, BUF, LIBVER=2.0.0
+PIN, I, I, 1_T1__Start
+PIN, O, O, 1__state_C1
 END
 SYM, sram_sun_address_0, BUF, LIBVER=2.0.0
 PIN, I, I, sram_sun_address_0_pad
@@ -4381,7 +4405,7 @@ END
 SYM, sram_tosun_0, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_0_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_0
 END
 SYM, sram_tosun_1-OBUF, BUF, LIBVER=2.0.0
@@ -4395,7 +4419,7 @@ END
 SYM, sram_tosun_1, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_1_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_1
 END
 SYM, sram_tosun_2-OBUF, BUF, LIBVER=2.0.0
@@ -4409,7 +4433,7 @@ END
 SYM, sram_tosun_2, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_2_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_2
 END
 SYM, sram_tosun_3-OBUF, BUF, LIBVER=2.0.0
@@ -4423,7 +4447,7 @@ END
 SYM, sram_tosun_3, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_3_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_3
 END
 SYM, sram_tosun_4-OBUF, BUF, LIBVER=2.0.0
@@ -4437,7 +4461,7 @@ END
 SYM, sram_tosun_4, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_4_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_4
 END
 SYM, sram_tosun_5-OBUF, BUF, LIBVER=2.0.0
@@ -4451,7 +4475,7 @@ END
 SYM, sram_tosun_5, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_5_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_5
 END
 SYM, sram_tosun_6-OBUF, BUF, LIBVER=2.0.0
@@ -4465,7 +4489,7 @@ END
 SYM, sram_tosun_6, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_6_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_6
 END
 SYM, sram_tosun_7-OBUF, BUF, LIBVER=2.0.0
@@ -4479,7 +4503,7 @@ END
 SYM, sram_tosun_7, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tosun_7_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0_S6__state_C52
+PIN, CE, I, 1_main_S0_S0_S6__state_C55
 PIN, Q, O, sram_tosun_7
 END
 SYM, sram_sun_request, BUF, LIBVER=2.0.0
@@ -4586,7 +4610,7 @@ END
 SYM, sram_tolcd_0, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_0_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_0
 END
 SYM, sram_tolcd_1-OBUF, BUF, LIBVER=2.0.0
@@ -4600,7 +4624,7 @@ END
 SYM, sram_tolcd_1, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_1_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_1
 END
 SYM, sram_tolcd_2-OBUF, BUF, LIBVER=2.0.0
@@ -4614,7 +4638,7 @@ END
 SYM, sram_tolcd_2, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_2_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_2
 END
 SYM, sram_tolcd_3-OBUF, BUF, LIBVER=2.0.0
@@ -4628,7 +4652,7 @@ END
 SYM, sram_tolcd_3, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_3_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_3
 END
 SYM, sram_tolcd_4-OBUF, BUF, LIBVER=2.0.0
@@ -4642,7 +4666,7 @@ END
 SYM, sram_tolcd_4, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_4_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_4
 END
 SYM, sram_tolcd_5-OBUF, BUF, LIBVER=2.0.0
@@ -4656,7 +4680,7 @@ END
 SYM, sram_tolcd_5, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_5_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_5
 END
 SYM, sram_tolcd_6-OBUF, BUF, LIBVER=2.0.0
@@ -4670,7 +4694,7 @@ END
 SYM, sram_tolcd_6, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_6_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_6
 END
 SYM, sram_tolcd_7-OBUF, BUF, LIBVER=2.0.0
@@ -4684,7 +4708,7 @@ END
 SYM, sram_tolcd_7, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_7_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_7
 END
 SYM, sram_tolcd_8-OBUF, BUF, LIBVER=2.0.0
@@ -4698,7 +4722,7 @@ END
 SYM, sram_tolcd_8, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_8_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_8
 END
 SYM, sram_tolcd_9-OBUF, BUF, LIBVER=2.0.0
@@ -4712,7 +4736,7 @@ END
 SYM, sram_tolcd_9, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_9_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_9
 END
 SYM, sram_tolcd_10-OBUF, BUF, LIBVER=2.0.0
@@ -4726,7 +4750,7 @@ END
 SYM, sram_tolcd_10, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_10_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_10
 END
 SYM, sram_tolcd_11-OBUF, BUF, LIBVER=2.0.0
@@ -4740,7 +4764,7 @@ END
 SYM, sram_tolcd_11, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_11_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_11
 END
 SYM, sram_tolcd_12-OBUF, BUF, LIBVER=2.0.0
@@ -4754,7 +4778,7 @@ END
 SYM, sram_tolcd_12, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_12_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_12
 END
 SYM, sram_tolcd_13-OBUF, BUF, LIBVER=2.0.0
@@ -4768,7 +4792,7 @@ END
 SYM, sram_tolcd_13, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_13_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_13
 END
 SYM, sram_tolcd_14-OBUF, BUF, LIBVER=2.0.0
@@ -4782,7 +4806,7 @@ END
 SYM, sram_tolcd_14, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_14_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_14
 END
 SYM, sram_tolcd_15-OBUF, BUF, LIBVER=2.0.0
@@ -4796,7 +4820,7 @@ END
 SYM, sram_tolcd_15, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_15_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_15
 END
 SYM, sram_tolcd_16-OBUF, BUF, LIBVER=2.0.0
@@ -4810,7 +4834,7 @@ END
 SYM, sram_tolcd_16, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_16_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_16
 END
 SYM, sram_tolcd_17-OBUF, BUF, LIBVER=2.0.0
@@ -4824,7 +4848,7 @@ END
 SYM, sram_tolcd_17, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_17_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_17
 END
 SYM, sram_tolcd_18-OBUF, BUF, LIBVER=2.0.0
@@ -4838,7 +4862,7 @@ END
 SYM, sram_tolcd_18, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_18_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_18
 END
 SYM, sram_tolcd_19-OBUF, BUF, LIBVER=2.0.0
@@ -4852,7 +4876,7 @@ END
 SYM, sram_tolcd_19, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_19_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_19
 END
 SYM, sram_tolcd_20-OBUF, BUF, LIBVER=2.0.0
@@ -4866,7 +4890,7 @@ END
 SYM, sram_tolcd_20, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_20_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_20
 END
 SYM, sram_tolcd_21-OBUF, BUF, LIBVER=2.0.0
@@ -4880,7 +4904,7 @@ END
 SYM, sram_tolcd_21, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_21_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_21
 END
 SYM, sram_tolcd_22-OBUF, BUF, LIBVER=2.0.0
@@ -4894,7 +4918,7 @@ END
 SYM, sram_tolcd_22, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_22_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_22
 END
 SYM, sram_tolcd_23-OBUF, BUF, LIBVER=2.0.0
@@ -4908,7 +4932,7 @@ END
 SYM, sram_tolcd_23, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_23_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_23
 END
 SYM, sram_tolcd_24-OBUF, BUF, LIBVER=2.0.0
@@ -4922,7 +4946,7 @@ END
 SYM, sram_tolcd_24, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_24_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_24
 END
 SYM, sram_tolcd_25-OBUF, BUF, LIBVER=2.0.0
@@ -4936,7 +4960,7 @@ END
 SYM, sram_tolcd_25, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_25_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_25
 END
 SYM, sram_tolcd_26-OBUF, BUF, LIBVER=2.0.0
@@ -4950,7 +4974,7 @@ END
 SYM, sram_tolcd_26, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_26_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_26
 END
 SYM, sram_tolcd_27-OBUF, BUF, LIBVER=2.0.0
@@ -4964,7 +4988,7 @@ END
 SYM, sram_tolcd_27, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_27_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_27
 END
 SYM, sram_tolcd_28-OBUF, BUF, LIBVER=2.0.0
@@ -4978,7 +5002,7 @@ END
 SYM, sram_tolcd_28, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_28_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_28
 END
 SYM, sram_tolcd_29-OBUF, BUF, LIBVER=2.0.0
@@ -4992,7 +5016,7 @@ END
 SYM, sram_tolcd_29, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_29_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_29
 END
 SYM, sram_tolcd_30-OBUF, BUF, LIBVER=2.0.0
@@ -5006,7 +5030,7 @@ END
 SYM, sram_tolcd_30, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_30_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_30
 END
 SYM, sram_tolcd_31-OBUF, BUF, LIBVER=2.0.0
@@ -5020,7 +5044,7 @@ END
 SYM, sram_tolcd_31, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_31_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_31
 END
 SYM, sram_tolcd_32-OBUF, BUF, LIBVER=2.0.0
@@ -5034,7 +5058,7 @@ END
 SYM, sram_tolcd_32, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_32_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_32
 END
 SYM, sram_tolcd_33-OBUF, BUF, LIBVER=2.0.0
@@ -5048,7 +5072,7 @@ END
 SYM, sram_tolcd_33, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_33_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_33
 END
 SYM, sram_tolcd_34-OBUF, BUF, LIBVER=2.0.0
@@ -5062,7 +5086,7 @@ END
 SYM, sram_tolcd_34, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_34_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_34
 END
 SYM, sram_tolcd_35-OBUF, BUF, LIBVER=2.0.0
@@ -5076,7 +5100,7 @@ END
 SYM, sram_tolcd_35, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_35_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_35
 END
 SYM, sram_tolcd_36-OBUF, BUF, LIBVER=2.0.0
@@ -5090,7 +5114,7 @@ END
 SYM, sram_tolcd_36, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_36_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_36
 END
 SYM, sram_tolcd_37-OBUF, BUF, LIBVER=2.0.0
@@ -5104,7 +5128,7 @@ END
 SYM, sram_tolcd_37, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_37_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_37
 END
 SYM, sram_tolcd_38-OBUF, BUF, LIBVER=2.0.0
@@ -5118,7 +5142,7 @@ END
 SYM, sram_tolcd_38, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_38_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_38
 END
 SYM, sram_tolcd_39-OBUF, BUF, LIBVER=2.0.0
@@ -5132,7 +5156,7 @@ END
 SYM, sram_tolcd_39, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_39_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_39
 END
 SYM, sram_tolcd_40-OBUF, BUF, LIBVER=2.0.0
@@ -5146,7 +5170,7 @@ END
 SYM, sram_tolcd_40, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_40_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_40
 END
 SYM, sram_tolcd_41-OBUF, BUF, LIBVER=2.0.0
@@ -5160,7 +5184,7 @@ END
 SYM, sram_tolcd_41, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_41_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_41
 END
 SYM, sram_tolcd_42-OBUF, BUF, LIBVER=2.0.0
@@ -5174,7 +5198,7 @@ END
 SYM, sram_tolcd_42, DFF, LIBVER=2.0.0
 PIN, D, I, sram_tolcd_42_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main_S0_S0__state_C42
+PIN, CE, I, 1_main_S0_S0__state_C45
 PIN, Q, O, sram_tolcd_42
 END
 SYM, sram_lcd_request, BUF, LIBVER=2.0.0
@@ -5428,8 +5452,8 @@ PIN, I, I, sram_k
 PIN, O, O, sram_k_pad
 END
 EXT, sram_k_pad, O
-SYM, sram_k_FFin, EQN, EQN=((I0*~I1)+(~I3)+(I2)), LIBVER=2.0.0
-PIN, I3, I, 1_Running
+SYM, sram_k_FFin, EQN, EQN=((I0*~I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, 1_T1__Start
 PIN, I2, I, 1_main_S0_S0_T109_endloop
 PIN, I1, I, 1_main_S0_S0_T35_endloop
 PIN, I0, I, sram_k
@@ -5453,7 +5477,7 @@ END
 SYM, sram_siebar, DFF, LIBVER=2.0.0
 PIN, D, I, sram_siebar_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main__state_C1
+PIN, CE, I, 1__state_C1
 PIN, Q, O, sram_siebar
 END
 SYM, sram_poebar-OBUF, OBUF, LIBVER=2.0.0
@@ -5468,7 +5492,7 @@ END
 SYM, sram_poebar, DFF, LIBVER=2.0.0
 PIN, D, I, sram_poebar_FFin
 PIN, C, I, CLK
-PIN, CE, I, 1_main__state_C1
+PIN, CE, I, 1__state_C1
 PIN, Q, O, sram_poebar
 END
 SYM, sram_soebar-OBUF, OBUF, LIBVER=2.0.0
@@ -5559,11 +5583,9 @@ PIN, I, I, sram_piebar_0
 PIN, O, O, sram_piebar_0_pad
 END
 EXT, sram_piebar_0_pad, O
-SYM, sram_piebar_0_FFin, EQN, EQN=((~I0*~I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, 1_main_S0_S0_T104_twoop_0
-PIN, I2, I, sram_piebar_0
-PIN, I1, I, 1_Running
-PIN, I0, I, 1_main_S0_S0_T35_endloop
+SYM, sram_piebar_0_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, 1_T41_twoop
+PIN, I0, I, 1_main_S0_S0_T104_twoop_0
 PIN, O, O, sram_piebar_0_FFin
 END
 SYM, sram_piebar_0, DFF, LIBVER=2.0.0
@@ -5577,11 +5599,9 @@ PIN, I, I, sram_piebar_1
 PIN, O, O, sram_piebar_1_pad
 END
 EXT, sram_piebar_1_pad, O
-SYM, sram_piebar_1_FFin, EQN, EQN=((~I0*~I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, 1_main_S0_S0_T104_twoop_1
-PIN, I2, I, sram_piebar_1
-PIN, I1, I, 1_Running
-PIN, I0, I, 1_main_S0_S0_T35_endloop
+SYM, sram_piebar_1_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, 1_T50_twoop
+PIN, I0, I, 1_main_S0_S0_T104_twoop_1
 PIN, O, O, sram_piebar_1_FFin
 END
 SYM, sram_piebar_1, DFF, LIBVER=2.0.0
@@ -5595,11 +5615,9 @@ PIN, I, I, sram_piebar_2
 PIN, O, O, sram_piebar_2_pad
 END
 EXT, sram_piebar_2_pad, O
-SYM, sram_piebar_2_FFin, EQN, EQN=((~I0*~I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, 1_main_S0_S0_T104_twoop_2
-PIN, I2, I, sram_piebar_2
-PIN, I1, I, 1_Running
-PIN, I0, I, 1_main_S0_S0_T35_endloop
+SYM, sram_piebar_2_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, 1_T59_twoop
+PIN, I0, I, 1_main_S0_S0_T104_twoop_2
 PIN, O, O, sram_piebar_2_FFin
 END
 SYM, sram_piebar_2, DFF, LIBVER=2.0.0
@@ -5613,11 +5631,9 @@ PIN, I, I, sram_piebar_3
 PIN, O, O, sram_piebar_3_pad
 END
 EXT, sram_piebar_3_pad, O
-SYM, sram_piebar_3_FFin, EQN, EQN=((~I0*~I1)+(~I0*I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, 1_main_S0_S0_T104_twoop_3
-PIN, I2, I, sram_piebar_3
-PIN, I1, I, 1_Running
-PIN, I0, I, 1_main_S0_S0_T35_endloop
+SYM, sram_piebar_3_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, 1_T68_twoop
+PIN, I0, I, 1_main_S0_S0_T104_twoop_3
 PIN, O, O, sram_piebar_3_FFin
 END
 SYM, sram_piebar_3, DFF, LIBVER=2.0.0
@@ -6572,10 +6588,6 @@ PIN, I, I, sram_fromram_42_pad
 PIN, O, O, sram_fromram_42
 END
 EXT, sram_fromram_42_pad, I
-SYM, 1_main__state_C1, INV, LIBVER=2.0.0
-PIN, I, I, 1_Running
-PIN, O, O, 1_main__state_C1
-END
 SYM, 1_main_S0_doinglcd_FFin, BUF, LIBVER=2.0.0
 PIN, I, I, 1_main_S0_doinglcdF0
 PIN, O, O, 1_main_S0_doinglcd_FFin
@@ -6599,8 +6611,8 @@ PIN, CE, I, 1_main_S0_S0_T34_looptop
 PIN, Q, O, 1_main_S0_write
 END
 SYM, 1_main_S0_lcd_has_acked_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, 1_T77_tree2_0
-PIN, I0, I, 1_T74_tree2_5
+PIN, I1, I, 1_T86_tree2_0
+PIN, I0, I, 1_T83_tree2_5
 PIN, O, O, 1_main_S0_lcd_has_acked_FFin
 END
 SYM, 1_main_S0_lcd_has_acked, DFF, LIBVER=2.0.0
@@ -6622,10 +6634,10 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 1_main_S0_request
 END
-SYM, 1_main_S0_T25_looptop_FFin, EQN, EQN=((~I0)+(I1)+(I2)), LIBVER=2.0.0
+SYM, 1_main_S0_T25_looptop_FFin, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
 PIN, I2, I, 1_main_S0_S0_T191_iftick
 PIN, I1, I, 1_main_S0_S0_S6_T20_endloop
-PIN, I0, I, 1_Running
+PIN, I0, I, 1_T1__Start
 PIN, O, O, 1_main_S0_T25_looptop_FFin
 END
 SYM, 1_main_S0_T25_looptop, DFF, LIBVER=2.0.0
@@ -6949,15 +6961,15 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 1_main_S0_S0_T145_endloop
 END
-SYM, SYM1_main_S0_S0__state_C42, EQN, EQN=((I0*I1)), LIBVER=2.0.0
+SYM, SYM1_main_S0_S0__state_C45, EQN, EQN=((I0*I1)), LIBVER=2.0.0
 PIN, I1, I, 1_main_S0_S0_T145_endloop
 PIN, I0, I, 1_main_S0_doinglcd
-PIN, O, O, 1_main_S0_S0__state_C42
+PIN, O, O, 1_main_S0_S0__state_C45
 END
-SYM, SYM1_main_S0_S0_S6__state_C52, EQN, EQN=((~I0*I1)), LIBVER=2.0.0
+SYM, SYM1_main_S0_S0_S6__state_C55, EQN, EQN=((~I0*I1)), LIBVER=2.0.0
 PIN, I1, I, 1_main_S0_S0_T145_endloop
 PIN, I0, I, 1_main_S0_doinglcd
-PIN, O, O, 1_main_S0_S0_S6__state_C52
+PIN, O, O, 1_main_S0_S0_S6__state_C55
 END
 SYM, SYMsram_tosun_0F0, EQN, EQN=((I0*~I1)+(I0*I2)+(I1*I2)), LIBVER=2.0.0
 PIN, I2, I, sram_fromram_8
@@ -7136,72 +7148,100 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 1_main_S0_S0_T191_iftick
 END
-SYM, SYM1_T62_word_1, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
+SYM, SYM1_T41_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, 1__state_C1
+PIN, I2, I, sram_piebar_0
+PIN, I1, I, 1_T1__Start
+PIN, I0, I, 1_main_S0_S0_T35_endloop
+PIN, O, O, 1_T41_twoop
+END
+SYM, SYM1_T50_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, 1__state_C1
+PIN, I2, I, sram_piebar_1
+PIN, I1, I, 1_T1__Start
+PIN, I0, I, 1_main_S0_S0_T35_endloop
+PIN, O, O, 1_T50_twoop
+END
+SYM, SYM1_T59_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, 1__state_C1
+PIN, I2, I, sram_piebar_2
+PIN, I1, I, 1_T1__Start
+PIN, I0, I, 1_main_S0_S0_T35_endloop
+PIN, O, O, 1_T59_twoop
+END
+SYM, SYM1_T68_twoop, EQN, EQN=((~I0*I2*~I3)+(~I0*I1)), LIBVER=2.0.0
+PIN, I3, I, 1__state_C1
+PIN, I2, I, sram_piebar_3
+PIN, I1, I, 1_T1__Start
+PIN, I0, I, 1_main_S0_S0_T35_endloop
+PIN, O, O, 1_T68_twoop
+END
+SYM, SYM1_T71_word_1, EQN, EQN=((I0)+(I1)+(I2)), LIBVER=2.0.0
 PIN, I2, I, 1_main_S0_S0_T191_iftick
 PIN, I1, I, 1_main_S0_S0_S6_T20_endloop
 PIN, I0, I, 1_main_S0_S0_T145_endloop
-PIN, O, O, 1_T62_word_1
+PIN, O, O, 1_T71_word_1
 END
-SYM, SYM1_T66_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+SYM, SYM1_T75_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
 PIN, I3, I, 1_main_S0_T25_looptop
 PIN, I2, I, 1_main_S0_S0_T34_looptop
 PIN, I1, I, 1_main_S0_S0_T35_endloop
 PIN, I0, I, 1_main_S0_S0_T109_endloop
-PIN, O, O, 1_T66_tree2_0
+PIN, O, O, 1_T75_tree2_0
 END
-SYM, SYM1_T70_word_1, EQN, EQN=((I0*~I2)+(I1*~I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+SYM, SYM1_T79_word_1, EQN, EQN=((I0*~I2)+(I1*~I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
 PIN, I3, I, 1_main_S0_lcd_has_acked
 PIN, I2, I, sram_lcd_request
 PIN, I1, I, 1_main_S0_S0_T34_looptop
 PIN, I0, I, 1_main_S0_S0_T35_endloop
-PIN, O, O, 1_T70_word_1
+PIN, O, O, 1_T79_word_1
 END
-SYM, SYM1_T70_word_2, EQN, EQN=((I0*~I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM1_T79_word_2, EQN, EQN=((I0*~I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 1_main_S0_lcd_has_acked
 PIN, I1, I, sram_lcd_request
 PIN, I0, I, 1_main_S0_S0_T109_endloop
-PIN, O, O, 1_T70_word_2
+PIN, O, O, 1_T79_word_2
 END
-SYM, SYM1_T70_word_3, EQN, EQN=((~I0*I1*~I2)+(~I0*I1*I3)), LIBVER=2.0.0
+SYM, SYM1_T79_word_3, EQN, EQN=((~I0*I1*~I2)+(~I0*I1*I3)), LIBVER=2.0.0
 PIN, I3, I, 1_main_S0_lcd_has_acked
 PIN, I2, I, sram_lcd_request
 PIN, I1, I, 1_main_S0_S0_T145_endloop
 PIN, I0, I, 1_main_S0_doinglcd
-PIN, O, O, 1_T70_word_3
+PIN, O, O, 1_T79_word_3
 END
-SYM, SYM1_T70_word_5, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
-PIN, I2, I, 1_T66_tree2_0
-PIN, I1, I, 1_T62_word_1
+SYM, SYM1_T79_word_5, EQN, EQN=((I0*~I1*~I2)), LIBVER=2.0.0
+PIN, I2, I, 1_T75_tree2_0
+PIN, I1, I, 1_T71_word_1
 PIN, I0, I, 1_main_S0_lcd_has_acked
-PIN, O, O, 1_T70_word_5
+PIN, O, O, 1_T79_word_5
 END
-SYM, SYM1_T74_tree2_0, EQN, EQN=((I1*~I2)+(I1*I3)+(~I0)), LIBVER=2.0.0
+SYM, SYM1_T83_tree2_0, EQN, EQN=((I1*~I2)+(I1*I3)+(I0)), LIBVER=2.0.0
 PIN, I3, I, 1_main_S0_lcd_has_acked
 PIN, I2, I, sram_lcd_request
 PIN, I1, I, 1_main_S0_T25_looptop
-PIN, I0, I, 1_Running
-PIN, O, O, 1_T74_tree2_0
+PIN, I0, I, 1_T1__Start
+PIN, O, O, 1_T83_tree2_0
 END
-SYM, SYM1_T74_tree2_4, EQN, EQN=((I1*~I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
+SYM, SYM1_T83_tree2_4, EQN, EQN=((I1*~I2)+(I0*I3)+(I1*I3)), LIBVER=2.0.0
 PIN, I3, I, 1_main_S0_lcd_has_acked
 PIN, I2, I, sram_lcd_request
 PIN, I1, I, 1_main_S0_S0_S6_T20_endloop
 PIN, I0, I, 1_main_S0_S0_T191_iftick
-PIN, O, O, 1_T74_tree2_4
+PIN, O, O, 1_T83_tree2_4
 END
-SYM, SYM1_T74_tree2_5, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, 1_T74_tree2_4
-PIN, I0, I, 1_T70_word_5
-PIN, O, O, 1_T74_tree2_5
+SYM, SYM1_T83_tree2_5, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, 1_T83_tree2_4
+PIN, I0, I, 1_T79_word_5
+PIN, O, O, 1_T83_tree2_5
 END
-SYM, SYM1_T77_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, 1_T74_tree2_0
-PIN, I2, I, 1_T70_word_1
-PIN, I1, I, 1_T70_word_2
-PIN, I0, I, 1_T70_word_3
-PIN, O, O, 1_T77_tree2_0
+SYM, SYM1_T86_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+PIN, I3, I, 1_T83_tree2_0
+PIN, I2, I, 1_T79_word_1
+PIN, I1, I, 1_T79_word_2
+PIN, I0, I, 1_T79_word_3
+PIN, O, O, 1_T86_tree2_0
 END
-PROG, fpgac, 1.0.beta-2  SVN: $Revision$, "Tue Mar 14 04:47:49 2006"
+PROG, fpgac, 1.0.beta-3A  SVN: $Revision$, "Sun May 14 01:07:55 2006"
 SYM, OSC4, OSC4, LIBVER=2.0.0
 PIN, F15, O, CLKin
 END
@@ -7219,12 +7259,22 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 2_Running
 END
+SYM, 2_T1__Start_FFin, INV, LIBVER=2.0.0
+PIN, I, I, 2_Running
+PIN, O, O, 2_T1__Start_FFin
+END
+SYM, 2_T1__Start, DFF, LIBVER=2.0.0
+PIN, D, I, 2_T1__Start_FFin
+PIN, C, I, CLK
+PIN, CE, I, VCC
+PIN, Q, O, 2_T1__Start
+END
 SYM, sram_sun_address_0-OBUF, BUF, LIBVER=2.0.0
 PIN, I, I, sram_sun_address_0
 PIN, O, O, sram_sun_address_0_pad
 END
 SYM, sram_sun_address_0_FFin, EQN, EQN=((I0*I1*I2)+(I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T11_twoop
+PIN, I3, I, 2_T12_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_0
@@ -7241,7 +7291,7 @@ PIN, I, I, sram_sun_address_1
 PIN, O, O, sram_sun_address_1_pad
 END
 SYM, sram_sun_address_1_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T18_twoop
+PIN, I3, I, 2_T19_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_1
@@ -7258,7 +7308,7 @@ PIN, I, I, sram_sun_address_2
 PIN, O, O, sram_sun_address_2_pad
 END
 SYM, sram_sun_address_2_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T27_twoop
+PIN, I3, I, 2_T28_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_2
@@ -7275,7 +7325,7 @@ PIN, I, I, sram_sun_address_3
 PIN, O, O, sram_sun_address_3_pad
 END
 SYM, sram_sun_address_3_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T36_twoop
+PIN, I3, I, 2_T37_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_3
@@ -7292,7 +7342,7 @@ PIN, I, I, sram_sun_address_4
 PIN, O, O, sram_sun_address_4_pad
 END
 SYM, sram_sun_address_4_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T45_twoop
+PIN, I3, I, 2_T46_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_4
@@ -7309,7 +7359,7 @@ PIN, I, I, sram_sun_address_5
 PIN, O, O, sram_sun_address_5_pad
 END
 SYM, sram_sun_address_5_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T54_twoop
+PIN, I3, I, 2_T55_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_5
@@ -7326,7 +7376,7 @@ PIN, I, I, sram_sun_address_6
 PIN, O, O, sram_sun_address_6_pad
 END
 SYM, sram_sun_address_6_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T63_twoop
+PIN, I3, I, 2_T64_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_6
@@ -7343,7 +7393,7 @@ PIN, I, I, sram_sun_address_7
 PIN, O, O, sram_sun_address_7_pad
 END
 SYM, sram_sun_address_7_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T72_twoop
+PIN, I3, I, 2_T73_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_7
@@ -7360,7 +7410,7 @@ PIN, I, I, sram_sun_address_8
 PIN, O, O, sram_sun_address_8_pad
 END
 SYM, sram_sun_address_8_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T81_twoop
+PIN, I3, I, 2_T82_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_8
@@ -7377,7 +7427,7 @@ PIN, I, I, sram_sun_address_9
 PIN, O, O, sram_sun_address_9_pad
 END
 SYM, sram_sun_address_9_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T90_twoop
+PIN, I3, I, 2_T91_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_9
@@ -7394,7 +7444,7 @@ PIN, I, I, sram_sun_address_10
 PIN, O, O, sram_sun_address_10_pad
 END
 SYM, sram_sun_address_10_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T99_twoop
+PIN, I3, I, 2_T100_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_10
@@ -7411,7 +7461,7 @@ PIN, I, I, sram_sun_address_11
 PIN, O, O, sram_sun_address_11_pad
 END
 SYM, sram_sun_address_11_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T108_twoop
+PIN, I3, I, 2_T109_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p2_11
@@ -7428,7 +7478,7 @@ PIN, I, I, sram_sun_address_12
 PIN, O, O, sram_sun_address_12_pad
 END
 SYM, sram_sun_address_12_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T117_twoop
+PIN, I3, I, 2_T118_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p1_5
@@ -7445,7 +7495,7 @@ PIN, I, I, sram_sun_address_13
 PIN, O, O, sram_sun_address_13_pad
 END
 SYM, sram_sun_address_13_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T126_twoop
+PIN, I3, I, 2_T127_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p1_6
@@ -7462,7 +7512,7 @@ PIN, I, I, sram_sun_address_14
 PIN, O, O, sram_sun_address_14_pad
 END
 SYM, sram_sun_address_14_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T135_twoop
+PIN, I3, I, 2_T136_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p1_7
@@ -7479,7 +7529,7 @@ PIN, I, I, sram_sun_address_15
 PIN, O, O, sram_sun_address_15_pad
 END
 SYM, sram_sun_address_15_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T144_twoop
+PIN, I3, I, 2_T145_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p1_8
@@ -7496,7 +7546,7 @@ PIN, I, I, sram_sun_address_16
 PIN, O, O, sram_sun_address_16_pad
 END
 SYM, sram_sun_address_16_FFin, EQN, EQN=((I0*I1*I2)+(~I2*I3)+(~I1*I3)+(I0*I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T153_twoop
+PIN, I3, I, 2_T154_twoop
 PIN, I2, I, 2_main_S0_S0_T53_tree2
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, sun_p1_9
@@ -7677,8 +7727,8 @@ PIN, I, I, sram_sun_write
 PIN, O, O, sram_sun_write_pad
 END
 SYM, sram_sun_write_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
-PIN, I1, I, 2_T177_tree2_0
-PIN, I0, I, 2_T173_word_1
+PIN, I1, I, 2_T178_tree2_0
+PIN, I0, I, 2_T174_word_1
 PIN, O, O, sram_sun_write_FFin
 END
 SYM, sram_sun_write, DFF, LIBVER=2.0.0
@@ -7695,7 +7745,7 @@ EXT, sun_p0_0_pad, O
 SYM, sun_p0_0_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_0
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T188_word_1
+PIN, I0, I, 2_T189_word_1
 PIN, O, O, sun_p0_0_FFin
 END
 SYM, sun_p0_0, DFF, LIBVER=2.0.0
@@ -7712,7 +7762,7 @@ EXT, sun_p0_1_pad, O
 SYM, sun_p0_1_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_1
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T203_word_1
+PIN, I0, I, 2_T204_word_1
 PIN, O, O, sun_p0_1_FFin
 END
 SYM, sun_p0_1, DFF, LIBVER=2.0.0
@@ -7729,7 +7779,7 @@ EXT, sun_p0_2_pad, O
 SYM, sun_p0_2_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_2
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T218_word_1
+PIN, I0, I, 2_T219_word_1
 PIN, O, O, sun_p0_2_FFin
 END
 SYM, sun_p0_2, DFF, LIBVER=2.0.0
@@ -7746,7 +7796,7 @@ EXT, sun_p0_3_pad, O
 SYM, sun_p0_3_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_3
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T233_word_1
+PIN, I0, I, 2_T234_word_1
 PIN, O, O, sun_p0_3_FFin
 END
 SYM, sun_p0_3, DFF, LIBVER=2.0.0
@@ -7763,7 +7813,7 @@ EXT, sun_p0_4_pad, O
 SYM, sun_p0_4_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_4
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T248_word_1
+PIN, I0, I, 2_T249_word_1
 PIN, O, O, sun_p0_4_FFin
 END
 SYM, sun_p0_4, DFF, LIBVER=2.0.0
@@ -7780,7 +7830,7 @@ EXT, sun_p0_5_pad, O
 SYM, sun_p0_5_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_5
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T263_word_1
+PIN, I0, I, 2_T264_word_1
 PIN, O, O, sun_p0_5_FFin
 END
 SYM, sun_p0_5, DFF, LIBVER=2.0.0
@@ -7797,7 +7847,7 @@ EXT, sun_p0_6_pad, O
 SYM, sun_p0_6_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_6
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T278_word_1
+PIN, I0, I, 2_T279_word_1
 PIN, O, O, sun_p0_6_FFin
 END
 SYM, sun_p0_6, DFF, LIBVER=2.0.0
@@ -7814,7 +7864,7 @@ EXT, sun_p0_7_pad, O
 SYM, sun_p0_7_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
 PIN, I2, I, sram_tosun_7
 PIN, I1, I, 2_main_S0_S0_T231_endloop
-PIN, I0, I, 2_T293_word_1
+PIN, I0, I, 2_T294_word_1
 PIN, O, O, sun_p0_7_FFin
 END
 SYM, sun_p0_7, DFF, LIBVER=2.0.0
@@ -7832,7 +7882,7 @@ SYM, sun_p0_8_FFin, EQN, EQN=((~I1*I2*I3)+(I0)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_S0_S2_S0_T15_calling
 PIN, I2, I, 2_do_sram_access_T2_final
 PIN, I1, I, 2_main_S0_myflag
-PIN, I0, I, 2_T308_word_1
+PIN, I0, I, 2_T309_word_1
 PIN, O, O, sun_p0_8_FFin
 END
 SYM, sun_p0_8, DFF, LIBVER=2.0.0
@@ -7847,7 +7897,7 @@ PIN, O, O, sun_p0_9_pad
 END
 EXT, sun_p0_9_pad, O
 SYM, sun_p0_9_FFin, EQN, EQN=((I1*I2)+(I0)), LIBVER=2.0.0
-PIN, I2, I, 2_T321_comp
+PIN, I2, I, 2_T322_comp
 PIN, I1, I, sun_p0_9
 PIN, I0, I, 2_main_S0_T9_looptop
 PIN, O, O, sun_p0_9_FFin
@@ -7864,8 +7914,8 @@ PIN, O, O, sun_p0_10_pad
 END
 EXT, sun_p0_10_pad, O
 SYM, sun_p0_10_FFin, EQN, EQN=((I1*~I2*~I3)+(I0)), LIBVER=2.0.0
-PIN, I3, I, 2_T334_tree2_1
-PIN, I2, I, 2_T180_word_2
+PIN, I3, I, 2_T335_tree2_1
+PIN, I2, I, 2_T181_word_2
 PIN, I1, I, sun_p0_10
 PIN, I0, I, 2_main_S0_S0_T231_endloop
 PIN, O, O, sun_p0_10_FFin
@@ -7882,9 +7932,9 @@ PIN, O, O, sun_p0_11_pad
 END
 EXT, sun_p0_11_pad, O
 SYM, sun_p0_11_FFin, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_11
 PIN, O, O, sun_p0_11_FFin
 END
@@ -8159,7 +8209,7 @@ PIN, CE, I, VCC
 PIN, Q, O, sun_p2_11
 END
 SYM, 2_do_sram_access_T0_init_FFin, EQN, EQN=((I0*I1)+(I2)), LIBVER=2.0.0
-PIN, I2, I, 2_T177_tree2_0
+PIN, I2, I, 2_T178_tree2_0
 PIN, I1, I, 2__stateF2
 PIN, I0, I, 2_main_S0_S0_T113_tree2
 PIN, O, O, 2_do_sram_access_T0_init_FFin
@@ -8338,8 +8388,8 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 2_main_S0_myflag
 END
-SYM, 2_main_S0_T9_looptop_FFin, EQN, EQN=((~I1)+(I0)), LIBVER=2.0.0
-PIN, I1, I, 2_Running
+SYM, 2_main_S0_T9_looptop_FFin, EQN, EQN=((I0)+(I1)), LIBVER=2.0.0
+PIN, I1, I, 2_T1__Start
 PIN, I0, I, 2_main_S0_S0_T246_endloop
 PIN, O, O, 2_main_S0_T9_looptop_FFin
 END
@@ -8643,233 +8693,233 @@ PIN, C, I, CLK
 PIN, CE, I, VCC
 PIN, Q, O, 2_main_S0_S0_T246_endloop
 END
-SYM, SYM2_T11_twoop, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(~I0*I1*~I3)+(~I0*I1*~I2)), LIBVER=2.0.0
+SYM, SYM2_T12_twoop, EQN, EQN=((I0*~I1*~I3)+(I0*~I1*~I2)+(~I0*I1*~I3)+(~I0*I1*~I2)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_S0_T53_tree2
 PIN, I2, I, 2_main_S0_S0_T10_endloop
 PIN, I1, I, 2_do_sram_access_S0_T11_endloop
 PIN, I0, I, sram_sun_address_0
-PIN, O, O, 2_T11_twoop
+PIN, O, O, 2_T12_twoop
 END
-SYM, SYM2_T18_twoop, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T19_twoop, EQN, EQN=((I0*I1*~I2)+(~I1*I2)+(~I0*I2)), LIBVER=2.0.0
 PIN, I2, I, sram_sun_address_1
 PIN, I1, I, sram_sun_address_0
 PIN, I0, I, 2_do_sram_access_S0_T11_endloop
-PIN, O, O, 2_T18_twoop
+PIN, O, O, 2_T19_twoop
 END
-SYM, SYM2_T27_twoop, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
+SYM, SYM2_T28_twoop, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
 PIN, I3, I, sram_sun_address_1
 PIN, I2, I, sram_sun_address_0
 PIN, I1, I, sram_sun_address_2
 PIN, I0, I, 2_do_sram_access_S0_T11_endloop
-PIN, O, O, 2_T27_twoop
+PIN, O, O, 2_T28_twoop
 END
-SYM, SYM2_T36_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T37_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_3
 PIN, I0, I, sram_sun_address_3F0
-PIN, O, O, 2_T36_twoop
+PIN, O, O, 2_T37_twoop
 END
-SYM, SYM2_T45_twoop, EQN, EQN=((I0*~I1*I2)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
+SYM, SYM2_T46_twoop, EQN, EQN=((I0*~I1*I2)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T31_car_4
 PIN, I1, I, sram_sun_address_4
 PIN, I0, I, 2_do_sram_access_S0_T11_endloop
-PIN, O, O, 2_T45_twoop
+PIN, O, O, 2_T46_twoop
 END
-SYM, SYM2_T54_twoop, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
+SYM, SYM2_T55_twoop, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
 PIN, I3, I, 2_do_sram_access_S0_T31_car_4
 PIN, I2, I, sram_sun_address_4
 PIN, I1, I, sram_sun_address_5
 PIN, I0, I, 2_do_sram_access_S0_T11_endloop
-PIN, O, O, 2_T54_twoop
+PIN, O, O, 2_T55_twoop
 END
-SYM, SYM2_T63_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T64_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_6
 PIN, I0, I, sram_sun_address_6F0
-PIN, O, O, 2_T63_twoop
+PIN, O, O, 2_T64_twoop
 END
-SYM, SYM2_T72_twoop, EQN, EQN=((I0*~I1*I2)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
+SYM, SYM2_T73_twoop, EQN, EQN=((I0*~I1*I2)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T31_car_7
 PIN, I1, I, sram_sun_address_7
 PIN, I0, I, 2_do_sram_access_S0_T11_endloop
-PIN, O, O, 2_T72_twoop
+PIN, O, O, 2_T73_twoop
 END
-SYM, SYM2_T81_twoop, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
+SYM, SYM2_T82_twoop, EQN, EQN=((I0*~I1*I2*I3)+(I1*~I3)+(I1*~I2)+(~I0*I1)), LIBVER=2.0.0
 PIN, I3, I, 2_do_sram_access_S0_T31_car_7
 PIN, I2, I, sram_sun_address_7
 PIN, I1, I, sram_sun_address_8
 PIN, I0, I, 2_do_sram_access_S0_T11_endloop
-PIN, O, O, 2_T81_twoop
+PIN, O, O, 2_T82_twoop
 END
-SYM, SYM2_T90_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T91_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_9
 PIN, I0, I, sram_sun_address_9F0
-PIN, O, O, 2_T90_twoop
+PIN, O, O, 2_T91_twoop
 END
-SYM, SYM2_T99_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T100_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_10
 PIN, I0, I, sram_sun_address_10F0
-PIN, O, O, 2_T99_twoop
+PIN, O, O, 2_T100_twoop
 END
-SYM, SYM2_T108_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T109_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_11
 PIN, I0, I, sram_sun_address_11F0
-PIN, O, O, 2_T108_twoop
+PIN, O, O, 2_T109_twoop
 END
-SYM, SYM2_T117_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T118_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_12
 PIN, I0, I, sram_sun_address_12F0
-PIN, O, O, 2_T117_twoop
+PIN, O, O, 2_T118_twoop
 END
-SYM, SYM2_T126_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T127_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_13
 PIN, I0, I, sram_sun_address_13F0
-PIN, O, O, 2_T126_twoop
+PIN, O, O, 2_T127_twoop
 END
-SYM, SYM2_T135_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T136_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_14
 PIN, I0, I, sram_sun_address_14F0
-PIN, O, O, 2_T135_twoop
+PIN, O, O, 2_T136_twoop
 END
-SYM, SYM2_T144_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T145_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_15
 PIN, I0, I, sram_sun_address_15F0
-PIN, O, O, 2_T144_twoop
+PIN, O, O, 2_T145_twoop
 END
-SYM, SYM2_T153_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
+SYM, SYM2_T154_twoop, EQN, EQN=((I1*~I2)+(I0*I1)+(I0*I2)), LIBVER=2.0.0
 PIN, I2, I, 2_do_sram_access_S0_T11_endloop
 PIN, I1, I, sram_sun_address_16
 PIN, I0, I, sram_sun_address_16F0
-PIN, O, O, 2_T153_twoop
+PIN, O, O, 2_T154_twoop
 END
-SYM, SYM2_T173_word_1, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
+SYM, SYM2_T174_word_1, EQN, EQN=((I0*~I2)+(I0*~I1)), LIBVER=2.0.0
 PIN, I2, I, 2__stateF2
 PIN, I1, I, 2_main_S0_S0_T113_tree2
 PIN, I0, I, sram_sun_write
-PIN, O, O, 2_T173_word_1
+PIN, O, O, 2_T174_word_1
 END
-SYM, SYM2_T177_tree2_0, EQN, EQN=((I1*I2*I3)+(I0)), LIBVER=2.0.0
+SYM, SYM2_T178_tree2_0, EQN, EQN=((I1*I2*I3)+(I0)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_S0_T73_tree2
 PIN, I2, I, 2_main_S0_S0_T57_comp
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, 2_main_S0_S0_S2_T12_looptop
-PIN, O, O, 2_T177_tree2_0
+PIN, O, O, 2_T178_tree2_0
 END
-SYM, SYM2_T180_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYM2_T181_word_1, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_S0_S2_S0_T15_calling
 PIN, I2, I, 2_do_sram_access_T2_final
 PIN, I1, I, 2__stateF2
 PIN, I0, I, 2_main_S0_S0_T113_tree2
-PIN, O, O, 2_T180_word_1
+PIN, O, O, 2_T181_word_1
 END
-SYM, SYM2_T180_word_2, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
+SYM, SYM2_T181_word_2, EQN, EQN=((I0*I1)+(I2*I3)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_S0_T116_comp
 PIN, I2, I, 2__stateF2
 PIN, I1, I, 2_main_S0_S0_T53_tree2
 PIN, I0, I, 2_main_S0_S0_T10_endloop
-PIN, O, O, 2_T180_word_2
+PIN, O, O, 2_T181_word_2
 END
-SYM, SYM2_T184_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+SYM, SYM2_T185_tree2_0, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_T9_looptop
 PIN, I2, I, 2__stateF0
 PIN, I1, I, 2__stateF1
 PIN, I0, I, 2_main_S0_S0_T231_endloop
-PIN, O, O, 2_T184_tree2_0
+PIN, O, O, 2_T185_tree2_0
 END
-SYM, SYM2_T188_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T189_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_0
-PIN, O, O, 2_T188_word_1
+PIN, O, O, 2_T189_word_1
 END
-SYM, SYM2_T203_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T204_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_1
-PIN, O, O, 2_T203_word_1
+PIN, O, O, 2_T204_word_1
 END
-SYM, SYM2_T218_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T219_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_2
-PIN, O, O, 2_T218_word_1
+PIN, O, O, 2_T219_word_1
 END
-SYM, SYM2_T233_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T234_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_3
-PIN, O, O, 2_T233_word_1
+PIN, O, O, 2_T234_word_1
 END
-SYM, SYM2_T248_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T249_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_4
-PIN, O, O, 2_T248_word_1
+PIN, O, O, 2_T249_word_1
 END
-SYM, SYM2_T263_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T264_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_5
-PIN, O, O, 2_T263_word_1
+PIN, O, O, 2_T264_word_1
 END
-SYM, SYM2_T278_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T279_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_6
-PIN, O, O, 2_T278_word_1
+PIN, O, O, 2_T279_word_1
 END
-SYM, SYM2_T293_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T294_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_7
-PIN, O, O, 2_T293_word_1
+PIN, O, O, 2_T294_word_1
 END
-SYM, SYM2_T308_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T184_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
+SYM, SYM2_T309_word_1, EQN, EQN=((I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T185_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
 PIN, I0, I, sun_p0_8
-PIN, O, O, 2_T308_word_1
+PIN, O, O, 2_T309_word_1
 END
-SYM, 2_T315_word_3, BUF, LIBVER=2.0.0
+SYM, 2_T316_word_3, BUF, LIBVER=2.0.0
 PIN, I, I, 2_main_S0_S0_T231_endloop
-PIN, O, O, 2_T315_word_3
+PIN, O, O, 2_T316_word_3
 END
-SYM, SYM2_T319_tree2_0, EQN, EQN=((I1*I2*I3)+(I0)), LIBVER=2.0.0
+SYM, SYM2_T320_tree2_0, EQN, EQN=((I1*I2*I3)+(I0)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_S0_T73_tree2
 PIN, I2, I, 2_main_S0_S0_T57_comp
 PIN, I1, I, 2_main_S0_S0_T10_endloop
 PIN, I0, I, 2__stateF1
-PIN, O, O, 2_T319_tree2_0
+PIN, O, O, 2_T320_tree2_0
 END
-SYM, SYM2_T321_comp, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
-PIN, I3, I, 2_T319_tree2_0
-PIN, I2, I, 2_T180_word_1
-PIN, I1, I, 2_T180_word_2
-PIN, I0, I, 2_T315_word_3
-PIN, O, O, 2_T321_comp
+SYM, SYM2_T322_comp, EQN, EQN=((~I0*~I1*~I2*~I3)), LIBVER=2.0.0
+PIN, I3, I, 2_T320_tree2_0
+PIN, I2, I, 2_T181_word_1
+PIN, I1, I, 2_T181_word_2
+PIN, I0, I, 2_T316_word_3
+PIN, O, O, 2_T322_comp
 END
-SYM, SYM2_T334_tree2_1, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
+SYM, SYM2_T335_tree2_1, EQN, EQN=((I0)+(I1)+(I2)+(I3)), LIBVER=2.0.0
 PIN, I3, I, 2_main_S0_T9_looptop
 PIN, I2, I, 2__stateF0
 PIN, I1, I, 2__stateF1
-PIN, I0, I, 2_T180_word_1
-PIN, O, O, 2_T334_tree2_1
+PIN, I0, I, 2_T181_word_1
+PIN, O, O, 2_T335_tree2_1
 END
 SYM, CLK-AA, BUFGP
 PIN, I, I, FPSCLK
