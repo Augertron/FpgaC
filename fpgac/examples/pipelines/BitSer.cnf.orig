@@ -1,6 +1,7 @@
-// fpgac, 1.0.beta-2  SVN: $Revision: 19 $, "Thu Mar  2 03:29:13 2006"
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Sun May 14 01:07:57 2006"
 // part=4003pc84
 BitSer_Running^CLK = VCC;
+BitSer_T1__Start^CLK = ~BitSer_Running;
 in_s0^CLK = port(in_s0);
 in_s1^CLK = port(in_s1);
 in_s2^CLK = port(in_s2);
@@ -37,7 +38,7 @@ port(out_s5)^(CLK*BitSer_Sort_T0_init) = out_s5F0;
 port(out_s6)^(CLK*BitSer_Sort_T0_init) = out_s6F0;
 port(out_s7)^(CLK*BitSer_Sort_T0_init) = out_s7F0;
 port(out_endword)^(CLK*BitSer_Sort_T0_init) = p2_endword;
-BitSer_Sort_T0_init = (~BitSer_Running)+(BitSer_Sort_T0_init);
+BitSer_Sort_T0_init = (BitSer_Sort_T0_init)+(BitSer_T1__Start);
 BitSer_Sort_S0_S0_mlatch^(CLK*BitSer_Sort_T0_init) = BitSer_Sort_S0_S0_mlatchF0;
 BitSer_Sort_S0_S0_mswap^(CLK*BitSer_Sort_T0_init) = (~p2_endword*BitSer_Sort_S0_S0_mswapF0);
 BitSer_Sort_S0_S0_mswapF0 = (~BitSer_Sort_S0_S0_mlatch*p2_s3*~p2_s7)+(BitSer_Sort_S0_S0_mswap*~p2_s7)+(BitSer_Sort_S0_S0_mswap*BitSer_Sort_S0_S0_mlatch)+(BitSer_Sort_S0_S0_mswap*p2_s3);
