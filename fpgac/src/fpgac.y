@@ -3301,13 +3301,15 @@ function:	functionhead leftcurly funcbody rightcurly
                      * Free varlist structs along the way, everything else
                      * has to remain till output is called above.
                      */
-                    for(vl = ReferenceScopeStack; vl; vl = vl->next) {
+                    for(vl = ReferenceScopeStack; vl; vl = vl_next) {
+                        vl_next = vl->next;
                         if(vl->variable && vl->variable->scope) {
                             ReferenceScopeStack = vl->next;
                             free(vl);
                         }
                     }
-                    for(vl = ThreadScopeStack; vl; vl = vl->next) {
+                    for(vl = ThreadScopeStack; vl; vl = vl_next) {
+                        vl_next = vl->next;
                         if(vl->variable && vl->variable->scope) {
                             ThreadScopeStack = vl->next;
                             free(vl);
