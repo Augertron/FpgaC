@@ -328,6 +328,8 @@ register			return(newtoken(REGISTER));
 
 extern				return(newtoken(EXTERN));
 
+const				return(newtoken(CONST));
+
 volatile			return(newtoken(VOLATILE));
 
 fpgac_input			return(newtoken(INPUT));

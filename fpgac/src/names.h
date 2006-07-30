@@ -69,7 +69,8 @@ typedef enum {
 #define TYPE_MAILBOX    0x0080
 
 #define TYPE_PROCESS    0x0100
-#define TYPE_VOLATILE   0x0200
+#define TYPE_CONST      0x0200
+#define TYPE_VOLATILE   0x0400
 
 #define TYPE_UNSIGNED   0x1000
 #define TYPE_BITSERIAL  0x2000
@@ -120,7 +121,7 @@ EXTFIX struct variable {
 	int type;
 	int assigned;
 	long long value;
-	long *vector;
+	char **vector;
 	struct bitlist *bits;
 	struct variable *scope;
 	struct variable *dscope;

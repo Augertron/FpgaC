@@ -89,7 +89,7 @@
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
 %token		AUTO CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC REGISTER EXTERN
-%token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS VOLATILE
+%token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS CONST VOLATILE
 %token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
@@ -463,6 +463,7 @@ int tempchar = 0;
 struct variable *CurrentReferenceScope = GLOBALSCOPE;
 struct variable *CurrentDeclarationScope = GLOBALSCOPE;
 struct variable *CurrentTagScope = GLOBALSCOPE;
+struct variable *CurrentVar;
 
 struct varlist *breakstack;
 
@@ -3270,7 +3271,7 @@ sourcefile:	/* empty */
 function:	functionhead leftcurly funcbody rightcurly
 		{
 		    struct variable *currentstate, *processstate;
-		    struct varlist *vl;
+		    struct varlist *vl, *vl_next;
 
 		    $1.v->flags |= SYM_FUNCTIONEXISTS;
 		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
@@ -3301,6 +3302,7 @@ function:	functionhead leftcurly funcbody rightcurly
                      * Free varlist structs along the way, everything else
                      * has to remain till output is called above.
                      */
+
                     for(vl = ReferenceScopeStack; vl; vl = vl_next) {
                         vl_next = vl->next;
                         if(vl->variable && vl->variable->scope) {
@@ -3802,6 +3804,11 @@ typename:	VOID
 		    $$.type = currenttype = $2.type | TYPE_STATIC;
 		}
 
+		| CONST typename
+		{
+		    $$.type = currenttype = $2.type | TYPE_CONST;
+		}
+
 		| VOLATILE typename
 		{
 		    $$.type = currenttype = $2.type | TYPE_VOLATILE;
@@ -3814,7 +3821,9 @@ varlist:	varlistmember
 varlistmember:	newidentifier
 
 		| newidentifier EQUAL
-		{ pushtargetwidth($1.v); }
+		{
+		    pushtargetwidth($$.v);
+		}
 
 		expn
 		{
@@ -4583,6 +4592,8 @@ lhsidentifier:	IDENTIFIER
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
 			error2("Structure assignments are not supported:", $1.v->name+1);
+		    if($$.v->type & TYPE_CONST)
+			error2("Assignments to constant variables are not supported:", $1.v->name+1);
 		}
 
                 | IDENTIFIER LEFTBRACE expn RIGHTBRACE
@@ -4590,6 +4601,8 @@ lhsidentifier:	IDENTIFIER
                     $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
 		        error2("Structure arrays are not supported:", $1.v->name+1);
+		    if($$.v->type & TYPE_CONST)
+			error2("Assignments to constant variables are not supported:", $1.v->name+1);
 		    ArrayAssignment($$.v, $3.v);
                 }
 
@@ -4656,7 +4669,29 @@ newidentifier:	IDENTIFIER opt_width
 		    $$.v = CreateVariable($1.s, atoi($5.s), ScopeStack->scope, CurrentDeclarationScope, 0);
 		    $$.v->type = currenttype;
 		    CreateArray($$.v, atoi($3.s));
+		    CurrentVar = $$.v;
 		}
+		optvectorinit
+
+optvectorinit:  /* empty */
+                | EQUAL LEFTCURLY vectorinit RIGHTCURLY
+
+
+vectorinit:     INTEGER
+                {
+		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
+		    CurrentVar->temp = 0;
+		    if(CurrentVar->temp < CurrentVar->arraysize)
+		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $1.s);
+		    
+                }
+
+                | vectorinit COMMA INTEGER
+                {
+		    if(CurrentVar->temp < CurrentVar->arraysize)
+		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $1.s);
+                }
+
 
 funcidentifier:	IDENTIFIER opt_width
 		{
