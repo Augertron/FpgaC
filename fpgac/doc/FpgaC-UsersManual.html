@@ -11,8 +11,8 @@
  style="font-weight: bold;">FpgaC</span><br style="font-weight: bold;">
 <span style="font-weight: bold;">John L. Bass</span></big><br>
 DMS Design<br>
-February 2006<br>
-(Version 1.0-Beta-2)<br>
+August 2006<br>
+(Version 1.0-Beta-3)<br>
 </big></div>
 <br>
 FpgaC (or fpgac) is compiler for a subset of the <a
@@ -87,8 +87,13 @@ inputs, and will require the xnf output to be converted to <a
 Xilinx ISE tools, or third party tools.&nbsp; FpgaC is very likely to
 support native EDIF net list outputs soon in a future release.<br>
 <br>
-The VHDL net list output can also be feed into a variety of vendor tool
+The VHDL net list output (needs a maintainer/developer) is partially
+supported in this release, and can also be feed into a variety of
+vendor tool
 chains, possibly with editing.<br>
+<br>
+The Altera net list output (needs a maintainer/developer) is partially
+supported in this release.<br>
 <br>
 The FpgaC team is eager to support other vendors product lines as well.
 Donations of demonstration boards (and software with licenses if
@@ -199,6 +204,8 @@ extern&nbsp; static&nbsp; </span><span style="font-family: monospace;">signed&nb
 unsigned<br>
 register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; long
 double&nbsp;&nbsp;&nbsp;&nbsp; volatile<br>
+<br>
+"strings"<br>
 </span></div>
 <div style="margin-left: 80px;"><span style="font-family: monospace;"></span></div>
 <br>
@@ -213,12 +220,13 @@ compiler:<br>
  style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 goto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizeof<br>
 union</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-typedef</span><span style="font-family: monospace;"> &nbsp;&nbsp; </span><span
- style="font-family: monospace;">"strings"
+typedef</span><span style="font-family: monospace;">&nbsp;</span><span
+ style="font-family: monospace;">
 &nbsp; (casts)</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;
-switch</span><span style="font-family: monospace;"><br>
-case &nbsp; &nbsp;&nbsp;&nbsp; </span><span
- style="font-family: monospace;">default &nbsp;&nbsp; continue
+switch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case</span><span
+ style="font-family: monospace;"><br>
+</span><span style="font-family: monospace;">default &nbsp;&nbsp;
+continue
 &nbsp;&nbsp; ? &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</span>
 </div>
 <br>
@@ -240,7 +248,9 @@ initialization is supported, but initialized structures, arrays and
 strings are not currently supported.&nbsp; Constant expressions
 (including enum variable references) are
 evaluated at compile time to avoid multiply, divide, and remainder
-operations at runtime where possible.<br>
+operations at runtime where possible. "strings" are supported both as
+initializers of character arrays, and as indexed literals in
+expressions.<br>
 <br>
 New to the beta-2 release was small one dimensional arrays which
 are
