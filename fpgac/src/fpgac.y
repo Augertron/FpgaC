@@ -4320,6 +4320,19 @@ precedence_1:	INTEGER				//  1 L-->R function() [] -> .
 		    DoOp(MINUSEQUAL, $1.v, intconstant(1LL));
 		}
 
+		| STRING LEFTBRACE expn RIGHTBRACE
+		{
+		    $$.v = newtempvar("string", 8);
+		    $$.v->type = currenttype;
+		    CreateArray($$.v, strlen($1.s));
+		    CurrentVar = $$.v;
+		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
+		    for(CurrentVar->temp = 0; $2.s[CurrentVar->temp]; CurrentVar->temp++)
+		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
+		    asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
+		    $$.v = ArrayReference($$.v, $3.v);
+		}
+
 precedence_2:	precedence_1				//  2 L<--R ! ~ ++ -- + - * & (type) sizeof
 
 		| NOT precedence_2
@@ -4676,11 +4689,30 @@ newidentifier:	IDENTIFIER opt_width
 optvectorinit:  /* empty */
                 | EQUAL LEFTCURLY vectorinit RIGHTCURLY
 
+		| EQUAL STRING
+                {
+		    if(CurrentVar->arraysize && strlen($2.s) > CurrentVar->arraysize) {
+		        error2("String initializer larger than declaration size:", CurrentVar->name+1);
+		        CurrentVar->arraysize = strlen($2.s);
+		    }
+		    if(CurrentVar->width != 8) {
+		        error2("String initializer requires width 8:", CurrentVar->name+1);
+		    }
+		    if(!CurrentVar->arraysize)
+		        CurrentVar->arraysize = strlen($2.s);
+		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
+		    for(CurrentVar->temp = 0; $2.s[CurrentVar->temp]; CurrentVar->temp++)
+		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
+		    asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
+                }
+
 
 vectorinit:     INTEGER
                 {
 		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
 		    CurrentVar->temp = 0;
+
+		    // Store initializers as a string to allow arbitrary width wider than host compiler word size
 		    if(CurrentVar->temp < CurrentVar->arraysize)
 		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $1.s);
 		    
@@ -4688,6 +4720,7 @@ vectorinit:     INTEGER
 
                 | vectorinit COMMA INTEGER
                 {
+		    // Store initializers as a string to allow arbitrary width wider than host compiler word size
 		    if(CurrentVar->temp < CurrentVar->arraysize)
 		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $1.s);
                 }
