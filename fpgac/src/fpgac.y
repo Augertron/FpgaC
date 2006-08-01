@@ -4327,9 +4327,10 @@ precedence_1:	INTEGER				//  1 L-->R function() [] -> .
 		    CreateArray($$.v, strlen($1.s));
 		    CurrentVar = $$.v;
 		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
-		    for(CurrentVar->temp = 0; $2.s[CurrentVar->temp]; CurrentVar->temp++)
-		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
-		    asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
+		    for(CurrentVar->temp = 0; $2.s[CurrentVar->temp]; CurrentVar->temp++) {
+		        asprintf(&CurrentVar->vector[CurrentVar->temp], "%d", $1.s[CurrentVar->temp]);
+		    }
+		    asprintf(&CurrentVar->vector[CurrentVar->temp], "%d", $1.s[CurrentVar->temp]);
 		    $$.v = ArrayReference($$.v, $3.v);
 		}
 
@@ -4702,8 +4703,8 @@ optvectorinit:  /* empty */
 		        CurrentVar->arraysize = strlen($2.s);
 		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
 		    for(CurrentVar->temp = 0; $2.s[CurrentVar->temp]; CurrentVar->temp++)
-		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
-		    asprintf(&CurrentVar->vector[CurrentVar->temp++], "%d", $1.s[CurrentVar->temp]);
+		        asprintf(&CurrentVar->vector[CurrentVar->temp], "%d", $1.s[CurrentVar->temp]);
+		    asprintf(&CurrentVar->vector[CurrentVar->temp], "%d", $1.s[CurrentVar->temp]);
                 }
 
 
@@ -4736,7 +4737,7 @@ funcidentifier:	IDENTIFIER opt_width
 
 opt_width:	{ // empty case - simply pass back current width as a string
 		    char *val;
-		    asprintf(&val, "%s", currentwidth);
+		    asprintf(&val, "%d", currentwidth);
 		    $$.s = val;
 		}
 
