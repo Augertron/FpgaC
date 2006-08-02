@@ -1,4 +1,4 @@
-tests: loops ioports initializers enum volatile sixtyfourbit regression
+tests: loops ioports initializers enum volatile sixtyfourbit expr regression
 
 clean:
 	rm -f *.cnf *.xnf *.ucf test.c
@@ -34,7 +34,7 @@ ioports: ioports1
 ioports1: ioports_1.c
 	-fpgac -target cnf ioports_1.c
 
-initializers: initializers1 initializers2 initializers3
+initializers: initializers1 initializers2 initializers3 initializers4
 
 initializers1: initializers_1.c
 	-fpgac -target cnf initializers_1.c
@@ -44,6 +44,9 @@ initializers2: initializers_2.c
 
 initializers3: initializers_3.c
 	-fpgac -target cnf initializers_3.c
+
+initializers4: initializers_4.c
+	-fpgac -target cnf initializers_4.c
 
 enum: enum1 enum2 enum3 enum4
 
@@ -69,42 +72,51 @@ sixtyfourbit: sixtyfourbit1
 sixtyfourbit1: sixtyfourbit_1.c
 	-fpgac -target cnf sixtyfourbit_1.c
 
-regression:
-	-diff loops_4_for.cnf loops_4_for.cnf.orig
-	-diff loops_4_while.cnf loops_4_while.cnf.orig
-	-diff loops_7_for.cnf loops_7_for.cnf.orig
-	-diff loops_7_while.cnf loops_7_while.cnf.orig
-	-diff loops_8_for.cnf loops_8_for.cnf.orig
-	-diff loops_8_while.cnf loops_8_while.cnf.orig
-	-diff loops_9_for.cnf loops_9_for.cnf.orig
-	-diff loops_9_while.cnf loops_9_while.cnf.orig
-	-diff ioports_1.cnf ioports_1.cnf.orig
-	-diff initializers_1.cnf initializers_1.cnf.orig
-	-diff initializers_2.cnf initializers_2.cnf.orig
-	-diff initializers_3.cnf initializers_3.cnf.orig
-	-diff enum_1.cnf enum_1.cnf.orig
-	-diff enum_2.cnf enum_2.cnf.orig
-	-diff enum_3.cnf enum_3.cnf.orig
-	-diff enum_4.cnf enum_4.cnf.orig
-	-diff volatile_1.cnf volatile_1.cnf.orig
-	-diff sixtyfourbit_1.cnf sixtyfourbit_1.cnf.orig
+expr:	expr1
 
-orig:  tests
-	mv loops_4_for.cnf loops_4_for.cnf.orig
-	mv loops_4_while.cnf loops_4_while.cnf.orig
-	mv loops_7_for.cnf loops_7_for.cnf.orig
-	mv loops_7_while.cnf loops_7_while.cnf.orig
-	mv loops_8_for.cnf loops_8_for.cnf.orig
-	mv loops_8_while.cnf loops_8_while.cnf.orig
-	mv loops_9_for.cnf loops_9_for.cnf.orig
-	mv loops_9_while.cnf loops_9_while.cnf.orig
-	mv ioports_1.cnf ioports_1.cnf.orig
-	mv initializers_1.cnf initializers_1.cnf.orig
-	mv initializers_2.cnf initializers_2.cnf.orig
-	mv initializers_3.cnf initializers_3.cnf.orig
-	mv enum_1.cnf enum_1.cnf.orig
-	mv enum_2.cnf enum_2.cnf.orig
-	mv enum_3.cnf enum_3.cnf.orig
-	mv enum_4.cnf enum_4.cnf.orig
-	mv volatile_1.cnf volatile_1.cnf.orig
-	mv sixtyfourbit_1.cnf sixtyfourbit_1.cnf.orig
+expr1:	expr_1.c
+	-fpgac -target cnf expr_1.c
+
+regression:
+	-diff loops_4_for.cnf loops_4_for.cnf.ref
+	-diff loops_4_while.cnf loops_4_while.cnf.ref
+	-diff loops_7_for.cnf loops_7_for.cnf.ref
+	-diff loops_7_while.cnf loops_7_while.cnf.ref
+	-diff loops_8_for.cnf loops_8_for.cnf.ref
+	-diff loops_8_while.cnf loops_8_while.cnf.ref
+	-diff loops_9_for.cnf loops_9_for.cnf.ref
+	-diff loops_9_while.cnf loops_9_while.cnf.ref
+	-diff ioports_1.cnf ioports_1.cnf.ref
+	-diff initializers_1.cnf initializers_1.cnf.ref
+	-diff initializers_2.cnf initializers_2.cnf.ref
+	-diff initializers_3.cnf initializers_3.cnf.ref
+	-diff initializers_4.cnf initializers_4.cnf.ref
+	-diff enum_1.cnf enum_1.cnf.ref
+	-diff enum_2.cnf enum_2.cnf.ref
+	-diff enum_3.cnf enum_3.cnf.ref
+	-diff enum_4.cnf enum_4.cnf.ref
+	-diff volatile_1.cnf volatile_1.cnf.ref
+	-diff sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
+	-diff expr_1.cnf expr_1.cnf.ref
+
+ref:  tests
+	mv loops_4_for.cnf loops_4_for.cnf.ref
+	mv loops_4_while.cnf loops_4_while.cnf.ref
+	mv loops_7_for.cnf loops_7_for.cnf.ref
+	mv loops_7_while.cnf loops_7_while.cnf.ref
+	mv loops_8_for.cnf loops_8_for.cnf.ref
+	mv loops_8_while.cnf loops_8_while.cnf.ref
+	mv loops_9_for.cnf loops_9_for.cnf.ref
+	mv loops_9_while.cnf loops_9_while.cnf.ref
+	mv ioports_1.cnf ioports_1.cnf.ref
+	mv initializers_1.cnf initializers_1.cnf.ref
+	mv initializers_2.cnf initializers_2.cnf.ref
+	mv initializers_3.cnf initializers_3.cnf.ref
+	mv initializers_4.cnf initializers_4.cnf.ref
+	mv enum_1.cnf enum_1.cnf.ref
+	mv enum_2.cnf enum_2.cnf.ref
+	mv enum_3.cnf enum_3.cnf.ref
+	mv enum_4.cnf enum_4.cnf.ref
+	mv volatile_1.cnf volatile_1.cnf.ref
+	mv sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
+	mv expr_1.cnf expr_1.cnf.ref
