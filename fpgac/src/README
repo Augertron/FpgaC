@@ -60,3 +60,7 @@ There are lots of things that could be done to improve fpgac:
 - Extend the language to handle more of C.  Tell the compiler how to 
 	access the RAM in a target FPGA based system, so that it can
 	implement pointers.
+
+- Fix/Update Altera support - need an Altera specific Maintainer for project
+
+- Fix/Update VHDL support - need an VHDL specific Maintainer for project
