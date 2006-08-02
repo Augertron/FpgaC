@@ -1,4 +1,4 @@
-// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug  1 18:09:05 2006"
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug  1 21:10:17 2006"
 // part=4003pc84
 sixtyfourbit_1_Running^CLK = VCC;
 sixtyfourbit_1_T1__Start^CLK = ~sixtyfourbit_1_Running;

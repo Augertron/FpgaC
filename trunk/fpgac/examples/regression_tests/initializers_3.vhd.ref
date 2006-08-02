@@ -1,0 +1,65 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+-- fpgac 1.0.beta-3A  SVN: $Revision: 53 $ Tue Aug  1 21:10:16 2006
+
+entity <stdin is port(
+	CLK : in std_logic;
+	RESET : in std_logic;
+	o : out std_logic
+);
+end;
+
+architecture arch_<stdin of <stdin is
+
+	signal initializers_3_Running : std_logic;
+	signal initializers_3_T1__Start : std_logic;
+	signal initializers_3__state_C1 : std_logic;
+	signal o : std_logic;
+	signal initializers_3_main_S0_gvar : std_logic;
+	signal initializers_3_main_S0_T0_comp : std_logic;
+	signal FFin_initializers_3_Running : std_logic;
+	signal FFin_initializers_3_T1__Start : std_logic;
+	signal FFin_o : std_logic;
+	signal FFin_initializers_3_main_S0_gvar : std_logic;
+
+
+begin
+
+	o <= o;
+
+	FFin_initializers_3_Running <= '1';
+	FFin_initializers_3_T1__Start <= not initializers_3_Running;
+	initializers_3__state_C1 <= initializers_3_T1__Start;
+	FFin_o <= initializers_3_main_S0_gvar;
+	FFin_initializers_3_main_S0_gvar <= '1';
+	initializers_3_main_S0_T0_comp <= not initializers_3_Running;
+
+
+process(RESET, CLK) begin
+
+
+	if (RESET = '1') then
+
+		initializers_3_Running <= '0';
+		initializers_3_T1__Start <= '0';
+		o <= '0';
+		initializers_3_main_S0_gvar <= '0';
+
+	elsif (CLK'event and CLK = '1') then
+
+		initializers_3_Running <= FFin_initializers_3_Running;
+		initializers_3_T1__Start <= FFin_initializers_3_T1__Start;
+		if (initializers_3__state_C1 = '1') then
+			o <= FFin_o;
+		end if;
+		if (initializers_3_main_S0_T0_comp = '1') then
+			initializers_3_main_S0_gvar <= FFin_initializers_3_main_S0_gvar;
+		end if;
+	end if;
+
+end process;
+
+end arch_<stdin;

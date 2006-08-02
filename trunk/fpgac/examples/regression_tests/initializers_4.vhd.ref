@@ -1,0 +1,115 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+-- fpgac 1.0.beta-3A  SVN: $Revision: 53 $ Tue Aug  1 21:10:16 2006
+
+entity <stdin is port(
+	CLK : in std_logic;
+	RESET : in std_logic;
+	out : out std_logic_vector(3 downto 0)
+);
+end;
+
+architecture arch_<stdin of <stdin is
+
+	signal initializers_4_Running : std_logic;
+	signal initializers_4_T1__Start : std_logic;
+	signal initializers_4__state_C1 : std_logic;
+	signal ou : std_logic_vector(3 downto 0);
+	signal ab : std_logic_vector(3 downto 0);
+	signal initializers_4abc_index_p : std_logic_vector(3 downto 0);
+	signal initializers_4_main_S0abc_p : std_logic_vector(3 downto 0);
+	signal initializers_4_main_S0abc_index_p : std_logic_vector(3 downto 0);
+	signal initializers_4_main_S0abc_p : std_logic_vector(3 downto 0);
+	signal initializers_4_main_S0abc_index_p : std_logic_vector(3 downto 0);
+	signal initializers_4_main_S0_T3_volatile : std_logic;
+	signal initializers_4_main_S0_T6_volatile : std_logic;
+	signal FFin_initializers_4_Running : std_logic;
+	signal FFin_initializers_4_T1__Start : std_logic;
+	signal FFin_ou : std_logic_vector(3 downto 0);
+	signal FFin_ab : std_logic_vector(3 downto 0);
+	signal FFin_initializers_4abc_index_p : std_logic_vector(3 downto 0);
+	signal FFin_initializers_4_main_S0_T3_volatile : std_logic;
+	signal FFin_initializers_4_main_S0_T6_volatile : std_logic;
+
+
+begin
+
+	out <= T_out;
+
+	FFin_initializers_4_Running <= '1';
+	FFin_initializers_4_T1__Start <= not initializers_4_Running;
+	initializers_4__state_C1 <= initializers_4_T1__Start;
+	FFin_out_0 <= (initializers_4_T14_word_2) or (initializers_4_T14_word_1) or (initializers_4_T18_tree2_0);
+	FFin_out_1 <= (initializers_4_T29_word_2) or (initializers_4_T29_word_1) or (initializers_4_T33_tree2_0);
+	FFin_out_2 <= (initializers_4_T44_word_2) or (initializers_4_T44_word_1) or (initializers_4_T48_tree2_0);
+	FFin_out_3 <= (initializers_4_T59_word_2) or (initializers_4_T59_word_1) or (initializers_4_T63_tree2_0);
+	FFin_abc_0 <= '0';
+	FFin_abc_1 <= '0';
+	FFin_abc_2 <= '0';
+	FFin_abc_3 <= '0';
+	FFin_initializers_4abc_index_p0_0 <= '0';
+	FFin_initializers_4abc_index_p0_1 <= '0';
+	FFin_initializers_4abc_index_p0_2 <= '0';
+	FFin_initializers_4abc_index_p0_3 <= '0';
+	initializers_4_main_S0abc_p1_0 <= '0';
+	initializers_4_main_S0abc_p1_1 <= '0';
+	initializers_4_main_S0abc_p1_2 <= '0';
+	initializers_4_main_S0abc_p1_3 <= '0';
+	initializers_4_main_S0abc_index_p1_0 <= initializers_4_T1__Start;
+	initializers_4_main_S0abc_index_p1_1 <= (initializers_4_main_S0_T3_volatile) or (initializers_4_T1__Start);
+	initializers_4_main_S0abc_index_p1_2 <= initializers_4_main_S0_T3_volatile;
+	initializers_4_main_S0abc_index_p1_3 <= '0';
+	initializers_4_main_S0abc_p2_0 <= '0';
+	initializers_4_main_S0abc_p2_1 <= '0';
+	initializers_4_main_S0abc_p2_2 <= '0';
+	initializers_4_main_S0abc_p2_3 <= '0';
+	initializers_4_main_S0abc_index_p2_0 <= '0';
+	initializers_4_main_S0abc_index_p2_1 <= '0';
+	initializers_4_main_S0abc_index_p2_2 <= '1';
+	initializers_4_main_S0abc_index_p2_3 <= '0';
+	FFin_initializers_4_main_S0_T3_volatile <= initializers_4__state_C1;
+	FFin_initializers_4_main_S0_T6_volatile <= initializers_4_main_S0_T3_volatile;
+	initializers_4_T14_word_1 <= (initializers_4_main_S0_T6_volatile and initializers_4_main_S0abc_p1_0);
+	initializers_4_T14_word_2 <= (out_0 and not initializers_4_main_S0_T6_volatile and not initializers_4_main_S0_T3_volatile and not initializers_4_T1__Start);
+	initializers_4_T18_tree2_0 <= (initializers_4_main_S0_T3_volatile and initializers_4_main_S0abc_p2_0) or (initializers_4__state_C1 and initializers_4_main_S0abc_p1_0);
+	initializers_4_T29_word_1 <= (initializers_4_main_S0_T6_volatile and initializers_4_main_S0abc_p1_1);
+	initializers_4_T29_word_2 <= (out_1 and not initializers_4_main_S0_T6_volatile and not initializers_4_main_S0_T3_volatile and not initializers_4_T1__Start);
+	initializers_4_T33_tree2_0 <= (initializers_4_main_S0_T3_volatile and initializers_4_main_S0abc_p2_1) or (initializers_4__state_C1 and initializers_4_main_S0abc_p1_1);
+	initializers_4_T44_word_1 <= (initializers_4_main_S0_T6_volatile and initializers_4_main_S0abc_p1_2);
+	initializers_4_T44_word_2 <= (out_2 and not initializers_4_main_S0_T6_volatile and not initializers_4_main_S0_T3_volatile and not initializers_4_T1__Start);
+	initializers_4_T48_tree2_0 <= (initializers_4_main_S0_T3_volatile and initializers_4_main_S0abc_p2_2) or (initializers_4__state_C1 and initializers_4_main_S0abc_p1_2);
+	initializers_4_T59_word_1 <= (initializers_4_main_S0_T6_volatile and initializers_4_main_S0abc_p1_3);
+	initializers_4_T59_word_2 <= (out_3 and not initializers_4_main_S0_T6_volatile and not initializers_4_main_S0_T3_volatile and not initializers_4_T1__Start);
+	initializers_4_T63_tree2_0 <= (initializers_4_main_S0_T3_volatile and initializers_4_main_S0abc_p2_3) or (initializers_4__state_C1 and initializers_4_main_S0abc_p1_3);
+
+
+process(RESET, CLK) begin
+
+
+	if (RESET = '1') then
+
+		initializers_4_Running <= '0';
+		initializers_4_T1__Start <= '0';
+		T_out <= "0000";
+		T_abc <= "0000";
+		Tabc_index_p0 <= "0000";
+		initializers_4_main_S0_T3_volatile <= '0';
+		initializers_4_main_S0_T6_volatile <= '0';
+
+	elsif (CLK'event and CLK = '1') then
+
+		initializers_4_Running <= FFin_initializers_4_Running;
+		initializers_4_T1__Start <= FFin_initializers_4_T1__Start;
+		T_out <= FFin_T_out;
+		T_abc <= FFin_T_abc;
+		Tabc_index_p0 <= FFin_Tabc_index_p0;
+		initializers_4_main_S0_T3_volatile <= FFin_initializers_4_main_S0_T3_volatile;
+		initializers_4_main_S0_T6_volatile <= FFin_initializers_4_main_S0_T6_volatile;
+	end if;
+
+end process;
+
+end arch_<stdin;
