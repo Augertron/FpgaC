@@ -2,11 +2,12 @@
  * BitSer.c - FpgaC Pipelined Bit Serial Sort Example 1
  * copyright 2006 by John Bass, DMS Design under FpgaC BSD License
  *
- * This example builds a pipelined merge sort for bit serial unsigned
+ * This example builds a pipelined parallel sort for bit serial unsigned
  * integers, using LUT based multiplexors. The sort happens in log2(N)
  * stages, with a log2(N) latency thru the pipeline. The muxes each
  * check the data relationship, and latch the sort mswap mux selector
- * at the first inequality until endword is seen.
+ * at the first inequality until endword is seen. This approach of using
+ * a large number of small pipelined sorting engines is called "systolic".
  *
  * One variation of this design is to buffer the bit serial words into
  * LUT rams and return the sorted data on the same I/O pins. In FpgaC
@@ -18,7 +19,10 @@
  * stages and make the internal sort wider than the available I/O pins
  * in support of a much larger streaming sort with multiple passes. The
  * additional array memory and sorting muxes would form a bubble sort
- * that would carry that many words down thru the stream.
+ * that would carry that many words down thru the stream. This approach
+ * of using internal holding queues, forms "systolic priority queues".
+ * See "Systolic Priority Queues" by C. Leiserson, 1979
+ * Technical Report CMU-CS-79-115, Carnegie-Mellon University
  *
  * Other variations are changing the word flag to the first bit, to clear
  * the mux selectors.
