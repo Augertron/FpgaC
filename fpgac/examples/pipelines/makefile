@@ -2,8 +2,7 @@ all:	testit
 
 testit:
 	fpgac -target cnf -S BitSer.c
-	@echo 'Only the date should change in the following two diffs:'
-	-diff BitSer.cnf.orig BitSer.cnf
+	-diff -c -I "^\/\/ fpgac" BitSer.cnf.orig BitSer.cnf
 
 bits:	countup.bit
 

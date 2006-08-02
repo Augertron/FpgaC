@@ -7,12 +7,12 @@ install: clean
 testit:
 	cd src; make install
 	cd doc; make install
-	cd examples; make
+	cd examples; make -s
 
 clean:
-	cd src; make clean
-	cd doc; make clean
-	cd examples; make clean
+	cd src; make clean -s
+	cd doc; make clean -s
+	cd examples; make clean -s
 
 orig: testit
 	cd examples; make orig; make clean

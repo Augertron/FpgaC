@@ -12,18 +12,22 @@
  *
  */
 
-//#define PIPELINED
+#define PIPELINED
 
 #ifdef FPGAC
 #pragma fpgac_clock(aes_clk)
 #pragma fpgac_intbits 8
 
 /*
- * Sbox stub - TODO: this needs a reasonable implementation.
- * See
- * http://groups.google.com/group/comp.arch.fpga/browse_frm/thread/b81fe0af9185e61f/3c0ccb22560f35cc?hl=en#3c0ccb22560f35cc
+ * Sbox 
+ * derived from work done by David Canright's
+ * compact implementation of AES S-box via subfield operations
+ *   case # 4 : [d^16, d], [alpha^8, alpha^2], [Omega^2, Omega]
+ *   nu = beta^8 = N^2*alpha^2, N = w^2
+
  */
-#define Sbox(a) (~(a))
+#include "srom.c"
+//#define Sbox(a) (~a)
 
 #else
 
@@ -36,7 +40,8 @@ typedef void fpgac_process;
 /*
  * Sbox table for test harness
  */
-#define Sbox(a) (S[a])
+#include "srom.c"
+//#define Sbox(a) (S[a])
 
 char S[256] = {
  99, 124, 119, 123, 242, 107, 111, 197,  48,   1, 103,  43, 254, 215, 171, 118,
