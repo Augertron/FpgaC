@@ -76,7 +76,13 @@ static char *externalname(struct bit *b) {
 char *bitname_vhdl(struct bit *b) {
     char *n = b->variable->name;
 
-    if(*n == '_') n++;
+    if(b->name) n=b->name;
+    else if(b->variable) n = b->variable->name;
+
+    while(*n == '_') n++;
+
+    if(*n) return(n);
+
 
     if(b->variable->width == 1) {
         if(b->flags & SYM_VCC) {

@@ -1,0 +1,74 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+-- fpgac 1.0.beta-3A  SVN: $Revision: 53 $ Tue Aug  1 21:10:15 2006
+
+entity <stdin is port(
+	CLK : in std_logic;
+	RESET : in std_logic;
+	a : in std_logic_vector(1 downto 0);
+	b : in std_logic_vector(1 downto 0);
+	sum_of_products : out std_logic_vector(1 downto 0)
+);
+end;
+
+architecture arch_<stdin of <stdin is
+
+	signal test_Running : std_logic;
+	signal test_T1__Start : std_logic;
+	signal test__state_C1 : std_logic;
+	signal test_main_S0_ : std_logic_vector(1 downto 0);
+	signal test_main_S0_ : std_logic_vector(1 downto 0);
+	signal test_main_S0_sum_of_product : std_logic_vector(1 downto 0);
+	signal test_main_S0_loopva : std_logic_vector(1 downto 0);
+	signal test_main_S0_T7_looptop : std_logic;
+	signal FFin_test_Running : std_logic;
+	signal FFin_test_T1__Start : std_logic;
+	signal FFin_test_main_S0_sum_of_product : std_logic_vector(1 downto 0);
+	signal FFin_test_main_S0_loopva : std_logic_vector(1 downto 0);
+	signal FFin_test_main_S0_T7_looptop : std_logic;
+
+
+begin
+
+	T_a <= a;
+	T_b <= b;
+	sum_of_products <= T_sum_of_products;
+
+	FFin_test_Running <= '1';
+	FFin_test_T1__Start <= not test_Running;
+	test__state_C1 <= test_T1__Start;
+	FFin_test_main_S0_sum_of_products_0 <= (test_main_S0_a_0 and test_main_S0_loopvar_0);
+	FFin_test_main_S0_sum_of_products_1 <= (test_main_S0_a_1 and test_main_S0_loopvar_1);
+	FFin_test_main_S0_loopvar_0 <= (not test_main_S0_T7_looptop and test_main_S0_loopvar_0 and not test__state_C1) or (test_main_S0_T7_looptop and not test_main_S0_loopvar_0);
+	FFin_test_main_S0_loopvar_1 <= (test_main_S0_loopvar_0 and test_main_S0_T7_looptop and not test_main_S0_loopvar_1) or (not test_main_S0_T7_looptop and test_main_S0_loopvar_1 and not test__state_C1) or (not test_main_S0_loopvar_0 and test_main_S0_loopvar_1 and not test__state_C1) or (not test_main_S0_loopvar_0 and test_main_S0_T7_looptop and test_main_S0_loopvar_1);
+	FFin_test_main_S0_T7_looptop <= (test_main_S0_T7_looptop) or (test_T1__Start);
+
+
+process(RESET, CLK) begin
+
+
+	if (RESET = '1') then
+
+		test_Running <= '0';
+		test_T1__Start <= '0';
+		T_sum_of_products <= "00";
+		T_loopvar <= "00";
+		test_main_S0_T7_looptop <= '0';
+
+	elsif (CLK'event and CLK = '1') then
+
+		test_Running <= FFin_test_Running;
+		test_T1__Start <= FFin_test_T1__Start;
+		if (test_main_S0_T7_looptop = '1') then
+			T_sum_of_products <= FFin_T_sum_of_products;
+		end if;
+		T_loopvar <= FFin_T_loopvar;
+		test_main_S0_T7_looptop <= FFin_test_main_S0_T7_looptop;
+	end if;
+
+end process;
+
+end arch_<stdin;

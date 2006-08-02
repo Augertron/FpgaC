@@ -1,0 +1,119 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+-- fpgac 1.0.beta-3A  SVN: $Revision: 53 $ Tue Aug  1 21:10:17 2006
+
+entity <stdin is port(
+	CLK : in std_logic;
+	RESET : in std_logic;
+	port : out std_logic_vector(63 downto 0)
+);
+end;
+
+architecture arch_<stdin of <stdin is
+
+	signal sixtyfourbit_1_Running : std_logic;
+	signal sixtyfourbit_1_T1__Start : std_logic;
+	signal sixtyfourbit_1__state_C1 : std_logic;
+	signal por : std_logic_vector(63 downto 0);
+	signal FFin_sixtyfourbit_1_Running : std_logic;
+	signal FFin_sixtyfourbit_1_T1__Start : std_logic;
+	signal FFin_por : std_logic_vector(63 downto 0);
+
+
+begin
+
+	port <= T_port;
+
+	FFin_sixtyfourbit_1_Running <= '1';
+	FFin_sixtyfourbit_1_T1__Start <= not sixtyfourbit_1_Running;
+	sixtyfourbit_1__state_C1 <= sixtyfourbit_1_T1__Start;
+	FFin_port_0 <= '0';
+	FFin_port_1 <= '0';
+	FFin_port_2 <= '0';
+	FFin_port_3 <= '0';
+	FFin_port_4 <= '1';
+	FFin_port_5 <= '0';
+	FFin_port_6 <= '0';
+	FFin_port_7 <= '0';
+	FFin_port_8 <= '0';
+	FFin_port_9 <= '1';
+	FFin_port_10 <= '0';
+	FFin_port_11 <= '0';
+	FFin_port_12 <= '1';
+	FFin_port_13 <= '1';
+	FFin_port_14 <= '0';
+	FFin_port_15 <= '0';
+	FFin_port_16 <= '0';
+	FFin_port_17 <= '0';
+	FFin_port_18 <= '1';
+	FFin_port_19 <= '0';
+	FFin_port_20 <= '1';
+	FFin_port_21 <= '0';
+	FFin_port_22 <= '1';
+	FFin_port_23 <= '0';
+	FFin_port_24 <= '0';
+	FFin_port_25 <= '1';
+	FFin_port_26 <= '1';
+	FFin_port_27 <= '0';
+	FFin_port_28 <= '1';
+	FFin_port_29 <= '1';
+	FFin_port_30 <= '1';
+	FFin_port_31 <= '0';
+	FFin_port_32 <= '0';
+	FFin_port_33 <= '0';
+	FFin_port_34 <= '0';
+	FFin_port_35 <= '1';
+	FFin_port_36 <= '1';
+	FFin_port_37 <= '0';
+	FFin_port_38 <= '0';
+	FFin_port_39 <= '1';
+	FFin_port_40 <= '0';
+	FFin_port_41 <= '1';
+	FFin_port_42 <= '0';
+	FFin_port_43 <= '1';
+	FFin_port_44 <= '1';
+	FFin_port_45 <= '1';
+	FFin_port_46 <= '0';
+	FFin_port_47 <= '1';
+	FFin_port_48 <= '0';
+	FFin_port_49 <= '0';
+	FFin_port_50 <= '1';
+	FFin_port_51 <= '1';
+	FFin_port_52 <= '1';
+	FFin_port_53 <= '0';
+	FFin_port_54 <= '1';
+	FFin_port_55 <= '1';
+	FFin_port_56 <= '0';
+	FFin_port_57 <= '1';
+	FFin_port_58 <= '1';
+	FFin_port_59 <= '1';
+	FFin_port_60 <= '1';
+	FFin_port_61 <= '1';
+	FFin_port_62 <= '1';
+	FFin_port_63 <= '1';
+
+
+process(RESET, CLK) begin
+
+
+	if (RESET = '1') then
+
+		sixtyfourbit_1_Running <= '0';
+		sixtyfourbit_1_T1__Start <= '0';
+		T_port <= "0000000000000000000000000000000000000000000000000000000000000000";
+
+	elsif (CLK'event and CLK = '1') then
+
+		sixtyfourbit_1_Running <= FFin_sixtyfourbit_1_Running;
+		sixtyfourbit_1_T1__Start <= FFin_sixtyfourbit_1_T1__Start;
+		if (sixtyfourbit_1__state_C1 = '1') then
+			T_port <= FFin_T_port;
+		end if;
+	end if;
+
+end process;
+
+end arch_<stdin;
