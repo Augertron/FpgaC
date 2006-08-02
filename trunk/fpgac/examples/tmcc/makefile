@@ -3,12 +3,11 @@ all:	testit testlcd
 testit:
 	fpgac -target xnf -S -c counter.c
 	fpgac -target xnf -S -c countup.c
-	@echo 'Only the date should change in the following two diffs:'
-	-diff counter.xnf.orig counter.xnf
-	-diff countup.xnf.orig countup.xnf
+	-diff -c -I "^PROG, fpgac," counter.xnf.orig counter.xnf
+	-diff -c -I "^PROG, fpgac," countup.xnf.orig countup.xnf
 
 testlcd:
-	cd lcd; make
+	cd lcd; make -s
 
 bits:	countup.bit counter.bit
 

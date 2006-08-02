@@ -1,6 +1,5 @@
 testit:	lcd.xnf
-	@echo 'Only the dates should change in the following diff:'
-	-diff lcd.xnf.orig lcd.xnf
+	-diff -c -I "^PROG, fpgac" lcd.xnf.orig lcd.xnf
 
 lcd.xnf:	lcd.c sram.xnf sun.xnf myclock.xnf debug.xnf
 	fpgac -target xnf -S lcd.c sram.xnf sun.xnf myclock.xnf debug.xnf

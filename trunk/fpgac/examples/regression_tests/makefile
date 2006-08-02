@@ -9,25 +9,25 @@ loops4: loops_4_for.c loops_4_while.c
 	cp loops_4_for.c   test.c; fpgac -target cnf test.c; mv test.cnf loops_4_for.cnf
 	cp loops_4_while.c test.c; fpgac -target cnf test.c; mv test.cnf loops_4_while.cnf
 	rm -f test.c
-	-diff loops_4*.cnf
+	-diff -c -I "^\/\/ fpgac," loops_4*.cnf
 
 loops7: loops_7_for.c loops_7_while.c
 	cp loops_7_for.c   test.c; fpgac -target cnf test.c; mv test.cnf loops_7_for.cnf
 	cp loops_7_while.c test.c; fpgac -target cnf test.c; mv test.cnf loops_7_while.cnf
 	rm -f test.c
-	-diff loops_7*.cnf
+	-diff -c -I "^\/\/ fpgac," loops_7*.cnf
 
 loops8: loops_8_for.c loops_8_while.c
 	cp loops_8_for.c   test.c; fpgac -target cnf test.c; mv test.cnf loops_8_for.cnf
 	cp loops_8_while.c test.c; fpgac -target cnf test.c; mv test.cnf loops_8_while.cnf
 	rm -f test.c
-	-diff loops_8*.cnf
+	-diff -c -I "^\/\/ fpgac," loops_8*.cnf
 
 loops9: loops_9_for.c loops_9_while.c
 	cp loops_9_for.c   test.c; fpgac -target cnf test.c; mv test.cnf loops_9_for.cnf
 	cp loops_9_while.c test.c; fpgac -target cnf test.c; mv test.cnf loops_9_while.cnf
 	rm -f test.c
-	-diff loops_9*.cnf
+	-diff -c -I "^\/\/ fpgac," loops_9*.cnf
 
 ioports: ioports1
 
@@ -78,26 +78,26 @@ expr1:	expr_1.c
 	-fpgac -target cnf expr_1.c
 
 regression:
-	-diff loops_4_for.cnf loops_4_for.cnf.ref
-	-diff loops_4_while.cnf loops_4_while.cnf.ref
-	-diff loops_7_for.cnf loops_7_for.cnf.ref
-	-diff loops_7_while.cnf loops_7_while.cnf.ref
-	-diff loops_8_for.cnf loops_8_for.cnf.ref
-	-diff loops_8_while.cnf loops_8_while.cnf.ref
-	-diff loops_9_for.cnf loops_9_for.cnf.ref
-	-diff loops_9_while.cnf loops_9_while.cnf.ref
-	-diff ioports_1.cnf ioports_1.cnf.ref
-	-diff initializers_1.cnf initializers_1.cnf.ref
-	-diff initializers_2.cnf initializers_2.cnf.ref
-	-diff initializers_3.cnf initializers_3.cnf.ref
-	-diff initializers_4.cnf initializers_4.cnf.ref
-	-diff enum_1.cnf enum_1.cnf.ref
-	-diff enum_2.cnf enum_2.cnf.ref
-	-diff enum_3.cnf enum_3.cnf.ref
-	-diff enum_4.cnf enum_4.cnf.ref
-	-diff volatile_1.cnf volatile_1.cnf.ref
-	-diff sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
-	-diff expr_1.cnf expr_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_4_for.cnf loops_4_for.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_4_while.cnf loops_4_while.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_7_for.cnf loops_7_for.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_7_while.cnf loops_7_while.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_8_for.cnf loops_8_for.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_8_while.cnf loops_8_while.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_9_for.cnf loops_9_for.cnf.ref
+	-diff -c -I "^\/\/ fpgac," loops_9_while.cnf loops_9_while.cnf.ref
+	-diff -c -I "^\/\/ fpgac," ioports_1.cnf ioports_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," initializers_1.cnf initializers_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," initializers_2.cnf initializers_2.cnf.ref
+	-diff -c -I "^\/\/ fpgac," initializers_3.cnf initializers_3.cnf.ref
+	-diff -c -I "^\/\/ fpgac," initializers_4.cnf initializers_4.cnf.ref
+	-diff -c -I "^\/\/ fpgac," enum_1.cnf enum_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," enum_2.cnf enum_2.cnf.ref
+	-diff -c -I "^\/\/ fpgac," enum_3.cnf enum_3.cnf.ref
+	-diff -c -I "^\/\/ fpgac," enum_4.cnf enum_4.cnf.ref
+	-diff -c -I "^\/\/ fpgac," volatile_1.cnf volatile_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," expr_1.cnf expr_1.cnf.ref
 
 ref:  tests
 	mv loops_4_for.cnf loops_4_for.cnf.ref
