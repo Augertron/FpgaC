@@ -110,12 +110,22 @@ output_CNF() {
 
     printed = 0;
     for(b=bits; b; b=b->next) {
-        char *ram;
+        char *ram, **p;
 
 	if (b->variable && !strcmp(b->variable->name, "VCC"))
 	    continue;
 	if (!(b->flags & (SYM_AFFECTSOUTPUT | SYM_OUTPUTPORT | SYM_INPUTPORT |SYM_BUSPORT)))
 	    continue;
+
+        if ((b->flags & SYM_FF) && b->variable->arraysize && b->bitnumber == 0 && b->variable->vector) {
+            fprintf(outputfile, "// init %s={", b->variable->name+1);
+	    for(p=b->variable->vector; b->variable->temp--; p++)
+		if(b->variable->width == 8)
+                    fprintf(outputfile, "%c,", *p);
+		else
+                    fprintf(outputfile, "%s,", *p);
+            fprintf(outputfile, "0}\n");
+	}
 
 	printed = 1;
 
