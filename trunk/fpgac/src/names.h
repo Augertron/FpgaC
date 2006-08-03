@@ -231,7 +231,7 @@ typedef struct {
 } QMtab;
 
 #define QMtabSize (1024*8)
-#define MAXPRI     4
+#define MAXPRI     10
 
 #define IGNORE_FORLOOP 1
 

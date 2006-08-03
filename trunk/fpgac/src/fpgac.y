@@ -4723,7 +4723,7 @@ vectorinit:     INTEGER
                 {
 		    // Store initializers as a string to allow arbitrary width wider than host compiler word size
 		    if(CurrentVar->temp < CurrentVar->arraysize)
-		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $1.s);
+		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $3.s);
                 }
 
 
