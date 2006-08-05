@@ -22,3 +22,7 @@ directories:
 
    regression_tests - A small, but growing, collection of netlist
            checks for verifing correct netlist generation.
+
+   intrinsics - example implementations of intrinsic functions
+
+If you improve any of these, please share with the FpgaC project.
