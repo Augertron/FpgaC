@@ -1,1 +1,5 @@
-These are basic examples for FpgaC intrinsic functions
+These are basic examples for FpgaC intrinsic functions, using a generic LUT only
+logical design.
+
+For FPGAs that have hardware multipliers, you may want to interface directly to
+those using intrinsic functions.
