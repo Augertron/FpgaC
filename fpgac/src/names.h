@@ -118,7 +118,7 @@ EXTFIX struct variable {
 	struct variable *next;
 	long int flags;
 	int width;
-	int type;
+	long long type;
 	int assigned;
 	long long value;
 	char **vector;
@@ -210,7 +210,7 @@ typedef union {
 	struct variable *v;
 	struct varlist *vl;
 	char *s;
-	int type;
+	long long type;
 	long long intval;
 } YYSTYPE;
 
@@ -230,6 +230,8 @@ typedef struct {
     unsigned char covered;	/* this term is covered by a simpler one */
 } QMtab;
 
+//#define QMtabSize (1024*8*128)
+//#define MAXPRI     17
 #define QMtabSize (1024*8)
 #define MAXPRI     4
 

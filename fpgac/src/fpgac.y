@@ -477,7 +477,7 @@ int DefaultDoubleWidth = 64;
 int DefaultLongDoubleWidth = 128;
 int currentwidth = 16;
 
-int currenttype = TYPE_INTEGER|TYPE_UNSIGNED;
+long long currenttype = TYPE_INTEGER|TYPE_UNSIGNED;
 
 PushDeclarationScope(struct varlist **NextScopeStack) {
     struct scopelist *NextScope;
@@ -495,6 +495,11 @@ PopDeclarationScope() {
     ScopeStack = ScopeStack->next;
     free(FreeScope);
 }
+
+char *bitname_vhdl(struct bit *b);
+char *bitname_vqm(struct bit *b);
+char *bitname_cnf(struct bit *b);
+char *bitname_xnf(struct bit *b);
 
 char *bitname(struct bit *b) {
 
@@ -927,7 +932,7 @@ struct variable *newtempvar(char *s, int width) {
     struct variable *temp;
     struct bitlist *bl;
 
-    asprintf(&buf, "%s_T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, s);
+    asprintf(&buf, "%s/T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, s);
     temp = CreateVariable(buf, width, &ThreadScopeStack, CurrentReferenceScope, 1);
     temp->flags |= SYM_TEMP;
     temp->type = TYPE_INTEGER;
@@ -943,7 +948,7 @@ struct variable *copyvar(struct variable *v) {
     struct bitlist *bl, *bl2;
 
     if(v->flags & (SYM_STATE|SYM_TEMP)) {
-        asprintf(&buf,"%s_C%d", v->copyof->name, v->copyof->temp++);
+        asprintf(&buf,"%s/C%d", v->copyof->name, v->copyof->temp++);
         temp = CreateVariable(buf, v->width, &ThreadScopeStack, CurrentReferenceScope, 0);
     } else {
         temp = CreateVariable((char *) 0, v->width, &ThreadScopeStack, CurrentReferenceScope, 0);
@@ -1372,67 +1377,99 @@ optimizebit(struct bit *b) {
 	    *p = (*p)->next;
 	    for(i = 0; i < (1 << (b->pcnt - 1)); i++) {
 		switch (bit) {
-                case 0x8000:
-		    j = (i & 0x7FFF) | ((i << 1) & 0x0000);
+                case 0x800000:
+		    j = (i & 0x7FFFFF) | ((i << 1) & 0x000000);
 		    break;
 
-                case 0x4000:
-		    j = (i & 0x3FFF) | ((i << 1) & 0x8000);
+                case 0x400000:
+		    j = (i & 0x3FFFFF) | ((i << 1) & 0x800000);
 		    break;
 
-                case 0x2000:
-		    j = (i & 0x1FFF) | ((i << 1) & 0xC000);
+                case 0x200000:
+		    j = (i & 0x1FFFFF) | ((i << 1) & 0xC00000);
 		    break;
 
-                case 0x1000:
-		    j = (i & 0x0FFF) | ((i << 1) & 0xE000);
+                case 0x100000:
+		    j = (i & 0x0FFFFF) | ((i << 1) & 0xE00000);
 		    break;
 
-                case 0x0800:
-		    j = (i & 0x07FF) | ((i << 1) & 0xF000);
+                case 0x080000:
+		    j = (i & 0x07FFFF) | ((i << 1) & 0xF00000);
 		    break;
 
-                case 0x0400:
-		    j = (i & 0x03FF) | ((i << 1) & 0xF800);
+                case 0x040000:
+		    j = (i & 0x03FFFF) | ((i << 1) & 0xF80000);
 		    break;
 
-                case 0x0200:
-		    j = (i & 0x01FF) | ((i << 1) & 0xFC00);
+                case 0x020000:
+		    j = (i & 0x01FFFF) | ((i << 1) & 0xFC0000);
 		    break;
 
-                case 0x0100:
-		    j = (i & 0x00FF) | ((i << 1) & 0xFE00);
+                case 0x010000:
+		    j = (i & 0x00FFFF) | ((i << 1) & 0xFE0000);
 		    break;
 
-                case 0x0080:
-		    j = (i & 0x007F) | ((i << 1) & 0xFF00);
+                case 0x008000:
+		    j = (i & 0x007FFF) | ((i << 1) & 0xFF0000);
 		    break;
 
-                case 0x0040:
-		    j = (i & 0x003F) | ((i << 1) & 0xFF80);
+                case 0x004000:
+		    j = (i & 0x003FFF) | ((i << 1) & 0xFF8000);
 		    break;
 
-                case 0x0020:
-		    j = (i & 0x001F) | ((i << 1) & 0xFFC0);
+                case 0x002000:
+		    j = (i & 0x001FFF) | ((i << 1) & 0xFFC000);
 		    break;
 
-                case 0x0010:
-		    j = (i & 0x000F) | ((i << 1) & 0xFFE0);
+                case 0x001000:
+		    j = (i & 0x000FFF) | ((i << 1) & 0xFFE000);
 		    break;
 
-                case 0x0008:
-		    j = (i & 0x0007) | ((i << 1) & 0xFFF0);
+                case 0x000800:
+		    j = (i & 0x0007FF) | ((i << 1) & 0xFFF000);
 		    break;
 
-                case 0x0004:
-		    j = (i & 0x0003) | ((i << 1) & 0xFFF8);
+                case 0x000400:
+		    j = (i & 0x0003FF) | ((i << 1) & 0xFFF800);
 		    break;
 
-                case 0x0002:
-		    j = (i & 0x0001) | ((i << 1) & 0xFFFC);
+                case 0x000200:
+		    j = (i & 0x0001FF) | ((i << 1) & 0xFFFC00);
 		    break;
 
-                case 0x0001:
+                case 0x000100:
+		    j = (i & 0x0000FF) | ((i << 1) & 0xFFFE00);
+		    break;
+
+                case 0x000080:
+		    j = (i & 0x00007F) | ((i << 1) & 0xFFFF00);
+		    break;
+
+                case 0x000040:
+		    j = (i & 0x00003F) | ((i << 1) & 0xFFFF80);
+		    break;
+
+                case 0x000020:
+		    j = (i & 0x00001F) | ((i << 1) & 0xFFFFC0);
+		    break;
+
+                case 0x000010:
+		    j = (i & 0x00000F) | ((i << 1) & 0xFFFFE0);
+		    break;
+
+                case 0x000008:
+		    j = (i & 0x000007) | ((i << 1) & 0xFFFFF0);
+		    break;
+
+                case 0x000004:
+		    j = (i & 0x000003) | ((i << 1) & 0xFFFFF8);
+		    break;
+
+                case 0x000002:
+		    j = (i & 0x000001) | ((i << 1) & 0xFFFFFC);
+		    break;
+
+                case 0x000001:
 		    j = i << 1;
 		    break;
 		}
@@ -1452,8 +1489,7 @@ optimizebit(struct bit *b) {
     else
 	b->flags &= ~SYM_KNOWNVALUE;
     if(b->pcnt == 1 && !(b->flags & (SYM_DONTPULLUP | SYM_FF))
-	&& !(b->primaries->bit->flags
-	     & (SYM_INPUTPORT | SYM_FF | SYM_DONTPULLUP))) {
+	&& !(b->primaries->bit->flags & (SYM_INPUTPORT | SYM_FF | SYM_DONTPULLUP))) {
 
 	/* This bit is either the copy or the complement of some
 	 * other bit.  Eliminate it altogether.
@@ -1799,7 +1835,7 @@ struct variable *CreateArrayRef(struct variable *array) {
             ref++;
     }
 
-    sprintf(buf, "%s_p%d", array->name+1, ref);
+    sprintf(buf, "%s/p%d", array->name+1, ref);
     vl->variable = CreateVariable(buf, array->width, &ThreadScopeStack, CurrentReferenceScope,0);
     vl->variable->port = ref;
     vl->variable->flags |= SYM_ARRAY;
@@ -1807,7 +1843,7 @@ struct variable *CreateArrayRef(struct variable *array) {
     vl->variable->arrayparent = array;
     if(debug & 4) printf( "    creating arrayref(%s)", vl->variable->name);
 
-    sprintf(buf, "%s_index_p%d", array->name+1, ref);
+    sprintf(buf, "%s/index_p%d", array->name+1, ref);
     vl->variable->index = CreateVariable(buf, array->arrayaddrbits, &ThreadScopeStack, CurrentReferenceScope,0);
     vl->variable->index->port = ref;
     makeff(vl->variable->index);
@@ -2852,10 +2888,10 @@ debugoutput() {
     clearflag(SYM_UPTODATE);
     for(b = bits; b; b=b->next) {
         if(!(b->flags & SYM_AFFECTSOUTPUT)) continue;
-        if(b->flags & (SYM_OUTPUTPORT | SYM_FF)) {
-            fprintf(stderr, "\n");
-            printtree(b, 0);
-        }
+//      if(b->flags & (SYM_OUTPUTPORT | SYM_FF)) {
+//          fprintf(stderr, "\n");
+//          printtree(b, 0);
+//      }
     }
     printf("\n");
     if(debug >= 4) {
@@ -3457,7 +3493,7 @@ declaration:	 typename varlist SEMICOLON
 
 enumdecl:	ENUM enum_tag
 		{
-		    $$.type = currenttype = (int) $2.v;
+		    $$.type = currenttype = (long long) $2.v;
 		}
 		enum_varlist SEMICOLON
 
@@ -3473,20 +3509,20 @@ enum_tag:	/* empty */
 		{
 		    char *buf;
 
-		    asprintf(&buf, "%s_T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, "enum");
-		    currenttype = (int)CreateVariable(buf, 0, &TagScopeStack, CurrentDeclarationScope, 1);
+		    asprintf(&buf, "%s/T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, "enum");
+		    currenttype = (long long)CreateVariable(buf, 0, &TagScopeStack, CurrentDeclarationScope, 1);
 		}
 		enum_list
 
 		| IDENTIFIER
                 {
-		    currenttype = (int)CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 1);
+		    currenttype = (long long)CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 1);
 		}
 		enum_list
 
 		| IDENTIFIER
                 {
-		    currenttype = (int)findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+		    currenttype = (long long)findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
 		}
 
 
@@ -3584,7 +3620,7 @@ enum_varlistmember: IDENTIFIER
 
 structdecl:     STRUCT struct_tag
 		{
-		    $$.type = currenttype = (int) $2.v;
+		    $$.type = currenttype = (long long) $2.v;
 		    currentwidth = $2.v->width;
 		}
 		struct_varlist SEMICOLON
@@ -3971,7 +4007,7 @@ leftcurly:	LEFTCURLY
                     char *thisname;
 
                     oldscope = CurrentDeclarationScope;
-                    asprintf(&thisname, "%s_S%d", oldscope->name, oldscope->dscnt++);
+                    asprintf(&thisname, "%s/S%d", oldscope->name, oldscope->dscnt++);
                     CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
                     CurrentDeclarationScope->flags |= SYM_TEMP;
 		    CurrentDeclarationScope->parent = oldscope;
