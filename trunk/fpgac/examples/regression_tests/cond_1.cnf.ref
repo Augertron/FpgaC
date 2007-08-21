@@ -1,0 +1,8 @@
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug 21 03:02:55 2007"
+// part=4003pc84
+cond_1/Running^CLK = VCC;
+cond_1/T1/Start^CLK = ~cond_1/Running;
+cond_1/state/C1 = cond_1/T1/Start;
+io/in^CLK = port(io/in);
+port(io/out_0)^(CLK*cond_1/state/C1) = ~io/in;
+port(io/out_1)^(CLK*cond_1/state/C1) = io/in;
