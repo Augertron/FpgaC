@@ -332,14 +332,6 @@ const				return(newtoken(CONST));
 
 volatile			return(newtoken(VOLATILE));
 
-fpgac_input			return(newtoken(INPUT));
-
-fpgac_output			return(newtoken(OUTPUT));
-
-fpgac_tristate			return(newtoken(TRISTATE));
-
-fpgac_mailbox			return(newtoken(MAILBOX));
-
 fpgac_process			return(newtoken(PROCESS));
 
 void				return(newtoken(VOID));
@@ -368,15 +360,7 @@ return				return(newtoken(RETURN));
 
 ^#[ \t]*pragma[ \t]*fpgac_clock		return(newtoken(CLOCK));
 
-^#[ \t]*pragma[ \t]*fpgac_inputport	return(newtoken(INPUTPORT));
-
-^#[ \t]*pragma[ \t]*fpgac_outputport	return(newtoken(OUTPUTPORT));
-
-^#[ \t]*pragma[ \t]*fpgac_bus_port	return(newtoken(BUS_PORT));
-
-^#[ \t]*pragma[ \t]*fpgac_bus_idle	return(newtoken(BUS_IDLE));
-
-^#[ \t]*pragma[ \t]*fpgac_portflags	return(newtoken(PORTFLAGS));
+^#[ \t]*pragma[ \t]*fpgac_charbits	return(newtoken(CHARBITS));
 
 ^#[ \t]*pragma[ \t]*fpgac_intbits	return(newtoken(INTBITS));
 
@@ -426,7 +410,7 @@ return				return(newtoken(RETURN));
 				        fprintf(stderr, "fpgac: malloc returned NULL\n");
 				        exit(1);
 				    }
-				    sprintf(buf, "_%s", yytext);
+				    sprintf(buf, "%s", yytext);
 				    yylval.s = buf;
 				    return(newtoken(IDENTIFIER));
 				}
