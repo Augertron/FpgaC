@@ -118,7 +118,7 @@ output_CNF() {
 	    continue;
 
         if ((b->flags & SYM_FF) && b->variable->arraysize && b->bitnumber == 0 && b->variable->vector) {
-            fprintf(outputfile, "// init %s={", b->variable->name+1);
+            fprintf(outputfile, "// init %s={", b->variable->name);
 	    for(p=b->variable->vector; b->variable->temp--; p++)
 		if(b->variable->width == 8)
                     fprintf(outputfile, "%c,", *p);
@@ -136,7 +136,7 @@ output_CNF() {
             if(b->pin)
                 fprintf(outputfile, "port(%s,\"%s\")", b->name, b->pin+1);
             else
-                fprintf(outputfile, "port(%s)", b->name+1);
+                fprintf(outputfile, "port(%s)", b->name);
 	} else if (b->flags & SYM_BUSPORT) {
 	    fprintf(outputfile, "port(%s) = %s", bitname(b), bitname(b));
         } else if ((b->flags & SYM_FF) && b->variable->arraysize) {
@@ -151,7 +151,7 @@ output_CNF() {
             } else {
 	    ram = "RAM_";
             }
-            fprintf(outputfile, "%s%s_%d[", ram, b->variable->copyof->name+1,b->bitnumber);
+            fprintf(outputfile, "%s%s_%d[", ram, b->variable->copyof->name,b->bitnumber);
 
             if(b->variable->arraywrite && b->variable->arraywrite->index->bits) {
                 for (i=0,bl = b->variable->arraywrite->index->bits;i<b->variable->arrayaddrbits;i++) {
@@ -187,7 +187,7 @@ output_CNF() {
             if(b->pin)
                 fprintf(outputfile, "port(%s,\"%s\");\n", b->name, b->pin+1);
             else
-                fprintf(outputfile, "port(%s);\n", b->name+1);
+                fprintf(outputfile, "port(%s);\n", b->name);
 	    continue;
 	    break;
 

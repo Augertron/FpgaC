@@ -59,23 +59,23 @@ typedef enum {
  * types with bit zero a zero, are pointers to a typed variable
  */
 
-#define TYPE_DEFINED    0x0001
-#define TYPE_INTEGER    0x0002
-#define TYPE_FLOAT      0x0004
+#define TYPE_DEFINED    (0x0001)
+#define TYPE_INTEGER    (0x0002)
+#define TYPE_FLOAT      (0x0004)
 
-#define TYPE_INPUT      0x0010
-#define TYPE_OUTPUT     0x0020
-#define TYPE_BUS        0x0040
-#define TYPE_MAILBOX    0x0080
+#define TYPE_INPUT      (0x0010)
+#define TYPE_OUTPUT     (0x0020)
+#define TYPE_BUS        (0x0040)
+#define TYPE_MAILBOX    (0x0080)
 
-#define TYPE_PROCESS    0x0100
-#define TYPE_CONST      0x0200
-#define TYPE_VOLATILE   0x0400
+#define TYPE_PROCESS    (0x0100)
+#define TYPE_CONST      (0x0200)
+#define TYPE_VOLATILE   (0x0400)
 
-#define TYPE_UNSIGNED   0x1000
-#define TYPE_BITSERIAL  0x2000
-#define TYPE_STATIC	0x4000
-#define TYPE_ENUM	0x8000
+#define TYPE_UNSIGNED   (0x1000)
+#define TYPE_BITSERIAL  (0x2000)
+#define TYPE_STATIC	(0x4000)
+#define TYPE_ENUM	(0x8000)
 
 
 #define MAXNAMELEN	128

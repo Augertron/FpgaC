@@ -89,12 +89,12 @@
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
 %token		AUTO CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC REGISTER EXTERN
-%token          FLOAT DOUBLE CLOCK INPUT OUTPUT TRISTATE MAILBOX PROCESS CONST VOLATILE
-%token		NOTEQUAL XOR INPUTPORT OUTPUTPORT IF ELSE DO WHILE FOR BREAK RETURN
+%token          FLOAT DOUBLE CLOCK PROCESS CONST VOLATILE
+%token		NOTEQUAL XOR IF ELSE DO WHILE FOR BREAK RETURN
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
 %token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
-%token		ANDAND OROR BUS_PORT BUS_IDLE STRING PORTFLAGS PLUSEQUAL QUESTION
+%token		ANDAND OROR STRING PLUSEQUAL QUESTION
 %token		MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL
 %token		MULTIPLY MULTIPLYEQUAL DIVIDE DIVIDEEQUAL REMAINDER REMAINDEREQUAL
 %token		OREQUAL LEFTBRACE RIGHTBRACE ENUM STRUCT UNION TYPEDEF PLUSPLUS MINUSMINUS
@@ -166,7 +166,7 @@ struct varlist *ThreadScopeStack;       // Stack for compiler generated internal
 
 struct scopelist *ScopeStack;           // Stack of active declaration scopes
 
-char *external_bus_name_format = "%s_v%d";
+char *external_bus_name_format = "%s/v%d";
 
 #define PORT_PIN	0x1
 #define PORT_REGISTERED	0x2
@@ -455,8 +455,8 @@ extern int inputlineno;
 
 int tempchar = 0;
 
-#define TICKMARK	"_tickmark"
-#define CURRENTSTATE	"__state"
+#define TICKMARK	"tickmark"
+#define CURRENTSTATE	"state"
 
 #define GLOBALSCOPE	((struct variable *) NULL)
 
@@ -477,7 +477,10 @@ int DefaultDoubleWidth = 64;
 int DefaultLongDoubleWidth = 128;
 int currentwidth = 16;
 
-long long currenttype = TYPE_INTEGER|TYPE_UNSIGNED;
+union curtype {
+	long long type;
+	struct variable *v;
+} currenttype;
 
 PushDeclarationScope(struct varlist **NextScopeStack) {
     struct scopelist *NextScope;
@@ -553,7 +556,7 @@ struct bit *newbit() {
 struct variable *ffoutput();
 
 struct variable *CreateVariable(char *s, int width, struct varlist **list, struct variable *currentscope, int noprefix) {
-    int i;
+    int i,n;
     struct varlist *var;
     struct variable *v;
     struct bit *b;
@@ -594,6 +597,10 @@ struct variable *CreateVariable(char *s, int width, struct varlist **list, struc
         if(!s)
             continue;
 
+        if(CurrentDeclarationScope && CurrentDeclarationScope->name) { // check if bit already has the prefix in it's name
+            if((n=strlen(CurrentDeclarationScope->name)) && (strncmp(CurrentDeclarationScope->name, s, n)==0)) noprefix |= 1; 
+        }
+
         if(noprefix || (list == &DeclarationScopeStack && CurrentDeclarationScope && CurrentDeclarationScope->parent == GLOBALSCOPE)) {
           if(width > 1)
               asprintf(&b->name, "%s_%d", s, i);
@@ -601,11 +608,11 @@ struct variable *CreateVariable(char *s, int width, struct varlist **list, struc
               asprintf(&b->name, "%s", s);
         } else {
           if(width > 1)
-              asprintf(&b->name, "%s%s_%d", CurrentDeclarationScope->name, s, i);
+              asprintf(&b->name, "%s/%s_%d", CurrentDeclarationScope->name, s, i);
           else
-              asprintf(&b->name, "%s%s", CurrentDeclarationScope->name, s);
+              asprintf(&b->name, "%s/%s", CurrentDeclarationScope->name, s);
         }
-        if(debug & 4) printf("CreateVariable: s(%s) bit(%s)\n", s, b->name);
+        if(debug & 4) printf("CreateVariable: s(%s) bit(%s) for v(0x%08.8x)\n", s, b->name, v);
     }
     nvariables++;
     return (v);
@@ -749,9 +756,9 @@ struct variable *intconstant(long long value) {
     /* Add one bit for the sign bit */
     width++;
 
-    sprintf(buf, "_constant_0x%llx", value);
+    sprintf(buf, "constant_0x%llx", value);
     v = findvariable(buf, MAYEXIST, width, &ThreadScopeStack, CurrentReferenceScope);
-    v->type = TYPE_INTEGER;
+    v->type = TYPE_INTEGER | TYPE_DEFINED;
     v->flags |= SYM_LITERAL;
     bl = v->bits;
     v->value = temp = value;
@@ -894,12 +901,13 @@ struct variable * MapStructureVars(struct variable *v, struct varlist *vl) {
         char *thisname;
 
         oldscope = CurrentDeclarationScope;
-        asprintf(&thisname, "%s%s", oldscope->name, vl->variable->name);
+        asprintf(&thisname, "%s/%s", oldscope->name, vl->variable->name);
 
         CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
         CurrentDeclarationScope->flags |= SYM_TEMP;
         CurrentDeclarationScope->parent = oldscope;
         new = CreateVariable(vl->variable->name, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
+        if(debug & 4) printf("MapStructureVars: created struct %s at 0x%08.8x from 0x%08.8x\n", vl->variable->name, new, vl);
         PushDeclarationScope(&(new->members));
 
         MapStructureVars(new, vl->variable->members);
@@ -908,14 +916,12 @@ struct variable * MapStructureVars(struct variable *v, struct varlist *vl) {
         CurrentDeclarationScope = CurrentDeclarationScope->parent;
     } else {
         new = CreateVariable(vl->variable->name, vl->variable->width, ScopeStack->scope, CurrentDeclarationScope, 0);
-        new->flags = vl->variable->flags;
+        if(debug & 4) printf("MapStructureVars: created %s at 0x%08.8x from 0x%08.8x\n", vl->variable->name, new, vl);
         new->type = vl->variable->type;
-        new->flags |= SYM_STRUCT_MEMBER;
+        new->flags = vl->variable->flags | SYM_STRUCT_MEMBER;
+//      if(new->flags & SYM_OUTPUTPORT) new->flags &= ~SYM_FF;          // TODO: this probably isn't the right fix for output ports
         if(vl->variable->arraysize)
             CreateArray(new, vl->variable->arraysize);
-        if(new->type & TYPE_INPUT) inputport(new, 0);
-        if(new->type & TYPE_BUS) busport(new, 0);
-        if(new->type & TYPE_OUTPUT) outputport(new, 0);
     }
     new->parent = v;
     new->offset = v->width;
@@ -927,15 +933,27 @@ struct variable * MapStructureVars(struct variable *v, struct varlist *vl) {
     }
 }
 
+struct variable *newtemptag() {
+    char *buf;
+    struct variable *temp;
+    struct bitlist *bl;
+
+    asprintf(&buf, "%s/T%d", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++);
+    if(debug & 4) printf("newtemptag: %s\n", buf);
+    temp = CreateVariable(buf, 0, &TagScopeStack, CurrentDeclarationScope, 0);
+    return (temp);
+}
+
 struct variable *newtempvar(char *s, int width) {
     char *buf;
     struct variable *temp;
     struct bitlist *bl;
 
-    asprintf(&buf, "%s/T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, s);
+    asprintf(&buf, "%s/T%d/%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, s);
+    if(debug & 4) printf("newtempvar: %s\n", buf);
     temp = CreateVariable(buf, width, &ThreadScopeStack, CurrentReferenceScope, 1);
     temp->flags |= SYM_TEMP;
-    temp->type = TYPE_INTEGER;
+    temp->type = TYPE_INTEGER | TYPE_DEFINED;
     for(bl = temp->bits; bl; bl = bl->next) {
 	bl->bit->flags |= BIT_TEMP;
     }
@@ -949,8 +967,10 @@ struct variable *copyvar(struct variable *v) {
 
     if(v->flags & (SYM_STATE|SYM_TEMP)) {
         asprintf(&buf,"%s/C%d", v->copyof->name, v->copyof->temp++);
+        if(debug & 4) printf("copyvar: %s\n", buf);
         temp = CreateVariable(buf, v->width, &ThreadScopeStack, CurrentReferenceScope, 0);
     } else {
+        if(debug & 4) printf("copyvar: orig was %s\n", v->copyof->name);
         temp = CreateVariable((char *) 0, v->width, &ThreadScopeStack, CurrentReferenceScope, 0);
     }
     temp->flags |= (v->flags & (SYM_TEMP|SYM_STRUCT_MEMBER|SYM_STATE));
@@ -1005,7 +1025,7 @@ struct bit *freezebit(struct bit *b) {
 	fprintf(stderr, "fpgac: Memory allocation error\n");
         exit(1);
     }
-    sprintf(temp->name, "%sF%d", bitname(b->copyof), b->copyof->temp++);
+    sprintf(temp->name, "%s/F%d", bitname(b->copyof), b->copyof->temp++);
     if(b->flags & BIT_TEMP) {
 	addtolist(&temp->primaries, b);
 	temp->pcnt = countlist(temp->primaries);
@@ -1120,9 +1140,6 @@ setvar(struct variable *v, struct variable *value) {
 struct variable *assignment(struct variable *v, struct variable *value) {
     v = copyvar(v);
     setvar(v, value);
-    if((v->copyof->flags & SYM_INPUTPORT)
-	&& !(v->copyof->flags & SYM_BUSPORT))
-	error2("assignment made to input port:", v->copyof->name);
     if(v->copyof->flags & SYM_BUSPORT) {
 	v->flags &= ~SYM_TEMP;
     }
@@ -1141,7 +1158,7 @@ struct variable *assignmentstmt(struct variable *v, struct variable *value) {
 }
 
 declarefunction(struct variable *v, int width) {
-    if(v->returnvalue && (v->returnvalue->width != width) && strcmp(v->name, "_main"))
+    if(v->returnvalue && (v->returnvalue->width != width) && strcmp(v->name, "main"))
 	error2(v->name, "returns different width than was assumed when it was first encountered");
     makefunction(v, width);
 }
@@ -1187,7 +1204,7 @@ struct variable *complement(struct variable *v) {
     struct bitlist *bl, *bl2;
 
     newv = newtempvar("comp", v->width);
-    newv->type = TYPE_INTEGER;
+    newv->type = TYPE_INTEGER | TYPE_DEFINED;
     bl = v->bits;
     bl2 = newv->bits;
     for(j = 0; j < v->width; j++) {
@@ -1293,7 +1310,7 @@ struct variable *twoop(struct variable *left, struct variable *right, int (*func
 
     width = MAX(left->width, right->width);
     temp = newtempvar("twoop", width);
-    temp->type = TYPE_INTEGER;
+    temp->type = TYPE_INTEGER | TYPE_DEFINED;
     bl = left->bits;
     bl2 = right->bits;
     bl3 = temp->bits;
@@ -1514,7 +1531,7 @@ struct variable *topbit(struct variable *v) {
     struct bitlist *bl;
 
     result = newtempvar("topbit", 1);
-    result->type = TYPE_INTEGER;
+    result->type = TYPE_INTEGER | TYPE_DEFINED;
     for(bl = v->bits; bl->next; bl = bl->next);
     setbit(result->bits->bit, bl->bit);
     modifiedvar(result);
@@ -1629,9 +1646,15 @@ struct variable *nonzero(struct variable *v) {
 makeff(struct variable *v) {
     struct bitlist *b;
 
-    if(v->flags & (SYM_FF | SYM_TEMP | SYM_LITERAL | SYM_ARRAY))
+    if(v->flags & (SYM_FF | SYM_TEMP | SYM_LITERAL | SYM_ARRAY)) {
+        if(debug & 4) printf("makeff: v(%s) found flags(0x%08.8x)\n", v->copyof->name, v->flags);
 	return;
-    if(v->members) return;
+    }
+    if(v->members) {
+        if(debug & 4) printf("makeff: v(%s) found members\n", v->copyof->name);
+	return;
+    }
+    if(debug & 4) printf("makeff: v(%s) flags(0x%08.8x) parent flags(0x%08.8x) setting SYM_FF\n", v->copyof->name, v->flags, v->copyof->flags);
     for(b = v->bits; b; b = b->next) {
 	b->bit->flags |= SYM_FF;
 	b->bit->flags &= ~BIT_TEMP;
@@ -1645,117 +1668,131 @@ makeff(struct variable *v) {
     v->flags |= SYM_FF;
 }
 
-inputport(struct variable *v, struct varlist *vl) {
+IORead(struct variable *v) {
     struct bitlist *bl;
-    struct bit *b;
+
+    if(v->copyof->flags & SYM_INPUTPORT) return;
+
+    if(v->assigned) {
+        struct variable *temp, *currentstate, *voltick;
+
+        // This read follows previous write in same clock, so tick the clock
+        // The read will however, return the value asserted in the output FF's.
+	currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+	tick(currentstate);
+	voltick = newtempvar("voltick", 1);
+	voltick->flags = SYM_STATE;
+	makeff(voltick);
+	setvar(voltick, currentstate);
+	assignment(currentstate, ffoutput(voltick));
+    }
+
+    if(v->copyof->flags & SYM_OUTPUTPORT) { // convert to SYM_BUSPORT
+	if(CurrentReferenceScope != v->copyof->scope) {
+	    struct variable *temp_scope;
+
+	    temp_scope = CurrentReferenceScope;
+	    CurrentReferenceScope = v->copyof->scope;
+	    v->copyof->enable = newtempvar("enable", 1);
+	    CurrentReferenceScope = temp_scope;
+	} else
+	    v->copyof->enable = newtempvar("enable", 1);
+	v->copyof->enable->flags &= ~SYM_TEMP;
+	makeff(v->copyof->enable);
+	v->copyof->flags = SYM_BUSPORT | (v->copyof->flags & ~SYM_OUTPUTPORT);
+	for(bl = v->bits; bl; bl = bl->next) {
+	    bl->bit->copyof->flags |= SYM_BUSPORT;
+	    bl->bit->copyof->flags &= ~SYM_OUTPUTPORT;
+	    bl->bit->copyof->enable = v->copyof->enable->bits->bit;
+	}
+    }
+
+    if(v->copyof->flags & SYM_BUSPORT) {
+        if(v->copyof->enable)
+	    assignment(v->copyof->enable, intconstant(0LL));
+	return;
+    }
+
+    // first reference of this IO port, setup as an input
 
     v->copyof->flags |= SYM_INPUTPORT;
     for(bl = v->bits; bl; bl = bl->next) {
-	b = bl->bit->copyof;
-	b->flags &= ~SYM_KNOWNVALUE;
-	b->flags |= (SYM_INPUTPORT | BIT_HASPIN);
-	if(vl)
-	    b->pin = vl->variable->bits->bit->pin;
-	else
-	    b->pin = (char *) NULL;
-	b->primaries = (struct bitlist *) NULL;
-	addtolist(&b->primaries, b);
-        b->pcnt = countlist(b->primaries);
-	Clr_Bit(b->truth,0);
-	Set_Bit(b->truth,1);
-	if(vl)
-	    vl = vl->next;
-	if(vl && !bl->next)
-	    error2("too many pin numbers for", v->name);
+	bl->bit->copyof->flags &= ~SYM_KNOWNVALUE;
+	bl->bit->copyof->flags |= (SYM_INPUTPORT | BIT_HASPIN);
+	bl->bit->copyof->primaries = (struct bitlist *) NULL;
+	addtolist(&bl->bit->copyof->primaries, bl->bit->copyof);
+        bl->bit->copyof->pcnt = countlist(bl->bit->copyof->primaries);
+	Clr_Bit(bl->bit->copyof->truth,0);
+	Set_Bit(bl->bit->copyof->truth,1);
     }
 }
 
-outputport(struct variable *v, struct varlist *vl) {
+
+IOWrite(struct variable *v) {
     struct bitlist *bl;
-    struct bit *b;
+
+    if(v->assigned) {
+        struct variable *temp, *currentstate, *voltick;
+
+        // this write follows previous write in same clock, so need to tick clock here
+	currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+	tick(currentstate);
+	voltick = newtempvar("voltick", 1);
+	voltick->flags = SYM_STATE;
+	makeff(voltick);
+	setvar(voltick, currentstate);
+	assignment(currentstate, ffoutput(voltick));
+    }
+
+//    if(debug & 8) {
+//	printf("IOWrite io(%s) flags(0x%08.8x)\n", v->copyof->name, v->copyof->flags);
+//    }
+
+    if(v->copyof->flags & SYM_OUTPUTPORT) {
+	return;
+    }
+
+    if(v->copyof->flags & SYM_INPUTPORT) { // convert to SYM_BUSPORT
+//	printf("IOWrite convert to busport\n");
+	makeff(v->copyof);
+	if(CurrentReferenceScope != v->copyof->scope) {
+	    struct variable *temp_scope;
+
+	    temp_scope = CurrentReferenceScope;
+	    CurrentReferenceScope = v->copyof->scope;
+	    v->copyof->enable = newtempvar("enable", 1);
+	    CurrentReferenceScope = temp_scope;
+	} else
+	    v->copyof->enable = newtempvar("enable", 1);
+	v->copyof->enable->flags &= ~SYM_TEMP;
+	makeff(v->copyof->enable);
+	v->copyof->flags = SYM_BUSPORT | (v->copyof->flags & ~SYM_INPUTPORT);
+	for(bl = v->bits; bl; bl = bl->next) {
+	    bl->bit->copyof->flags &= ~SYM_KNOWNVALUE;
+	    bl->bit->copyof->flags |= (SYM_BUSPORT | BIT_HASFF);
+	    bl->bit->copyof->enable = v->copyof->enable->bits->bit;
+	    bl->bit->copyof->primaries = (struct bitlist *) NULL;
+	    addtolist(&bl->bit->copyof->primaries, bl->bit->copyof);
+            bl->bit->copyof->pcnt = countlist(bl->bit->copyof->primaries);
+	    Clr_Bit(bl->bit->copyof->truth,0);
+	    Set_Bit(bl->bit->copyof->truth,1);
+	}
+    }
+
+    if(v->copyof->flags & SYM_BUSPORT) {
+//	printf("IOWrite assert busport enable\n");
+        if(v->copyof->enable)
+	    assignment(v->copyof->enable, intconstant(1LL));
+	return;
+    }
+
+    // first reference of this IO port, setup as an output
+//  printf("IOWrite setup output port\n");
 
     makeff(v->copyof);
     v->copyof->flags |= SYM_OUTPUTPORT;
     for(bl = v->bits; bl; bl = bl->next) {
-	b = bl->bit->copyof;
-	b->flags |= (BIT_HASPIN | BIT_HASFF | SYM_OUTPUTPORT);
-	if(vl)
-	    b->pin = vl->variable->bits->bit->pin;
-	else
-	    b->pin = (char *) NULL;
-	if(vl)
-	    vl = vl->next;
-	if(vl && !bl->next)
-	    error2("too many pin numbers for", v->name);
-    }
-}
-
-/* Declare a variable to be a bidirectional port.
- * Basically treat it as an input, but still collect all
- * assignments to it, and output a special version of the
- * FF and IOB at the end.
- */
-
-busport(struct variable *v, struct varlist *vl) {
-    struct bitlist *bl;
-    struct variable *temp_scope;
-
-    inputport(v, vl);
-    makeff(v->copyof);
-    if(CurrentReferenceScope != v->copyof->scope) {
-	temp_scope = CurrentReferenceScope;
-	CurrentReferenceScope = v->copyof->scope;
-	v->copyof->enable = newtempvar("enable", 1);
-	CurrentReferenceScope = temp_scope;
-    } else
-	v->copyof->enable = newtempvar("enable", 1);
-    v->copyof->enable->flags &= ~SYM_TEMP;
-    makeff(v->copyof->enable);
-    v->copyof->flags |= SYM_BUSPORT;
-    for(bl = v->bits; bl; bl = bl->next) {
-	bl->bit->copyof->flags |= (SYM_BUSPORT | BIT_HASPIN | BIT_HASFF);
-	bl->bit->copyof->enable = v->copyof->enable->bits->bit;
-    }
-}
-
-busidle(struct variable *v) {
-    if(v->copyof->enable)
-	assignment(v->copyof->enable, intconstant(0LL));
-    else
-	error2(v->copyof->name, "not a bus_port");
-}
-
-/* Set the port flags on a port variable.  Let the program specify which
- * variables have pins, and which ones have FFs.  By default, both
- * inputports and outputports have pins, but only outputports have FFs.
- */
-
-portflags(struct variable *v, int flag) {
-    int flag2;
-    struct bitlist *bl;
-    struct bit *b;
-
-    if(!(v->copyof->flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | SYM_BUSPORT))) {
-	error2(v->copyof->name, "is not a port variable");
-	return;
-    }
-    if((flag < 0) || (flag > PORT_MAXFLAG)) {
-	error2(v->copyof->name, "unrecognized flag bits");
-	return;
-    }
-    flag2 = 0;
-    if(flag & PORT_PIN)
-	flag2 |= BIT_HASPIN;
-    if(flag & PORT_REGISTERED)
-	flag2 |= BIT_HASFF;
-    if(flag & PORT_PULLUP)
-	flag2 |= BIT_HASPULLUP;
-    if(flag & PORT_PULLDOWN)
-	flag2 |= BIT_HASPULLDOWN;
-    for(bl = v->bits; bl; bl = bl->next) {
-	b = bl->bit->copyof;
-	b->flags &= ~(BIT_HASPIN | BIT_HASFF | BIT_HASPULLUP | BIT_HASPULLDOWN);
-	b->flags |= flag2;
+	bl->bit->copyof->flags |= (BIT_HASPIN | BIT_HASFF | SYM_OUTPUTPORT);
     }
 }
 
@@ -1766,8 +1803,7 @@ addtoff(struct variable *ff, struct variable *state, struct variable *value) {
     struct variable *temp;
 
     if(debug & 8) {
-	printf("addtoff ff %s state %s value %s\n", ff->name,
-	       state->name, value->name);
+	printf("addtoff ff(%s) at(0x%08.8x) state(%s) value(%s)\n", ff->name, ff, state->name, value->name);
     }
 
     if(!(ff->flags & SYM_FF))
@@ -2233,17 +2269,19 @@ init() {
      * Processes start on the next clock edge, as startstate is asserted.
      */
     if(!thread) thread=inputfilename;
-    asprintf(&buf, "_%s", thread);
+    asprintf(&buf, "%s", thread);
     for(mbuf=buf; *mbuf; mbuf++) {
         if(*mbuf == '/') buf=mbuf+1;
     }
     if(mbuf[-2] == '.' && mbuf[-1] == 'c') mbuf[-2] = 0;
     thread=buf;
 
+    currenttype.type = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_DEFINED;
+
     CurrentDeclarationScope = CreateVariable(buf, 0, &DeclarationScopeStack, 0, 0);
     CurrentDeclarationScope->flags |= SYM_TEMP;
 
-    asprintf(&rbuf, "_Running");
+    asprintf(&rbuf, "Running");
     running = CreateVariable(rbuf, 1, &ThreadScopeStack, CurrentReferenceScope, 0);
     makeff(running);
     running->flags |= SYM_STATE;
@@ -2256,7 +2294,7 @@ init() {
 
     currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
     tick(currentstate);
-    startstate = newtempvar("_Start", 1);
+    startstate = newtempvar("Start", 1);
     startstate->flags = SYM_STATE;
     makeff(startstate);
     setvar(startstate, currentstate);
@@ -2264,7 +2302,7 @@ init() {
     currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
     tick(currentstate);
 
-    v = CreateVariable("_main", 0, &DeclarationScopeStack, CurrentDeclarationScope, 0);
+    v = CreateVariable("main", 0, &DeclarationScopeStack, CurrentDeclarationScope, 0);
     declarefunction(v, 0);
     v->flags |= SYM_FUNCTIONEXISTS;
     v->initialstate->bits->bit->flags &= ~SYM_FF;
@@ -2292,6 +2330,7 @@ assertoutputs(struct variable *currentstate) {
 	v = scope->variable;
 	if(!strcmp(v->copyof->name, TICKMARK))
 	    break;
+        if(debug & 4) printf( "assertoutputs: examining(%s) ref 0x%08.8x\n",v->copyof->name, v);
 	if(v->copyof->flags & (SYM_STATE | SYM_UPTODATE))
 	    continue;
 	makeff(v->copyof);
@@ -2476,10 +2515,16 @@ makeffinputs() {
     struct bit *b;
 
     for(b = bits; b; b=b->next) {
-	if(!(b->flags & SYM_FF))
+        if(debug & 4) printf( "makeffinputs: examining(%s) ref 0x%08.8x for v(0x%08.8x) ",b->name, b, b->variable);
+	if(!(b->flags & SYM_FF)) {
+	    if(debug & 4 && !b->modifying_values) printf( "has modifying_values but ");
+            if(debug & 4) printf( "has no FF\n");
 	    continue;
-	if(!b->modifying_values)
+	}
+	if(!b->modifying_values) {
+            if(debug & 4) printf( "has no modifying_values\n");
 	    continue;
+	}
 	if(b->primaries && !(b->flags & SYM_BUSPORT))
 	    error2("This should not happen: makeffinputs found inputs in", bitname(b));
 	if((b->flags & (SYM_OUTPUTPORT|SYM_ARRAY_INDEX)) && !(b->flags & BIT_HASFF)) {
@@ -2497,8 +2542,10 @@ makeffinputs() {
 		setbit(b, b->modifying_values->bit);
 	    }
             if(b->flags & SYM_ARRAY_INDEX) b->flags &= ~SYM_FF;
+            if(debug & 4) printf( "is (SYM_OUTPUTPORT|SYM_ARRAY_INDEX)\n");
 	    continue;
 	}
+        if(debug & 4) printf( "\n");
 	if((countlist(b->modifying_values) == 1) && use_clock_enables) {
 	    /* If the FF is set in only one state, then we
 	     * can use the clock_enable input on the FF if
@@ -2728,6 +2775,7 @@ prune() {
 	changed = 0;
         for(b = bits; b; b=b->next) {
 	    if(b->flags & (SYM_AFFECTSOUTPUT | SYM_OUTPUTPORT | SYM_BUSPORT)) {
+                if(debug & 8) printf( "prune: examining(%s)\n",bitname(b));
 		b->flags |= SYM_AFFECTSOUTPUT;
 		optimizebit(b);
 		for(bl = b->primaries; bl; bl = bl->next) {
@@ -3050,6 +3098,8 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
         printf("DoOp types: (%x)(%d)(%x)\n", arg1->type, op, arg2->type);
     }
 
+// TODO: need to intercept cases where type is not defined
+
     /*
      * First pickoff the real operation for assignment operators
      */
@@ -3105,18 +3155,6 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
 
     if(op == EQUAL) {
 	if(arg1->type & TYPE_INTEGER) {
-            struct variable *temp, *currentstate, *volstate;
-
-            if(arg1->assigned) {
-                currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
-                tick(currentstate);
-                volstate = newtempvar("volatile", 1);
-                volstate->flags = SYM_STATE;
-                makeff(volstate);
-                setvar(volstate, currentstate);
-                assignment(currentstate, ffoutput(volstate));
-            }
-
             arg1->assigned = 1;
             return(assignmentstmt(arg1, arg2));
 	}
@@ -3312,7 +3350,7 @@ function:	functionhead leftcurly funcbody rightcurly
 		    $1.v->flags |= SYM_FUNCTIONEXISTS;
 		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
 
-		    if($1.v->type & TYPE_PROCESS) {
+		    if($1.v->type & TYPE_DEFINED && $1.v->type & TYPE_PROCESS) {
 			/*
 			 * a process starts with the first clock
 			 */
@@ -3411,7 +3449,7 @@ functionname:	funcidentifier
                     char *thisname;
 
 		    oldscope = CurrentDeclarationScope;
-                    asprintf(&thisname, "%s%s", oldscope->name, $1.v->name);
+                    asprintf(&thisname, "%s/%s", oldscope->name, $1.v->name);
 
                     CurrentDeclarationScope = CreateVariable(thisname, 0, &ThreadScopeStack, CurrentReferenceScope, 0);
 		    CurrentDeclarationScope->flags |= SYM_TEMP;
@@ -3491,50 +3529,20 @@ declaration:	 typename varlist SEMICOLON
 
 		| pragma
 
-enumdecl:	ENUM enum_tag
-		{
-		    $$.type = currenttype = (long long) $2.v;
-		}
-		enum_varlist SEMICOLON
-
-
-		/*
-		 * An enum_tag has three forms:
-		 *      1) just an enum_list, such as "enum {a, b, c} enumvar;"
-		 *      2) an IDENTIFIER tag with enum_list, such as "enum enumtag {a, b, c} enumvar;"
-		 *      3) and just a previously declared IDENTIFIER tag, "enum enumtag enumvar2;"
-		 */
-
-enum_tag:	/* empty */
-		{
-		    char *buf;
-
-		    asprintf(&buf, "%s/T%d_%s", CurrentDeclarationScope->name, CurrentDeclarationScope->temp++, "enum");
-		    currenttype = (long long)CreateVariable(buf, 0, &TagScopeStack, CurrentDeclarationScope, 1);
-		}
-		enum_list
-
-		| IDENTIFIER
-                {
-		    currenttype = (long long)CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 1);
-		}
-		enum_list
-
-		| IDENTIFIER
-                {
-		    currenttype = (long long)findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
-		}
-
-
 		/*
 		 * An enum_list is stored in the members field during parsing for future use.
 		 * They are scanned to determine the word width needed for the type, and each
 		 * is then added to the current declaration scope as a named constant.
 		 */
 
-enum_list:	leftcurly
+enumdecl:	ENUM new_tag
 		{
-                    PushDeclarationScope(&(((struct variable *)currenttype)->members));
+		    $$.type = currenttype.type = $2.type;
+		}
+
+		leftcurly
+		{
+                    PushDeclarationScope(&(currenttype.v->members));
 		}
 
 		enum_listmembers rightcurly
@@ -3553,7 +3561,7 @@ enum_list:	leftcurly
 		        temp = vl->variable->value;
 		        width = sizelog2(temp+1) + 1;
 		        var = CreateVariable(vl->variable->name, width, ScopeStack->scope, CurrentDeclarationScope, 0);
-		        var->type = TYPE_INTEGER;
+		        var->type = TYPE_INTEGER | TYPE_DEFINED;
 		        var->flags |= SYM_LITERAL;
 		        bl = var->bits;
 		        var->value = temp;
@@ -3571,8 +3579,17 @@ enum_list:	leftcurly
                         vl = vl->next;
                     }
                     TagScopeStack->variable->flags |= SYM_STRUCT;
-		    currentwidth = sizelog2(((struct variable *)currenttype)->temp) + 1;
+		    currentwidth = sizelog2(currenttype.v->temp) + 1;
 		}
+		enum_varlist SEMICOLON
+
+		| ENUM IDENTIFIER
+		{
+		    $$.type = 0;
+		    $$.v = findvariable($2.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+		    currenttype.type = $$.type;
+		}
+		 enum_varlist SEMICOLON
 
 enum_listmembers: enum_listmember
 
@@ -3586,17 +3603,17 @@ enum_listmembers: enum_listmember
 enum_listmember: IDENTIFIER
 		{
 		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
-		    $$.v->value = ((struct variable *)currenttype)->value++;
-		    if(((struct variable *)currenttype)->temp < ((struct variable *)currenttype)->value)
-		        ((struct variable *)currenttype)->temp = ((struct variable *)currenttype)->value;
+		    $$.v->value = currenttype.v->value++;
+		    if(currenttype.v->temp < currenttype.v->value)
+		        currenttype.v->temp = currenttype.v->value;
 		}
 
 		| IDENTIFIER EQUAL INTEGER
 		{
 		    $$.v = CreateVariable($1.s, 0, ScopeStack->scope, CurrentDeclarationScope, 0);
-		    ((struct variable *)currenttype)->value = ($$.v->value = atoll($3.s)) + 1;
-		    if(((struct variable *)currenttype)->temp < ((struct variable *)currenttype)->value)
-		        ((struct variable *)currenttype)->temp = ((struct variable *)currenttype)->value;
+		    currenttype.v->value = ($$.v->value = atoll($3.s)) + 1;
+		    if(currenttype.v->temp < currenttype.v->value)
+		        currenttype.v->temp = currenttype.v->value;
 		}
 
 enum_varlist:	/* empty case */
@@ -3614,16 +3631,19 @@ enum_varlist:	/* empty case */
 enum_varlistmember: IDENTIFIER
 		{
                     $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
-                    $$.v->type = TYPE_INTEGER;
+                    $$.v->type = TYPE_INTEGER | TYPE_DEFINED;
 		}
 
-
-structdecl:     STRUCT struct_tag
-		{
-		    $$.type = currenttype = (long long) $2.v;
-		    currentwidth = $2.v->width;
-		}
-		struct_varlist SEMICOLON
+new_tag:	/* empty case */
+                {
+		    $$.type = 0;
+                    $$.v = newtemptag();
+                }
+		| IDENTIFIER
+                {
+		    $$.type = 0;
+                    $$.v = CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 0);
+                }
 
 		/*
 		 * The struct_members list is stored in the members field during parsing.
@@ -3632,12 +3652,18 @@ structdecl:     STRUCT struct_tag
 		 * discarded, as that is not an instance of the structure.
 		 */
 
-struct_tag:     IDENTIFIER leftcurly
-                {
 
-                    $$.v = CreateVariable($1.s, 0, &TagScopeStack, CurrentDeclarationScope, 0);
-                    PushDeclarationScope(&($$.v->members));
+structdecl:     STRUCT new_tag
+		{
+		    $$.type = currenttype.type = $2.type;
+		    currentwidth = $2.v->width;
+		}
+
+		leftcurly
+                {
+                    PushDeclarationScope(&($2.v->members));
                 }
+
                 struct_members
                 {
                     struct varlist *vl = TagScopeStack->variable->members;
@@ -3660,15 +3686,35 @@ struct_tag:     IDENTIFIER leftcurly
                 rightcurly
                 {
                     PopDeclarationScope();
-                    $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+		    currenttype.type = $2.type;
                 }
+		struct_varlist SEMICOLON
 
-                | IDENTIFIER
-                { $$.v = findvariable($1.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope); }
+                | STRUCT IDENTIFIER
+                {
+		    $$.v = findvariable($2.s, MUSTEXIST, 0, &TagScopeStack, CurrentDeclarationScope);
+		}
+		struct_varlist SEMICOLON
+		    
+varlistw:	newidentifier
 
-struct_members: declaration
+		| newidentifierw
 
-                | struct_members declaration
+		| varlist COMMA newidentifier
+
+		| varlist COMMA newidentifierw
+
+struct_declaration:	 typename varlistw SEMICOLON
+
+		| structdecl
+
+		| enumdecl
+
+		| pragma
+
+struct_members: struct_declaration
+
+                | struct_members struct_declaration
 
 struct_varlist:  /* empty case */
 
@@ -3699,7 +3745,7 @@ struct_varlistmember: IDENTIFIER
                     }
 		    PushDeclarationScope(&($$.v->members));
 
-		    MapStructureVars($$.v, ((struct variable *)currenttype)->members);
+		    MapStructureVars($$.v, currenttype.v->members);
 
 		    PopDeclarationScope();
 		    CurrentDeclarationScope = oldscope;
@@ -3708,7 +3754,7 @@ struct_varlistmember: IDENTIFIER
 
 optionaltype:	/* empty */
                 {
-                    $$.type = currenttype = 0;
+                    $$.type = currenttype.type = 0;
                     currentwidth = 0;
                 }
 
@@ -3716,138 +3762,114 @@ optionaltype:	/* empty */
 
 typename:	VOID
 		{
-		    $$.type = currenttype = 0;
+		    $$.type = currenttype.type = 0;
 		    currentwidth = 0;
 		}
 
 		| PROCESS
 		{
-		    $$.type = currenttype = TYPE_PROCESS;
+		    $$.type = currenttype.type = TYPE_PROCESS | TYPE_DEFINED;
 		    currentwidth = 0;
 		}
 
 		| INT
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		    currentwidth = DefaultIntWidth;
 		}
 
 		| SIGNED
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		    currentwidth = DefaultIntWidth;
 		}
 
 		| UNSIGNED
 		{
-		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_DEFINED;
 		    currentwidth = DefaultIntWidth;
-		}
-
-		| INPUT
-		{
-		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_INPUT;
-		    currentwidth = 8;
-		}
-
-		| OUTPUT
-		{
-		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_OUTPUT;
-		    currentwidth = 8;
-		}
-
-		| TRISTATE
-		{
-		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_BUS;
-		    currentwidth = 8;
-		}
-
-		| MAILBOX
-		{
-		    $$.type = currenttype = TYPE_INTEGER | TYPE_UNSIGNED | TYPE_MAILBOX;
-		    currentwidth = 8;
 		}
 
 		| CHAR
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		    currentwidth = DefaultCharWidth;
 		}
 
 		| SHORT
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		    currentwidth = DefaultShortWidth;
 		}
 
 		| LONG
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		    currentwidth = DefaultLongWidth;
 		}
 
 		| LONG LONG
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		    currentwidth = DefaultLongLongWidth;
 		}
 
 		| FLOAT
 		{
-		    $$.type = currenttype = TYPE_FLOAT;
+		    $$.type = currenttype.type = TYPE_FLOAT | TYPE_DEFINED;
 		    currentwidth = DefaultFloatWidth;
 		}
 
 		| DOUBLE
 		{
-		    $$.type = currenttype = TYPE_FLOAT;
+		    $$.type = currenttype.type = TYPE_FLOAT | TYPE_DEFINED;
 		    currentwidth = DefaultDoubleWidth;
 		}
 
 		| LONG DOUBLE
 		{
-		    $$.type = currenttype = TYPE_FLOAT;
+		    $$.type = currenttype.type = TYPE_FLOAT | TYPE_DEFINED;
 		    currentwidth = DefaultLongDoubleWidth;
 		}
 
 		| EXTERN typename
 		{
-		    $$.type = currenttype = $2.type;
+		    $$.type = currenttype.type = $2.type;
 		}
 
 		| AUTO typename
 		{
-		    $$.type = currenttype = $2.type;
+		    $$.type = currenttype.type = $2.type;
 		}
 
 		| REGISTER typename
 		{
-		    $$.type = currenttype = $2.type;
+		    $$.type = currenttype.type = $2.type;
 		}
 
 		| UNSIGNED typename
 		{
-		    $$.type = currenttype = $2.type | TYPE_INTEGER | TYPE_UNSIGNED;
+		    $$.type = currenttype.type = $2.type | TYPE_INTEGER | TYPE_UNSIGNED | TYPE_DEFINED;
 		}
 
 		| SIGNED typename
 		{
-		    $$.type = currenttype = TYPE_INTEGER;
+		    $$.type = currenttype.type = TYPE_INTEGER | TYPE_DEFINED;
 		}
 
 		| STATIC typename
 		{
-		    $$.type = currenttype = $2.type | TYPE_STATIC;
+		    $$.type = currenttype.type = $2.type | TYPE_STATIC | TYPE_DEFINED;
 		}
 
 		| CONST typename
 		{
-		    $$.type = currenttype = $2.type | TYPE_CONST;
+		    $$.type = currenttype.type = $2.type | TYPE_CONST | TYPE_DEFINED;
 		}
 
 		| VOLATILE typename
 		{
-		    $$.type = currenttype = $2.type | TYPE_VOLATILE;
+		    $$.type = currenttype.type = $2.type | TYPE_VOLATILE | TYPE_DEFINED;
 		}
 		    
 varlist:	varlistmember
@@ -3893,7 +3915,7 @@ globalvarlistmember: newidentifier
 		    if($1.v->flags & SYM_ARRAY)
 		        error2("initialization of global array variables not supported", "");
 
-		    if($1.v->type == TYPE_FLOAT)
+		    if(($1.v->type == TYPE_DEFINED) && ($1.v->type == TYPE_FLOAT))
 		        error2("initialization of global floating point variables not supported", "");
 
 		    /*
@@ -3915,7 +3937,7 @@ globalvarlistmember: newidentifier
 		        error2("parameters not supported in function type specification of", $1.v->name);
 		}
 
-pragma:         INTBITS INTEGER
+pragma:           INTBITS INTEGER
                 { DefaultIntWidth = atoi($2.s); }
 
 		| CHARBITS INTEGER
@@ -3945,31 +3967,10 @@ pragma:         INTBITS INTEGER
 		}
 		LEFTPAREN newidentifier pinlist RIGHTPAREN
                 {
-		    inputport($4.v, $5.v->junk);
+//		    inputport($4.v, $5.v->junk);              TODO: this is broken
 		    $4.v->bits->bit->flags |= SYM_CLOCK;
                     clockname = $4.v->bits->bit->name+1;
 		}
-
-                | INPUTPORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
-                { inputport($3.v, $4.v->junk); }
-
-                | OUTPUTPORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
-                { outputport($3.v, $4.v->junk); }
-
-                | BUS_PORT LEFTPAREN oldidentifier pinlist RIGHTPAREN
-                { busport($3.v, $4.v->junk); }
-
-                | BUS_IDLE LEFTPAREN oldidentifier RIGHTPAREN
-                { busidle($3.v); }
-
-                | PORTFLAGS LEFTPAREN oldidentifier COMMA expn RIGHTPAREN
-                {
-		    if($5.v->flags & SYM_LITERAL)
-		        portflags($3.v, (int)($5.v->value));
-		    else
-		        error2("portflags must be a constant expression:", $3.v->name+1);
-		}
-
 
 stmts:		/* empty */
 
@@ -4336,6 +4337,15 @@ precedence_1:	INTEGER				//  1 L-->R function() [] -> .
 		{ $$.v = intconstant(atoll($1.s)); }
 
 		| oldidentifier
+		{
+		    $$ = $1;
+		    if($$.v->type & TYPE_VOLATILE) {
+		        if($$.v->flags & SYM_ARRAY)
+			    error2("IO Port arrays not supported:", $1.v->name);
+			else
+			    IORead($$.v);      // manage the input port
+		    }
+		}
 
 		| LEFTPAREN expn RIGHTPAREN
 		{ $$ = $2; }
@@ -4359,7 +4369,7 @@ precedence_1:	INTEGER				//  1 L-->R function() [] -> .
 		| STRING LEFTBRACE expn RIGHTBRACE
 		{
 		    $$.v = newtempvar("string", 8);
-		    $$.v->type = currenttype;
+		    $$.v->type = currenttype.type;
 		    CreateArray($$.v, strlen($1.s));
 		    CurrentVar = $$.v;
 		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
@@ -4470,10 +4480,9 @@ precedence_12:	precedence_11				// 12 L-->R ||
 
 precedence_13:	precedence_12				// 13 L<--R ? :
 
-		| precedence_12 QUESTION expn COLON precedence_13
-		{
-		    $$.v = $3.v;
-		    error2("conditional ? true : false not implemented", "");
+		| precedence_12 QUESTION precedence_12 COLON precedence_13
+		{ // this isn't quite right, doesn't properly handle conditional function calls, assignments, etc that tick
+                    $$.v = twoop(twoop($3.v, nonzero($1.v), and), twoop($5.v, complement(nonzero($1.v)), and), or);
 		}
 
 //constant_expn:	precedence_13			 // reference using    (int)($2.v->value)
@@ -4550,7 +4559,7 @@ functioncall:	funcidentifier LEFTPAREN argumentlist RIGHTPAREN
 		    struct variable *temp1, *temp2;
 		    struct varlist **vlp;
 
-		    if($1.v->type & TYPE_PROCESS) 
+		    if(($1.v->type & TYPE_DEFINED) && ($1.v->type & TYPE_PROCESS)) 
 		        error2("Process functions may not be called:", $1.v->name+1);
 
 		    makefunction($1.v, $1.v->width);
@@ -4642,8 +4651,9 @@ lhsidentifier:	IDENTIFIER
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
 			error2("Structure assignments are not supported:", $1.v->name+1);
-		    if($$.v->type & TYPE_CONST)
+		    else if(($$.v->type & TYPE_DEFINED) && ($$.v->type & TYPE_CONST))
 			error2("Assignments to constant variables are not supported:", $1.v->name+1);
+		    else if($$.v->type & TYPE_VOLATILE) IOWrite($$.v);
 		}
 
                 | IDENTIFIER LEFTBRACE expn RIGHTBRACE
@@ -4651,9 +4661,11 @@ lhsidentifier:	IDENTIFIER
                     $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
 		        error2("Structure arrays are not supported:", $1.v->name+1);
-		    if($$.v->type & TYPE_CONST)
+		    else if($$.v->type & TYPE_VOLATILE)
+		        error2("IO Port arrays are not supported:", $1.v->name+1);
+		    else if(($$.v->type & TYPE_DEFINED) && ($$.v->type & TYPE_CONST))
 			error2("Assignments to constant variables are not supported:", $1.v->name+1);
-		    ArrayAssignment($$.v, $3.v);
+		    else ArrayAssignment($$.v, $3.v);
                 }
 
 		| structref
@@ -4661,6 +4673,7 @@ lhsidentifier:	IDENTIFIER
 		    $$ = $1;
 		    if($1.v->members)
 		        error2("Structure assignments are not supported:", $1.v->copyof->name+1);
+		    else if($$.v->type & TYPE_VOLATILE) IOWrite($$.v);
 		}
 
 oldidentifier:	IDENTIFIER
@@ -4701,29 +4714,38 @@ structref:      IDENTIFIER PERIOD IDENTIFIER
                     PopDeclarationScope();
                 }
 
-
-newidentifier:	IDENTIFIER opt_width
+newidentifier:	IDENTIFIER
 		{
-		    $$.v = CreateVariable($1.s, atoi($2.s), ScopeStack->scope, CurrentDeclarationScope, 0);
-		    $$.v->type = currenttype;
-		    if(currenttype & TYPE_INPUT)
-                        inputport(findvariable($1.s, MUSTEXIST, atoi($2.s), ScopeStack->scope, CurrentDeclarationScope), 0);
-		    else if(currenttype & TYPE_OUTPUT)
-                        outputport($$.v, 0);
-		    else if(currenttype & TYPE_BUS)
-                        busport(findvariable($1.s, MUSTEXIST, atoi($2.s), ScopeStack->scope, CurrentDeclarationScope), 0);
+		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->type = currenttype.type;
 		}
 
-		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE opt_width
+		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE
 		{
-		    $$.v = CreateVariable($1.s, atoi($5.s), ScopeStack->scope, CurrentDeclarationScope, 0);
-		    $$.v->type = currenttype;
+		    $$.v = CreateVariable($1.s, currentwidth, ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->type = currenttype.type;
 		    CreateArray($$.v, atoi($3.s));
 		    CurrentVar = $$.v;
 		}
-		optvectorinit
+//		optvectorinit
 
-optvectorinit:  /* empty */
+newidentifierw:	IDENTIFIER COLON INTEGER
+		{
+		    $$.v = CreateVariable($1.s, atoi($3.s), ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->type = currenttype.type;
+		}
+
+		| IDENTIFIER LEFTBRACE INTEGER RIGHTBRACE COLON INTEGER
+		{
+		    $$.v = CreateVariable($1.s, atoi($5.s), ScopeStack->scope, CurrentDeclarationScope, 0);
+		    $$.v->type = currenttype.type;
+		    CreateArray($$.v, atoi($6.s));
+		    CurrentVar = $$.v;
+		}
+//		optvectorinit
+
+//optvectorinit:  /* empty */
+/*
                 | EQUAL LEFTCURLY vectorinit RIGHTCURLY
 
 		| EQUAL STRING
@@ -4743,7 +4765,6 @@ optvectorinit:  /* empty */
 		    asprintf(&CurrentVar->vector[CurrentVar->temp], "%d", $1.s[CurrentVar->temp]);
                 }
 
-
 vectorinit:     INTEGER
                 {
 		    CurrentVar->vector = (char **) calloc(CurrentVar->arraysize+1, sizeof (char *));
@@ -4761,26 +4782,12 @@ vectorinit:     INTEGER
 		    if(CurrentVar->temp < CurrentVar->arraysize)
 		        asprintf(&CurrentVar->vector[CurrentVar->temp++], "%s", $3.s);
                 }
+ */
 
-
-funcidentifier:	IDENTIFIER opt_width
+funcidentifier:	IDENTIFIER
 		{
-		    $$.v = findvariable($1.s, MAYEXIST, atoi($2.s), &DeclarationScopeStack, CurrentDeclarationScope);
-		    $$.v->type = currenttype;
-		    changewidth($$.v->copyof, atoi($2.s));
-		    changewidth($$.v, atoi($2.s));
-		}
-
-opt_width:	{ // empty case - simply pass back current width as a string
-		    char *val;
-		    asprintf(&val, "%d", currentwidth);
-		    $$.s = val;
-		}
-
-		|
-		COLON INTEGER
-		{
-		    $$ = $2;
+		    $$.v = findvariable($1.s, MAYEXIST, currentwidth, &DeclarationScopeStack, CurrentDeclarationScope);
+		    $$.v->type = currenttype.type;
 		}
 %%
 
