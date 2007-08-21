@@ -1,18 +1,13 @@
-main()
-{
+struct test {
+    volatile int  a:2;
+    volatile int  b:2;
+    volatile int out:2;
+} io;
 
-        int a:2 ;
-        int b:2 ;
-#pragma fpgac_inputport (a,a9)
-#pragma fpgac_inputport (b,a10)
-        int sum_of_products:2 ;
-#pragma fpgac_outputport (sum_of_products,a11)
-        int loopvar:2 ;
+main() {
+    int loopvar;
         
-        for (loopvar = 0  ;    ; loopvar ++  )
-       {
-                sum_of_products =  loopvar & a ;
-       }
+    for(loopvar=0; ; loopvar++) {
+        io.out = loopvar & io.a;
+    }
 }
-
-

@@ -1,12 +1,14 @@
 // cnf output for this is wrong, xnf is correct. missing last t = i    (jbass])
-fpgac_tristate  t:1;
-fpgac_input   i:1;
-fpgac_output  o:1;
+
+struct test {
+    volatile int t:1;
+    volatile int i:1;
+    volatile int out:1;
+} io;
 
 main() {
-
-    while(i) {
-    o = t;
+    while(io.i) {
+        io.out = io.t;
     }
-    t = i;
+    io.t = io.i;
 }

@@ -1,11 +1,11 @@
-// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug  1 21:10:16 2006"
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Sun Aug 19 17:31:10 2007"
 // part=4003pc84
-ioports_1_Running^CLK = VCC;
-ioports_1_T1__Start^CLK = ~ioports_1_Running;
-ioports_1__state_C1 = ioports_1_T1__Start;
-if(~ioports_1_T5_enable) port(t) = t^(CLK*ioports_1_main_S0_T1_endloop) = port(t);
-ioports_1_T5_enable^(CLK*ioports_1_main_S0_T1_endloop) = VCC;
-i^CLK = port(i);
-port(o)^(CLK*ioports_1_main_S0_T0_looptop) = t;
-ioports_1_main_S0_T0_looptop^CLK = (ioports_1_main_S0_T0_looptop*i)+(i*ioports_1__state_C1);
-ioports_1_main_S0_T1_endloop^CLK = (ioports_1_main_S0_T0_looptop*~i)+(~i*ioports_1__state_C1);
+ioports_1/Running^CLK = VCC;
+ioports_1/T1/Start^CLK = ~ioports_1/Running;
+ioports_1/state/C1 = ioports_1/T1/Start;
+if(~io/T0/enable) port(io/t) = io/t^CLK = port(io/t);
+io/T0/enable^(CLK*ioports_1/main/S0/T1/endloop) = VCC;
+io/i = port(io/i);
+port(io/out)^(CLK*ioports_1/main/S0/T0/looptop) = io/t;
+ioports_1/main/S0/T0/looptop^CLK = (ioports_1/main/S0/T0/looptop*io/i)+(io/i*ioports_1/state/C1);
+ioports_1/main/S0/T1/endloop^CLK = (ioports_1/main/S0/T0/looptop*~io/i)+(~io/i*ioports_1/state/C1);

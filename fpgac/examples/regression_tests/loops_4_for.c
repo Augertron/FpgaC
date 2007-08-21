@@ -1,22 +1,21 @@
-main()
-{
-int a:1,outs:1,outs1:1,b:1,c:1,t:1;
-#pragma fpgac_inputport (a,a9)
-#pragma fpgac_inputport (b,a10)
-#pragma fpgac_inputport (c,a11)
-#pragma fpgac_outputport (outs,a12)
-#pragma fpgac_outputport (outs1,a12)
+struct test {
+    volatile int  a:1;
+    volatile int  b:1;
+    volatile int  c:1;
+    volatile int out1:1;
+    volatile int out2:1;
+} io;
 
-
-        for(;b|c;) {
-                outs =  (b & c) ;
-                for(;a;) {
-                        outs1 =  (a & c) ;
-                }
+main() {
+    for( ;io.b|io.c; ) {
+        io.out1 = (io.b & io.c);
+        for( ;io.a; ) {
+            io.out2 = (io.a & io.c);
         }
-        for(;a|b;) {
-                outs =  (a & b) ;
-        }
+    }
+    for( ;io.a|io.b; ) {
+        io.out1 =  (io.a & io.b);
+    }
 }
 
 

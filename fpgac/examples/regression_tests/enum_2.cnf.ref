@@ -1,8 +1,8 @@
 // fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug  1 21:10:16 2006"
 // part=4003pc84
-enum_2_Running^CLK = VCC;
-enum_2_T1__Start^CLK = ~enum_2_Running;
-enum_2__state_C1 = enum_2_T1__Start;
-port(out_0)^(CLK*enum_2__state_C1) = VCC;
-port(out_1)^(CLK*enum_2__state_C1) = VCC;
-port(out_2)^CLK = GND;
+enum_2/Running^CLK = VCC;
+enum_2/T1/Start^CLK = ~enum_2/Running;
+enum_2/state/C1 = enum_2/T1/Start;
+port(io/out_0)^(CLK*enum_2/state/C1) = VCC;
+port(io/out_1)^(CLK*enum_2/state/C1) = VCC;
+port(io/out_2)^CLK = GND;

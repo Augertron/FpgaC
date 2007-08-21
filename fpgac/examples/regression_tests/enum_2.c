@@ -1,10 +1,11 @@
-fpgac_output out:3;
+struct test {
+    volatile int out:3;
+} io;
 
 enum abc {a=2, b, c};
 
-main()
-{
-	out = b;
+main() {
+	io.out = b;
 }
 
 
