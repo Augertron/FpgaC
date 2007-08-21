@@ -1,11 +1,17 @@
-volatile fpgac_output out:1;
+struct test {
+    volatile int out:1;
+} io;
+
+/*
+ * Test for new clock state for each assignment
+ */
 
 main()
 {
-	out = 1;
-	out = 0;
-	out = 1;
-	out = 0;
+	io.out = 1;
+	io.out = 0;
+	io.out = 1;
+	io.out = 0;
 }
 
 

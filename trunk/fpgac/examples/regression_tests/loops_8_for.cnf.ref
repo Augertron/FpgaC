@@ -1,13 +1,13 @@
 // fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug  1 21:10:15 2006"
 // part=4003pc84
-test_Running^CLK = VCC;
-test_T1__Start^CLK = ~test_Running;
-test_main_S0_a_0^CLK = port(_test_main_S0_a_0,"a9");
-test_main_S0_a_1^CLK = port(test_main_S0_a_1);
-test_main_S0_b_0^CLK = port(_test_main_S0_b_0,"a10");
-test_main_S0_b_1^CLK = port(test_main_S0_b_1);
-port(_test_main_S0_sum_of_products_0,"a11")^(CLK*test_main_S0_T7_looptop) = (test_main_S0_a_0*test_main_S0_loopvar_0);
-port(test_main_S0_sum_of_products_1)^(CLK*test_main_S0_T7_looptop) = (test_main_S0_a_1*test_main_S0_loopvar_1);
-test_main_S0_loopvar_0^(CLK*test_main_S0_T7_looptop) = ~test_main_S0_loopvar_0;
-test_main_S0_loopvar_1^(CLK*test_main_S0_T7_looptop) = (test_main_S0_loopvar_0*~test_main_S0_loopvar_1)+(~test_main_S0_loopvar_0*test_main_S0_loopvar_1);
-test_main_S0_T7_looptop^CLK = (test_main_S0_T7_looptop)+(test_T1__Start);
+test/Running^CLK = VCC;
+test/T1/Start^CLK = ~test/Running;
+io/a_0^CLK = port(io/a_0);
+io/a_1^CLK = port(io/a_1);
+io/b_0^CLK = port(io/b_0);
+io/b_1^CLK = port(io/b_1);
+port(io/out_0)^(CLK*test/main/S0/T1/looptop) = (io/a_0*test/main/S0/loopvar_0);
+port(io/out_1)^(CLK*test/main/S0/T1/looptop) = (io/a_1*test/main/S0/loopvar_1);
+test/main/S0/loopvar_0^(CLK*test/main/S0/T1/looptop) = ~test/main/S0/loopvar_0;
+test/main/S0/loopvar_1^(CLK*test/main/S0/T1/looptop) = (test/main/S0/loopvar_0*~test/main/S0/loopvar_1)+(~test/main/S0/loopvar_0*test/main/S0/loopvar_1);
+test/main/S0/T1/looptop^CLK = (test/main/S0/T1/looptop)+(test/T1/Start);

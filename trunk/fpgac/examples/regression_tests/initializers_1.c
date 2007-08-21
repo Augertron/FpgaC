@@ -1,6 +1,9 @@
-fpgac_output  o:1;
-int gvar:1 = 1;
+struct test {
+    volatile int  out:1;
+} io;
+
+int gvar = 1;
 
 main() {
-    o = gvar;
+    io.out = gvar;
 }

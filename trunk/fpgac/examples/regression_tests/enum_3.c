@@ -1,12 +1,13 @@
-fpgac_output out:3;
+struct test {
+    volatile int out:3;
+} io;
 
 enum abc {a, b, c} eval;
 
-main()
-{
+main() {
 	eval = b;
 	eval += 1;
-	out = eval;
+	io.out = eval;
 }
 
 

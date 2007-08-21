@@ -1,8 +1,8 @@
 // fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Aug  1 21:10:16 2006"
 // part=4003pc84
-initializers_3_Running^CLK = VCC;
-initializers_3_T1__Start^CLK = ~initializers_3_Running;
-initializers_3__state_C1 = initializers_3_T1__Start;
-port(o)^(CLK*initializers_3__state_C1) = initializers_3_main_S0_gvar;
-initializers_3_main_S0_gvar^(CLK*initializers_3_main_S0_T0_comp) = VCC;
-initializers_3_main_S0_T0_comp = ~initializers_3_Running;
+initializers_3/Running^CLK = VCC;
+initializers_3/T1/Start^CLK = ~initializers_3/Running;
+initializers_3/state/C1 = initializers_3/T1/Start;
+port(io/out)^(CLK*initializers_3/state/C1) = initializers_3/main/S0/gvar_0;
+initializers_3/main/S0/gvar_0^(CLK*initializers_3/main/S0/T0/comp) = VCC;
+initializers_3/main/S0/T0/comp = ~initializers_3/Running;
