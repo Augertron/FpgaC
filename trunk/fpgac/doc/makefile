@@ -6,3 +6,4 @@ fpgac.man:	fpgac.1
 clean:
 
 install:
+	cp fpgac.1 /usr/local/man/man1/fpgac.1
