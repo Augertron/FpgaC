@@ -6,779 +6,455 @@
   <title>FpgaC Users Manual - Version 1.0-Beta-3</title>
 </head>
 <body>
-<br>
-<div style="text-align: center;"><big><big><span
- style="font-weight: bold;">FpgaC</span><br style="font-weight: bold;">
-<span style="font-weight: bold;">John L. Bass</span></big><br>
-DMS Design<br>
-August 2006<br>
-(Version 1.0-Beta-3)<br>
-</big></div>
-<br>
-FpgaC (or fpgac) is compiler for a subset of the <a
- href="http://cm.bell-labs.com/cm/cs/cbook/">C
-programming language</a>, which produces <a
- href="http://en.wikipedia.org/wiki/Digital_circuit">digital circuits</a>
-that will execute the compiled
-programs. The circuits may use <a
- href="http://en.wikipedia.org/wiki/FPGA">FPGA</a>s or <a
- href="http://en.wikipedia.org/wiki/CPLD">CPLD</a>s as the target
-processor for <a href="Reconfigurable_computing">reconfigurable
-computing</a>, or even <a
- href="http://en.wikipedia.org/wiki/Application-specific_integrated_circuit">ASIC</a>s
-for dedicated applications.&nbsp; FpgaCs goal is to be an efficient
+<big>
+<div style="text-align: center;">
+<h1>FpgaC</h1>
+<h2>John L. Bass</h2>
+<h3>DMS Design<br>
+August 2007<br>
+(Version 1.0-Beta-3)</h3>
+</big>
+</div>
+FpgaC (or fpgac) is compiler for a subset of the
+<a href="http://cm.bell-labs.com/cm/cs/cbook/">C programming language</a>,
+which produces
+<a href="http://en.wikipedia.org/wiki/Digital_circuit">digital circuits</a>
+that will execute the compiled programs. The circuits may use
+<a href="http://en.wikipedia.org/wiki/FPGA">FPGA</a>s or
+<a href="http://en.wikipedia.org/wiki/CPLD">CPLD</a>s as the target processor for
+<a href="Reconfigurable_computing">reconfigurable computing</a>, or even
+<a href="http://en.wikipedia.org/wiki/Application-specific_integrated_circuit">ASIC</a>s
+for dedicated applications. FpgaCs goal is to be an efficient
 High Level Language (HLL) for reconfigurable computing, rather than a
 Hardware Description Language (HDL) for building efficient custom
-hardware circuits.<br>
-<br>
-<h3>The FpgaC Project Team<br>
-</h3>
-The beta-3 release includes project work by John Bass.&nbsp; See the
-top level README file for other contributions and project history.<br>
-<br>
-The beta-2 release includes project
-work since the initial beta release
-by Isaac Pentinmaki,&nbsp; Rahul Menon, and John Bass.&nbsp; Supporting
-work setting up CVS/SVN done by Mark Phillips.&nbsp; <br>
-<br>
+hardware circuits.
+<h3>The FpgaC Project Team</h3>
+The beta-3 release includes project work by John Bass. See the
+top level README file for other contributions and project history.
+<p>
+The beta-2 release includes project work since the initial beta release
+by Isaac Pentinmaki, Rahul Menon, and John Bass. Supporting
+work setting up CVS/SVN done by Mark Phillips.
+<p>
 The core developers for this project are not employer supported, and
 most of us are self employed consultants that take time from our
-families and other paying work to support this project.&nbsp; If you
+families and other paying work to support this project. If you
 find this tool useful, please help further it's
 development with donations at:<br>
-<div style="text-align: center;">&nbsp;<a
- href="http://sourceforge.net/donate/index.php?group_id=152034"><img
+<div style="text-align: center;">
+<a href="http://sourceforge.net/donate/index.php?group_id=152034"><img
  src="http://images.sourceforge.net/images/project-support.jpg"
- alt="Support This Project" border="0" height="32" width="88"> </a><br>
+ alt="Support This Project" border="0" height="32" width="88"> </a>
 </div>
-<br>
-FpgaC sources and documentation are derived from the <a
- href="http://www.eecg.toronto.edu/EECG/RESEARCH/tmcc/tmcc/">TMCC</a>
+<p>
+FpgaC sources and documentation are derived from the
+<a href="http://www.eecg.toronto.edu/EECG/RESEARCH/tmcc/tmcc/">TMCC</a>
 HDL by Dave Galloway,
-<a href="http://www.ece.utoronto.ca/scripts/index_.asp">Department of
-Electrical and Computer&nbsp; Engineering</a>,&nbsp;
-University of Toronto, who did this great
-pioneering work in support of the <a
- href="http://www.eecg.toronto.edu/EECG/RESEARCH/FPGA.html">Transmogrifier</a>
-projects.&nbsp; They hold the original copyrights, and the works have
+<a href="http://www.ece.utoronto.ca/scripts/index_.asp">Department of Electrical and Computer Engineering</a>,
+University of Toronto, who did this great pioneering work in support of the
+<a href="http://www.eecg.toronto.edu/EECG/RESEARCH/FPGA.html">Transmogrifier</a>
+projects. They hold the original copyrights, and the works have
 been made available to the FpgaC project as open source under BSD style
-licenses.<br>
-<br>
+licenses.
+<p>
 <h3>Devices are supported</h3>
-FpgaC has been used to target several families of FPGAs:<br>
-<br>
-<div style="margin-left: 40px;">Xilinx XC4000 and Spartan series (Using
-older ISE versions and ISE Classic)<br>
-Xilinx Virtex, Virtex-E, Virtex-II and Virtex-Pro Series (Using Edif
-conversions)<br>
-Altera FLEX 8K, 10K, and Stratix VQM series<br>
+FpgaC has been used to target several families of FPGAs:
+<p>
+<div style="margin-left: 40px;">
+Xilinx XC4000 and Spartan series (Using older ISE versions and ISE Classic)<br>
+Xilinx Virtex, Virtex-E, Virtex-II and Virtex-Pro Series (Using Edif conversions)<br>
+Altera FLEX 8K, 10K, and Stratix VQM series
 </div>
-<br>
-and certainly others by users we do not know about.&nbsp; Let us know
-about your use.<br>
-<br>
+<p>
+and certainly others by users we do not know about. Let us know about your use.
+<p>
 The <a href="http://www.elook.org/computing/xilinx-netlist-format.htm">XNF</a>
-output targeting Xilinx XC4000, Spartan and several Altera parts may be
-used directly. The Xilinx XNF formats may be used directly with older
-ISE releases, or with the free ISE Classic in support of XC4K and
-Spartan FPGAs.&nbsp; Newer Xilinx ISE releases no longer support XNF
-inputs, and will require the xnf output to be converted to <a
- href="http://en.wikipedia.org/wiki/EDIF">EDIF</a> format using older
-Xilinx ISE tools, or third party tools.&nbsp; FpgaC is very likely to
-support native EDIF net list outputs soon in a future release.<br>
-<br>
+output targeting Xilinx XC4000, Spartan and several Altera parts may be used
+directly. The Xilinx XNF formats may be used directly with older ISE releases,
+or with the free ISE Classic in support of XC4K and Spartan FPGAs. Newer
+Xilinx ISE releases no longer support XNF inputs, and will require the xnf
+output to be converted to
+<a href="http://en.wikipedia.org/wiki/EDIF">EDIF</a>
+format using older Xilinx ISE tools, or third party tools. FpgaC is very likely
+to support native EDIF net list outputs soon in a future release.
+<p>
 The VHDL net list output (needs a maintainer/developer) is partially
 supported in this release, and can also be feed into a variety of
-vendor tool
-chains, possibly with editing.<br>
-<br>
+vendor tool chains, possibly with editing.
+<p>
 The Altera net list output (needs a maintainer/developer) is partially
-supported in this release.<br>
-<br>
+supported in this release.
+<p>
 The FpgaC team is eager to support other vendors product lines as well.
-Donations of demonstration boards (and software with licenses if
-needed) are greatly appreciated to expand our ability to test other
-products.<br>
-<h3>Example FpgaC program<br>
-</h3>
-Here is a simple FpgaC program that makes the 8 <a
- href="http://en.wikipedia.org/wiki/LED">LED</a>s on the <a
- href="http://www.seas.upenn.edu/ese/rca/pchardware/demoboard/demoboard.html">Xilinx
-4000
-demo board</a> count up:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; main() {</span><span
- style="font-family: monospace;"><br>
-&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; char lights, count;</span>
-<pre><span style="font-family: monospace;"></span></pre>
-<pre><span style="font-family: monospace;"></span><span
- style="font-family: monospace;">    #pragma fpgac_outputport(lights, 60, 59, 58, 57, 66, 65, 62, 61)</span></pre>
-<pre><span style="font-family: monospace;"></span></pre>
-<pre><span style="font-family: monospace;"></span><span
- style="font-family: monospace;">&nbsp;&nbsp;    &nbsp; count = 0;</span></pre>
-<pre><span style="font-family: monospace;">&nbsp;&nbsp;    &nbsp; while(1) {<br>&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; count = count + 1;<br>&nbsp;&nbsp;    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lights = ~count;<br>&nbsp;&nbsp;    &nbsp; }<br>    }</span></pre>
-<br>
-The <span style="font-weight: bold;">#pragma fpgac_outputport</span>
-statement tells the compiler the <span style="font-weight: bold;">lights</span>
-variable is really a set of 8 output pins on the chip, and specifies
-the pin numbers or names. The executing program then goes into an
-infinite loop,
-incrementing the count.&nbsp; The LEDs on the demo board are wired so
-that a 0 output turns them on, and a 1 output turns them off.&nbsp; To
-reverse this, we use C's&nbsp; '~' complement operator.<br>
+Donations of demonstration boards (and software with licenses if needed)
+are greatly appreciated to expand our ability to test other products.
+<p>
+<h3>Example FpgaC program</h3>
+Here is a simple FpgaC program that makes the 8
+<a href="http://en.wikipedia.org/wiki/LED">LED</a>s on the
+<a href="http://www.seas.upenn.edu/ese/rca/pchardware/demoboard/demoboard.html">Xilinx 4000 demo board</a>
+count up:
+<pre>
+    struct ports {
+        volatile unsigned char lights;  // PINS=(60,59,58,57,66,65,62,61)
+    } io;
+
+    main() {
+        char count;
+        count = 0;
+        while(1) {
+            count = count + 1;
+            io.lights = ~count;
+        }
+    }
+</pre>
+The <dfn>volatile</dfn> declaration tells the compiler the <var>lights</var>
+variable is really a set of 8 output pins on the chip.  The
+executing program then goes into an infinite loop, incrementing
+the count. The LEDs on the demo board are wired so that a 0 output
+turns them on, and a 1 output turns them off. To invert this,
+we use C's '~' complement operator.
 <h3>Running FpgaC</h3>
-To compile this sample program, call it counter.c, and run:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; fpgac counter.c</span><br>
-<br>
+To compile this sample program, call it counter.c, and run:
+<pre>
+    $ fpgac counter.c
+</pre>
 The compiler will produce a counter.xnf file, then pass it through your
 FPGA vendors tool chain to produce a bit stream file suitable for
 programming your FPGA, CPLD, or even as input to your ASIC design
-stream. <span style="font-weight: bold;">[</span><span
- style="font-style: italic; font-weight: bold;">You will need to edit
-scripts for this to work at your site</span><span
- style="font-weight: bold;">.]</span>
-All other intermediate files will be removed.&nbsp; If you want to save
-them, use the -v flag.<br>
-<br>
+stream.  [You may need to edit scripts for this to work at your site.]
+All other intermediate files will be removed. If you want to save
+them, use the -v flag.
+<p>
 If you just want to see the net list output, and not run the vendor
-tool
-chain, use the -S flag. The optional -ppartname flag can be used to
-tell FpgaC what part you are targeting The compiler will put that
-information into&nbsp; the&nbsp; net list&nbsp; file&nbsp; that&nbsp;
-it&nbsp; generates,&nbsp; for&nbsp; the&nbsp; use&nbsp; of&nbsp;
-other&nbsp; tools. The&nbsp; compiler&nbsp; also&nbsp; supports&nbsp;
-these&nbsp; normal&nbsp; C compiler flags: -U, and -D.<br>
-<br>
+tool chain, use the -S flag. The optional -ppartname flag can be used
+to tell FpgaC what part you are targeting The compiler will put that
+information into the net list file that it generates, for the use of
+other tools. The compiler also supports these normal C compiler flags:
+-U, and -D.
+<p>
 If you didn't get any net list out, the most common error is not
-defining output pins.&nbsp; FpgaC does dead code removal, by removing
-all code that doesn't affect an output pin.&nbsp; There are some rare
-cases where a conditional fails to flag part of the circuit as affects
-output, and it drops everything depending on the conditional
-expression. The work around is to use fpgac_portflags to lock down the
-FF's
-for that circuit section. Please bug report any of these found with
-sample code attached.<br>
-<h3>Differences from Standard C</h3>
-These C operators and keywords are implemented by the FpgaC compiler:<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;"><br>
-+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; +=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /=<br>
-%&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; %=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&amp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-^&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^=<br>
-~&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; !&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&lt;&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&lt;&lt;=&nbsp;&nbsp;&nbsp;&nbsp;
-&gt;&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &gt;&gt;=<br>
-==&nbsp;&nbsp; &nbsp;&nbsp; != &nbsp; &nbsp;&nbsp;
-&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&lt;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&gt;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &gt;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&amp;&amp; &nbsp; &nbsp;&nbsp; ||<br>
-()</span><span style="font-family: monospace;"></span><span
- style="font-family: monospace;">&nbsp;&nbsp; &nbsp;&nbsp;
-=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; []<br>
-<br>
-</span><span style="font-family: monospace;">if&nbsp;&nbsp;
-&nbsp;&nbsp;
-then&nbsp;&nbsp;&nbsp; else&nbsp;&nbsp;&nbsp;
-do&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-while &nbsp; for&nbsp;&nbsp;&nbsp;&nbsp; break&nbsp;&nbsp; return<br>
-<br>
-struct&nbsp;
-char&nbsp;&nbsp;&nbsp; int</span><span style="font-family: monospace;"></span><span
- style="font-family: monospace;">&nbsp;&nbsp; &nbsp; float&nbsp;&nbsp;
-double&nbsp; short&nbsp;&nbsp;
-long&nbsp;&nbsp;&nbsp; long long<br>
-</span><span style="font-family: monospace;">enum&nbsp;&nbsp;&nbsp;
-void&nbsp;&nbsp;&nbsp; </span><span style="font-family: monospace;">auto&nbsp;&nbsp;&nbsp;
-extern&nbsp; static&nbsp; </span><span style="font-family: monospace;">signed&nbsp;
-unsigned<br>
-register&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; long
-double&nbsp;&nbsp;&nbsp;&nbsp; volatile<br>
-<br>
-"strings"<br>
-</span></div>
-<div style="margin-left: 80px;"><span style="font-family: monospace;"></span></div>
-<br>
-These C operators and keywords are not implemented by the FpgaC
-compiler:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;"></span><span
- style="font-family: monospace;">unary &amp;
-&nbsp; &nbsp; unary *&nbsp; &nbsp; </span><span
- style="font-family: monospace;">-&gt;</span><span
- style="font-family: monospace;">&nbsp; &nbsp;</span><span
- style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-goto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sizeof<br>
-union</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-typedef</span><span style="font-family: monospace;">&nbsp;</span><span
- style="font-family: monospace;">
-&nbsp; (casts)</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;
-switch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; case</span><span
- style="font-family: monospace;"><br>
-</span><span style="font-family: monospace;">default &nbsp;&nbsp;
-continue
-&nbsp;&nbsp; ? &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :</span>
-</div>
-<br>
-In other words, FpgaC has 8, 16, 32, and 64 bit integer variables, plus
-floating variables of lengths 32, 64, and 128, constants,&nbsp; enum,
-expressions and assignment statements for these.&nbsp; It
-has <span style="font-weight: bold;">if</span> statements, <span
- style="font-weight: bold;">for</span> loops, <span
- style="font-weight: bold;">while</span> loops, <span
- style="font-weight: bold;">do</span>{}<span style="font-weight: bold;">while</span>()
-loops, and function calls. You
-can also use any of the cpp # directives and macros. It
-does not currently have switch/case/default, continue, or
-pointers. You can not use
-recursion.&nbsp; Structures are implemented, but unions, structure
-assignments
-and structure arrays are not currently supported. Variable
-initialization is supported, but initialized structures, arrays and
-strings are not currently supported.&nbsp; Constant expressions
-(including enum variable references) are
+defining output pins. FpgaC does dead code removal, by removing
+all code that doesn't affect an output pin.
+<h3>Progress Implementing Standard ANSI-C 1998</h3>
+These ANSI C operators and keywords are implemented by the FpgaC compiler:
+<pre>
+    +  += - -= * *= / /=
+    %  %= &amp; &amp;= | |= ^ ^=
+    ~  !  ++ -- &lt;&lt; &lt;&lt;= &gt;&gt; &gt;&gt;=
+    ==  !=  &lt; &lt;= &gt;  &gt;= &amp;&amp;   ||<br>
+    () = , {} . [] ?      :
+
+    if, then, else, do, while, for, break, return
+
+    _Bool, char, int, short, long, long long
+    float, double, long double
+    signed, unsigned, register, volatile
+    enum, struct, "strings"
+    void, auto, extern, static
+</pre>
+These C operators and keywords are not implemented by the FpgaC compiler:
+<pre>
+    unary &amp; unary *  -&gt;
+    switch, case, default, continue, goto
+    sizeof, union, typedef, (casts)
+</pre>
+In other words, FpgaC has 1, 8, 16, 32, and 64 bit integer variables, plus
+floating variables of lengths 32, 64, and 128, constants, enum,
+expressions and assignment statements for these. It has <dfn>if</dfn> statements,
+<dfn>for</dfn> loops, <dfn>while</dfn> loops, <dfn>do{} while()</dfn> loops,
+and <dfn>function</dfn> calls.
+Structure allocations and bit fields are implemented.
+You can also use any of the <dfn>cpp</dfn> # directives and macros.
+<p>
+It does not currently have <dfn>switch</dfn>, <dfn>case</dfn>, <dfn>default</dfn>,
+<dfn>continue</dfn>, pointers, <dfn>union</dfn>, structure assignments,
+or structure arrays.  You can not use recursion.  Variable initialization is
+partially supported, but initialized structures are not currently supported.
+Constant expressions (including enum variable references) are
 evaluated at compile time to avoid multiply, divide, and remainder
-operations at runtime where possible. "strings" are supported both as
-initializers of character arrays, and as indexed literals in
-expressions.<br>
-<br>
-New to the beta-2 release was small one dimensional arrays which
-are
-implemented as LUT RAMs that may be single or dual ported depending on
-the number of references in a clock cycle.&nbsp; Depending on the
-target technology, sizes may be limited to 16, 32 or 64.&nbsp; Multiple
-references
-to the same array will create multiple dualport LUT RAMs with
-replicated write functions.&nbsp; Larger arrays may be allocated from
-block rams, external memories, or other vendor specific solutions, and
-will require the user to provide macros to interface to them or changes
-to the net list output function.<br>
-<br>
-Multiply, Divide, Mod/Remainder are implemented as intrinsic functions:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">A
-* B calls fpgac_multiply(A, B)</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">A / B calls fpgac_divide(A, B)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">A % B calls fpgac_remainder(A, B)</span><br>
-</div>
-<br>
+operations at runtime where possible. Small "strings" are supported
+both as initializers of character arrays, and as indexed literals in
+expressions:
+<pre>
+     for(i=0; out = "Hello World!"[i]; i++);
+</pre>
+where strings and indexed literals are limited to the size of a LUT
+based rom for a given target architecture.
+<p>
+Small one dimensional arrays which are implemented as LUT RAMs that
+may be single or dual ported depending on the number of references
+in a clock cycle. Depending on the target technology, sizes may be
+limited to 16, 32 or 64. Multiple references to the same array will
+create multiple dualport LUT RAMs with replicated write functions.
+Larger arrays may be allocated from block rams, external memories,
+or other vendor specific solutions, and will require the user to
+provide macros to interface to them or changes to the net list output
+function.
+<p>
+Multiply, Divide, Mod/Remainder are implemented as intrinsic functions:
+<p>
+<pre>
+    A * B calls fpgac_multiply(A, B)
+    A / B calls fpgac_divide(A, B)
+    A % B calls fpgac_remainder(A, B)
+</pre>
 and may be implemented by users in the best way for their application
-and target hardware platform.<br>
-<br>
+and target hardware platform. See the intrinics directory with the
+examples.
+<p>
 Floating point is currently in the process of being implemented as
-intrinsic functions, with a partial implementation in place.<br>
-<br>
+intrinsic functions, with a partial implementation in place. If you are
+interested in using floating point with FpgaC contact the project team.
+<p>
 Most of the simple omitted stuff will get
-added to FpgaC this year as developers are available to the
+added to FpgaC as developers are available to the
 <a href="http://sourceforge.net/projects/fpgac">Sourceforge FpgaC
-project</a>.&nbsp; Current schedule is to implement remaining keywords
-and operators, except for pointers and goto by summer 2006.&nbsp;
-Beta-3 in late March or April will contain part, with Beta-4 in late
-May or June with the balance.<br>
-<br>
+project</a>. Current plans are to implement remaining keywords
+and operators, except for pointers and goto in the near term.
+<p>
 All integer variables are created as their specified width, plus a sign
 bit. For now, that includes unsigned variables too. Shortly, signed
 integers will be one bit less as the width
 specification will include the sign bit, and unsigned will not include
-a sign bit. A <span style="font-weight: bold;">char</span> currently
-is 8 bits plus a sign bit, <span style="font-weight: bold;">short</span>
-is 16 bits plus a sign bit, <span style="font-weight: bold;">long</span>
-is 32 bits plus a sign bit, and<span style="font-weight: bold;"> long
-long</span> is 64 bits plus a
-sign bit.<br>
+a sign bit. A char currently is 8 bits plus a sign bit, short
+is 16 bits plus a sign bit, long is 32 bits plus a sign bit,
+and long long is 64 bits plus a sign bit.
 <h3>Extensions to C</h3>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; #pragma
-intbits nnn</span><br>
+ #pragma intbits nnn
+<p>
+The intbits pragma sets the number of bits stored in each integer.
+Any integer variables declared after the intbits directive will be
+allocated as nnn bits.  The default number of bits in an integer is 16.
+<p>
+The FpgaC compiler accepts constants in decimal, octal, and hex as found
+in most C compilers. It also accepts binary in the 0b0010 form found in
+the Intel C/C++ compiler (and others) and other HDL's.
 <br>
-The <span style="font-weight: bold;">intbits</span> <span
- style="font-weight: bold;">pragma</span> sets the number of bits
-stored in each integer. Any integer variables declared after the <span
- style="font-weight: bold;">intbits</span> directive will have nnn bits
-in them.&nbsp; You can have any number of <span
- style="font-weight: bold;">intbits</span> directives in your program.
-They affect the integer declarations up to the next <span
- style="font-weight: bold;">intbits</span> directive. The default
-number of bits in an integer is 16.<br>
-<br>
-The compiler also accepts C bit field style bit width
-controls for int variables.<br>
-<span style="font-family: monospace;"></span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int
-othervar:12;</span><br style="font-family: monospace;">
-<br>
-The variable <span style="font-weight: bold;">othervar</span> will be
-created as 12 bits
-wide, plus a sign bit. This form may be removed from general
-declarations, and only
-allowed inside structure definitions as the standards based portable
-form of bit fields.<br>
-<br>
-The FpgaC compiler accepts constants
-in decimal, octal, and hex as found
-in most C compilers.&nbsp; It also accepts
-binary in the 0b0010 form found in the Intel C/C++ compiler (and
-others) and other HDL's.<br>
-<h3>Input, Output and Bus Port Extensions<br>
-</h3>
-A variable can be associated with a set of output pins with the pragma:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">#pragma
-fpgac_outputport( variablename [ , nnn { , nnn } ] )</span><br
- style="font-family: monospace;">
-</div>
-<br>
-Any assignments to the variable from that point on will cause the named
-pins to take on the new value. They will continue to assert that value
-until they are explicitly changed. Trying to use the value of the
-variable in an expression is undefined. The pin numbers are listed with
-the least significant bit first. If you do not specify the pin numbers,
-FpgaC will leave them undefined in the output, and they will have to be
-specified to, or chosen by, the vendors placement and routing
-software.&nbsp; Non-numeric pin numbers can also be specified, for
-example:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">#pragma
-fpgac_outputport( variablename, 23, J7, K8, 16 );</span><br>
-</div>
-<br>
-A variable can be associated with a set of input pins with the call:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">#pragma
-fpgac_inputport( variablename [ , nnn { , nnn } ] )</span><br>
-</div>
-<br>
-Any reference to the variable after
-the <span style="font-weight: bold;">fpgac_inputport</span>
-statement will return the value on
-the given input&nbsp; pins.&nbsp; Assignments to the variable are
-not allowed.&nbsp; As in the <span style="font-weight: bold;">fpgac_outputport</span>
-case, the pin numbers may be left undefined. A variable can be
-associated with a set of bi-directional input/output pins with the call:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">#pragma
-fpgac_bus_port( variablename [ , nnn { , nnn } ] )</span><br>
-</div>
-<br>
-Any reference to the variable after
-the <span style="font-weight: bold;">fpgac_bus_port</span>
-statement will return the value on
-the given pins.&nbsp; Any assignment to the variable after the <span
- style="font-weight: bold;">fpgac_bus_port</span> statement will drive
-the
-pins to the new value.&nbsp; As in the <span style="font-weight: bold;">fpgac_outputport</span>
-case, the pin numbers may be left undefined. A <span
- style="font-weight: bold;">fpgac_bus_port</span> will start out in
-input
-(ie: tristate) mode, and will not be driven.&nbsp; An assignment to a <span
- style="font-weight: bold;">fpgac_bus_port</span> variable will cause
-the
-pins to go into output mode.<br>
-<br>
-They will stay in output mode until the program puts them back into
-input mode with the call:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">#pragma
-fpgac_bus_idle( variablename )</span><br>
-<span style="font-family: monospace;"></span></div>
-<br>
-New to this beta-2C release are the variable types <span
- style="font-weight: bold;">fpgac_input</span>, <span
- style="font-weight: bold;">fpgac_output</span>, and <span
- style="font-weight: bold;">fpgac_bus</span> which are equivalent to a
-declaration and the above pragma's without a pin list:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">fpgac_input&nbsp;
-variablename;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">fpgac_output variablename;</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">fpgac_bus&nbsp;&nbsp;&nbsp;
-variablename;</span><br>
-</div>
-<br>
+<h3>Input, Output and Tri-State Bus Port Extensions</h3>
+A variable declared as volatile will be associated with external device pins.
+Variables assigned (written to) will have an output buffer instantiated.
+Variables referenced (read from) will have an input buffer instantiated.
+Variables which are both assigned and referenced, will be instantiated as
+a tri-state IO buffer, which is enabled on write, and disabled on read. Only
+a single assignment per variable will be scheduled in a clock period, with
+additional assignments to the same variable resulting in one clock period
+delays. A write to a tri-state buffer, followed by a read, will assert that
+output until the next clock, then remove the tri-state enable and capture
+the read reference at the next clock.
+<p>
 <h3>Process Function Extension</h3>
-An experimental feature called process functions was introduced in this
-Beta Release. Process functions are declared with type <span
- style="font-weight: bold;">fpgac_process</span>:<br>
-<br>
-<div style="margin-left: 40px;">fpgac_process myprocess()<br>
+An experimental feature called process functions was introduced in the
+Beta-2 Release.
+Process functions are declared with type fpgac_process:
+<p>
+<div style="margin-left: 40px;">fpgac_process myprocess()
 </div>
-<br>
-and are automatically started at load time. Process functions are
+<p>
+and are automatically started at load time like main. Process functions are
 currently implemented to also automatically loop, so they can not
-end.&nbsp; This makes them very useful for building FSMs which
-interface to external I/O pins.<br>
-<br>
+end. This makes them very useful for building FSMs which
+interface to external I/O pins.
+<p>
 For test benching this feature on a traditional processor, simply
 typedef fpgac_process to void, and call from the test bench with a loop
-that includes simulation of the I/O pin states.&nbsp; This allows test
-bench controllers to be build without threads, as they are in control
+that includes simulation of the I/O pin states. This allows test
+bench controllers to be built without threads, as they are in control
 of the process at each call.<br>
 <h3>Timing and Clock Ticks</h3>
 FpgaC generates a simple synchronous design. It has one clock, and all
-flip flops in a clock domain change on the same edge of that clock.<br>
-<br>
-FpgaC will attempt to stuff as much of your program as it can into the
-current clock period. Multiple assignment statements and even if
+flip flops in a clock domain change on the rising edge of that clock.
+<p>
+FpgaC will attempt to stuff as much of a group of statements as it can
+into the current clock period. Multiple assignment statements and even if
 statements will all get packed into the current clock period. It will
 only stop doing this and wait for the next clock tick at any of these
-points in the program:<br>
-<br>
-<div style="margin-left: 40px;">the top of a <span
- style="font-weight: bold;">while</span>() or <span
- style="font-weight: bold;">for</span>() loop<br>
+points in the program:
+<p>
+<div style="margin-left: 40px;">
+the top of a while() or for() loop
+<p>
+a function call
+<p>
+multiple assignments to the same array.
 </div>
-<br>
-<div style="margin-left: 40px;">a function call<br>
+<p>
+Although FpgaC attempts to pack as many statements as
+possible into the same clock tick, it still works like C.
+Statements are executed in the effective order that you write them in.
+Variable assignments take affect immediately, although they may not
+show up on an output pin until the following clock cycle. This code:
+<p>
+<div style="margin-left: 40px;">
+ temp = a;<br>
+ a = b; <br>
+ b = temp;
 </div>
-<br>
-<div style="margin-left: 40px;">multiple assignments to the same array.<br>
-</div>
-<br>
-For example, suppose we want to raise an output for 2 clock ticks
-and then lower it. The following program:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; main() {</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-int out;<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; #pragma
-fpgac_outputport(out)<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-out = 1; </span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-out = 1;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-out = 0;</span><span style="font-family: monospace;"><br>
-&nbsp;&nbsp;&nbsp; }</span><br style="font-family: monospace;">
-<br>
-does not work.&nbsp; All 3 assignments will be packed into the same
-clock tick, and only the last one will have any affect.&nbsp; The port
-will be set to 0.<br>
-<br>
-To do it correctly, we need to do this:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; main() {</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-int out:1;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-int count:2; </span><br style="font-family: monospace;">
-<span style="font-family: monospace;"><br>
-&nbsp; &nbsp; #pragma fpgac_outputport(out)<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">&nbsp; &nbsp;&nbsp;
-&nbsp;&nbsp;
-count = 2;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp; &nbsp; &nbsp; &nbsp;
-while(count) {</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp; &nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; out = 1;</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp; &nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; count = count - 1;</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp; &nbsp; &nbsp; &nbsp; }</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp; &nbsp; &nbsp; &nbsp; out =
-0;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; }</span><br>
-<br>
-The while loop will be executed twice, taking one clock tick in each
-case. The output port will be set to 1 for 2 clock ticks, and 0
-thereafter. Although FpgaC attempts to pack as many statements as
-possible into the same clock tick, it still works like C.&nbsp;
-Statements are executed in the order that you write them in. Variable
-assignments take affect immediately, although they may not show up on
-an output pin until the following clock cycle.&nbsp; This code:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp; temp = a;<br>
-&nbsp;&nbsp; a = b; <br>
-&nbsp;&nbsp; b = temp;</span><br>
-<br>
-will exchange the values of a and b, just as it does in C.&nbsp; The
-exchange will take place in one clock cycle, and no flipflop or other
-circuitry will be generated for temp.<br>
-<br>
+<p>
+will exchange the values of a and b, just as it does in C. The
+exchange will take place in the current clock cycle, and no flipflop
+or other circuitry will be generated for temp.
+<p>
 Multiple assignments to the same array cause additional clocks so that
 the address lines can be changed and the data clocked for each array
-assignment.<br>
+assignment.
+<br>
 <h3>Building Hardware Pipelines</h3>
 C to net list compilers have to preserve the sequential operation of C,
 and frequently try to capitalize on it by building combinatorials
 foreach C code block. That however, may create deep combinatorials,
-which
-slow the clock rate. For instance, the following C code block will form
-a long combinatorial that ripples from a to d:<br>
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b += a;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c += b;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d += c;<br>
-<br>
+which slow the clock rate. For instance, the following C code block will form
+a long combinatorial that ripples from a to d:
+<p>
+<div style="margin-left: 40px;">
+ b += a;<br>
+ c += b;<br>
+ d += c;
+</div>
+<p>
 Reversing the blocks however, uses the sequential semantics to our
 benefit by creating a pipeline where each statement is a shorter
-combinatorial chain (faster clock rate):<br>
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d += c;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c += b;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b += a;<br>
-<br>
+combinatorial chain (faster clock rate):
+<p>
+<div style="margin-left: 40px;">
+ d += c;<br>
+ c += b;<br>
+ b += a;
+</div>
+<p>
 The results for this example will clock out of d, after a two clock
 latency with undefined data. Likewise at the end of the data stream,
-two additional clocks will be required for the last to data points.<br>
-<br>
+two additional clocks will be required for the last to data points.
+<p>
 It takes a little more work to initialize and manage pipelines, but for
 large algorithm C code blocks, they can provide significant performance
 gains. Since the execution of these pipelines have the same results on
 traditional sequential processors, the pipelined code is easily
-debugged before moving it to FpgaC for FPGA execution.<br>
-<br>
+debugged before moving it to FpgaC for FPGA execution.
+<p>
 If using a single clock in a design, then the whole program can not run
 any faster than the slowest combinatorial statement block. To avoid
 this currently require breaking the program into separate files/treads,
-and assigning clocks optimized for each threads performance.&nbsp; Many
+and assigning clocks optimized for each threads performance. Many
 current FPGAs have more flexible clocking available, and future changes
 to FpgaC may include clock assignment on a function by function basis
 and include the synchronizers necessary to manage communications across
-multiple clock domains.<br>
-<br>
+multiple clock domains.
+<p>
 In addition it is planned (see feature requests) to implement fork,
 exec, and POSIX threads and allow multiple files to share the same
 thread, thus allowing libraries with precompiled netlists (cores) to be
 introduced into FpgaC. The current practice of creating one thread for
-each file will then be depreciated.<br>
+each file will then be depreciated.
+<br>
 <h3>Clock Source</h3>
-<span style="font-family: monospace;"></span>There can only be one
-clock source for a C file.&nbsp; The default XNF file clock input is
+There can only be one
+clock source for a C file. The default XNF file clock input is
 from an external
-pin named CLKin:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; SYM, CLK-AA,
-BUFGP</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; PIN, I, I,
-CLKin</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; PIN, O, O, CLK</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; END</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; EXT, CLKin, I</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; SYM, STARTUP,
-STARTUP</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; PIN, CLK, I,
-CLK</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; END</span><br>
-<br>
+pin named CLKin:
+<p>
+<div style="margin-left: 40px;">
+ SYM, CLK-AA, BUFGP<br>
+ PIN, I, I, CLKin<br>
+ PIN, O, O, CLK<br>
+ END<br>
+ EXT, CLKin, I<br>
+ SYM, STARTUP, STARTUP<br>
+ PIN, CLK, I, CLK<br>
+ END
+</div>
+<p>
 If you want to use a name other than CLK for the clock source without
 creating the clock buffer, use the
--cYOURCLOCKNAME option.&nbsp; A simple -c option will leave the clock
+-cYOURCLOCKNAME option. A simple -c option will leave the clock
 name as CLK, and will generate the XC4000's default 15 Hz clock
-circuitry.<br>
-<br>
+circuitry.
+<p>
 You may use the pragma fpgac_clock(clockname) to use a different clock
-name and buffer for multiple clock domain designs using multiple files.<br>
-<br>
+name and buffer for multiple clock domain designs using multiple files.
+<p>
 Planned is work toward clock
 "bining" to fit statement blocks to the fastest clock that block can
-use.&nbsp; See feature requests for more info.<br>
+use. See feature requests for more info.
+<br>
 <h3>Multiple Threads of Control</h3>
-A simple FpgaC program has one thread of control, which starts at the
-beginning of the main() routine and continues from there. Many circuits
-have to do several tasks simultaneously, for instance: handling the bus
-protocol for an input and output bus, talking to several RAM chips, and
-doing some real-time computation. <br>
-<br>
-FpgaC allows you to have multiple threads of control, one main() per
-file for each
-independent task, plus functions may be declared with type <span
- style="font-weight: bold;">fpgac_process</span>.&nbsp; For files based
-threads, write a separate FpgaC
-program for each thread, compile them separately and then merge the
-resulting net list files.&nbsp; A circuit with 3 parallel threads can
-be
-produced like this:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; fpgac -c
--S inputbus.c<br>
-&nbsp;&nbsp;&nbsp; fpgac -c -S sram.c<br>
-&nbsp;&nbsp;&nbsp; fpgac compute.c inputbus.xnf sram.xnf myclock.xnf</span><br>
-<br>
-Each of the FpgaC programs has its own main() routine, functions and
-variables.&nbsp; The name space for global variables is shared between
-files, and variables can only be written in one of the files once
-properly setup with fpgac_portflags.&nbsp; To ensure that temporary
-variable
-names do not
-conflict between the separate compilations, FpgaC modifies the
-temporary names in the output net list to be prefexed with the base
-filename and function they are declared in.&nbsp; The -c flag
-prevents the compiler from generating multiple copies of the default
-clock circuit, one for each thread.<br>
-<br>
+A simple FpgaC program has one thread of control, which starts the main
+thread at the beginning of the main() routine and executes from there.
+Many circuits have to do several tasks simultaneously, for instance:
+handling the bus protocol for an input and output bus, talking to
+several external devices, or doing real-time computation and control.
+Additional threads are created with fpgac_process functions.
+<p>
+Currently, only a single process may write a global variable, and all
+functions for that process must reside in the same source file. A global
+variable my be referenced (read by) any process which shares the same
+clock.
+<p>
+Currently, only a single process may call a function, and all the callers
+must be in the same source file.
+<p>
+These two restrictions are expected to be removed in a later release
+once we have a 'linker' which can construct the required muxes and
+semaphores.
+<p>
 If you need multiple instances of the same file, each instance can be
-compiled with -T to prefix the function names for each instance.<br>
+compiled with -T to prefix the function names for each instance.
 <br>
-The separate threads of the computation can communicate using input and
-output port variables.&nbsp; Such port variables should have one
-writer, and one or more readers. The writer thread declares the
-variable to be an output port. The reader threads declare the same
-variable name to be an input port. A call to the <span
- style="font-weight: bold;">fpgac_portflags()</span> routine can be
-used to
-produce port variables that do not have external pins, and are suitable
-for communicating between threads.<br>
-<h3>Modifying Input and Output Port Semantics -- fpgac_portflags()</h3>
-An input or output port has a set of attributes, with the following
-defines automatically provided by the FpgaC compiler.&nbsp; These
-attributes can be set on a port with
-the fpgac_portflags call:<br>
+<h3>Modifying Input and Output Port Semantics</h3>
+An input or output port has a set of attributes. These attributes
+should be externally configured using vendor constraint files and
+tools.
+<p>
+In the future, FpgaC will probably also support synthesis hints in
+comments similar to other HDL's.
 <br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; #define
-PORT_WIRE 0x0<br>
-&nbsp;&nbsp;&nbsp; #define PORT_PIN 0x1<br>
-&nbsp;&nbsp;&nbsp; #define PORT_REGISTERED 0x2<br>
-&nbsp;&nbsp;&nbsp; #define PORT_PULLUP 0x4<br>
-&nbsp;&nbsp;&nbsp; #define PORT_PULLDOWN 0x8<br>
-<br>
-&nbsp;&nbsp;&nbsp; #pragma fpgac_portflags( variablename,
-constant_expression )</span><br>
-<br>
-<span style="font-weight: bold;">PORT_PIN</span> means that the port
-needs a pin on the outside of the chip. <span
- style="font-weight: bold;">PORT_REGISTERED</span> on an input port
-means that the input signal will be captured in a flipflop and the
-output of the flipflop will be used as the variable by the rest of the
-circuit. <span style="font-weight: bold;">PORT_REGISTERED</span> on an
-output port means that the&nbsp; output&nbsp; signal&nbsp; will be
-saved in a flipflop, and the output of the flipflop will drive the
-external circuitry.&nbsp; <span style="font-weight: bold;">PORT_PULLUP</span>
-will enable a pull up resistor on anexternal bi-directional pin. <span
- style="font-weight: bold;">PORT_PULLDOWN</span> will enable a pull
-down resistor on an external bi-directional pin.&nbsp; <span
- style="font-weight: bold;">PORT_WIRE</span> means none of the above,
-and acts like a wire.<br>
-<br>
-The&nbsp; default&nbsp; attributes&nbsp; of&nbsp; an&nbsp; input&nbsp;
-port&nbsp; are:&nbsp; <span style="font-weight: bold;">PORT_PIN</span>.&nbsp;
-Output ports&nbsp; are:&nbsp; <span style="font-weight: bold;">(PORT_REGISTERED
-| PORT_PIN)</span>.<br>
 <h3>Compiler Options and Output Formats</h3>
-<span style="font-family: monospace;">$ fpgac -h</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">usage: fpgac [options] file.c
-[file2.xnf ...]</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">options:</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--D/-U/-I&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-cpp arguments</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--Fformatstring&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; format string used
-for external bus names</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-optimize circuit for speed and size</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-produce net list file, but don't run ppr</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--Tn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-unique name prefix (multi-threaded circuits only)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-don't run cpp</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-don't generate 15 Hz clock from internal OSC</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--dn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-set debug level</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--fno-carry-select&nbsp;&nbsp;&nbsp; use ripple carry adders and
-counters (smaller/slower)</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--fcarry-select&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use carry select
-adders and counters (default)</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-don't minimize net list with prune (debugging tool)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -p
-part&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-specify FPGA part name</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-give estimate of circuit size and depth</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-flex8000&nbsp;&nbsp;&nbsp;&nbsp; generate XNF AND/OR/INV format for
-Altera FLEX 8K</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-cnf-eqns&nbsp;&nbsp;&nbsp;&nbsp; generate CNF EQN format</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-cnf-gates&nbsp;&nbsp;&nbsp; generate CNF AND/OR/INV format</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-cnf-roms&nbsp;&nbsp;&nbsp;&nbsp; generate CNF ROM format</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-stratix_vqm&nbsp; generate Altera Stratix VQM format</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-vhd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; generate VHDL
-format</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-xnf-eqns&nbsp;&nbsp;&nbsp;&nbsp; generate XNF EQN format (default)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-xnf-gates&nbsp;&nbsp;&nbsp; generate XNF AND/OR/INV format</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; -target
-xnf-roms&nbsp;&nbsp;&nbsp;&nbsp; generate XNF ROM format</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
--v&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-don't remove junk ppr output files</span><br>
-<br>
-The -target flag specifies the output net list format.<br>
-<br>
-The default
-<span style="font-family: monospace;">-target xnf-gates</span> will
-generate a simple XNF (Xilinx Netlist Format)
-file that uses AND, OR and INV gates.&nbsp; This format can be read by
+$ fpgac -h<br>
+usage: fpgac [options] file.c
+[file2.xnf ...]<br>
+options:<br>
+-D/-U/-I cpp arguments<br>
+-Fformatstring format string used for external bus names<br>
+-O optimize circuit for speed and size<br>
+-S produce net list file, but don't run ppr<br>
+-Tn unique name prefix (multi-threaded circuits only)<br>
+-a don't run cpp<br>
+-c don't generate 15 Hz clock from internal OSC<br>
+-dn set debug level<br>
+-fno-carry-select use ripple carry adders and counters (smaller/slower)<br>
+-fcarry-select use carry select adders and counters (default)<br>
+-m don't minimize net list with prune (debugging tool)<br>
+-p part specify FPGA part name<br>
+-s give estimate of circuit size and depth<br>
+-target flex8000 generate XNF AND/OR/INV format for Altera FLEX 8K<br>
+-target cnf-eqns generate CNF EQN format<br>
+-target cnf-gates generate CNF AND/OR/INV format<br>
+-target cnf-roms generate CNF ROM format<br>
+-target stratix_vqm generate Altera Stratix VQM format<br>
+-target vhd generate VHDL format<br>
+-target xnf-eqns generate XNF EQN format (default)<br>
+-target xnf-gates generate XNF AND/OR/INV format<br>
+-target xnf-roms generate XNF ROM format<br>
+-v don't remove junk ppr output files<br><br>
+The -target flag specifies the output net list format.
+<p>
+The default -target xnf-gates will generate a simple XNF (Xilinx Netlist Format)
+file that uses AND, OR and INV gates. This format can be read by
 several FPGA synthesis and optimization CAD tools. The compiler
 performs a technology mapping step as it is compiling a program, and
 converts the circuit to a network of 4 input lookup tables and
-flipflop.<br>
-<br>
-The <span style="font-family: monospace;">-target xnf-roms</span> flag
+flipflop.
+<p>
+The -target xnf-roms flag
 will generate a more compact
-output format with each lookup table expressed as a 16x1 bit ROM.<br>
-<br>
-The <span style="font-family: monospace;">-target xnf-eqns</span> flag
+output format with each lookup table expressed as a 16x1 bit ROM.
+<p>
+The -target xnf-eqns flag
 will gen-erate a more readable compact format
 with each lookup table expressed as a Boolean equation.<br>
 <br>
-The <span style="font-family: monospace;">-target
-flex8000</span> flag will generate an XNF file using AND, OR and INV
+The -target
+flex8000 flag will generate an XNF file using AND, OR and INV
 gates
 that is suitable for the Altera Flex8000 parts, and can be read by the
 Altera MaxPlus software.<br>
@@ -790,23 +466,26 @@ formats. CNF has a C like syntax with assignment statements
 representing LUTs, FFs, and IO port declarations with optional pin
 specification. There are three operators, "*" for AND, "+" for OR, and
 "~" for negation in the boolean expressions. Plus "^" respresents a
-clocked operator for FFs and memory elements which are written.&nbsp;
+clocked operator for FFs and memory elements which are written.
 The syntax for a LUT is simply the output name, followed by "=",
 followed by a boolean expression. of the inputs:<br>
 <br>
-&nbsp;&nbsp;&nbsp; <span style="font-family: monospace;">c =
-(b*a);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // c gets a AND b<br>
+<div style="margin-left: 40px;">
+ c = (b*a); // c gets a AND b<br>
+</div>
 <br>
 FF statements are represented by specifing either:<br>
 <br>
-&nbsp;&nbsp; c^CLK = a;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // c gets a after
-clocked by CLK<br>
+<div style="margin-left: 40px;">
+ c^CLK = a; // c gets a after clocked by CLK<br>
+</div>
 <br>
 or<br>
 <br>
-&nbsp;&nbsp; c^(CLK*CE) = a;&nbsp;&nbsp; // c gets a after clocked by
-CLK, if enabled by CE<br>
-</span><br>
+<div style="margin-left: 40px;">
+ c^(CLK*CE) = a; // c gets a after clocked by CLK, if enabled by CE<br>
+</div>
+<br>
 Output using the -m flag is not useful for hardware implementation, as
 it outputs net list components that were used as internally and would
 normally be discarded. This is mostly useful for FpgaC internals
@@ -820,646 +499,437 @@ to use FpgaC with current versions of Xilinx ISE and modern
 FPGAs. The backend of your fpgac script may look something like this
 (ISE 4.2i/6.1i mixed example, other releases vary):<br>
 <br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">case
-$optimize in</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">false) mapargs="-k 4";
-parargs="-ol std"</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-;;</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">force)&nbsp; mapargs="-k 6";
-parargs="-ol high"</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-;;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">esac</span><br
- style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">xnf2edf.exe $file.xnf</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">ngdbuild -intstyle ise -dd `pwd`
--uc $file.ucf $file.edf $file.ngd</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">map -intstyle ise -cm area -pr b
-$mapargs -c 100 -tx off -o $file.ncd $file.ngd $file.pcf</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">par -w -intstyle ise $parargs -t
-1 $file.ncd $file.ncd $file.pcf</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">trce -intstyle ise -e 3 -l 3 -xml
-$file $file.ncd -o $file.twr $file.pcf</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">bitgen -intstyle ise -f $file.ut
-$file.ncd</span><br>
+<div style="margin-left: 40px;">case
+$optimize in<br>
+false) mapargs="-k 4";
+parargs="-ol std"<br>
+
+;;<br>
+<br>
+force) mapargs="-k 6";
+parargs="-ol high"<br>
+
+;;<br>
+esac<br
+>
+<br>
+xnf2edf.exe $file.xnf<br
+>
+ngdbuild -intstyle ise -dd `pwd`
+-uc $file.ucf $file.edf $file.ngd<br
+>
+map -intstyle ise -cm area -pr b
+$mapargs -c 100 -tx off -o $file.ncd $file.ngd $file.pcf<br
+>
+par -w -intstyle ise $parargs -t
+1 $file.ncd $file.ncd $file.pcf<br
+>
+trce -intstyle ise -e 3 -l 3 -xml
+$file $file.ncd -o $file.twr $file.pcf<br
+>
+bitgen -intstyle ise -f $file.ut
+$file.ncd<br>
 </div>
 <br>
-where <span style="font-family: monospace;">xnf2edf.exe is from an ISE
+where xnf2edf.exe is from an ISE
 4.x release (run under wine), and the other tools are from an ISE 6.x
 release using Linux as the host operating system. ngdbuild, map, par,
 trce, and bitgen are all /usr/local/bin scripts to setup the Xilinx ISE
-environment (using map as the example):<br>
-<br>
-</span>
-<div style="margin-left: 40px;"><span style="font-family: monospace;"><span
- style="font-family: monospace;">LD_ASSUME_KERNEL=2.4.1;export
-LD_ASSUME_KERNEL</span></span><br style="font-family: monospace;">
-<span style="font-family: monospace;"><span
- style="font-family: monospace;">PATH=/usr/local/xilinx/bin/lin:$PATH</span></span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;"><span
- style="font-family: monospace;">export PATH</span></span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;"><span
- style="font-family: monospace;">. /usr/local/xilinx/settings.sh</span></span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;"><span
- style="font-family: monospace;">/usr/local/xilinx/bin/lin/map $*<br
- style="font-family: monospace;">
-</span></span><span style="font-family: monospace;"></span></div>
-<span style="font-family: monospace;"><br>
-</span>with a symlink for xnf2edf:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">xnf2edf
--&gt; /WinMe/XilinxFdn4/active/exe/xnf2edf.exe</span><br>
-</div>
-<br>
+environment (using map as the example):
+<pre>
+        LD_ASSUME_KERNEL=2.4.1;export
+        LD_ASSUME_KERNEL
+        PATH=/usr/local/xilinx/bin/lin:$PATH
+        export PATH
+        . /usr/local/xilinx/settings.sh
+        /usr/local/xilinx/bin/lin/map $*
+</pre>
+with a symlink for xnf2edf:
+<pre>
+        xnf2edf -&gt; /WinMe/XilinxFdn4/active/exe/xnf2edf.exe
+</pre>
 The <a href="http://www.xilinx.com/ise/logic_design_prod/classics.htm">Xilinx
 ISE Classics release</a> which supports the Spartan and XC4000 series
 FPGAs is available for free download off the Xilinx site, and works
-directly with the current FpgaC.&nbsp; This allows use of older
+directly with the current FpgaC. This allows use of older
 inexpensive XC4K and Spartan student project boards, including the
-popular <a
- href="http://www.digilentinc.com/Data/Products/XLA/XLA-brochure.pdf">Digilent
-XLA series XCS10 Spartan boards</a>,
+popular <a href="http://www.digilentinc.com/Data/Products/XLA/XLA-brochure.pdf">Digilent XLA series XCS10 Spartan boards</a>,
 for the hobbyist on a budget or
 someone just wanting to learn about FPGAs and have a useful breadboard
-environment to play with FPGA interfacing.&nbsp; The download cable for
-the
-older Digilent boards isn't recognized by newer ISE releases.&nbsp; One
+environment to play with FPGA interfacing. The download cable for the
+older Digilent boards isn't recognized by newer ISE releases. One
 workaround is to grab the Xilinx download utility off an older ISE
-release, such as ISE 1.5 student edition.<br>
-<br>
+release, such as ISE 1.5 student edition.
 <h3>Altera Support</h3>
 The current Altera support was adopted from the TMCC work for the <a
  href="http://www.eecg.toronto.edu/EECG/RESEARCH/FPGA.html">Transmogrifier</a>
 projects, and has not been updated for arrays, but should otherwise
-work (at least for older versions of the Altera tool chain).<br>
-<br>
+work (at least for older versions of the Altera tool chain).
+<p>
 If you are actively developing with Altera product, please consider
 joining the FpgaC development team to support the newer Altera devices
-and software.&nbsp; As of Feb 2006, there isn't anyone on the FpgaC
+and software. There isn't anyone on the FpgaC
 actively supporting Altera development (mostly people using
-Xilinx).&nbsp; If someone could provide/donate one, or more, Altera
-development board(s) and
-software with license, that would change quickly.<br>
-<br>
+Xilinx). If someone could provide/donate one, or more, Altera
+development board(s) and software with license, that would change quickly.
 <h3>Other Fpga Vendor Support</h3>
 If you are actively developing with FPGA product, please consider
 joining the FpgaC development team to support that vendors devices
-and software.&nbsp;&nbsp; If someone could provide/donate one, or more,
-development
+and software. If someone could provide/donate one, or more, development
 board(s) and software with license, that would change support for those
-product lines quickly.<br>
-<br>
+product lines quickly.
+<p>
 We would like to have broad support across multiple vendors lines for
-FpgaC.<br>
-<br>
+FpgaC.
 <h3>Understanding how FpgaC generates a circuit for execution</h3>
 Hardware designers, and advanced programmers doing reconfigurable
 computing will need to have a basic understanding of how FpgaC
-translates programs for execution on FPGAs.&nbsp; Knowledge of basic
+translates programs for execution on FPGAs. Knowledge of basic
 boolean algebra and digital circuit design theory is useful, but not
-specifically required in order to use FpgaC.&nbsp; It is helpful for
+specifically required in order to use FpgaC. It is helpful for
 debugging complex problems, or to write very efficient FpgaC code which
-maximizes performance on the target computing platform.<br>
-<br>
-The output circuit for each thread is a single clocked synchronous
-circuit, with a "one
-hot" state encoding scheme.&nbsp; The procedural flow of the program is
+maximizes performance on the target computing platform.
+<p>
+The output circuit for each thread is a single clocked synchronous circuit,
+with a "one hot" state encoding scheme. The procedural flow of the program is
 broken into clocked blocks enabled by their respective "one hot" state
 variable. This creates sequential execution in a natively parallel
-hardware execution environment.&nbsp; For example, the simple program:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">int
-a:1,b:1,t:1,output:1;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_inputport (a,a9)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_inputport (b,a10)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_outputport
-(output,a12)</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">main() </span><span
- style="font-family: monospace;">{</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp; while(1) {</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-output = t;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-t = (a&amp;b);</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp; }</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">}</span><br>
-</div>
-<br>
+hardware execution environment. For example, the simple program:
+<pre>
+	volatile _Bool a;
+	volatile _Bool b;
+	volatile _Bool output;
+
+	_Bool t;
+
+	main() {
+	    while(1) {
+		output = t;
+		t = (a&amp;b);
+	    }
+	}
+</pre>
 takes the a input port and the b input port, logically ANDs the two
 values togather, and outputs the result one clock later on the c output
-port.&nbsp; The parallel digital logic circuit produced (in CNF format)
-is this collection of 5 LUT/FFs, and 3 I/O ports:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">fpgac
--target cnf simple.c; cat simple.cnf<br>
-<br>
-_simple_Running^CLK = VCC;<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_a^CLK = port(_a,"a9");</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">_b^CLK = port(_b,"a10");<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_t^(CLK*_simple_main_S0_T0_looptop)
-= (_b*_a);<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">port(_output,"a12")^(CLK*_simple_main_S0_T0_looptop)
-= _t;<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_simple_main_S0_T0_looptop^CLK
-= (~_simple_Running)+(_simple_main_S0_T0_looptop);</span><br
- style="font-family: monospace;">
-</div>
-<br>
+port. The parallel digital logic circuit produced (in CNF format)
+is this collection of 5 LUT/FFs, and 3 I/O ports:
+<pre>
+	$ fpgac -target cnf simple.c; cat simple.cnf
+	simple/Running^CLK = VCC;
+	a^CLK = port(a);
+	b^CLK = port(b);
+	t^(CLK*simple/main/S0/T0/looptop) = (b*a);
+	port(output)^(CLK*simple/main/S0/T0/looptop) = t;
+	simple/main/S0/T0/looptop^CLK = (~simple/Running)+(simple/main/S0/T0/looptop);
+</pre>
 While this net list looks something like C, it is not sequential. All
-of the cnf statements are processed concurrently.<br>
-<br>
+of the cnf statements are processed concurrently.
+<p>
 All FFs are zero initially. After the first clock, Running and looptop
-will become
-true, enabling both the <span style="font-weight: bold;">t</span> and <span
- style="font-weight: bold;">output</span> FF's to clock. Thus
-we have a pipeline which samples <span style="font-weight: bold;">a</span>
-and <span style="font-weight: bold;">b</span> inputs pins, <span
- style="font-weight: bold;">AND</span>s them togather to produce <span
- style="font-weight: bold;">t</span> one clock later, and one more
-clock later the <span style="font-weight: bold;">t</span> value
-appears on the pin <span style="font-weight: bold;">output</span>.
-Looptop here is the one hot state variable for the while loop.<br>
-<br>
-The conditional statements such as <span style="font-weight: bold;">if</span>
-and <span style="font-weight: bold;">while</span> produce one hot
-selected multiplexors. For example the <span style="font-weight: bold;">if</span>:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; if(c)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-t = a;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; else</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-t = b;</span><br style="font-family: monospace;">
-<br>
-ANDs c with terms in the <span style="font-weight: bold;">then</span>
-block, ANDs ~c with terms in the <span style="font-weight: bold;">else</span>
-block, producing a multiplexor with the boolean equation of <span
- style="font-weight: bold; font-family: monospace;">t = (c*a) + (~c*b)</span><span
- style="font-weight: bold;"></span>.&nbsp; More complex <span
- style="font-weight: bold;">if</span> statements produce multiplexors
-for all variables assigned in the <span style="font-weight: bold;">then</span>
-and <span style="font-weight: bold;">else</span> branches.<span
- style="font-weight: bold;"> While</span> loops are created similarly,
-where the conditional forms the one hot state variable controlling the
-mux for all values assigned in the loop. The following example shows
-this:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">int
-a:1,b:1,c:1,t:1,output:1;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_inputport (a,a9)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_inputport (b,a10)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_inputport (c,a11)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">#pragma fpgac_outputport
-(output,a12)</span><br style="font-family: monospace;">
-</div>
-<br style="font-family: monospace;">
-<div style="margin-left: 40px; font-family: monospace;">main() {<br>
-&nbsp;&nbsp; while(a|b|c) {<br>
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output = t;<br>
-<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(c)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t =
-a;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t =
-b;<br>
-</div>
-<div style="margin-left: 40px; font-family: monospace;">&nbsp;&nbsp; }<br>
-</div>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">}</span><br
- style="font-family: monospace;">
-</div>
-<br>
-produces the following cnf net list with the same 5 LUT/FFs as before:<br>
-<br>
-<div style="margin-left: 40px;"><span style="font-family: monospace;">fpgac
--target cnf ifelse.c;&nbsp; cat ifelse.cnf<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_ifelse_Running^CLK = VCC;<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_a^CLK = port(_a,"a9");</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">_b^CLK = port(_b,"a10");</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">_c^CLK = port(_c,"a11");<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_t^(CLK*_ifelse_main_S0_T2_looptop)
-= (_b*~_c)+(_b*_a)+(_c*_a);<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">port(_output,"a12")^(CLK*_ifelse_main_S0_T2_looptop)
-= _t;<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">_ifelse_main_S0_T2_looptop^CLK
-= (_ifelse_main_S0_T21_twoop)+(_ifelse_main_S0_T20_twoop);</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">_ifelse_main_S0_T20_twoop =
-(~_ifelse_Running*_c)+(~_ifelse_Running*_b)+(~_ifelse_Running*_a);</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">_ifelse_main_S0_T21_twoop =
-(_ifelse_main_S0_T2_looptop*_c)+(_ifelse_main_S0_T2_looptop*_b)+(_ifelse_main_S0_T2_looptop*_a);<br>
-<br>
-</span></div>
-plus added an additional IBUF for port <span style="font-weight: bold;">c</span>,
-and two additional LUTs for the conditional expression controlling the
-one hot state <span style="font-weight: bold;">looptop</span>. If the
-conditional <span style="font-weight: bold;">(a | b | c)</span> ever
-is false then both <span style="font-weight: bold;">twoop</span> terms
-will become zero, and <span style="font-weight: bold;">looptop</span>
-will become zero after the next clock. Looptop being zero, will disable
-the clocks for both the <span style="font-weight: bold;">t</span> and <span
- style="font-weight: bold;">output</span> FFs, and the circuit will
-halt. Note that <span style="font-weight: bold;">looptop</span> and <span
- style="font-weight: bold;">Running</span><span
- style="font-weight: bold;"></span> will remain clocked. The <span
- style="font-family: monospace; font-weight: bold;">T20_twoop</span><span
- style="font-weight: bold;"> </span>is only active for the first
-clock, as Running is never cleared.&nbsp; Once the <span
- style="font-family: monospace; font-weight: bold;">T21_twoop</span><span
- style="font-weight: bold;"> </span>condition is cleared, it can never
-be set again, thus we have a stable halt condition.&nbsp; The naming of
-the <span style="font-weight: bold;">twoop</span> temporary variables
+will become true, enabling both the t and output FF's to clock. Thus
+we have a pipeline which samples a and b inputs pins, ANDs them togather
+to produce t one clock later, and one more clock later the t value
+appears on the pin output.  Looptop here is the one hot state variable
+for the while loop.
+<p>
+The conditional statements such as if and while produce one hot
+selected multiplexors. For example the if-then-else:
+<pre>
+	if(c)
+	    t = a;
+	else
+	    t = b;
+</pre>
+ANDs c with terms in the then block, ANDs ~c with terms in the else
+block, producing a multiplexor with the boolean equation of
+<pre>
+        t = (c*a) + (~c*b).
+</pre>
+More complex if statements produce multiplexors
+for all variables assigned in the then and else branches.  While
+loops are created similarly, where the conditional forms the one hot
+state variable controlling the mux for all values assigned in the loop.
+The following example shows this:
+<pre>
+	volatile _Bool a;
+	volatile _Bool b;
+	volatile _Bool c;
+	volatile _Bool t;
+	volatile _Bool output;
+
+	main() {
+	    while(a|b|c) {
+		output = t;
+		if(c)
+		    t = a;
+		else
+		    t = b;
+	    }
+	}
+</pre>
+produces the following cnf net list with the same 5 LUT/FFs as before:
+<pre>
+	$ fpgac -target cnf ifelse.c; cat ifelse.cnf
+	ifelse/Running^CLK = VCC;
+	a^CLK = port(a);
+	b^CLK = port(b);
+	c^CLK = port(c);
+	t^(CLK*ifelse/main/S0/T2/looptop) = (b*~c)+(b*a)+(c*a);
+	port(output,"a12")^(CLK*ifelse/main/S0/T2/looptop) = t;
+	ifelse/main/S0/T2/looptop^CLK = (ifelse/main/S0/T21/twoop)+(ifelse/main/S0/T20/twoop);
+	ifelse/main/S0/T20/twoop = (~ifelse/Running*c)+(~/ifelse/Running*b)+(~ifelse/Running*a);
+	ifelse/main/S0/T21/twoop = (ifelse/main/S0/T2/looptop*c)+(ifelse/main/S0/T2/looptop*b)+(ifelse/main/S0/T2/looptop*a);
+</pre>
+plus added an additional IBUF for port c, and two additional LUTs
+for the conditional expression controlling the one hot state
+looptop. If the conditional (a | b | c) ever is false then both
+twoop terms will become zero, and looptop will become zero after
+the next clock. Looptop being zero, will disable the clocks for
+both the t and output FFs, and the circuit will halt. Note that
+looptop and Running will remain clocked. The T20_twoop is only
+active for the first clock, as Running is never cleared. Once the
+T21_twoop condition is cleared, it can never be set again, thus we
+have a stable halt condition.
+<p>
+The naming of the twoop temporary variables
 is because these expressions where built from functions which take two
-inputs and produce a temporary result, hence the name <span
- style="font-weight: bold;">Two Op</span> for the temporary result.<br>
-<br>
-The right hand side for the <span style="font-weight: bold;">t</span>
-FF input is the boolean reduction for both the <span
- style="font-weight: bold;">while</span> and <span
- style="font-weight: bold;">if</span> conditionals. Since <span
- style="font-weight: bold;">looptop</span> guards the clock, it was
-unnecessary to include the <span style="font-weight: bold;">while</span>
-conditional here.<span style="font-family: monospace;"></span><span
- style="font-family: monospace;"></span><span
- style="font-family: monospace;"></span><br>
-<br>
+inputs and produce a temporary result, hence the name Two Op for the temporary result.
+<p>
+The right hand side for the t FF input is the boolean reduction for
+both the while and if conditionals. Since looptop guards the clock, it was
+unnecessary to include the while conditional here.
+<p>
 Logical operations on variables wider than one bit are implemented the
-same way, just repeating the operations bit for bit.&nbsp; Arithmetic
+same way, just repeating the operations bit for bit. Arithmetic
 operations are constructed bit for bit using the boolean functions
-which implement them.<br>
-<br>
+which implement them.
+<p>
 Both of these examples have a single state that can be active (the
-while loop body).&nbsp; If we add assignments above and below the <span
- style="font-weight: bold;">while</span> loop, then there will be three
-one hot states (code above the <span style="font-weight: bold;">while</span>
-executed once on power up, the <span style="font-weight: bold;">while</span>
-loop body, and code below the while executed once when the <span
- style="font-weight: bold;">while</span> loop exits).<br>
-<br>
+while loop body). If we add assignments above and below the
+while loop, then there will be three one hot states (code above the
+while executed once on power up, the while loop body, and code below
+the while executed once when the while loop exits).
+<p>
 The FpgaC parser is built on lex and yacc (or the GNU flex/bison) tools
 so the grammar can be easily extended, as many Computer Science
 students
 and other professionals are familiar with these compiler generation
-tools.<br>
+tools.
 <h3>Circuit Size and Speed</h3>
 The compiler will generate carry select adders and subtracters by
-default.&nbsp; These adders are usually almost twice the speed of a
+default. These adders are usually almost twice the speed of a
 simple ripple carry adder, but are roughly 50% larger in area. If you
-are more concerned about size than speed, use the <span
- style="font-family: monospace;">-fno-carry-select</span>
+are more concerned about size than speed, use the -fno-carry-select
 flag to force the compiler to use ripple carry adders instead.
 Currently FpgaC only uses LUT based netlists, and doesn't directly
 target additional vendor specific features like multiplexors and carry
 logic that may exist along with the LUT, although some vendors tools
-may perform this optimization transparently.<br>
-<br>
-The <span style="font-family: monospace;">-dverbose</span> flag will
-print an estimate of the circuit's size and
+may perform this optimization transparently.
+<p>
+The -dverbose flag will print an estimate of the circuit's size and
 speed on the standard error output. It will include the number of
 lookup tables and flipflop needed, and the number of lookup tables
 encountered in the longest combinational path. The estimate may be
 incorrect, as vendor place and route tools may find a different way of
-implementing or optimizing the circuit.<br>
+implementing or optimizing the circuit.
 <h3>Generating Good Circuits</h3>
-Using &lt; or &gt;= signed comparisons will produce smaller, faster
-circuits
+Using &lt; or &gt;= signed comparisons will produce smaller, faster circuits
 than using &lt;= or &gt;, since the circuit just has to check the sign
-bit of a subtracter in the first two cases.<br>
-<br>
+bit of a subtracter in the first two cases.
+<p>
 Using the same variable for different things in your circuit may
 produce a larger and slower circuit. Each assignment to a variable adds
 another input to a multiplexer, and large multiplexers may become the
 critical path in your circuit. Use different variables for different
-things, and don't try to save space by reusing a variable.<br>
+things, and don't try to save space by reusing a variable.
+<p>
+Using "else if" clauses WILL burden all the statements in the
+else clause with the negated conditional. Sometimes this is the
+correct, and expected result, other times it is simply not
+necessary. While this avoids executing unnecessary instructions
+on a traditional processor, it WILL create additional overhead for
+FpgaC code. Use
+<pre>
+    if(state == a) ...
+    else if(state == b) ...
+</pre>
+when you mean
+<pre>
+    if(state == a) ...
+    if(!(state == a) &amp;&amp; state == b) ...
+</pre>
+otherwise use
+<pre>
+    if(state == a) ...
+    if(state == b) ...
+</pre>
+if states a and b are mutually exclusive. Otherwise multiplexors will
+be formed for all statements in the b clause which include the !(state
+== a) term. Note the sevenseg function in the example below. Because
+statements in FpgaC execute in parallel when possible, this allows
+all 16 of the if statements in sevenseg to be executed in parallel,
+with only one assignment enabled. If the 16 if statements had been
+chained with else clauses, they would form a long sequential combinatorial.
+<p>
+When your function does have long combinatorials, it will require a
+slower clock. Look for ways to avoid unnecessary conditional terms, and
+ways to use pipelining for statement blocks.
 <h3>Common Design Errors</h3>
 There are several things that can cause a FpgaC generated circuit to
 fail mysteriously. First, be sure to use xdelay to check that the
-circuit will run at the desired clock frequency. Secondly, FpgaC
-assumes that all of the inputs to the circuit will remain stable during
-a clock period, and will change only when the clock changes. If that is
-not true for one or more of your inputs, you must specify an input
-register for those signals using a call to <span
- style="font-weight: bold;">fpgac_portflags()</span>. For example:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int
-changing_input;<br>
-&nbsp;&nbsp;&nbsp; #pragma fpgac_inputport(changing_input)<br>
-&nbsp;&nbsp;&nbsp; #pragma fpgac_portflags(changing_input,
-PORT_REGISTERED|PORT_PIN)</span><br>
-<br>
-If you do not do this, and an input changes late in a clock period,
-part of your circuit's state machine may see the change, and part of it
-may miss the change, resulting in undefined behavior. The state
-machine may halt, or start executing code from two different parts of
-your program at the same time.<br>
-<br>
-Make sure that each thread has a
-different thread number, using the -T flag. Never compile two different
-threads with the same -Tnnn flag, or their internal nets may be
-connected together at random.<br>
-<br>
+circuit will run at the desired clock frequency.
+<p>
 All FpgaC integer variables are signed integers, and they will be
-sign-extended when used in expressions.&nbsp; For example:<br>
-<br>
-<span style="font-family: monospace;"><br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char a, b;
-&nbsp; // 8 bit signed integer</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; int
-result;&nbsp; //16 bit signed integer</span></span><br
- style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; result =
-(a&lt;&lt;8) | b; </span><br>
-<br>
+sign-extended when used in expressions. For example:
+<pre>
+    char a, b;
+    // 8 bit signed integer
+    int result; //16 bit signed integer
+
+    result = (a&lt;&lt;8) | b;
+</pre>
 does not work when b is 0xF0,
 because it will be sign extended to
 0xFFF0 before being or-ed with a.
-Instead, use:<br>
-<span style="font-family: monospace;"><br>
-&nbsp;&nbsp;&nbsp; char a, b; <br>
-&nbsp;&nbsp;&nbsp; int result;<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; result
-= (a&lt;&lt;8) | (b&amp;0xFF); </span><br>
-<br>
+Instead, use:
+<pre>
+   char a, b;
+   int result;
+
+   result = (a&lt;&lt;8) | (b&amp;0xFF);
+</pre>
 which works because literal constants are sign extended only when they
-are clearly negative.&nbsp; However, the last fix fails when the
+are clearly negative. However, the last fix fails when the
 variables are more than 31 bits wide, because the compiler can only
-handle constants up to 32 bits wide.&nbsp; In particular, 0xFFFFFFFF is
-identical&nbsp; to&nbsp; -1,&nbsp; and will be sign extended.&nbsp; To
-build a larger mask, use a constant expression like ((1&lt;&lt;NBITS) -
-1).<br>
-<br>
-<h3>Interfaces to newer FPGA's</h3>
-The current vendor interfaces are ones we picked up from TMCC, so that
-project did the footwork for vendor acceptable interface points. In the
-10 years since, the vendor tool chains have significantly changed.
-Xilinx no longer supports XNF as a net list format, and has not
-provided
-a publicly documented replacement for it which interfaces to the newest
-FPGAs.<br>
-<br>
-While we can use EDIF to some extent as a net list input source, what
-we
-don't have access to is a legal description of all the library system
-blocks and macros to instantiate in the EDIF net list for newer
-devices.&nbsp; Those library interfaces are documented inside ISE and
-subject to the ISE End User License Agreement which contains a strict
-Non-Disclosure agreement blocking open source use of the library
-information. We can blindly use the older known library blocks to the
-exent they are mapped to EDIF, but we do not have access to any of the
-newer library blocks and macros as implemented for Virtex-II Pro and
-Virtex-4 parts. <br>
-<br>
-There is a new XDL interface which is a very attractive interface point
-for FpgaC, which Xilinx now would like 3rd parties to use. However, the
-documentation for XDL and the device libraries is restricted with an
-NDA which is incompatable with open source licenses. Implementing those
-interfaces in open source C code, would in fact publish them to the
-world in violation of NDA restrictions, so they are currently off
-limits for FpgaC.&nbsp; When asking Xilinx staff what public interfaces
-are currently legal for FpgaC to use to import netlists into the ISE
-tool chain, this question:<br>
-<br>
-<div style="margin-left: 40px;">"But that aside, the question remains,
-just what, if any, legal interfaces may open source software use to
-augment the ISE tool chain? &nbsp;The strictest&nbsp; reading of
-the&nbsp; license and NDA is clear ... NONE."<br>
-</div>
-<br>
-Gets the chilling reply from Austin Lesea of Xilinx:<br>
-<p style="margin-left: 40px;">I am not a lawyer. <br>
-</p>
-<p style="margin-left: 40px;">But it seems clear to me, when I read it:
-the answer is "none." <br>
-</p>
-<p style="margin-left: 40px;">To imply otherwise is clearly misleading,
-and could be interpreted as <br>
-intentionally causing harm (to Xilinx, or its partners, or its
-customers).</p>
-So, we need to lobby Xilinx to provide a usable open source entry point
-into their ISE and ISE WebPack tool chains that does not violate open
-source restrictions or the NDA's in the Xilinx Licenses.&nbsp; Needed
-is a publicly documented net list format, such as XDL, and a set of
-publicly documented library interfaces that we can call out to
-instantiate all library blocks and macros for each device family,
-including the device geometries for LUT's, CLB's, and other on chip
-objects to facilitate FpgaC guided placement decisions or externally
-providing placement and some routing information to the backend ISE
-tools for bit stream generation.<br>
-<br>
-Anyone providing Xilinx specific code for FpgaC needs to explore these
-license issues, and make sure that we do not violate either the Xilinx
-Intellectual Property (IP) rights, or the open source license(s).
-Written releases, or documented public interfaces, are required, not
-just for Xilinx, but all FPGA vendor's IP.<br>
-<br>
-I have been told, but have not personally explored, that we face very
-similar problems with Altera. If someone could provide similar details
-for their product lines and tool chains it would be greatly
-appreciated, as I do not hold a license for all the required Altera
-tools.&nbsp; It's probably worth talking to your Altera sales and
-support folks to ask about open source access and support of their
-tools as well.<br>
-<br>
-It has been suggested that some of the smaller FPGA companies are much
-more eager to get open source support for the product lines, and we
-will actively support each of those that we can.&nbsp; If your favorite
-vendor doesn't have a support path included in this release, let the
-FpgaC project team know, and we will set up a project to get them
-supported as soon as possible.<br>
-<h3>Known Bugs and Feature Requests<br>
-</h3>
+handle constants up to 32 bits wide. In particular, 0xFFFFFFFF is
+identical to -1, and will be sign extended. To build a larger mask,
+use a constant expression like ((1&lt;&lt;NBITS) - 1).
+<h3>Known Bugs and Feature Requests</h3>
 FpgaC has been used for a number of projects, but is still in Beta
-stages, and may have bugs besides those listed <a
- href="http://sourceforge.net/tracker/?group_id=152034&amp;atid=782956">here</a>.&nbsp;
-Select Status <span style="font-weight: bold;">Any</span>, then <span
- style="font-weight: bold;">Browse</span> to see them all.&nbsp; If you
-find a new bug, please <a
- href="http://sourceforge.net/tracker/?func=add&amp;group_id=152034&amp;atid=782956">open
-a bug report</a> if there is not one, and if you fixed it please upload
-your patch as an attachment to the bug report.<br>
-<br>
+stages, and may have bugs besides those listed
+<a href="http://sourceforge.net/tracker/?group_id=152034&amp;atid=782956">here</a>.
+Select Status Any, then Browse to see them all. If you find a new bug, please
+<a href="http://sourceforge.net/tracker/?func=add&amp;group_id=152034&amp;atid=782956">open a bug report</a>
+if there is not one, and if you fixed it please upload your patch as an attachment to the bug report.
+<p>
 If there are features you would like to see added to FpgaC please
-submit a <a
- href="http://sourceforge.net/tracker/?group_id=152034&amp;atid=782959">feature
-request</a>.&nbsp; If you have implemented a new feature for FpgaC or
-it's runtime systems, <a
- href="http://sourceforge.net/tracker/?func=add&amp;group_id=152034&amp;atid=782959">open
-a feature request</a> if there is not one, and upload the patch for
-your new feature as an attachment.<br>
+submit a <a href="http://sourceforge.net/tracker/?group_id=152034&amp;atid=782959">feature request</a>.
+If you have implemented a new feature for FpgaC or it's runtime systems,
+<a href="http://sourceforge.net/tracker/?func=add&amp;group_id=152034&amp;atid=782959">open a feature request</a>
+if there is not one, and upload the patch for your new feature as an attachment.
 <h3>Known "Features"</h3>
-Although there is no limit on the size of a
-variable, integer constants are limited to 32 bits.<br>
-<br>
-If the program
-exits from main(), the circuit will no longer have any active
-states.&nbsp; FFs and arrays which are not clock enabled will continue
+Although there is no limit on the size of a variable, integer constants
+are limited to 32 bits.
+<p>
+If the program exits from main(), the circuit will no longer have any
+active states. FFs and arrays which are not clock enabled will continue
 to clock with their outputs feed back into their inputs, which will
-consume some dynamic power.&nbsp; Otherwise the circuit will appear
-halted as it will not respond to inputs and outputs will not change
-unless a combinatorial relationship has been constructed between inputs
-and outputs (which is unlikely).<br>
-<br>
-If a function changes a
-global variable, the rest of the circuit won't see the change until the
-next clock tick. There isn't an automatic clock tick when a function
-returns. If the function changes a global variable and immediately
-returns, you can't use the value of that global variable until after
-the next clock tick.<br>
-<br>
+consume some dynamic power. Otherwise the circuit will appear halted as
+it will not respond to inputs and outputs will not change unless a
+combinatorial relationship has been constructed between inputs and outputs
+(which is unlikely).
+<p>
+If a function changes a global variable, the rest of the circuit won't see
+the change until the next clock tick. There isn't an automatic clock tick
+when a function returns. If the function changes a global variable and
+immediately returns, you can't use the value of that global variable until
+after the next clock tick.
+<p>
 There isn't strong typing for any variable, including those declared
-with VOID.&nbsp; VOID is included only for portability and to
-visually&nbsp; comment&nbsp; functions without returns.&nbsp; All FpgaC
-variables are inherently static, and will retain their previous value
-between uses.<br>
-<br>
-Unsigned
-variables are really signed, and included as an alias for signed
-integers
-to ease portability of existing C code for the time being.&nbsp; Signed
-variables are actually one bit wider than you might expect because of
+with VOID. VOID is included only for portability and to visually comment
+functions without returns. All FpgaC variables are inherently static, and
+will retain their previous value between uses.
+<p>
+Unsigned variables are currently signed, and included as an alias for
+signed integers to ease portability of existing C code for the time being.
+Signed variables are actually one bit wider than you might expect because of
 the added sign bit. If you explicitly need unsigned overflow/underflow,
 simply mask the variable with as many one bits as you need, and the
 compiler will truncate the variable at compile time to be unsigned (IE
 var &amp; 0xffff). Also, if the sign bit is never referenced by a path
 that affects the state of an output, it will be discarded at compile
 time. This will probably be fixed in either beta-3 or beta-4 in the
-first half of 2006.<br>
+first half of 2006.
 <h3>For More Information</h3>
-The
-most recent version of the compiler can be retrieved by anonymous ftp
+The most recent version of the compiler can be retrieved by anonymous ftp
 or subversion
-from:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
-<a href="http://sourceforge.net/projects/fpgac">http://sourceforge.net/projects/fpgac</a></span><br>
-<br>
+from:
+<p>
+<a href="http://sourceforge.net/projects/fpgac">http://sourceforge.net/projects/fpgac</a>
+<p>
 The main FpgaC Web page with the most current release information can
-be found at URL:<br>
-<br>
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
-<a href="http://fpgac.sourceforge.net/">http://fpgac.sourceforge.net/</a><br>
-<br>
-<br>
-</span>Thanks to the sf.net team for providing project hosting:<br>
-<br>
+be found at URL:
+<p>
+<a href="http://fpgac.sourceforge.net/">http://fpgac.sourceforge.net/</a>
+<p>
+Thanks to the sf.net team for providing project hosting:
+<p>
 <div style="text-align: center;">
 <a href="http://sourceforge.net/"><img
  src="http://sourceforge.net/sflogo.php?group_id=152034&amp;type=5"
  alt="SourceForge.net Logo" border="0" height="62" width="210"></a></div>
-<br>
 <h3>A Larger Example</h3>
 This program drives the 7 segment displays on the XC4000 demo board,
-and makes them count from 0 to 99 repeatedly.<br>
-<span style="font-family: monospace;"><br>
-char seven_seg(int x:4) {<br>
-&nbsp;&nbsp;&nbsp; char result;</span><br
- style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; x = x &amp;
-0xf;<br>
-&nbsp; &nbsp; result = 0;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x0) result = 0xfc;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x1) result = 0x60;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x2) result = 0xda;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x3) result = 0xf2;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x4) result = 0x66;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x5) result = 0xb6;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x6) result = 0xbe;<br>
-&nbsp; &nbsp; if(x == 0x7) result = 0xe0;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0x8) result = 0xfe;<br>
-&nbsp; &nbsp; if(x == 0x9) result = 0xf6;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0xa) result = 0xee;<br>
-&nbsp; &nbsp; if(x == 0xb) result = 0x3e;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0xc) result = 0x9c;<br>
-&nbsp; &nbsp; if(x == 0xd) result = 0x7a;<br>
-&nbsp;&nbsp;&nbsp; if(x == 0xe) result = 0x9e;<br>
-&nbsp; &nbsp; if(x == 0xf) result = 0x8e;<br>
-&nbsp;&nbsp;&nbsp; return(~result);<br>
-}<br>
-<br style="font-family: monospace;">
-</span><span style="font-family: monospace;">void delay(char n) {<br>
-&nbsp;&nbsp;&nbsp; while(n != 0)</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-n = n - 1;<br>
-}</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">void twodigit(char y) {<br>
-&nbsp;&nbsp;&nbsp; char tens;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char
-leftdigit, rightdigit;<br>
-#pragma&nbsp; fpgac_outputport(leftdigit, 37, 44, 40, 29, 35, 36, 38,
-39)<br>
-#pragma&nbsp; fpgac_outputport(rightdigit, 41, 51, 50, 45, 46, 47, 48,
-49)</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; tens = 0;<br>
-&nbsp;&nbsp;&nbsp; while(y &gt;= 10) {</span><br
- style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-tens++;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; y -= 10;<br>
-&nbsp; &nbsp; }<br>
-<br>
-&nbsp;&nbsp;&nbsp; leftdigit = seven_seg(tens);<br>
-&nbsp; &nbsp; rightdigit = seven_seg(y);<br>
-}</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">main() {<br>
-&nbsp;&nbsp;&nbsp; char count;</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; char switches;<br>
-#pragma&nbsp; fpgac_inputport(switches, 28, 27, 26, 25, 24, 23, 20, 19)</span><br
- style="font-family: monospace;">
-<br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; count = 0;<br>
-&nbsp;&nbsp;&nbsp; while(1) {</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-twodigit(count);<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; count = count + 1;<br>
-&nbsp; &nbsp; &nbsp; &nbsp; if(count &gt;= 100) count = 0;<br>
-&nbsp; &nbsp; &nbsp; &nbsp; delay(switches);<br>
-&nbsp;&nbsp;&nbsp; }<br>
-}</span><br style="font-family: monospace;">
-<br style="font-family: monospace;">
-<br>
+and makes them count from 0 to 99 repeatedly.
+<pre>
+struct ports {
+    volatile char leftdigit;  // PINS=(37, 44, 40, 29, 35, 36, 38, 39)
+    volatile char rightdigit; // PINS=(41, 51, 50, 45, 46, 47, 48, 49)
+    volatile char switches;   // PINS=(28, 27, 26, 25, 24, 23, 20, 19)
+} io;
+char seven_seg(int x:4) {
+    char result;
+
+    x = x &amp; 0xf;
+    result = 0;
+    if(x == 0x0) result = 0xfc;
+    if(x == 0x1) result = 0x60;
+    if(x == 0x2) result = 0xda;
+    if(x == 0x3) result = 0xf2;
+    if(x == 0x4) result = 0x66;
+    if(x == 0x5) result = 0xb6;
+    if(x == 0x6) result = 0xbe;
+    if(x == 0x7) result = 0xe0;
+    if(x == 0x8) result = 0xfe;
+    if(x == 0x9) result = 0xf6;
+    if(x == 0xa) result = 0xee;
+    if(x == 0xb) result = 0x3e;
+    if(x == 0xc) result = 0x9c;
+    if(x == 0xd) result = 0x7a;
+    if(x == 0xe) result = 0x9e;
+    if(x == 0xf) result = 0x8e;
+    return(~result);
+}
+
+void delay(char n) {
+    while(n != 0)
+    n = n - 1;
+}
+
+void twodigit(char y) {
+    char tens;
+
+    tens = 0;
+    while(y &gt;= 10) {
+        tens++;
+        y -= 10;
+    }
+
+    io.leftdigit = seven_seg(tens);
+    io.rightdigit = seven_seg(y);
+}
+
+main() {
+    char count;
+
+    count = 0;
+    while(1) {
+        twodigit(count);
+        count = count + 1;
+        if(count &gt;= 100) count = 0;
+        delay(io.switches);
+    }
+}
+</pre>
 </body>
 </html>
