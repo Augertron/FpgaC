@@ -1,6 +1,6 @@
-.TH FpgaC L "Jan. 9, 1996" "Univ. of Toronto"
+.TH FpgaC L "Aug.20, 2007" "FpgaC Project Team"
 .SH NAME
-fpgac \- a hardware description language based on C (v4.2)
+fpgac \- an ANSI-C 1998 High Level Language for Reconfigurable Computing
 .SH SYNOPSIS
 fpgac
 [
@@ -44,11 +44,9 @@ file1.c
 file2.xnf
 ] ...
 .SH DESCRIPTION
-FPGA C (fpgac) is a compiler for a simple
-hardware description language.
-It takes a program written in a subset of the C programming language,
-and produces a circuit
-that implements the program in a field-programmable gate array (FPGA).
+FPGA C (fpgac) is a netlist compiler for the ANSI-C language.
+It takes a program written in a subset of the ANSI-C programming language,
+and produces a circuit that implements the program in a field-programmable gate array (FPGA).
 .PP
 The compiler will compile the given file1.c
 file and any .xnf files into a single
