@@ -80,16 +80,19 @@ DESCRIPTION
        tives are supported, so #include files may be used.
 
 SEE ALSO
-       The FPGA C programming manual.
+       The FPGA C Users Manual.
 
-       The FPGA C Web page:
-       http://fpgac.sourceforge.net/
+       The FPGA C Wiki page:
+	   http://fpgac.wiki.sourceforge.net/
 
-       The   most   recent   version   of  this	 software  in:	http://source-
-       forge.net/projects/fpgac
+       The most recent version of this software can be downloaded from:
+	   http://sourceforge.net/projects/fpgac
+	   svn co https://fpgac.svn.sourceforge.net/svnroot/fpgac fpgac
 
 AUTHORS
-       Dave Galloway, University of Toronto John Bass, DMS Design
+       Derived from TMCC, by Dave Galloway, University of Toronto
+       FpgaC project started and managed by John Bass, DMS Design
+       See README files and project wiki for other contributors.
 
 
 
