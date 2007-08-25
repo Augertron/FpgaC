@@ -139,24 +139,24 @@ all code that doesn't affect an output pin.
 <h3>Progress Implementing Standard ANSI-C 1998</h3>
 These ANSI C operators and keywords are implemented by the FpgaC compiler:
 <pre>
-    +  += - -= * *= / /=
-    %  %= &amp; &amp;= | |= ^ ^=
-    ~  !  ++ -- &lt;&lt; &lt;&lt;= &gt;&gt; &gt;&gt;=
-    ==  !=  &lt; &lt;= &gt;  &gt;= &amp;&amp;   ||<br>
-    () = , {} . [] ?      :
+    +    +=   -    -=   *    *=   /    /=
+    ~    !    ++   --   &lt;&lt;   &lt;&lt;=  &gt;&gt;   &gt;&gt;=
+    %    %=   &amp;    &amp;=   |    |=   ^    ^=
+    ==   !=   &lt;    &lt;=   &gt;    &gt;=   &amp;&amp;   ||
+    =    ,    .    ?    :    ()   {}   []   
 
     if, then, else, do, while, for, break, return
 
     _Bool, char, int, short, long, long long
-    float, double, long double
-    signed, unsigned, register, volatile
     enum, struct, "strings"
+    signed, unsigned, register, volatile
     void, auto, extern, static
+    float, double, long double
 </pre>
-These C operators and keywords are not implemented by the FpgaC compiler:
+These C operators and keywords are not currently implemented by the FpgaC compiler:
 <pre>
-    unary &amp; unary *  -&gt;
-    switch, case, default, continue, goto
+    unary &amp;   unary *   -&gt;
+    switch, case, default, continue, goto, statement labels
     sizeof, union, typedef, (casts)
 </pre>
 In other words, FpgaC has 1, 8, 16, 32, and 64 bit integer variables, plus
@@ -171,7 +171,7 @@ It does not currently have <dfn>switch</dfn>, <dfn>case</dfn>, <dfn>default</dfn
 <dfn>continue</dfn>, pointers, <dfn>union</dfn>, structure assignments,
 or structure arrays.  You can not use recursion.  Variable initialization is
 partially supported, but initialized structures are not currently supported.
-Constant expressions (including enum variable references) are
+Constant expressions (including <dfn>enum</dfn> variable references) are
 evaluated at compile time to avoid multiply, divide, and remainder
 operations at runtime where possible. Small "strings" are supported
 both as initializers of character arrays, and as indexed literals in
