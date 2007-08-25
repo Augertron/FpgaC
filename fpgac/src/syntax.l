@@ -304,6 +304,8 @@ pop_input_token(int n ) {
 
 "!"				return(newtoken(NOT));
 
+_Bool				return(newtoken(BOOL));
+
 int				return(newtoken(INT));
 
 short				return(newtoken(SHORT));

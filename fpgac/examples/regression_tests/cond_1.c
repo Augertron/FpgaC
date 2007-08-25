@@ -1,5 +1,5 @@
 struct test {
-    volatile int in:1;
+    volatile _Bool in;
     volatile int out:2;
 } io;
 
