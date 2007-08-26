@@ -137,8 +137,10 @@ output_CNF() {
                 fprintf(outputfile, "port(%s,\"%s\")", b->name, b->pin+1);
             else
                 fprintf(outputfile, "port(%s)", b->name);
+	    noutpins++;
 	} else if (b->flags & SYM_BUSPORT) {
 	    fprintf(outputfile, "port(%s) = %s", bitname(b), bitname(b));
+	    nbidirpins++;
         } else if ((b->flags & SYM_FF) && b->variable->arraysize) {
             struct varlist *vl;
 
@@ -172,6 +174,7 @@ output_CNF() {
                 fprintf(outputfile, "^(%s*%s)", clockname, bitname(b->clock_enable));
             else
                 fprintf(outputfile, "^%s", clockname);
+	    if(!((b->flags & (SYM_INPUTPORT | SYM_BUSPORT)) == SYM_INPUTPORT)) nff++;
         }
 
 	if(!(b->flags & SYM_ARRAY))
@@ -182,6 +185,7 @@ output_CNF() {
 	case SYM_INPUTPORT | BIT_HASFF:
 	case SYM_INPUTPORT | BIT_HASPIN:
 	case SYM_INPUTPORT | BIT_HASPIN | BIT_HASFF:
+	    ninpins++;
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN:
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN | BIT_HASFF:
             if(b->pin)
@@ -217,14 +221,8 @@ output_CNF() {
 	}
 
 	if ((b->flags & (SYM_INPUTPORT | SYM_BUSPORT)) == SYM_INPUTPORT) {
-	    ninpins++;
 	    continue;
 	}
-	if (b->flags & SYM_BUSPORT)
-	    nbidirpins++;
-	if (b->flags & SYM_OUTPUTPORT)
-	    noutpins++;
-
 	if ((b->flags & (SYM_OUTPUTPORT)) && !(b->flags & BIT_HASFF))
 	    b->flags &= ~SYM_FF;
 
@@ -250,8 +248,8 @@ output_CNF() {
         } else {
             nroms++;
             inputcounts[count + 1]++;
-            if (b->flags & SYM_FF)
-            nff++;
+//          if (b->flags & SYM_FF)
+//          nff++;
 
             switch (output_format) {
 
