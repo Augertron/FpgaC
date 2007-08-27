@@ -19,7 +19,7 @@ Aug 2007
 /*
  * Copyright notice taken from BSD source, and suitably modified:
  *
- * Copyright (c) 2004-2007 John L. Bass, DMS Design
+ * Copyright (c) 2004-2007 John L. Bass, DMS Design and FpgaC Project Team
  * All rights reserved. -- The FpgaC project http://fpgac.wiki.sourceforge.net
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,18 @@ Aug 2007
  * are met:
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in/on the documentation,
+ *    hardware, and/or other materials provided with the distribution.
  * 3. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
- *      This product includes hardware and software developed by John L. Bass
- *      and the FpgaC Project.
+ *      This product includes hardware and software developed by 
+ *      John L. Bass, DMS Design, and the FpgaC Project Team.
  * 4. Neither the name of the FpgaC project nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * THIS SOFTWARE IS PROVIDED BY THE PROJECT AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
