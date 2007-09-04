@@ -62,7 +62,7 @@ enum3: enum_3.c
 enum4: enum_4.c
 	-fpgac -target cnf enum_4.c
 
-volatile: volatile1
+volatile: volatile1 volatile2
 
 volatile1: volatile_1.c
 	-fpgac -target cnf volatile_1.c
