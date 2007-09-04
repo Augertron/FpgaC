@@ -1,0 +1,19 @@
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:33:13 2007"
+volatile_2/Running^CLK = VCC;
+volatile_2/T1/Start^CLK = ~volatile_2/Running;
+volatile_2/state/C1 = volatile_2/T1/Start;
+io/a^CLK = port(io/a);
+port(io/o_0)^CLK = (volatile_2/T14/word_1)+(volatile_2/main/S0/S0/T5/voltick)+(volatile_2/main/S0/S0/T1/voltick);
+port(io/o_1)^CLK = (volatile_2/T29/word_1)+(volatile_2/main/S0/T11/iftick)+(volatile_2/main/S0/T8/voltick);
+volatile_2/main/S0/S0/T1/voltick^CLK = (io/a*volatile_2/state/C1);
+volatile_2/main/S0/S0/T3/voltick^CLK = volatile_2/main/S0/S0/T1/voltick;
+volatile_2/main/S0/S0/T5/voltick^CLK = volatile_2/main/S0/S0/T3/voltick;
+volatile_2/main/S0/S0/T7/voltick^CLK = volatile_2/main/S0/S0/T5/voltick;
+volatile_2/main/S0/T8/voltick^CLK = volatile_2/main/S0/S0/T7/voltick;
+volatile_2/main/S0/T11/iftick^CLK = (~io/a*volatile_2/state/C1);
+volatile_2/T6/word_1 = (volatile_2/main/S0/T11/iftick)+(volatile_2/main/S0/T8/voltick);
+volatile_2/T10/tree2_0 = (io/a*volatile_2/state/C1)+(volatile_2/main/S0/S0/T7/voltick)+(volatile_2/main/S0/S0/T3/voltick);
+volatile_2/T14/word_1 = (io/o_0*~volatile_2/T6/word_1*~volatile_2/T10/tree2_0);
+volatile_2/T21/word_1 = (volatile_2/main/S0/S0/T7/voltick)+(volatile_2/main/S0/S0/T5/voltick);
+volatile_2/T25/tree2_0 = (io/a*volatile_2/state/C1)+(volatile_2/main/S0/S0/T3/voltick)+(volatile_2/main/S0/S0/T1/voltick);
+volatile_2/T29/word_1 = (io/o_1*~volatile_2/T21/word_1*~volatile_2/T25/tree2_0);

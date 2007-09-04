@@ -67,6 +67,12 @@ volatile: volatile1
 volatile1: volatile_1.c
 	-fpgac -target cnf volatile_1.c
 
+volatile2: volatile_2.c
+	-fpgac -target cnf volatile_2.c
+
+volatile3: volatile_3.c
+	-fpgac -target cnf volatile_3.c
+
 sixtyfourbit: sixtyfourbit1
 
 sixtyfourbit1: sixtyfourbit_1.c
@@ -109,6 +115,8 @@ regression:
 	-diff -c -I "^\/\/ fpgac," enum_3.cnf enum_3.cnf.ref
 	-diff -c -I "^\/\/ fpgac," enum_4.cnf enum_4.cnf.ref
 	-diff -c -I "^\/\/ fpgac," volatile_1.cnf volatile_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," volatile_2.cnf volatile_2.cnf.ref
+	-diff -c -I "^\/\/ fpgac," volatile_3.cnf volatile_3.cnf.ref
 	-diff -c -I "^\/\/ fpgac," sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
 	-diff -c -I "^\/\/ fpgac," expr_1.cnf expr_1.cnf.ref
 	-diff -c -I "^\/\/ fpgac," cond_1.cnf cond_1.cnf.ref
@@ -134,6 +142,8 @@ ref:  tests
 	mv enum_3.cnf enum_3.cnf.ref
 	mv enum_4.cnf enum_4.cnf.ref
 	mv volatile_1.cnf volatile_1.cnf.ref
+	mv volatile_2.cnf volatile_2cnf.ref
+	mv volatile_3.cnf volatile_3.cnf.ref
 	mv sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
 	mv expr_1.cnf expr_1.cnf.ref
 	mv cond_1.cnf cond_1.cnf.ref
