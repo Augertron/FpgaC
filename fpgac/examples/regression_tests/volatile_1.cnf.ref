@@ -1,10 +1,13 @@
-// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Tue Jul 31 01:12:44 2007"
-// part=4003pc84
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:33:20 2007"
 volatile_1/Running^CLK = VCC;
 volatile_1/T1/Start^CLK = ~volatile_1/Running;
 volatile_1/state/C1 = volatile_1/T1/Start;
-port(io/out)^CLK = (volatile_1/T14/word_1)+(volatile_1/main/S0/T3/voltick)+(volatile_1/T1/Start);
+port(io/o_0)^CLK = (volatile_1/T14/word_1)+(volatile_1/main/S0/T5/voltick)+(volatile_1/main/S0/T1/voltick);
+port(io/o_1)^CLK = (io/o_1*volatile_1/T27/comp)+(volatile_1/main/S0/T9/voltick);
 volatile_1/main/S0/T1/voltick^CLK = volatile_1/state/C1;
 volatile_1/main/S0/T3/voltick^CLK = volatile_1/main/S0/T1/voltick;
 volatile_1/main/S0/T5/voltick^CLK = volatile_1/main/S0/T3/voltick;
-volatile_1/T14/word_1 = (io/out*~volatile_1/main/S0/T5/voltick*~volatile_1/main/S0/T1/voltick);
+volatile_1/main/S0/T7/voltick^CLK = volatile_1/main/S0/T5/voltick;
+volatile_1/main/S0/T9/voltick^CLK = volatile_1/main/S0/T7/voltick;
+volatile_1/T14/word_1 = (io/o_0*~volatile_1/main/S0/T9/voltick*~volatile_1/main/S0/T7/voltick*~volatile_1/main/S0/T3/voltick);
+volatile_1/T27/comp = (~volatile_1/main/S0/T7/voltick*~volatile_1/main/S0/T5/voltick*~volatile_1/main/S0/T3/voltick*~volatile_1/main/S0/T1/voltick);

@@ -1,0 +1,27 @@
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:33:10 2007"
+// this is wrong ... still volatile bugs
+volatile_3/Running^CLK = VCC;
+volatile_3/T1/Start^CLK = ~volatile_3/Running;
+volatile_3/state/C1 = volatile_3/T1/Start;
+io/a^CLK = port(io/a);
+port(io/o_0)^CLK = (volatile_3/T14/word_2)+(volatile_3/T18/tree2_1);
+port(io/o_1)^CLK = (io/o_1*volatile_3/T27/comp)+(volatile_3/main/S0/T83/iftick)+(volatile_3/main/S0/T79/voltick);
+volatile_3/main/S0/T8/voltick^CLK = (io/a*volatile_3/state/C1);
+volatile_3/main/S0/T11/iftick^CLK = (~io/a*volatile_3/state/C1);
+volatile_3/main/S0/T25/voltick^CLK = (io/a*volatile_3/main/S0/T11/iftick)+(io/a*volatile_3/main/S0/T8/voltick);
+volatile_3/main/S0/T29/iftick^CLK = (~io/a*volatile_3/main/S0/T11/iftick)+(~io/a*volatile_3/main/S0/T8/voltick);
+volatile_3/main/S0/T43/voltick^CLK = (io/a*volatile_3/main/S0/T29/iftick)+(io/a*volatile_3/main/S0/T25/voltick);
+volatile_3/main/S0/T47/iftick^CLK = (~io/a*volatile_3/main/S0/T29/iftick)+(~io/a*volatile_3/main/S0/T25/voltick);
+volatile_3/main/S0/T61/voltick^CLK = (io/a*volatile_3/main/S0/T47/iftick)+(io/a*volatile_3/main/S0/T43/voltick);
+volatile_3/main/S0/T65/iftick^CLK = (~io/a*volatile_3/main/S0/T47/iftick)+(~io/a*volatile_3/main/S0/T43/voltick);
+volatile_3/main/S0/T79/voltick^CLK = (io/a*volatile_3/main/S0/T65/iftick)+(io/a*volatile_3/main/S0/T61/voltick);
+volatile_3/main/S0/T83/iftick^CLK = (~io/a*volatile_3/main/S0/T65/iftick)+(~io/a*volatile_3/main/S0/T61/voltick);
+volatile_3/T6/word_1 = (io/a*volatile_3/main/S0/T65/iftick)+(io/a*volatile_3/main/S0/T61/voltick);
+volatile_3/T6/word_2 = (volatile_3/main/S0/T83/iftick)+(volatile_3/main/S0/T79/voltick);
+volatile_3/T10/tree2_0 = (volatile_3/state/C1*io/a)+(io/a*volatile_3/main/S0/T29/iftick)+(io/a*volatile_3/main/S0/T25/voltick);
+volatile_3/T14/word_1 = (io/a*volatile_3/main/S0/T47/iftick)+(io/a*volatile_3/main/S0/T43/voltick);
+volatile_3/T14/word_2 = (io/o_0*~volatile_3/T6/word_2*~volatile_3/T6/word_1*~volatile_3/T10/tree2_0);
+volatile_3/T18/tree2_1 = (io/a*volatile_3/main/S0/T11/iftick)+(io/a*volatile_3/main/S0/T8/voltick)+(volatile_3/T14/word_1);
+volatile_3/T21/word_1 = (io/a*volatile_3/main/S0/T29/iftick)+(io/a*volatile_3/main/S0/T25/voltick);
+volatile_3/T25/tree2_0 = (volatile_3/state/C1*io/a)+(io/a*volatile_3/main/S0/T11/iftick)+(io/a*volatile_3/main/S0/T8/voltick);
+volatile_3/T27/comp = (~volatile_3/T6/word_1*~volatile_3/T14/word_1*~volatile_3/T21/word_1*~volatile_3/T25/tree2_0);
