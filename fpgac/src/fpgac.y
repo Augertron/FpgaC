@@ -499,6 +499,9 @@ PopDeclarationScope() {
     free(FreeScope);
 }
 
+struct variable *newstatevar(char *s);
+struct variable *newstate(char *s);
+
 char *bitname_vhdl(struct bit *b);
 char *bitname_vqm(struct bit *b);
 char *bitname_cnf(struct bit *b);
@@ -1169,9 +1172,7 @@ makefunction(struct variable *v, int width) {
     if(v->initialstate)
 	return;
     v->flags |= SYM_FUNCTION;
-    v->initialstate = newtempvar("init", 1);
-    v->initialstate->flags = SYM_STATE;
-    makeff(v->initialstate);
+    v->initialstate = newstatevar("init");
     v->returnvalue = newtempvar("retval", width);
     for(bl = v->returnvalue->bits; bl; bl = bl->next) {
 	bl->bit->flags |= SYM_DONTPULLUP;
@@ -1674,17 +1675,10 @@ IORead(struct variable *v) {
     if(v->copyof->flags & SYM_INPUTPORT) return;
 
     if(v->assigned) {
-        struct variable *temp, *currentstate, *voltick;
-
         // This read follows previous write in same clock, so tick the clock
         // The read will however, return the value asserted in the output FF's.
-	currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
-	tick(currentstate);
-	voltick = newtempvar("voltick", 1);
-	voltick->flags = SYM_STATE;
-	makeff(voltick);
-	setvar(voltick, currentstate);
-	assignment(currentstate, ffoutput(voltick));
+	// then tristate the output
+	newstate("voltick");
     }
 
     if(v->copyof->flags & SYM_OUTPUTPORT) { // convert to SYM_BUSPORT
@@ -1732,16 +1726,8 @@ IOWrite(struct variable *v) {
     struct bitlist *bl;
 
     if(v->assigned) {
-        struct variable *temp, *currentstate, *voltick;
-
         // this write follows previous write in same clock, so need to tick clock here
-	currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
-	tick(currentstate);
-	voltick = newtempvar("voltick", 1);
-	voltick->flags = SYM_STATE;
-	makeff(voltick);
-	setvar(voltick, currentstate);
-	assignment(currentstate, ffoutput(voltick));
+	newstate("voltick");
     }
 
 //    if(debug & 8) {
@@ -1961,6 +1947,27 @@ tick(struct variable *state) {
     modifiedvar(temp);
 }
 
+struct variable *
+newstatevar(char *s) {
+    struct variable *newstate;
+
+    newstate = newtempvar(s, 1);
+    newstate->flags = SYM_STATE;
+    makeff(newstate);
+    return(newstate);
+}
+
+struct variable *
+newstate(char *s) {
+    struct variable *temp, *currentstate, *nextstate;
+
+    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
+    tick(currentstate);
+    nextstate = newstatevar(s);
+    setvar(nextstate, currentstate);
+    assignment(currentstate, ffoutput(nextstate));
+}
+
 ArrayAssignment(struct variable *array, struct variable *index) {
     struct variable *temp, *currentstate, *arraystate;
 
@@ -1970,13 +1977,7 @@ ArrayAssignment(struct variable *array, struct variable *index) {
     }
     if(array->copyof->arraywrite->index->index) {
         if(debug & 4) printf( "****force tick\n");
-        currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
-        tick(currentstate);
-	arraystate = newtempvar("array", 1);
-	arraystate->flags = SYM_STATE;
-	makeff(arraystate);
-	setvar(arraystate, currentstate);
-	assignment(currentstate, ffoutput(arraystate));
+	newstate("array");
     }
     index = thistick(index);
     if(debug & 4) printf( "Assignment to array(%s) with index(%s)\n", array->name, index->name);
@@ -2026,9 +2027,7 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
 	ReferenceScopeStack = elsescope;
 	tick(elsestate);
 	elseticked++;
-	tempstate = newtempvar("iftick", 1);
-	tempstate->flags = SYM_STATE;
-	makeff(tempstate);
+	tempstate = newstatevar("iftick");
 	setvar(tempstate, elsestate);
 	elsestate = assignment(elsestate, ffoutput(tempstate));
 	elsescope = ReferenceScopeStack;
@@ -2040,9 +2039,7 @@ ifstmt(struct variable *expn, struct varlist *thenscope, struct varlist *elsesco
 	ReferenceScopeStack = thenscope;
 	tick(thenstate);
 	thenticked++;
-	tempstate = newtempvar("iftick", 1);
-	tempstate->flags = SYM_STATE;
-	makeff(tempstate);
+	tempstate = newstatevar("iftick");
 	setvar(tempstate, thenstate);
 	thenstate = assignment(thenstate, ffoutput(tempstate));
 	thenscope = ReferenceScopeStack;
@@ -2292,13 +2289,8 @@ init() {
     v->flags |= SYM_STATE;
     assignment(v, complement(ffoutput(running)));
 
-    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
-    tick(currentstate);
-    startstate = newtempvar("Start", 1);
-    startstate->flags = SYM_STATE;
-    makeff(startstate);
-    setvar(startstate, currentstate);
-    assignment(currentstate, ffoutput(startstate));
+    newstate("Start");
+
     currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
     tick(currentstate);
 
@@ -3042,9 +3034,7 @@ IFuncTwoArgs(struct variable *func, struct variable *arg1, struct variable *arg2
     }
 
     tick(currentstate);
-    callingstate = newtempvar("calling", 1);
-    callingstate->flags = SYM_STATE;
-    makeff(callingstate);
+    callingstate = newstatevar("calling");
     tempstate = ffoutput(func->finalstate);
     temp1 = ffoutput(callingstate);
     temp2 = complement(tempstate);
@@ -4078,6 +4068,13 @@ ifstmt:	ifhead stmt
 		    struct variable *currentstate;
 		    struct varlist *thenstack;
 
+		    for(thenstack=ReferenceScopeStack; $1.v->junk != thenstack; thenstack=thenstack->next) {
+		        // if any volatile writes outstanding, tick clock to a new state
+	                if(thenstack->variable->type & TYPE_VOLATILE && thenstack->variable->assigned) {
+		            newstate("voltick");
+		            break;
+		        }
+		    }
 		    thenstack = ReferenceScopeStack;
 		    ReferenceScopeStack = $1.v->junk;
 		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
@@ -4090,7 +4087,15 @@ ifstmt:	ifhead stmt
 		| ifhead stmt ELSE
 		{
 		    struct variable *currentstate;
+		    struct varlist *thenstack;
 
+		    for(thenstack=ReferenceScopeStack; $1.v->junk != thenstack; thenstack=thenstack->next) {
+		        // if any volatile writes outstanding, tick clock to a new state
+	                if(thenstack->variable->type & TYPE_VOLATILE && thenstack->variable->assigned) {
+		            newstate("voltick");
+		            break;
+		        }
+		    }
 		    $$.v = newtempvar("", 1);
 		    $$.v->junk = ReferenceScopeStack;
 		    ReferenceScopeStack = $1.v->junk;
@@ -4102,6 +4107,15 @@ ifstmt:	ifhead stmt
 
 		stmt
 		{
+		    struct varlist *elsestack;
+
+		    for(elsestack=ReferenceScopeStack; $4.v->junk != elsestack; elsestack=elsestack->next) {
+		        // if any volatile writes outstanding, tick clock to a new state
+	                if(elsestack->variable->type & TYPE_VOLATILE && elsestack->variable->assigned) {
+		            newstate("voltick");
+		            break;
+		        }
+		    }
 		    ifstmt($1.v, $4.v->junk, ReferenceScopeStack);
 		}
 
@@ -4238,19 +4252,11 @@ ignoretoken:	/* empty*/
 
 looping_state:  /* setup one hot state machine for statement body controlled by for/do/while loops */
 		{
-		    struct variable *loopstate, *currentstate, *endloop;
+		    struct variable *endloop;
 		    struct varlist *vl;
 
-		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
-		    tick(currentstate);
-		    loopstate = newtempvar("looptop", 1);
-		    loopstate->flags = SYM_STATE;
-		    makeff(loopstate);
-		    assignment(currentstate, ffoutput(loopstate));
-		    $$.v = loopstate;
-		    endloop = newtempvar("endloop", 1);
-		    endloop->flags = SYM_STATE;
-		    makeff(endloop);
+		    $$.v = newstate("looptop");
+		    endloop = newstatevar("endloop");
 		    vl = (struct varlist *) calloc(1,sizeof(struct varlist));
                     if(!vl) {
                         fprintf(stderr, "fpgac: Memory allocation error\n");
@@ -4616,9 +4622,7 @@ functioncall:	funcidentifier LEFTPAREN argumentlist RIGHTPAREN
 		        vlp = &((*vlp)->next);
 		    }
 		    tick(currentstate);
-		    callingstate = newtempvar("calling", 1);
-		    callingstate->flags = SYM_STATE;
-		    makeff(callingstate);
+		    callingstate = newstatevar("calling");
 		    tempstate = ffoutput($1.v->finalstate);
 		    temp1 = ffoutput(callingstate);
 		    temp2 = complement(tempstate);
