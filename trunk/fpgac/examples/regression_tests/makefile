@@ -62,7 +62,7 @@ enum3: enum_3.c
 enum4: enum_4.c
 	-fpgac -target cnf enum_4.c
 
-volatile: volatile1 volatile2
+volatile: volatile1 volatile2 volatile3
 
 volatile1: volatile_1.c
 	-fpgac -target cnf volatile_1.c
@@ -78,9 +78,7 @@ sixtyfourbit: sixtyfourbit1
 sixtyfourbit1: sixtyfourbit_1.c
 	-fpgac -target cnf sixtyfourbit_1.c
 
-expr:	exprx
-
-exprx:
+expr:	expr1
 
 expr1:	expr_1.c
 	-fpgac -target cnf expr_1.c
@@ -142,7 +140,7 @@ ref:  tests
 	mv enum_3.cnf enum_3.cnf.ref
 	mv enum_4.cnf enum_4.cnf.ref
 	mv volatile_1.cnf volatile_1.cnf.ref
-	mv volatile_2.cnf volatile_2cnf.ref
+	mv volatile_2.cnf volatile_2.cnf.ref
 	mv volatile_3.cnf volatile_3.cnf.ref
 	mv sixtyfourbit_1.cnf sixtyfourbit_1.cnf.ref
 	mv expr_1.cnf expr_1.cnf.ref

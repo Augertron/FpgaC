@@ -11,3 +11,10 @@ the FOR loop and WHILE loop forms:
 	loops_8_while.c
 	loops_9_for.c
 	loops_9_while.c
+
+there will be temp variable names which are different.
+
+Other tests are expected to produce output identical to their reference cnf files.
+
+There are a few files which are currently broken ... see comments in individual .c
+files.

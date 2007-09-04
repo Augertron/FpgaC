@@ -1,3 +1,7 @@
+/*
+ * This isn't working yet. jbass
+ */
+
 struct test {
     volatile int out:8;
 } io;

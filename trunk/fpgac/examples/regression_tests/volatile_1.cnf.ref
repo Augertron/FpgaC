@@ -1,4 +1,5 @@
-// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:33:20 2007"
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:45:39 2007"
+// part=4003pc84
 volatile_1/Running^CLK = VCC;
 volatile_1/T1/Start^CLK = ~volatile_1/Running;
 volatile_1/state/C1 = volatile_1/T1/Start;
