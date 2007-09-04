@@ -1,5 +1,5 @@
-// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:33:10 2007"
-// this is wrong ... still volatile bugs
+// fpgac, 1.0.beta-3A  SVN: $Revision: 53 $, "Mon Sep  3 20:48:27 2007"
+// part=4003pc84
 volatile_3/Running^CLK = VCC;
 volatile_3/T1/Start^CLK = ~volatile_3/Running;
 volatile_3/state/C1 = volatile_3/T1/Start;

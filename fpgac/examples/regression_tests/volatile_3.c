@@ -1,3 +1,7 @@
+/*
+ * this isn't working yet. ref file is garbage. jbass
+ */
+
 struct test {
 	volatile int a:1;
 	volatile int o:2;
