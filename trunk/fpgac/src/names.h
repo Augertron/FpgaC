@@ -230,10 +230,10 @@ typedef struct {
     unsigned char covered;	/* this term is covered by a simpler one */
 } QMtab;
 
-//#define QMtabSize (1024*8*128)
-//#define MAXPRI     14
-#define QMtabSize (1024*64)
-#define MAXPRI     4
+#define QMtabSize (1024*8*128)
+#define MAXPRI     14
+//#define QMtabSize (1024*64)
+//#define MAXPRI     4
 
 #define IGNORE_FORLOOP 1
 
