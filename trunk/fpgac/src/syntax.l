@@ -80,7 +80,7 @@ newtoken(int t) {
     extern int debug;
 
     if(debug & 1) {
-        printf("newtoken %d '%s' saving %d replaying %d ignore %d\n", t, yytext, saving, replaying ,ignore_tokens );
+        printf("newtoken %d '%s' %s %s %s\n", t, yytext, saving?"saving":"", replaying?"replaying":"" ,ignore_tokens?"ignore":"" );
     }
 
     if(saving) {

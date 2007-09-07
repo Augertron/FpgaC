@@ -507,6 +507,8 @@ char *bitname_vqm(struct bit *b);
 char *bitname_cnf(struct bit *b);
 char *bitname_xnf(struct bit *b);
 
+char *sprintEQN(struct bit *b);
+
 char *bitname(struct bit *b) {
 
     if(!b->name) {
@@ -889,6 +891,15 @@ notequal(int a, int b) {
     return (a != b);
 }
 
+char *
+whichfunc(int (*func)()) {
+    if(func == and)      return("&");
+    if(func == or)       return("|");
+    if(func == xor)      return("^");
+    if(func == equal)    return("==");
+    if(func == notequal) return("!=");
+}
+
 /* Add members from structure tag to structure instance
  * members varlist is backwards, so use recursion for depth first search
  * add members bits to structure as we go, so later we can make
@@ -1060,7 +1071,7 @@ modifiedvar(struct variable *v) {
     struct varlist *temp;
 
     if((debug & 8) && v->bits && v->bits->bit) {
-	printf("   push modified ");
+	printf("modified   : ");
 	printbit(v->bits->bit);
     }
     temp = (struct varlist *) calloc(1,sizeof(struct varlist));
@@ -1223,8 +1234,9 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
     int i, j, k, n;
 
     if(debug & 8) {
-	printf("twoop1bit line %d\n", inputlineno);
+	printf("twoop1bit l%2s: ",whichfunc(func));
 	printbit(left);
+	printf("twoop1bit r%2s: ",whichfunc(func));
 	printbit(right);
     }
     temp->flags &= ~SYM_KNOWNVALUE;
@@ -1235,8 +1247,10 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
         else
 	    Clr_Bit(temp->truth,0);
 	temp->flags = SYM_KNOWNVALUE;
-	if(debug & 8)
+	if(debug & 8) {
+	    printf("twoop1bit K%2s: ",whichfunc(func));
 	    printbit(temp);
+        }
 	return;
     }
     if(left->flags & SYM_KNOWNVALUE) {
@@ -1254,8 +1268,10 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
                 Clr_Bit(temp->truth,i);
         }
 	optimizebit(temp);
-	if(debug & 8)
+	if(debug & 8) {
+	    printf("twoop1bit k%2s: ",whichfunc(func));
 	    printbit(temp);
+        }
 	return;
     }
     left->pcnt = countlist(left->primaries);
@@ -1300,8 +1316,10 @@ twoop1bit(struct bit *temp, struct bit *left, struct bit *right, int (*func) ())
             Clr_Bit(temp->truth,i);
     }
     optimizebit(temp);
-    if(debug & 8)
-	printbit(temp);
+    if(debug & 8) {
+        printf("twoop1bit O%2s: ",whichfunc(func));
+        printbit(temp);
+    }
 }
 
 struct variable *twoop(struct variable *left, struct variable *right, int (*func) ()) {
@@ -1386,11 +1404,10 @@ optimizebit(struct bit *b) {
 	}
 	if(i == (1 << b->pcnt)) {
 	    if(debug & 8) {
-		printf("optimizing %s out of %s\n",
-		       bitname((*p)->bit), bitname(b));
-		printf("nprimaries %d i %d bit 0x%x\n", b->pcnt, i,
-		       bit);
-		printbit(b);
+		printf("optimizing : %s, removed %s\n", bitname(b), bitname((*p)->bit));
+//		printf("nprimaries %d i %d bit 0x%x\n", b->pcnt, i, bit);
+//		printf("opt  before:");
+//		printbit(b);
 	    }
 	    *p = (*p)->next;
 	    for(i = 0; i < (1 << (b->pcnt - 1)); i++) {
@@ -1789,7 +1806,7 @@ addtoff(struct variable *ff, struct variable *state, struct variable *value) {
     struct variable *temp;
 
     if(debug & 8) {
-	printf("addtoff ff(%s) at(0x%08.8x) state(%s) value(%s)\n", ff->name, ff, state->name, value->name);
+	printf("addtoff ff(%s) state(%s) value(%s)\n", ff->name, state->name, value->name);
     }
 
     if(!(ff->flags & SYM_FF))
@@ -2149,9 +2166,11 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 #define MUXBIT_CONDITION	3
 
     if(debug & 8) {
-	printf("muxbit line %d\n", inputlineno);
+	printf("muxbit cond: ");
 	printbit(condition);
+	printf("muxbit    a: ");
 	printbit(a);
+	printf("muxbit    b: ");
 	printbit(b);
     }
     if(condition->flags & SYM_KNOWNVALUE) {
@@ -2159,8 +2178,10 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	    setbit(result, a);
 	else
 	    setbit(result, b);
-	if(debug & 8)
+	if(debug & 8) {
+	    printf("muxbit  res: ");
 	    printbit(result);
+        }
 	return;
     }
     for(;;) {
@@ -2177,8 +2198,10 @@ struct bit *result, *condition, *a, *b, *tempbit1, *tempbit2, *tempbit3;
 	    complementbit(tempbit3, condition);
 	    twoop1bit(tempbit2, b, tempbit3, and);
 	    twoop1bit(result, tempbit1, tempbit2, or);
-	    if(debug & 8)
+	    if(debug & 8) {
+	        printf("muxbit  Res: ");
 		printbit(result);
+            }
 	    return;
 	}
 
@@ -2636,8 +2659,9 @@ struct bit *dupcheck(struct bit *b, int depth) {
     while (hash[hashval]) {
 	if(bitequal(hash[hashval], b)) {
 	    if(debug & 8) {
-		printf("duplicate bit deleted\n");
+		printf("dup     del: ");
 		printbit(b);
+		printf("dup    save: ");
 		printbit(hash[hashval]);
 	    }
 	    return (hash[hashval]);
@@ -2868,18 +2892,19 @@ printbit(struct bit *b) {
     struct bitlist *bl;
     int nprimaries, j;
 
-    printf("%-20s %2lx %2d ", bitname(b), b->flags, b->depth);
-    printf("%-20s ", bitname(b->copyof));
+    printf("%s(0x%02lx,%d", bitname(b), b->flags, b->depth);
+    if(strcmp(bitname(b),bitname(b->copyof)))
+        printf(",%s", bitname(b->copyof));
     if(b->flags & SYM_FF)
-	printf("FF ");
+	printf(",FF)=");
     else
-	printf("   ");
-    b->pcnt = countlist(b->primaries);
-    for(j = 0; j < (1 << b->pcnt); j++)
-	printf("%d ", Get_Bit(b->truth,j));
-    for(bl = b->primaries; bl; bl = bl->next)
-	printf("%s ", bitname(bl->bit));
-    printf("\n");
+	printf(")=");
+//  b->pcnt = countlist(b->primaries);
+//  for(j = 0; j < (1 << b->pcnt); j++)
+//	printf("%d ", Get_Bit(b->truth,j));
+//  for(bl = b->primaries; bl; bl = bl->next)
+//	printf("%s ", bitname(bl->bit));
+    printf("%s\n", sprintEQN(b));
 }
 
 printtree(struct bit *b, int offset) {
@@ -2922,7 +2947,7 @@ debugoutput() {
             printf("%6d %s\n", b->depth, bitname(b));
 	}
     }
-    if(debug >= 8)
+    if(debug & 8)
         for(b = bits; b; b=b->next)
 	    printbit(b);
     clearflag(SYM_UPTODATE);
@@ -2934,7 +2959,7 @@ debugoutput() {
 //      }
     }
     printf("\n");
-    if(debug >= 4) {
+    if(debug & 4) {
         printf("%d variables %d bits\n", nvariables, nbits);
         printf("maximum depth %d driving %s\n", maxdepth, bitname(deepest));
         printf("%d roms, %d flipflops,", nroms, nff);
