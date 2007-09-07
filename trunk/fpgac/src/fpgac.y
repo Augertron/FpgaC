@@ -4177,6 +4177,11 @@ cstmt:		CASE expn
 		 * The DEFAULT block can be entered by fall thru, or no explict CASE match.
 		 * Treat as an If-Then with an implict conditional of:
 		 *       currentstate | !current_enable
+		 * initially only support default as last production in switch, but later
+		 * we will have to kludge a !current_enable assignment in switchstmt below.
+		 * that is likely to be tricky, as current_enable may exist across multiple
+		 * ticks and states, making currentstate difficult to map in the middle of
+		 * a casecade of case statements.
 		 */
 		| DEFAULT
 		{
