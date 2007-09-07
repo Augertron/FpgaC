@@ -350,6 +350,12 @@ if				return(newtoken(IF));
 
 else				return(newtoken(ELSE));
 
+switch                          return(newtoken(SWITCH));
+
+case                            return(newtoken(CASE));
+
+default                         return(newtoken(DEFAULT));
+
 do				return(newtoken(DO));
 
 while				return(newtoken(WHILE));

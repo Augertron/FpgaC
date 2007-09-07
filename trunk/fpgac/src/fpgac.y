@@ -91,6 +91,7 @@
 %token		AUTO BOOL CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC REGISTER EXTERN
 %token          FLOAT DOUBLE CLOCK PROCESS CONST VOLATILE
 %token		NOTEQUAL XOR IF ELSE DO WHILE FOR BREAK RETURN
+%token		SWITCH CASE DEFAULT
 %token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
 %token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
@@ -4001,6 +4002,8 @@ stmt:	SEMICOLON
 
 		| ifstmt
 
+		| switchstmt
+
 		| dowhileloop
 
 		| whileloop
@@ -4156,6 +4159,58 @@ ifhead:		IF LEFTPAREN expn RIGHTPAREN
 		        assignment(currentstate, ffoutput(currentstate));
 		}
 
+		/*
+		 * Each CASE block can be entered by fall thru, or an explict match.
+		 * Treat as an If-Then with an implict conditional of:
+		 *       currentstate | (current_enable |= (switchvar == expn))
+		 */
+
+cstmt:		CASE expn
+		{
+		}
+
+		SEMICOLON stmts
+		{
+		}
+
+		/*
+		 * The DEFAULT block can be entered by fall thru, or no explict CASE match.
+		 * Treat as an If-Then with an implict conditional of:
+		 *       currentstate | !current_enable
+		 */
+		| DEFAULT
+		{
+		}
+		SEMICOLON stmts
+		{
+		}
+
+cstmts:		/* empty */
+
+		| cstmts cstmt
+
+		/*
+                 * The switch statement is modeled as a:
+                 *          do{if(c1)stmt1;if(c2)stmt2;if(!(c1|c2))defstmt;}while(0);
+                 * This means that we have to setup a break stack,
+                 * then process the case/default statements as a cascaded set
+                 * of if-then statements, plus allow the break production to
+		 * implicitly disable the current state flow, and jump to the
+		 * end of the switch statement. BREAK handling should conditionally
+		 * tick if a loop, and NOT tick if the current block is a switch/case.
+                 */
+switchstmt:     switchhead leftcurly cstmts rightcurly
+		{
+		}
+
+		/*
+		 * We need to setup a switchstack var here to make expn be accessable
+		 * as the switchvar used by case statements to build the implict if-then
+		 */
+switchhead:     SWITCH LEFTPAREN expn RIGHTPAREN
+		{
+			    error2("Switch/case not supported yet");
+		}
 
 		/*
 		 * DO/FOR/WHILE loops share common productions and support routines.
