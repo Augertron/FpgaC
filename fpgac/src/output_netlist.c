@@ -305,6 +305,60 @@ static printROM(struct bit *b, int count) {
     fprintf(outputfile, "];");
 }
 
+
+char *
+sprintEQN(struct bit *b) {
+    int first = 1, i, j, first_in_term, top;
+    struct bitlist *bl;
+    QMtab table[QMtabSize];
+    char *names[MAXPRI], **p = names;
+    char obuf[4096];
+    char *str = obuf;
+    int count = countlist(b->primaries) - 1;
+
+    QMtruthToTable(b->truth, table, &top, count + 1);
+    if (simpleQM(table, &top, QMtabSize, count + 1) != 0) {
+	error2("QM overflow in printEQN, should not happen", bitname(b));
+	abort();
+    }
+
+    for (bl = b->primaries; bl; bl = bl->next) {
+	*p++ = bitname(bl->bit);
+    }
+
+    for (i = 0; i <= top; i++) {
+	if (table[i].covered)
+	    continue;
+	first_in_term = 1;
+	if (!first)
+	    str += sprintf(str, "+");
+	first = 0;
+	str += sprintf(str, "(");
+	for (j = 0; j < count + 1; j++) {
+	    if (table[i].dc & (1 << j))
+		continue;
+	    if (!first_in_term)
+		str += sprintf(str, "*");
+	    first_in_term = 0;
+	    if (!(table[i].value & (1 << j)))
+		str += sprintf(str, "~");
+	    str += sprintf(str, "%s", names[count-j]);
+	}
+	if (first_in_term) {
+//	    str += sprintf(str, "%s is Vcc!\n", bitname(b));
+	    /* printTab (table, &top, count+1); */
+	    str += sprintf(str, "Vcc");
+	}
+	str += sprintf(str, ")");
+    }
+    if (first)			/* no terms were true */
+	str += sprintf(str, "GND");
+    str += sprintf(str, ";");
+    str = malloc(strlen(obuf)+2);
+    strcpy(str,obuf);
+    return(str);
+}
+
 /* The following code originally by Dr. John Forrest of UMIST, Manchester, UK */
 
 static printEQN(struct bit *b, int count) {
