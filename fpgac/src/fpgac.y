@@ -4124,7 +4124,7 @@ ifstmt:	ifhead stmt
 		            break;
 		        }
 		    }
-		    $$.v = newtempvar("", 1);
+		    $$.v = newtempvar("ElseRefScpStk", 1);
 		    $$.v->junk = ReferenceScopeStack;
 		    ReferenceScopeStack = $1.v->junk;
 		    currentstate = findvariable(CURRENTSTATE, MUSTEXIST, 1, &ThreadScopeStack, CurrentReferenceScope);
@@ -4137,7 +4137,7 @@ ifstmt:	ifhead stmt
 		{
 		    struct varlist *elsestack;
 
-		    for(elsestack=ReferenceScopeStack; $4.v->junk != elsestack; elsestack=elsestack->next) {
+		    for(elsestack=ReferenceScopeStack; $1.v->junk != elsestack; elsestack=elsestack->next) {
 		        // if any volatile writes outstanding, tick clock to a new state
 	                if(elsestack->variable->type & TYPE_VOLATILE && elsestack->variable->assigned) {
 		            newstate("voltick");
