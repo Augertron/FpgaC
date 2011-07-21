@@ -120,7 +120,7 @@ void output_vhdl(void) {
    fprintf(outputfile, "use ieee.std_logic_arith.all;\n");
    fprintf(outputfile, "use ieee.std_logic_unsigned.all;\n");
 
-   now = time((time_t) NULL);
+   now = time((time_t *) NULL);
    datestring = ctime(&now);
    datestring[strlen(datestring) - 1] = '\0';
    fprintf(outputfile, "\n-- fpgac %s %s\n\n", Revision, datestring);

@@ -69,6 +69,9 @@ EXTFIX int inputcounts[MAXPRI+1];
 #define CNFROMS         5
 #define CNFGATES        6
 #define CNFEQNS         7
+#define EDFROMS		8
+#define EDFGATES	9
+#define EDFEQNS		10
 
 
 EXTFIX int output_format;

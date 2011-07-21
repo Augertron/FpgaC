@@ -75,10 +75,10 @@ int simpleQM (table, top, max_tab_size, bits)
 	int *top;
 	int max_tab_size, bits;
 {
-	int curr_bottom = 0;
-	int curr_top = *top;
-	int changed;
-	int i, j, k, bit;
+	unsigned int curr_bottom = 0;
+	unsigned int curr_top = *top;
+	unsigned int changed;
+	unsigned int i, j, k, bit;
 	
 	changed = 1;
 	while (changed) {

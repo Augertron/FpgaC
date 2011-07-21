@@ -97,7 +97,7 @@ output_CNF() {
     if (nerrors > 0)
 	return;
 
-    now = time((time_t) NULL);
+    now = time((time_t *) NULL);
     datestring = ctime(&now);
     datestring[strlen(datestring) - 1] = '\0';
     fprintf(outputfile, "// fpgac, %s, \"%s\"\n", Revision, datestring);

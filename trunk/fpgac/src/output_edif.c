@@ -1,6 +1,6 @@
 /*
- * output_xilinx.c -- XNF netlist output for Fpgac
- * SVN $Revision$  hosted on http://sourceforge.net/projects/fpgac
+ * output_edif.c -- EDIF netlist output for Fpgac
+ * SVN $xRevision: 46 $  hosted on http://sourceforge.net/projects/fpgac
  */
 
 /*
@@ -46,39 +46,18 @@
 
 #include "names.h"
 #include "outputvars.h"
-#include "patchlevel.h"
+//#include "patchlevel.h"
 
 /*
- * Notes about XNF output format:
+ * Notes about EDIF output format:
  *
- * EXT, T ==> tristatable output, no input path
- * EXT, B ==> tristatable bidirectional output (pin does have an input path)
- * 
- * FPGA names for nets, buses, components, and pins must follow these conventions:
- * 
- * - Only A-Z, a-z, 0-9, _, and - are allowed in user-defined names. No other
- *   characters should be included in names.
- * 
- * - No spaces are allowed.
- * 
- * - Names must contain at least one non-numeric character.
- * 
- * - Names cannot be more than 1024 characters long.
- * 
- * - Do not use reserved words such as:
- *   CLB, IOB, CCLK, DP, GND, VCC, RT, PWRDN, RST, TDO, BSCAN, M0, M1, M2, STARTUP,
- *   as well as package pin names (P1, P2, A4, B5, etc.), CLB names (AA, AB, R1C3, etc)
- *   or Xilinx primitive names (FD, PULLUP, BUF, etc).
- * 
- * - Square brackets, [], are generally used for bus notation and should not be used
- *   unless defining the bounds of a bus.
  */
 
 static printROM(struct bit *b, int count);
 static printGates(struct bit *b, int count);
 static printEQN(struct bit *b, int count);
 static printAND(int i, QMtab table[], int count, struct bit *b);
-void printRam (struct bit *, struct varlist * , int ) ;
+static void printRam (struct bit *, struct varlist * , int ) ;
 
 static printExt(char *extname, char *type, char *pin) {
     if (pin) {
@@ -93,7 +72,7 @@ static printExt(char *extname, char *type, char *pin) {
 extern char Revision[];
 
 
-char *bitname_xnf(struct bit *b) {
+char *bitname_edif(struct bit *b) {
     char *n;
 
     if(b->name) n=b->name;
@@ -123,46 +102,225 @@ char *bitname_xnf(struct bit *b) {
     return (b->name);
 }
 
-output_XNF() {
-    int n,i;
-    int count;
-    time_t now;
-    int printed;
-    char *datestring;
-    struct bit *b;
-    struct bitlist *bl;
+edif_header() {
+    time_t t = time(0);
+    struct tm *tm = localtime(&t);
+
+    fprintf(outputfile, "(edif %s\n", get_designname());
+    fprintf(outputfile, "  (edifVersion 2 0 0)\n");
+    fprintf(outputfile, "  (edifLevel 0)\n");
+    fprintf(outputfile, "  (keywordMap\n");
+    fprintf(outputfile, "    (keywordLevel 0)\n");
+    fprintf(outputfile, "  )\n");
+    fprintf(outputfile, "  (status\n");
+    fprintf(outputfile, "    (written\n");
+    fprintf(outputfile, "      (timeStamp %d %d %d %d %d %d)\n", tm->tm_year, tm->tm_mon, tm->tm_mday, tm->tm_hour, tm->tm_min, tm->tm_sec);
+    fprintf(outputfile, "      (author \"FpgaC\")\n");
+    fprintf(outputfile, "      (program \"FpgaC Compiler\"\n");
+    fprintf(outputfile, "        (version \"%s\")\n", Revision);
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "  )\n");
+    fprintf(outputfile, "  (library Active_lib\n");
+    fprintf(outputfile, "    (edifLevel 0)\n");
+    fprintf(outputfile, "    (technology\n");
+    fprintf(outputfile, "      (numberDefinition\n");
+    fprintf(outputfile, "        (scale 1 (e 1 -11)(unit TIME))\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell BUF\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell BUFG\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell EQN\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I0\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port I1\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port I2\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port I3\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell FDCP\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port C\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port CE\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port D\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port Q\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell GND\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port GROUND\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell IBUF\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell INV\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell OBUF\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell OBUFT\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port I\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port O\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "          (port T\n");
+    fprintf(outputfile, "            (direction INPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (cell VCC\n");
+    fprintf(outputfile, "      (cellType generic)\n");
+    fprintf(outputfile, "      (view net (viewType netlist)\n");
+    fprintf(outputfile, "        (interface\n");
+    fprintf(outputfile, "          (port VCC\n");
+    fprintf(outputfile, "            (direction OUTPUT)\n");
+    fprintf(outputfile, "          )\n");
+    fprintf(outputfile, "        )\n");
+    fprintf(outputfile, "      )\n");
+    fprintf(outputfile, "    )\n");
+}
+edif_part() {
+    fprintf(outputfile, "  (design %s\n", get_designname());
+    fprintf(outputfile, "    (cellRef %s\n", get_designname());
+    fprintf(outputfile, "      (libraryRef Active_lib)\n");
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "    (property PART\n");
+    fprintf(outputfile, "      (string \"%s\")\n",partname);
+    fprintf(outputfile, "    )\n");
+    fprintf(outputfile, "  )\n");
+    fprintf(outputfile, ")\n");
+}
+
+output_EDIF() {
 
     if (nerrors > 0)
 	return;
-    fprintf(outputfile, "LCANET, 6\n");
-    fprintf(outputfile, "PWR, 1, VCC\n");
-    fprintf(outputfile, "PWR, 0, GND\n");
-    now = time((time_t *) NULL);
-    datestring = ctime(&now);
-    datestring[strlen(datestring) - 1] = '\0';
-    fprintf(outputfile, "PROG, fpgac, %s, \"%s\"\n", Revision, datestring);
-    if (partname)
-	fprintf(outputfile, "PART, %s\n", partname);
+    edif_header();
+    edif_inst();
+//  edif_net();
+    edif_part();
+}
+
+edif_inst() {
+    int n,i;
+    int count;
+    int printed;
+    struct bit *b;
+    struct bitlist *bl;
+
     if (genclock) {
-	fprintf(outputfile, "SYM, OSC4, OSC4, LIBVER=2.0.0\n");
+	fprintf(outputfile, "SYM, OSC4, OSC4\n");
 	fprintf(outputfile, "PIN, F15, O, CLKin\n");
 	fprintf(outputfile, "END\n");
-	fprintf(outputfile, "SYM, CLK-AA, BUFGS, LIBVER=2.0.0\n");
+	fprintf(outputfile, "SYM, CLK-AA, BUFGS\n");
 	fprintf(outputfile, "PIN, I, I, CLKin\n");
 	fprintf(outputfile, "PIN, O, O, %s\n", clockname);
 	fprintf(outputfile, "END\n");
     }
     if(!clockname[0]) {
         clockname = "CLK";
-	fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", clockname);
-	fprintf(outputfile, "PIN, I, I, %s_pad\n", clockname);
-	fprintf(outputfile, "PIN, O, O, %s_clk\n", clockname);
-	fprintf(outputfile, "END\n");
-	fprintf(outputfile, "SYM, CLK-AA, BUFG, LIBVER=2.0.0\n");
-	fprintf(outputfile, "PIN, I, I, CLK_clk\n");
-	fprintf(outputfile, "PIN, O, O, %s\n", clockname);
-	fprintf(outputfile, "END\n");
-	printExt(clockname, "I", 0);
+        fprintf(outputfile, "          (instance INST_%s_clk_pad\n", get_designname());
+        fprintf(outputfile, "            (viewRef net\n");
+        fprintf(outputfile, "              (cellRef IBUF)\n");
+        fprintf(outputfile, "            )\n");
+        fprintf(outputfile, "          )\n");
+        fprintf(outputfile, "          (instance INST_%s_clk\n", get_designname());
+        fprintf(outputfile, "            (viewRef net\n");
+        fprintf(outputfile, "              (cellRef BUFG)\n");
+        fprintf(outputfile, "            )\n");
+        fprintf(outputfile, "          )\n");
     }
     printed = 0;
     for(b=bits; b; b=b->next) {
@@ -172,96 +330,98 @@ output_XNF() {
 	switch (b->flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | BIT_HASPIN | BIT_HASFF | SYM_BUSPORT | SYM_CLOCK)) {
 	case SYM_INPUTPORT | BIT_HASPIN | SYM_CLOCK:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s_pad, IBUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_clk\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    printExt(bitname(b), "I", b->pin);
-	    fprintf(outputfile, "SYM, %s, BUFG, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_clk\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
-	    fprintf(outputfile, "END\n");
+            fprintf(outputfile, "          (instance INST_%s_pad\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef IBUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
+            fprintf(outputfile, "          (instance INST_%s\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef BUFG)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case SYM_INPUTPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, IBUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    printExt(bitname(b), "I", b->pin);
+            fprintf(outputfile, "          (instance INST_%s_pad\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef IBUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case SYM_INPUTPORT | BIT_HASPIN | BIT_HASFF:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-IBUF, IBUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_FFin\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    printExt(bitname(b), "I", b->pin);
-	    fprintf(outputfile, "SYM, %s, DFF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, D, I, %s_FFin\n", bitname(b));
-	    fprintf(outputfile, "PIN, C, I, %s\n", clockname);
-	    fprintf(outputfile, "PIN, CE, I, VCC\n");
-	    fprintf(outputfile, "PIN, Q, O, %s\n", bitname(b));
-	    fprintf(outputfile, "END\n");
+            fprintf(outputfile, "          (instance INST_%s_pad\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef IBUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
+            fprintf(outputfile, "          (instance INST_%s\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef FDCP)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 
 	case SYM_INPUTPORT | BIT_HASFF:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-BUF, BUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_FFin\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    fprintf(outputfile, "SYM, %s, DFF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, D, I, %s_FFin\n", bitname(b));
-	    fprintf(outputfile, "PIN, C, I, %s\n", clockname);
-	    fprintf(outputfile, "PIN, CE, I, VCC\n");
-	    fprintf(outputfile, "PIN, Q, O, %s\n", bitname(b));
-	    fprintf(outputfile, "END\n");
+            fprintf(outputfile, "          (instance INST_%s_buf\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef BUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
+            fprintf(outputfile, "          (instance INST_%s\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef FDCP)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case SYM_INPUTPORT:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s, BUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
-	    fprintf(outputfile, "END\n");
+            fprintf(outputfile, "          (instance INST_%s_buf\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef BUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case SYM_OUTPUTPORT | BIT_HASFF | BIT_HASPIN:
 	case SYM_OUTPUTPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-OBUF, OBUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    printExt(bitname(b), "O", b->pin);
+            fprintf(outputfile, "          (instance INST_%s_pad\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef OBUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case SYM_OUTPUTPORT | BIT_HASFF:
 	case SYM_OUTPUTPORT:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-OBUF, BUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "END\n");
+            fprintf(outputfile, "          (instance INST_%s_buf\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef BUF)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN | BIT_HASFF:
 	case SYM_INPUTPORT | SYM_BUSPORT | BIT_HASPIN:
 	    printed = 1;
-	    fprintf(outputfile, "SYM, %s-IBUF, IBUF, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, I, I, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    fprintf(outputfile, "SYM, %s-OBUFT, OBUFT, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, T, I, %s,, INV\n", bitname(b->enable));
-	    fprintf(outputfile, "PIN, I, I, %s_FF\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	    printExt(bitname(b), "B", b->pin);
+            fprintf(outputfile, "          (instance INST_%s_obuft\n",bitname(b));
+            fprintf(outputfile, "            (viewRef net\n");
+            fprintf(outputfile, "              (cellRef OBUFT)\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "            (portInstance T\n");
+            fprintf(outputfile, "              (property INV\n");
+            fprintf(outputfile, "                (string \"\")\n");
+            fprintf(outputfile, "              )\n");
+            fprintf(outputfile, "            )\n");
+            fprintf(outputfile, "          )\n");
 	    break;
 
 	case 0:		/* normal variables */
@@ -271,18 +431,6 @@ output_XNF() {
 	    fprintf(stderr, "Warning: %s has unknown combination of flags %lx\n", bitname(b),
 		    b->flags & (SYM_INPUTPORT | SYM_OUTPUTPORT | BIT_HASPIN | BIT_HASFF | SYM_BUSPORT));
 	    break;
-	}
-
-	if ((b->flags & BIT_HASPIN) && (b->flags & BIT_HASPULLUP)) {
-	    fprintf(outputfile, "SYM, %s-PULLUP, PULLUP, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "END\n");
-	}
-
-	if ((b->flags & BIT_HASPIN) && (b->flags & BIT_HASPULLDOWN)) {
-	    fprintf(outputfile, "SYM, %s-PULLDOWN, PULLDOWN, LIBVER=2.0.0\n", bitname(b));
-	    fprintf(outputfile, "PIN, O, O, %s_pad\n", bitname(b));
-	    fprintf(outputfile, "END\n");
 	}
 
 	if ((b->flags & (SYM_INPUTPORT | SYM_BUSPORT)) == SYM_INPUTPORT) {
@@ -312,9 +460,9 @@ output_XNF() {
 		} else
 		    fprintf(outputfile, "SYM, %s, ", bitname(b));
 		if (Get_Bit(b->truth,0))
-		    fprintf(outputfile, "INV, LIBVER=2.0.0\n");
+		    fprintf(outputfile, "INV\n");
 		else
-		    fprintf(outputfile, "BUF, LIBVER=2.0.0\n");
+		    fprintf(outputfile, "BUF\n");
 		if (count == 0)
 		    fprintf(outputfile, "PIN, I, I, %s\n", bitname(b->primaries->bit));
 		else
@@ -358,21 +506,21 @@ output_XNF() {
                     if ( b->variable->arrayref->variable  == b->variable->arraywrite ) 
                     {
                             if (b->variable->arraysize <= 16) {
-                                    fprintf(outputfile, "SYM, %s, ram16x1s, LIBVER=2.0.0\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram16x1s\n", bitname(b));
                             } else if (b->variable->arraysize <= 32) {
-                                    fprintf(outputfile, "SYM, %s, ram32x1s, LIBVER=2.0.0\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram32x1s\n", bitname(b));
                             } else if (b->variable->arraysize <= 64) {
-                                    fprintf(outputfile, "SYM, %s, ram64x1s, LIBVER=2.0.0\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram64x1s\n", bitname(b));
                             } else if (b->variable->arraysize <= 128) {
-                                    fprintf(outputfile, "SYM, %s, ram128x1s, LIBVER=2.0.0\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ram128x1s\n", bitname(b));
                             } else if (b->variable->arraysize <= 4096) {
-                                    fprintf(outputfile, "SYM, %s, ramb4_s1, LIBVER=2.0.0\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, ramb4_s1\n", bitname(b));
                             } else {
-                                    fprintf(outputfile, "SYM, %s, rammacro, LIBVER=2.0.0\n", bitname(b));
+                                    fprintf(outputfile, "SYM, %s, rammacro\n", bitname(b));
                             }
 
 // For older ISE use this instead of above
-//			    fprintf(outputfile, "SYM, %s, RAMS, LIBVER=2.0.0\n", bitname(b));
+//			    fprintf(outputfile, "SYM, %s, RAMS\n", bitname(b));
                             fprintf(outputfile, "PIN, D, I, %s_RAMin\n", bitname(b));
                             fprintf(outputfile, "PIN, WCLK, I, CLK\n");
                             if(b->variable->arraywrite && b->variable->arraywrite->index->bits) {
@@ -413,21 +561,21 @@ output_XNF() {
 
                                     // Not all of these sizes are available ... edit for your device
                                     if (b->variable->arraysize <= 16) {
-                                            fprintf(outputfile, "SYM, %s, ram16x1d, LIBVER=2.0.0\n", bitname(b));
+                                            fprintf(outputfile, "SYM, %s, ram16x1d\n", bitname(b));
                                     } else if (b->variable->arraysize <= 32) {
-                                            fprintf(outputfile, "SYM, %s, ram32x1d, LIBVER=2.0.0\n", bitname(b));
+                                            fprintf(outputfile, "SYM, %s, ram32x1d\n", bitname(b));
                                     } else if (b->variable->arraysize <= 64) {
-                                            fprintf(outputfile, "SYM, %s, ram64x1d, LIBVER=2.0.0\n", bitname(b));
+                                            fprintf(outputfile, "SYM, %s, ram64x1d\n", bitname(b));
                                     } else if (b->variable->arraysize <= 128) {
-                                            fprintf(outputfile, "SYM, %s, ram128x1d, LIBVER=2.0.0\n", bitname(b));
+                                            fprintf(outputfile, "SYM, %s, ram128x1d\n", bitname(b));
                                     } else if (b->variable->arraysize <= 4096) {
-                                            fprintf(outputfile, "SYM, %s, ramb4_s1_s1, LIBVER=2.0.0\n", bitname(b));
+                                            fprintf(outputfile, "SYM, %s, ramb4_s1_s1\n", bitname(b));
                                     } else {
-                                            fprintf(outputfile, "SYM, %s, rammacro, LIBVER=2.0.0\n", bitname(b));
+                                            fprintf(outputfile, "SYM, %s, rammacro\n", bitname(b));
                                     }
 
 // uncomment for older ISE, and comment out above
-//				    fprintf(outputfile, "SYM, %s_%d, RAMD, LIBVER=2.0.0\n", bitname(b),ram_count);
+//				    fprintf(outputfile, "SYM, %s_%d, RAMD\n", bitname(b),ram_count);
 
                                     fprintf(outputfile, "PIN, D, I, %s_RAMin\n", bitname(b));
                                     fprintf(outputfile, "PIN, WCLK, I, CLK\n");
@@ -470,9 +618,9 @@ output_XNF() {
                     }
             } else if (b->flags & SYM_FF) {
 		if (b->flags & SYM_BUSPORT)
-		    fprintf(outputfile, "SYM, %s_DFF, DFF, LIBVER=2.0.0\n", bitname(b));
+		    fprintf(outputfile, "SYM, %s_DFF, DFF\n", bitname(b));
 		else
-		    fprintf(outputfile, "SYM, %s, DFF, LIBVER=2.0.0\n", bitname(b));
+		    fprintf(outputfile, "SYM, %s, DFF\n", bitname(b));
 		fprintf(outputfile, "PIN, D, I, %s_FFin\n", bitname(b));
 		fprintf(outputfile, "PIN, C, I, %s\n", clockname);
 		if (b->clock_enable)
@@ -517,7 +665,7 @@ static printROM(struct bit *b, int count) {
     hex = 0;
     for (i = 0; i < (1 << (count + 1)); i++)
 	hex |= (Get_Bit(b->truth,i) << i);
-    fprintf(outputfile, "INIT=%04X, LIBVER=2.0.0\n", hex);
+    fprintf(outputfile, "INIT=%04X\n", hex);
     for (i = 3; i > count; --i)
 	fprintf(outputfile, "PIN, A%d, I, GND\n", i);
     for (bl = b->primaries; bl; bl = bl->next) {
@@ -572,7 +720,7 @@ static printEQN(struct bit *b, int count) {
     }
     if (first)			/* no terms were true */
 	fprintf(outputfile, "GND");
-    fprintf(outputfile, "), LIBVER=2.0.0\n");
+    fprintf(outputfile, ")\n");
     for (bl = b->primaries; bl; bl = bl->next) {
 	fprintf(outputfile, "PIN, I%d, I, %s\n",
 		count--, bitname(bl->bit));
@@ -608,11 +756,11 @@ static printGates(struct bit *b, int count) {
 
     if (used_terms <= 1) {
           if (b->flags & SYM_FF && !b->variable->arraysize)
-              fprintf(outputfile, "SYM, %s_FFin, BUF, LIBVER=2.0.0\n", bitname(b));
+              fprintf(outputfile, "SYM, %s_FFin, BUF\n", bitname(b));
           else if (b->flags & SYM_FF && b->variable->arraysize)
-              fprintf(outputfile, "SYM, %s_RAMin, BUF, LIBVER=2.0.0\n", bitname(b));
+              fprintf(outputfile, "SYM, %s_RAMin, BUF\n", bitname(b));
           else
-              fprintf(outputfile, "SYM, SYM%s, BUF, LIBVER=2.0.0\n", bitname(b));
+              fprintf(outputfile, "SYM, SYM%s, BUF\n", bitname(b));
 	if (used_terms == 0)
 	    fprintf(outputfile, "PIN, I, I, GND\n");
 	else
@@ -630,15 +778,15 @@ static printGates(struct bit *b, int count) {
 		oldSubOr = subOr;
 		if (used_terms > ORlimit) {
 		    subOr += 1;
-		    fprintf(outputfile, "SYM, %dOR_%s, OR, LIBVER=2.0.0\n", subOr, bitname(b));
+		    fprintf(outputfile, "SYM, %dOR_%s, OR\n", subOr, bitname(b));
 		} else {
 		    subOr = 0;
                     if (b->flags & SYM_FF && !b->variable->arraysize)
-                        fprintf(outputfile, "SYM, %s_FFin, OR, LIBVER=2.0.0\n", bitname(b));
+                        fprintf(outputfile, "SYM, %s_FFin, OR\n", bitname(b));
                     else if (b->flags & SYM_FF && b->variable->arraysize)
                         fprintf(outputfile, "SYM, %s_RAMin, OR\n", bitname(b));
                     else
-                        fprintf(outputfile, "SYM, SYM%s, OR, LIBVER=2.0.0\n", bitname(b));
+                        fprintf(outputfile, "SYM, SYM%s, OR\n", bitname(b));
 		}
 		if (oldSubOr)
 		    fprintf(outputfile, "PIN, I%d, I, %dOR_%s\n", posCnt++, oldSubOr, bitname(b));
@@ -659,7 +807,7 @@ static printAND(int i, QMtab table[], int count, struct bit *b) {
     struct bitlist *bl;
 
     bitCnt = QMtermBits(table[i], count + 1);
-    fprintf(outputfile, "SYM, %dT_SYM%s, %s, LIBVER=2.0.0\n", i, bitname(b), (bitCnt == 1) ? "BUF" : "AND");
+    fprintf(outputfile, "SYM, %dT_SYM%s, %s\n", i, bitname(b), (bitCnt == 1) ? "BUF" : "AND");
     for (bl = b->primaries, j = count; bl; bl = bl->next, j--) {
 	if (!(table[i].dc & (1 << j))) {
 	    if (bitCnt == 1)

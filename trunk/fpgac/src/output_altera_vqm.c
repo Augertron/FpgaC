@@ -115,7 +115,7 @@ void output_vqm(char *familyname)
 
    fprintf(outputfile, "// PROGRAM \"fpgac\"\n");
 
-   now = time((time_t) NULL);
+   now = time((time_t *) NULL);
    datestring = ctime(&now);
    datestring[strlen(datestring) - 1] = '\0';
    fprintf(outputfile, "// VERSION  \"%s, %s\"\n", Revision, datestring);
