@@ -89,22 +89,33 @@
 %token		IDENTIFIER LEFTPAREN RIGHTPAREN LEFTCURLY RIGHTCURLY SEMICOLON
 %token		INT PERIOD COMMA INTEGER EQUAL ILLEGAL EQUALEQUAL AND OR TILDE
 %token		AUTO BOOL CHAR SHORT LONG SIGNED UNSIGNED COLON VOID STATIC REGISTER EXTERN
-%token          FLOAT DOUBLE CLOCK PROCESS CONST VOLATILE
+%token          FLOAT DOUBLE PROCESS CONST VOLATILE
 %token		NOTEQUAL XOR IF ELSE DO WHILE FOR BREAK RETURN
 %token		SWITCH CASE DEFAULT
-%token		CHARBITS INTBITS ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
-%token		SHORTBITS LONGBITS LONGLONGBITS FLOATBITS DOUBLEBITS LONGDOUBLEBITS
+%token		ADD SHIFTRIGHT SHIFTLEFT SUB UNARYMINUS GREATEROREQUAL
 %token		IGNORETOKEN REPLAYSTART REPLAYEND NOT GREATER LESSTHAN LESSTHANOREQUAL
 %token		ANDAND OROR STRING PLUSEQUAL QUESTION
 %token		MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL
 %token		MULTIPLY MULTIPLYEQUAL DIVIDE DIVIDEEQUAL REMAINDER REMAINDEREQUAL
 %token		OREQUAL LEFTBRACE RIGHTBRACE ENUM STRUCT UNION TYPEDEF PLUSPLUS MINUSMINUS
+%token		PRAGMA FPGAC OMP NEW_LINE
+%token		OMP_AUTO OMP_DEFAULT OMP_FOR OMP_IF OMP_STATIC OMP_ATOMIC OMP_BARRIER OMP_CAPTURE
+%token		OMP_COLLAPSE OMP_COPYIN OMP_COPYPRIVATE OMP_CRITICAL OMP_DYNAMIC OMP_FINAL OMP_FIRSTPRIVATE
+%token		OMP_FLUSH OMP_GUIDED OMP_LASTPRIVATE OMP_MASTER OMP_MAX OMP_MERGABLE OMP_MIN OMP_NONE
+%token		OMP_NOWAIT OMP_NUM_THREADS OMP_ORDERED OMP_PARALLEL OMP_PARALLEL_FOR OMP_PARALLEL_SECTIONS
+%token		OMP_PRIVATE OMP_READ OMP_REDUCTION OMP_RUNTIME OMP_SCHEDULE OMP_SECTION OMP_SECTIONS
+%token		OMP_SHARED OMP_SINGLE OMP_TASK OMP_TASKWAIT OMP_TASKYIELD OMP_THREADPRIVATE OMP_UNTIED
+%token		OMP_UPDATE OMP_WRITE
+%token		FPGAC_CLOCK FPGAC_CHARBITS FPGAC_INTBITS FPGAC_SHORTBITS FPGAC_LONGBITS
+%token		FPGAC_LONGLONGBITS FPGAC_FLOATBITS FPGAC_DOUBLEBITS FPGAC_LONGDOUBLEBITS
 
 %right  EQUAL PLUSEQUAL MINUSEQUAL SHIFTRIGHTEQUAL SHIFTLEFTEQUAL ANDEQUAL XOREQUAL OREQUAL MULTIPLYEQUAL DIVIDEEQUAL REMAINDEREQUAL
 
 %left   COMMA
 
 %{
+
+struct variable * DoOp(int op, struct variable *arg1, struct variable *arg2);
 
 extern FILE *yyin;
 char real_filename[1024] = "";
@@ -145,6 +156,7 @@ char *legal_arch[] = {
     "cnf-gates",
     "cnf-roms",
     "cnf-eqns",
+    "edf",
     (char *) 0
 };
 
@@ -381,6 +393,10 @@ main(int argc, char *argv[]) {
         output_format = XNFROMS;
         target_arch = "xnf";
     }
+    if(!strcmp(target_arch, "edf")) {
+        output_format = EDFEQNS;
+        target_arch = "edf";
+    }
     if(!strcmp(target_arch, "xnf")) {
         use_clock_enables = 1;
         ffs_zero_at_powerup = 1;
@@ -405,10 +421,34 @@ main(int argc, char *argv[]) {
     PushDeclarationScope(&DeclarationScopeStack);
 
     init();
+
+    // Pass 1: Parse Grammar, build truth tables for all variables
     if(yyparse() || (nerrors > 0))
 	exit(1);
+
+    // Pass 2: Construct multiplexors and state machine gating for all variables
+    makeffinputs();
+
+    // Pass 3: Logic minimization by combining duplicate LUTs
+    if(use_dupcheck)
+	checkforduplicates();
+
+    // Pass 4: 
+    checkundefined();
+
+    // Pass 5: Logic minimization by removing logic which doesn't affect an output
+    if(doprune)
+        prune();
     else
-	exit(0);
+        noprune();
+
+    // Pass 6: Do the technology dependent output
+    output();
+
+    // Pass 7: Dump diagnostic version of logic
+    if(debug) debugoutput();
+
+    exit(0);
 }
 
 usage() {
@@ -507,6 +547,7 @@ char *bitname_vhdl(struct bit *b);
 char *bitname_vqm(struct bit *b);
 char *bitname_cnf(struct bit *b);
 char *bitname_xnf(struct bit *b);
+char *bitname_edif(struct bit *b);
 
 char *sprintEQN(struct bit *b);
 
@@ -531,6 +572,10 @@ char *bitname(struct bit *b) {
     case XNFEQNS:
     case XNFROMS:
     case XNFGATES:	return((char *)bitname_xnf(b)); break;
+
+    case EDFEQNS:
+    case EDFROMS:
+    case EDFGATES:	return((char *)bitname_edif(b)); break;
     }
 }
 
@@ -1875,7 +1920,7 @@ struct variable *CreateArrayRef(struct variable *array) {
             ref++;
     }
 
-    sprintf(buf, "%s/p%d", array->name+1, ref);
+    sprintf(buf, "%s/p%d", array->name, ref);
     vl->variable = CreateVariable(buf, array->width, &ThreadScopeStack, CurrentReferenceScope,0);
     vl->variable->port = ref;
     vl->variable->flags |= SYM_ARRAY;
@@ -1883,7 +1928,7 @@ struct variable *CreateArrayRef(struct variable *array) {
     vl->variable->arrayparent = array;
     if(debug & 4) printf( "    creating arrayref(%s)", vl->variable->name);
 
-    sprintf(buf, "%s/index_p%d", array->name+1, ref);
+    sprintf(buf, "%s/index_p%d", array->name, ref);
     vl->variable->index = CreateVariable(buf, array->arrayaddrbits, &ThreadScopeStack, CurrentReferenceScope,0);
     vl->variable->index->port = ref;
     makeff(vl->variable->index);
@@ -2744,11 +2789,6 @@ checkundefined() {
 }
 
 output() {
-   if(doprune)
-        prune();
-    else
-        noprune();
-
 
     switch(output_format) {
     case VHDL:		output_vhdl(); break;
@@ -2762,6 +2802,10 @@ output() {
     case XNFEQNS:
     case XNFROMS:
     case XNFGATES:	output_XNF(); break;
+
+    case EDFEQNS:
+    case EDFROMS:
+    case EDFGATES:	output_EDIF(); break;
     }
 }
 
@@ -3086,257 +3130,49 @@ IFuncOneArg(struct variable *func, struct variable *arg1) {
 }
 
 /*
- * As soon as we introduce more than one real type into FpgaC, then
- * promotion between types becomes an issue. In the initial versions
- * of FpgaC we had a single type, and that was signed integers of
- * variable size, so not even the difference between short, long and
- * long long was a serious issue. That is until we introduced the
- * concept of intrinsic functions for mult, div, and mod where both
- * formal args and return value need to have a reasonable width.
+ * Yacc grammer and productions for FpgaC subset of std C90
  *
- * This promotion problem with intrinsic functions is compound by
- * needing a conversion matrix of type by width.
+ * Support routines used:
  *
- * DoOp attempts to address this problem, by moving the common
- * code for all operators into a common setup function so that width
- * and type promotion can be uniformly addressed in a single code
- * body.  -- John Bass, Feb 2006
+ * addtoff
+ * addtovlist
+ * addtovlistwithduplicates
+ * assertoutputs
+ * assignment
+ * assignmentstmt
+ * changewidth
+ * Clr_Bit
+ * complement
+ * copyvar
+ * countlist
+ * CreateVariable
+ * declarefunction
+ * ffoutput
+ * findvariable
+ * initconstant
+ * makeff
+ * modifiedvar
+ * newstate
+ * newtempvar
+ * PopDeclarationScope
+ * PushDeclarationScope
+ * Set_Bit
+ * setvar
+ * setvar
+ * tick
+ * twoop
+ *
+ * error2
+ * FormLoop
+ * MapStructureVars
+ * pushinputstream
+ * pushtargetwidth
+ * replayinput
+ * saveinput
+ * stopsavinginput
+ * ifstmt
+ *
  */
-
-struct variable *
-DoOp(int op, struct variable *arg1, struct variable *arg2) {
-    int realop = 0;
-    char *func;
-    struct variable *temp;
-
-    if(debug & 4) {
-        printf("DoOp: (%s/%d)(%d)(%s/%d)\n", arg1->copyof->name, arg1->width, op, arg2->copyof->name, arg2->width);
-        printf("DoOp types: (%x)(%d)(%x)\n", arg1->type, op, arg2->type);
-    }
-
-// TODO: need to intercept cases where type is not defined
-
-    /*
-     * First pickoff the real operation for assignment operators
-     */
-    switch(op) {
-    case PLUSEQUAL:		op = EQUAL; realop = ADD; break;
-    case MINUSEQUAL:            op = EQUAL; realop = SUB; break;
-    case SHIFTRIGHTEQUAL:       op = EQUAL; realop = SHIFTRIGHT; break;
-    case SHIFTLEFTEQUAL:        op = EQUAL; realop = SHIFTLEFT; break;
-    case ANDEQUAL:              op = EQUAL; realop = AND; break;
-    case XOREQUAL:              op = EQUAL; realop = XOR; break;
-    case OREQUAL:               op = EQUAL; realop = OR; break;
-    case MULTIPLYEQUAL:         op = EQUAL; realop = MULTIPLY; break;
-    case DIVIDEEQUAL:           op = EQUAL; realop = DIVIDE; break;
-    case REMAINDEREQUAL:        op = EQUAL; realop = REMAINDER; break;
-    }
-
-    /*
-     * If the left side is floating point, then promote the right side now
-     */
-    if((arg1->type & TYPE_FLOAT) && (arg2->type & TYPE_INTEGER)) {
-        switch(op) {
-        case ADD:
-        case SUB:
-        case UNARYMINUS:
-        case MULTIPLY:
-        case DIVIDE:
-                        if(arg2->width < (32-9))
-                            func = "fpgac_int2float";
-                        else if(arg2->width < (64-11))
-                            func = "fpgac_int2double";
-                        else
-                            func = "fpgac_int2longdouble";
-
-                        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
-                        arg2 = IFuncOneArg(temp, arg2);
-                        break;
-        }
-    }
-
-    /*
-     * if an assignment operator, use recurrion to process the
-     * real operation, then perform the requested assignment.
-     */
-    if(realop) {
-        arg2 = DoOp(realop, arg1, arg2);
-	if(arg1->type & TYPE_INTEGER) return(assignmentstmt(arg1, arg2));
-
-// TODO: other types of variables need a solution/strategy here.
-// basically need an assignmentstmt function that doesn't diddle with width
-        return(intconstant(0LL));
-
-    }
-
-    if(op == EQUAL) {
-	if(arg1->type & TYPE_INTEGER) {
-            arg1->assigned = 1;
-            return(assignmentstmt(arg1, arg2));
-	}
-    }
-
-    if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_FLOAT)) {
-        switch(op) {
-        case ADD:
-        case SUB:
-        case UNARYMINUS:
-        case MULTIPLY:
-        case DIVIDE:		
-                        if(arg1->width < (32-9))
-                            func = "fpgac_int2float";
-                        else if(arg1->width < (64-11))
-                            func = "fpgac_int2double";
-                        else
-                            func = "fpgac_int2longdouble";
-
-                        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
-                        arg1 = IFuncOneArg(temp, arg1);
-                        break;
-        }
-    }
-
-// TODO: we need relationals for FP vars too.
-
-    if((arg1->type & TYPE_FLOAT) && (arg2->type & TYPE_FLOAT)) {
-        int left, right;
-
-	if(arg1->width <= 32) left = 32;
-	else if(arg1->width <= 64) left = 64;
-        else left = 128;
-
-	if(arg2->width <= 32) right = 32;
-	else if(arg2->width <= 64) right = 64;
-        else right = 128;
-
-        if(left > right) {
-            if(left == 64) func = "fpgac_float2double";
-            else if(left == 128 && right == 32) func = "fpgac_float2longdouble";
-            else func = "fpgac_double2longdouble";
-
-            temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
-            arg2 = IFuncOneArg(temp, arg2);
-            right = left;
-        }
-
-        if(left < right) {
-            if(right == 64) func = "fpgac_float2double";
-            else if(right == 128 && left == 32) func = "fpgac_float2longdouble";
-            else func = "fpgac_double2longdouble";
-
-            temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
-            arg1 = IFuncOneArg(temp, arg1);
-            left = right;
-        }
-
-        if(left == 32)switch(op) {
-        case ADD:		func = "fpgac_fp_add_float"; break;
-        case SUB:		func = "fpgac_fp_sub_float"; break;
-        case UNARYMINUS:	func = "fpgac_fp_sub_float"; break;
-        case MULTIPLY:		func = "fpgac_fp_mult_float"; break;
-        case DIVIDE:		func = "fpgac_fp_div_float"; break;
-        default:		func = "fpgac_nan_float"; break;
-        }
-        else if(left == 64) switch(op) {
-        case ADD:		func = "fpgac_fp_add_double"; break;
-        case SUB:		func = "fpgac_fp_sub_double"; break;
-        case UNARYMINUS:	func = "fpgac_fp_sub_double"; break;
-        case MULTIPLY:		func = "fpgac_fp_mult_double"; break;
-        case DIVIDE:		func = "fpgac_fp_div_double"; break;
-        default:		func = "fpgac_nan_double"; break;
-        }
-        else switch(op) {
-        case ADD:		func = "fpgac_fp_add_longdouble"; break;
-        case SUB:		func = "fpgac_fp_sub_longdouble"; break;
-        case UNARYMINUS:	func = "fpgac_fp_sub_longdouble"; break;
-        case MULTIPLY:		func = "fpgac_fp_mult_longdouble"; break;
-        case DIVIDE:		func = "fpgac_fp_div_longdouble"; break;
-        default:		func = "fpgac_nan_longdouble"; break;
-        }
-
-        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
-        return(IFuncTwoArgs(temp, arg1, arg2));
-    }
-
-// TODO: both twoop and twoopexpn were being used, which is correct?
-
-    if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_INTEGER)) {
-
-        // if both constants, return a constant for the expression
-        if((arg1->flags & SYM_LITERAL) && (arg2->flags & SYM_LITERAL)) 
-            switch(op) {
-            case ADD:		return(intconstant(arg1->value + arg2->value));
-            case SUB:		return(intconstant(arg1->value - arg2->value));
-            case UNARYMINUS:	return(intconstant(0LL-arg1->value));
-            case MULTIPLY:	return(intconstant(arg1->value * arg2->value));
-            case DIVIDE:	return(intconstant(arg1->value / arg2->value));
-            case REMAINDER:	return(intconstant(arg1->value % arg2->value));
-
-            case TILDE:		return(intconstant(~arg1->value));
-            case NOT:		return(intconstant(!(arg1->value)));
-            case AND:		return(intconstant(arg1->value & arg2->value));
-            case OR:		return(intconstant(arg1->value | arg2->value));
-            case XOR:		return(intconstant(arg1->value ^ arg2->value));
-
-            case SHIFTRIGHT:	return(intconstant(arg1->value >> arg2->value));
-            case SHIFTLEFT:	return(intconstant(arg1->value << arg2->value));
-
-            case EQUALEQUAL:	return(intconstant((long long)(arg1->value == arg2->value)));
-            case NOTEQUAL:	return(intconstant((long long)(arg1->value != arg2->value)));
-            case GREATER:	return(intconstant((long long)(arg1->value > arg2->value)));
-            case GREATEROREQUAL:return(intconstant((long long)(arg1->value >= arg2->value)));
-            case LESSTHAN:      return(intconstant((long long)(arg1->value < arg2->value)));
-            case LESSTHANOREQUAL:return(intconstant((long long)(arg1->value <= arg2->value)));
- 
-            case ANDAND:	return(intconstant((long long)(arg1->value && arg2->value)));
-            case OROR:		return(intconstant((long long)(arg1->value || arg2->value)));
-
-            default:
-                                ;
-            }
-
-        switch(op) {
-        case ADD:		return(add(arg1,arg2));
-        case SUB:		return(sub(arg1,arg2));
-        case UNARYMINUS:	return(sub(arg1,arg2));
-        case MULTIPLY:		func = "fpgac_multiply"; break;
-        case DIVIDE:		func = "fpgac_divide"; break;
-        case REMAINDER:		func = "fpgac_remainder"; break;
-
-        case TILDE:		return(complement(arg1));
-        case NOT:		return(complement(nonzero(arg1)));
-        case AND:		return(twoopexpn(arg1,arg2,and));
-        case OR:		return(twoopexpn(arg1,arg2,or));
-        case XOR:		return(twoopexpn(arg1,arg2,xor));
-
-        case SHIFTRIGHT:	return(shiftbyvar(arg1,arg2,0));
-        case SHIFTLEFT:		return(shiftbyvar(arg1,arg2,1));
-
-        case EQUALEQUAL:	return(equals(arg1,arg2));
-        case NOTEQUAL:		return(complement(equals(arg1,arg2)));
-        case GREATER:		temp = sub(arg1, arg2);
-                                return(twoop(complement(topbit(temp)), nonzero(temp), and));
-        case GREATEROREQUAL:	return(complement(topbit(sub(arg1,arg2))));
-        case LESSTHAN:          return(topbit(sub(arg1, arg2)));
-        case LESSTHANOREQUAL:   temp = sub(arg1, arg2);
-                                return(twoop(topbit(temp), complement(nonzero(temp)), or));
- 
-        case ANDAND:		return(twoopexpn(nonzero(arg1),nonzero(arg2),and));
-        case OROR:		return(twoopexpn(nonzero(arg1),nonzero(arg2),or));
-
-        default:
-                                ;
-        }
-
-// TODO: mult/div/mod will fall out here, but we need to match widths unless all are long long promoted
-// need to think about best sizes for retval and args.
-
-        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
-        return(IFuncTwoArgs(temp, arg1, arg2));
-    }
-
-    return(intconstant(0LL));
-}
 
 %}
 
@@ -3344,14 +3180,7 @@ DoOp(int op, struct variable *arg1, struct variable *arg2) {
 
 program:	sourcefile
 		{
-		    if(nerrors > 0)
-		        return;
-		    makeffinputs();
-		    if(use_dupcheck)
-		        checkforduplicates();
-		    checkundefined();
-		    output();
-                    if(debug) debugoutput();
+		   return; // back to main()
 		}
 
 sourcefile:	/* empty */
@@ -3505,7 +3334,7 @@ parameterdeclarations:	/* empty */
 
 parameterdeclaration:	 typename paramdeclist SEMICOLON
 
-		| pragma
+		| fpgac_pragma
 
 paramdeclist:	oldidentifier
 		{
@@ -3535,7 +3364,7 @@ globaldeclaration:	optionaltype globalvarlist SEMICOLON
 
 		| enumdecl
 
-		| pragma
+		| fpgac_pragma
 
 declaration:	 typename varlist SEMICOLON
 
@@ -3543,7 +3372,7 @@ declaration:	 typename varlist SEMICOLON
 
 		| enumdecl
 
-		| pragma
+		| fpgac_pragma
 
 		/*
 		 * An enum_list is stored in the members field during parsing for future use.
@@ -3726,7 +3555,7 @@ struct_declaration:	 typename varlistw SEMICOLON
 
 		| enumdecl
 
-		| pragma
+		| fpgac_pragma
 
 struct_members: struct_declaration
 
@@ -3959,31 +3788,31 @@ globalvarlistmember: newidentifier
 		        error2("parameters not supported in function type specification of", $1.v->name);
 		}
 
-pragma:           INTBITS INTEGER
+fpgac_pragma:     PRAGMA FPGAC FPGAC_INTBITS INTEGER
                 { DefaultIntWidth = atoi($2.s); }
 
-		| CHARBITS INTEGER
+		| PRAGMA FPGAC FPGAC_CHARBITS INTEGER
                 { DefaultCharWidth = atoi($2.s); }
 
-		| SHORTBITS INTEGER
+		| PRAGMA FPGAC FPGAC_SHORTBITS INTEGER
                 { DefaultShortWidth = atoi($2.s); }
 
-		| LONGBITS INTEGER
+		| PRAGMA FPGAC FPGAC_LONGBITS INTEGER
                 { DefaultLongWidth = atoi($2.s); }
 
-		| LONGLONGBITS INTEGER
+		| PRAGMA FPGAC FPGAC_LONGLONGBITS INTEGER
                 { DefaultLongLongWidth = atoi($2.s); }
 
-		| FLOATBITS INTEGER
+		| PRAGMA FPGAC FPGAC_FLOATBITS INTEGER
                 { DefaultFloatWidth = atoi($2.s); }
 
-		| DOUBLEBITS INTEGER
+		| PRAGMA FPGAC FPGAC_DOUBLEBITS INTEGER
                 { DefaultDoubleWidth = atoi($2.s); }
 
-		| LONGDOUBLEBITS INTEGER
+		| PRAGMA FPGAC FPGAC_LONGDOUBLEBITS INTEGER
                 { DefaultLongDoubleWidth = atoi($2.s); }
 
-                | CLOCK
+                | PRAGMA FPGAC FPGAC_CLOCK
 		{
 		    currentwidth = 1;
 		}
@@ -3991,12 +3820,16 @@ pragma:           INTBITS INTEGER
                 {
 //		    inputport($4.v, $5.v->junk);              TODO: this is broken
 		    $4.v->bits->bit->flags |= SYM_CLOCK;
-                    clockname = $4.v->bits->bit->name+1;
+                    clockname = $4.v->bits->bit->name;
 		}
 
 stmts:		/* empty */
 
 		| stmts stmt
+
+		| stmts omp_directive
+
+		| stmts leftcurly declarations stmts rightcurly
 
 stmt:	SEMICOLON
 
@@ -4016,7 +3849,7 @@ stmt:	SEMICOLON
 
 		| expn SEMICOLON
 
-		| leftcurly declarations stmts rightcurly
+		| omp_construct
 
 		/*
 		 * Since each statement block defined between "{" and "}" may have local
@@ -4090,6 +3923,69 @@ pinlist:	/* Empty */
 		    temp->bits->bit->pin = $3.s;
 		    addtovlistwithduplicates(&$$.v->junk, temp);
 		}
+
+omp_construct:    omp_parallel
+
+		| omp_for
+
+		| omp_sections
+
+		| omp_single
+
+		| omp_parallel_for
+
+		| omp_parallel_sections
+
+		| omp_task
+
+		| omp_master
+
+		| omp_critical
+
+		| omp_atomic
+
+		| omp_ordered
+
+omp_directive:    omp_barrier
+
+		| omp_taskwait
+
+		| omp_taskyield
+
+		| omp_flush
+
+omp_parallel:   PRAGMA OMP OMP_PARALLEL
+
+omp_for:	PRAGMA OMP OMP_FOR
+
+omp_sections:	PRAGMA OMP OMP_SECTIONS
+
+omp_single:	PRAGMA OMP OMP_SINGLE
+
+omp_parallel_for:
+		PRAGMA OMP OMP_PARALLEL_FOR
+
+omp_parallel_sections:
+		PRAGMA OMP OMP_PARALLEL_SECTIONS
+
+omp_task:	PRAGMA OMP OMP_TASK
+
+omp_master:	PRAGMA OMP OMP_MASTER
+
+omp_critical:	PRAGMA OMP OMP_CRITICAL
+
+omp_atomic:	PRAGMA OMP OMP_ATOMIC
+
+omp_ordered:	PRAGMA OMP OMP_ORDERED
+
+omp_barrier:	PRAGMA OMP OMP_BARRIER
+
+omp_taskwait:	PRAGMA OMP OMP_TASKWAIT
+
+omp_taskyield:	PRAGMA OMP OMP_TASKYIELD
+
+omp_flush:	PRAGMA OMP OMP_FLUSH
+
 
 ifstmt:	ifhead stmt
 		{
@@ -4585,7 +4481,7 @@ precedence_13:	precedence_12				// 13 L<--R ? :
 //constant_expn:	precedence_13			 // reference using    (int)($2.v->value)
 //		{
 //		    if(!($$.v->flags & SYM_LITERAL))
-//		        error2("must be a constant expression:", $$.v->name+1);
+//		        error2("must be a constant expression:", $$.v->name);
 //		}
 
 precedence_14:	precedence_13				// 14 L<--R = += -= *= /= %= &= ^= |= <<= >>=
@@ -4657,7 +4553,7 @@ functioncall:	funcidentifier LEFTPAREN argumentlist RIGHTPAREN
 		    struct varlist **vlp;
 
 		    if(($1.v->type & TYPE_DEFINED) && ($1.v->type & TYPE_PROCESS)) 
-		        error2("Process functions may not be called:", $1.v->name+1);
+		        error2("Process functions may not be called:", $1.v->name);
 
 		    makefunction($1.v, $1.v->width);
 
@@ -4745,9 +4641,9 @@ lhsidentifier:	IDENTIFIER
 		{
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
-			error2("Structure assignments are not supported:", $1.v->name+1);
+			error2("Structure assignments are not supported:", $1.v->name);
 		    else if(($$.v->type & TYPE_DEFINED) && ($$.v->type & TYPE_CONST))
-			error2("Assignments to constant variables are not supported:", $1.v->name+1);
+			error2("Assignments to constant variables are not supported:", $1.v->name);
 		    else if($$.v->type & TYPE_VOLATILE) IOWrite($$.v);
 		}
 
@@ -4755,11 +4651,11 @@ lhsidentifier:	IDENTIFIER
                 {
                     $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
-		        error2("Structure arrays are not supported:", $1.v->name+1);
+		        error2("Structure arrays are not supported:", $1.v->name);
 		    else if($$.v->type & TYPE_VOLATILE)
-		        error2("IO Port arrays are not supported:", $1.v->name+1);
+		        error2("IO Port arrays are not supported:", $1.v->name);
 		    else if(($$.v->type & TYPE_DEFINED) && ($$.v->type & TYPE_CONST))
-			error2("Assignments to constant variables are not supported:", $1.v->name+1);
+			error2("Assignments to constant variables are not supported:", $1.v->name);
 		    else ArrayAssignment($$.v, $3.v);
                 }
 
@@ -4767,7 +4663,7 @@ lhsidentifier:	IDENTIFIER
                 {
 		    $$ = $1;
 		    if($1.v->members)
-		        error2("Structure assignments are not supported:", $1.v->copyof->name+1);
+		        error2("Structure assignments are not supported:", $1.v->copyof->name);
 		    else if($$.v->type & TYPE_VOLATILE) IOWrite($$.v);
 		}
 
@@ -4775,14 +4671,14 @@ oldidentifier:	IDENTIFIER
 		{
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
-		        error2("Structure references not supported:", $1.v->name+1);
+		        error2("Structure references not supported:", $1.v->name);
 		}
 
 		| IDENTIFIER LEFTBRACE expn RIGHTBRACE
 		{
 		    $$.v = findvariable($1.s, MUSTEXIST, currentwidth, ScopeStack->scope, CurrentDeclarationScope);
 		    if($$.v->members)
-		        error2("Structure arrays are not supported:", $1.v->name+1);
+		        error2("Structure arrays are not supported:", $1.v->name);
 		    $$.v = ArrayReference($$.v, $3.v);
 		}
 
@@ -4790,7 +4686,7 @@ oldidentifier:	IDENTIFIER
                 {
 		    $$ = $1;
 		    if($1.v->members)
-		        error2("Structure references not supported:", $1.v->copyof->name+1);
+		        error2("Structure references not supported:", $1.v->copyof->name);
 		}
 
 
@@ -4846,11 +4742,11 @@ newidentifierw:	IDENTIFIER COLON INTEGER
 		| EQUAL STRING
                 {
 		    if(CurrentVar->arraysize && strlen($2.s) > CurrentVar->arraysize) {
-		        error2("String initializer larger than declaration size:", CurrentVar->name+1);
+		        error2("String initializer larger than declaration size:", CurrentVar->name);
 		        CurrentVar->arraysize = strlen($2.s);
 		    }
 		    if(CurrentVar->width != 8) {
-		        error2("String initializer requires width 8:", CurrentVar->name+1);
+		        error2("String initializer requires width 8:", CurrentVar->name);
 		    }
 		    if(!CurrentVar->arraysize)
 		        CurrentVar->arraysize = strlen($2.s);
@@ -4928,7 +4824,8 @@ char *get_designname(void) {
             len = BUFSIZ;
         strncpy(buf, basename(inputfilename), len);  // strlen(basename) is smaller
     }
-    buf[len - 1] = '\0';
+//  buf[len - 1] = '\0';
+    buf[len] = '\0';
     {
       char *cp = strchr(buf, '.');
       if (cp != NULL)
@@ -4937,4 +4834,257 @@ char *get_designname(void) {
     }
 
     return (buf);
+}
+
+/*
+ * As soon as we introduce more than one real type into FpgaC, then
+ * promotion between types becomes an issue. In the initial versions
+ * of FpgaC we had a single type, and that was signed integers of
+ * variable size, so not even the difference between short, long and
+ * long long was a serious issue. That is until we introduced the
+ * concept of intrinsic functions for mult, div, and mod where both
+ * formal args and return value need to have a reasonable width.
+ *
+ * This promotion problem with intrinsic functions is compound by
+ * needing a conversion matrix of type by width.
+ *
+ * DoOp attempts to address this problem, by moving the common
+ * code for all operators into a common setup function so that width
+ * and type promotion can be uniformly addressed in a single code
+ * body.  -- John Bass, Feb 2006
+ */
+
+struct variable *
+DoOp(int op, struct variable *arg1, struct variable *arg2) {
+    int realop = 0;
+    char *func;
+    struct variable *temp;
+
+    if(debug & 4) {
+        printf("DoOp: (%s/%d)(%d)(%s/%d)\n", arg1->copyof->name, arg1->width, op, arg2->copyof->name, arg2->width);
+        printf("DoOp types: (%x)(%d)(%x)\n", arg1->type, op, arg2->type);
+    }
+
+// TODO: need to intercept cases where type is not defined
+
+    /*
+     * First pickoff the real operation for assignment operators
+     */
+    switch(op) {
+    case PLUSEQUAL:		op = EQUAL; realop = ADD; break;
+    case MINUSEQUAL:            op = EQUAL; realop = SUB; break;
+    case SHIFTRIGHTEQUAL:       op = EQUAL; realop = SHIFTRIGHT; break;
+    case SHIFTLEFTEQUAL:        op = EQUAL; realop = SHIFTLEFT; break;
+    case ANDEQUAL:              op = EQUAL; realop = AND; break;
+    case XOREQUAL:              op = EQUAL; realop = XOR; break;
+    case OREQUAL:               op = EQUAL; realop = OR; break;
+    case MULTIPLYEQUAL:         op = EQUAL; realop = MULTIPLY; break;
+    case DIVIDEEQUAL:           op = EQUAL; realop = DIVIDE; break;
+    case REMAINDEREQUAL:        op = EQUAL; realop = REMAINDER; break;
+    }
+
+    /*
+     * If the left side is floating point, then promote the right side now
+     */
+    if((arg1->type & TYPE_FLOAT) && (arg2->type & TYPE_INTEGER)) {
+        switch(op) {
+        case ADD:
+        case SUB:
+        case UNARYMINUS:
+        case MULTIPLY:
+        case DIVIDE:
+                        if(arg2->width < (32-9))
+                            func = "fpgac_int2float";
+                        else if(arg2->width < (64-11))
+                            func = "fpgac_int2double";
+                        else
+                            func = "fpgac_int2longdouble";
+
+                        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+                        arg2 = IFuncOneArg(temp, arg2);
+                        break;
+        }
+    }
+
+    /*
+     * if an assignment operator, use recurrion to process the
+     * real operation, then perform the requested assignment.
+     */
+    if(realop) {
+        arg2 = DoOp(realop, arg1, arg2);
+	if(arg1->type & TYPE_INTEGER) return(assignmentstmt(arg1, arg2));
+
+// TODO: other types of variables need a solution/strategy here.
+// basically need an assignmentstmt function that doesn't diddle with width
+        return(intconstant(0LL));
+
+    }
+
+    if(op == EQUAL) {
+	if(arg1->type & TYPE_INTEGER) {
+            arg1->assigned = 1;
+            return(assignmentstmt(arg1, arg2));
+	}
+    }
+
+    if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_FLOAT)) {
+        switch(op) {
+        case ADD:
+        case SUB:
+        case UNARYMINUS:
+        case MULTIPLY:
+        case DIVIDE:		
+                        if(arg1->width < (32-9))
+                            func = "fpgac_int2float";
+                        else if(arg1->width < (64-11))
+                            func = "fpgac_int2double";
+                        else
+                            func = "fpgac_int2longdouble";
+
+                        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+                        arg1 = IFuncOneArg(temp, arg1);
+                        break;
+        }
+    }
+
+// TODO: we need relationals for FP vars too.
+
+    if((arg1->type & TYPE_FLOAT) && (arg2->type & TYPE_FLOAT)) {
+        int left, right;
+
+	if(arg1->width <= 32) left = 32;
+	else if(arg1->width <= 64) left = 64;
+        else left = 128;
+
+	if(arg2->width <= 32) right = 32;
+	else if(arg2->width <= 64) right = 64;
+        else right = 128;
+
+        if(left > right) {
+            if(left == 64) func = "fpgac_float2double";
+            else if(left == 128 && right == 32) func = "fpgac_float2longdouble";
+            else func = "fpgac_double2longdouble";
+
+            temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+            arg2 = IFuncOneArg(temp, arg2);
+            right = left;
+        }
+
+        if(left < right) {
+            if(right == 64) func = "fpgac_float2double";
+            else if(right == 128 && left == 32) func = "fpgac_float2longdouble";
+            else func = "fpgac_double2longdouble";
+
+            temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+            arg1 = IFuncOneArg(temp, arg1);
+            left = right;
+        }
+
+        if(left == 32)switch(op) {
+        case ADD:		func = "fpgac_fp_add_float"; break;
+        case SUB:		func = "fpgac_fp_sub_float"; break;
+        case UNARYMINUS:	func = "fpgac_fp_sub_float"; break;
+        case MULTIPLY:		func = "fpgac_fp_mult_float"; break;
+        case DIVIDE:		func = "fpgac_fp_div_float"; break;
+        default:		func = "fpgac_nan_float"; break;
+        }
+        else if(left == 64) switch(op) {
+        case ADD:		func = "fpgac_fp_add_double"; break;
+        case SUB:		func = "fpgac_fp_sub_double"; break;
+        case UNARYMINUS:	func = "fpgac_fp_sub_double"; break;
+        case MULTIPLY:		func = "fpgac_fp_mult_double"; break;
+        case DIVIDE:		func = "fpgac_fp_div_double"; break;
+        default:		func = "fpgac_nan_double"; break;
+        }
+        else switch(op) {
+        case ADD:		func = "fpgac_fp_add_longdouble"; break;
+        case SUB:		func = "fpgac_fp_sub_longdouble"; break;
+        case UNARYMINUS:	func = "fpgac_fp_sub_longdouble"; break;
+        case MULTIPLY:		func = "fpgac_fp_mult_longdouble"; break;
+        case DIVIDE:		func = "fpgac_fp_div_longdouble"; break;
+        default:		func = "fpgac_nan_longdouble"; break;
+        }
+
+        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+        return(IFuncTwoArgs(temp, arg1, arg2));
+    }
+
+// TODO: both twoop and twoopexpn were being used, which is correct?
+
+    if((arg1->type & TYPE_INTEGER) && (arg2->type & TYPE_INTEGER)) {
+
+        // if both constants, return a constant for the expression
+        if((arg1->flags & SYM_LITERAL) && (arg2->flags & SYM_LITERAL)) 
+            switch(op) {
+            case ADD:		return(intconstant(arg1->value + arg2->value));
+            case SUB:		return(intconstant(arg1->value - arg2->value));
+            case UNARYMINUS:	return(intconstant(0LL-arg1->value));
+            case MULTIPLY:	return(intconstant(arg1->value * arg2->value));
+            case DIVIDE:	return(intconstant(arg1->value / arg2->value));
+            case REMAINDER:	return(intconstant(arg1->value % arg2->value));
+
+            case TILDE:		return(intconstant(~arg1->value));
+            case NOT:		return(intconstant(!(arg1->value)));
+            case AND:		return(intconstant(arg1->value & arg2->value));
+            case OR:		return(intconstant(arg1->value | arg2->value));
+            case XOR:		return(intconstant(arg1->value ^ arg2->value));
+
+            case SHIFTRIGHT:	return(intconstant(arg1->value >> arg2->value));
+            case SHIFTLEFT:	return(intconstant(arg1->value << arg2->value));
+
+            case EQUALEQUAL:	return(intconstant((long long)(arg1->value == arg2->value)));
+            case NOTEQUAL:	return(intconstant((long long)(arg1->value != arg2->value)));
+            case GREATER:	return(intconstant((long long)(arg1->value > arg2->value)));
+            case GREATEROREQUAL:return(intconstant((long long)(arg1->value >= arg2->value)));
+            case LESSTHAN:      return(intconstant((long long)(arg1->value < arg2->value)));
+            case LESSTHANOREQUAL:return(intconstant((long long)(arg1->value <= arg2->value)));
+ 
+            case ANDAND:	return(intconstant((long long)(arg1->value && arg2->value)));
+            case OROR:		return(intconstant((long long)(arg1->value || arg2->value)));
+
+            default:
+                                ;
+            }
+
+        switch(op) {
+        case ADD:		return(add(arg1,arg2));
+        case SUB:		return(sub(arg1,arg2));
+        case UNARYMINUS:	return(sub(arg1,arg2));
+        case MULTIPLY:		func = "fpgac_multiply"; break;
+        case DIVIDE:		func = "fpgac_divide"; break;
+        case REMAINDER:		func = "fpgac_remainder"; break;
+
+        case TILDE:		return(complement(arg1));
+        case NOT:		return(complement(nonzero(arg1)));
+        case AND:		return(twoopexpn(arg1,arg2,and));
+        case OR:		return(twoopexpn(arg1,arg2,or));
+        case XOR:		return(twoopexpn(arg1,arg2,xor));
+
+        case SHIFTRIGHT:	return(shiftbyvar(arg1,arg2,0));
+        case SHIFTLEFT:		return(shiftbyvar(arg1,arg2,1));
+
+        case EQUALEQUAL:	return(equals(arg1,arg2));
+        case NOTEQUAL:		return(complement(equals(arg1,arg2)));
+        case GREATER:		temp = sub(arg1, arg2);
+                                return(twoop(complement(topbit(temp)), nonzero(temp), and));
+        case GREATEROREQUAL:	return(complement(topbit(sub(arg1,arg2))));
+        case LESSTHAN:          return(topbit(sub(arg1, arg2)));
+        case LESSTHANOREQUAL:   temp = sub(arg1, arg2);
+                                return(twoop(topbit(temp), complement(nonzero(temp)), or));
+ 
+        case ANDAND:		return(twoopexpn(nonzero(arg1),nonzero(arg2),and));
+        case OROR:		return(twoopexpn(nonzero(arg1),nonzero(arg2),or));
+
+        default:
+                                ;
+        }
+
+// TODO: mult/div/mod will fall out here, but we need to match widths unless all are long long promoted
+// need to think about best sizes for retval and args.
+
+        temp = findvariable(func, MAYEXIST, 0, &DeclarationScopeStack, CurrentDeclarationScope);
+        return(IFuncTwoArgs(temp, arg1, arg2));
+    }
+
+    return(intconstant(0LL));
 }

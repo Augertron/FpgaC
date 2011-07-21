@@ -225,15 +225,15 @@ char *bitname();
 /* Structure for terms that is used in minimize_lut.c and output_xilinx.c */
    
 typedef struct {
-    unsigned char value;	/* Bits that make up this term */
-    unsigned char dc;		/* Don't care mask for above */
-    unsigned char covered;	/* this term is covered by a simpler one */
+    unsigned int value;	/* Bits that make up this term */
+    unsigned int dc;		/* Don't care mask for above */
+    unsigned int covered;	/* this term is covered by a simpler one */
 } QMtab;
 
-//#define QMtabSize (1024*8*128)
-//#define MAXPRI     14
-#define QMtabSize (1024*64)
+#define QMtabSize (1024*8)
 #define MAXPRI     4
+//#define QMtabSize (1024*8)
+//#define MAXPRI     4
 
 #define IGNORE_FORLOOP 1
 

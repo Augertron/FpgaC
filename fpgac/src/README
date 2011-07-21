@@ -50,17 +50,22 @@ There are lots of things that could be done to improve fpgac:
 
 - More comments.
 
-- Improve the generated circuits:
+- Improve the generated circuits by using macro blocks for adders, memory, etc
 
-	- Use logic synthesis techniques.  Perhaps pass small bits of
-	  the circuit to sis or Exemplar's fpga program.
+- Use logic synthesis techniques.  Perhaps pass small bits of
+  the circuit to sis or Exemplar's fpga program.
 
 - Speed up the compiler, and reduce its RAM requirements.
 
-- Extend the language to handle more of C.  Tell the compiler how to 
-	access the RAM in a target FPGA based system, so that it can
-	implement pointers.
+- Extend the language to handle more of C.
 
-- Fix/Update Altera support - need an Altera specific Maintainer for project
+- Tell the compiler how to access the RAM in a target FPGA based system,
+  so that it can implement pointers.
 
-- Fix/Update VHDL support - need an VHDL specific Maintainer for project
+- Extend the language to handle openMP parallelism constructs efficiently
+
+- Fix/Update broken Altera support - need an Altera specific Maintainer for project
+
+- Fix/Update broken VHDL support - need an VHDL specific Maintainer for project
+
+- Add EDIF output support.

@@ -21,7 +21,7 @@ YLIBS = -lfl
 # YLIBS= -ly -ll
 
 OBJ= fpgac.o adders.o output_xilinx.o output_netlist.o minimize_lut.o syntax.o output_vhdl.o \
-	output_altera_vqm.o
+	output_altera_vqm.o output_edif.o
 
 fpgac.compiler:	$(OBJ)
 	$(CC) $(CFLAGS) -o fpgac.compiler $(OBJ) $(YLIBS)
@@ -33,7 +33,7 @@ syntax.o:	lex.yy.c
 	$(CC) -c $(CFLAGS) -o syntax.o lex.yy.c
 
 $(OBJ):	names.h
-output_xilinx.o fpgac.o:	outputvars.h
+output_xilinx.o output_netlist.o output_edif.o fpgac.o:	outputvars.h
 
 fpgac.sh:	fpgac.skel makefile
 	sed 's"LIB_defined_in_the_makefile"$(LIB)"' fpgac.skel > fpgac.sh

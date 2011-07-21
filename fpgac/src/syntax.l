@@ -58,6 +58,9 @@ static int replaystarting;
 int number_br = 0;           // to get the last closing brace in the for loop
 int ignore_tokens = 0;       // To check if the token has to eb ignored
 int ignore_token_type =0;    // only FOR loop for now
+int pragma = 0;
+int fpgac = 0;
+int omp = 0;
 
 YY_BUFFER_STATE include_stack[2];
 
@@ -117,6 +120,20 @@ newtoken(int t) {
     else
         return(t);
 }
+
+mk_identifier()
+{
+    char *buf;
+
+    if((buf = (char *) malloc(strlen(yytext)+2)) == (char *) NULL) {
+	fprintf(stderr, "fpgac: malloc returned NULL\n");
+	exit(1);
+    }
+    sprintf(buf, "%s", yytext);
+    yylval.s = buf;
+    return(newtoken(IDENTIFIER));
+}
+
 
 saveinput() {
 
@@ -322,10 +339,6 @@ float				return(newtoken(FLOAT));
 
 double				return(newtoken(DOUBLE));
 
-static				return(newtoken(STATIC));
-
-auto				return(newtoken(AUTO));
-
 register			return(newtoken(REGISTER));
 
 extern				return(newtoken(EXTERN));
@@ -346,49 +359,144 @@ union                           return(newtoken(UNION));
 
 typedef                         return(newtoken(TYPEDEF));
 
-if				return(newtoken(IF));
-
 else				return(newtoken(ELSE));
 
 switch                          return(newtoken(SWITCH));
 
 case                            return(newtoken(CASE));
 
-default                         return(newtoken(DEFAULT));
-
 do				return(newtoken(DO));
 
 while				return(newtoken(WHILE));
-
-for				return(newtoken(FOR));
 
 break				return(newtoken(BREAK));
 
 return				return(newtoken(RETURN));
 
-^#[ \t]*pragma[ \t]*fpgac_clock		return(newtoken(CLOCK));
 
-^#[ \t]*pragma[ \t]*fpgac_charbits	return(newtoken(CHARBITS));
 
-^#[ \t]*pragma[ \t]*fpgac_intbits	return(newtoken(INTBITS));
+auto				{ if (omp) return(newtoken(OMP_AUTO));                else return(newtoken(AUTO)); }
 
-^#[ \t]*pragma[ \t]*fpgac_shortbits	return(newtoken(SHORTBITS));
+default                         { if (omp) return(newtoken(OMP_DEFAULT));             else return(newtoken(DEFAULT)); }
 
-^#[ \t]*pragma[ \t]*fpgac_longbits	return(newtoken(LONGBITS));
+for				{ if (omp) return(newtoken(OMP_FOR));                 else return(newtoken(FOR)); }
 
-^#[ \t]*pragma[ \t]*fpgac_longlongbits	return(newtoken(LONGLONGBITS));
+if				{ if (omp) return(newtoken(OMP_IF));                  else return(newtoken(IF)); }
 
-^#[ \t]*pragma[ \t]*fpgac_floatbits	return(newtoken(FLOATBITS));
+static				{ if (omp) return(newtoken(OMP_STATIC));              else return(newtoken(STATIC)); }
 
-^#[ \t]*pragma[ \t]*fpgac_doublebits	return(newtoken(DOUBLEBITS));
 
-^#[ \t]*pragma[ \t]*fpgac_longdoublebits	return(newtoken(LONGDOUBLEBITS));
 
-^#[ \t]+[0-9]+[ \t]+"$pragma"[ \t]+fpgac_intbits	{
+atomic				{ if (omp) return(newtoken(OMP_ATOMIC));              else return(mk_identifier()); }
+
+barrier				{ if (omp) return(newtoken(OMP_BARRIER));             else return(mk_identifier()); }
+
+capture				{ if (omp) return(newtoken(OMP_CAPTURE));             else return(mk_identifier()); }
+
+collapse			{ if (omp) return(newtoken(OMP_COLLAPSE));            else return(mk_identifier()); }
+
+copyin				{ if (omp) return(newtoken(OMP_COPYIN));              else return(mk_identifier()); }
+
+copyprivate			{ if (omp) return(newtoken(OMP_COPYPRIVATE));         else return(mk_identifier()); }
+
+critical			{ if (omp) return(newtoken(OMP_CRITICAL));            else return(mk_identifier()); }
+
+dynamic				{ if (omp) return(newtoken(OMP_DYNAMIC));             else return(mk_identifier()); }
+
+final				{ if (omp) return(newtoken(OMP_FINAL));               else return(mk_identifier()); }
+
+firstprivate			{ if (omp) return(newtoken(OMP_FIRSTPRIVATE));        else return(mk_identifier()); }
+
+flush				{ if (omp) return(newtoken(OMP_FLUSH));               else return(mk_identifier()); }
+
+guided				{ if (omp) return(newtoken(OMP_GUIDED));              else return(mk_identifier()); }
+
+lastprivate			{ if (omp) return(newtoken(OMP_LASTPRIVATE));         else return(mk_identifier()); }
+
+master				{ if (omp) return(newtoken(OMP_MASTER));              else return(mk_identifier()); }
+
+max				{ if (omp) return(newtoken(OMP_MAX));                 else return(mk_identifier()); }
+
+mergable			{ if (omp) return(newtoken(OMP_MERGABLE));            else return(mk_identifier()); }
+
+min				{ if (omp) return(newtoken(OMP_MIN));                 else return(mk_identifier()); }
+
+none				{ if (omp) return(newtoken(OMP_NONE));                else return(mk_identifier()); }
+
+nowait				{ if (omp) return(newtoken(OMP_NOWAIT));              else return(mk_identifier()); }
+
+num_threads			{ if (omp) return(newtoken(OMP_NUM_THREADS));         else return(mk_identifier()); }
+
+ordered				{ if (omp) return(newtoken(OMP_ORDERED));             else return(mk_identifier()); }
+
+parallel			{ if (omp) return(newtoken(OMP_PARALLEL));            else return(mk_identifier()); }
+
+parallel+[ \t]+for		{ if (omp) return(newtoken(OMP_PARALLEL_FOR));        else return(mk_identifier()); }
+
+parallel+[ \t]+sections		{ if (omp) return(newtoken(OMP_PARALLEL_SECTIONS));   else return(mk_identifier()); }
+
+private				{ if (omp) return(newtoken(OMP_PRIVATE));             else return(mk_identifier()); }
+
+read				{ if (omp) return(newtoken(OMP_READ));                else return(mk_identifier()); }
+
+reduction			{ if (omp) return(newtoken(OMP_REDUCTION));           else return(mk_identifier()); }
+
+runtime				{ if (omp) return(newtoken(OMP_RUNTIME));             else return(mk_identifier()); }
+
+schedule			{ if (omp) return(newtoken(OMP_SCHEDULE));            else return(mk_identifier()); }
+
+section				{ if (omp) return(newtoken(OMP_SECTION));             else return(mk_identifier()); }
+
+sections			{ if (omp) return(newtoken(OMP_SECTIONS));            else return(mk_identifier()); }
+
+shared				{ if (omp) return(newtoken(OMP_SHARED));              else return(mk_identifier()); }
+
+single				{ if (omp) return(newtoken(OMP_SINGLE));              else return(mk_identifier()); }
+
+task				{ if (omp) return(newtoken(OMP_TASK));                else return(mk_identifier()); }
+
+taskwait			{ if (omp) return(newtoken(OMP_TASKWAIT));            else return(mk_identifier()); }
+
+taskyield			{ if (omp) return(newtoken(OMP_TASKYIELD));           else return(mk_identifier()); }
+
+threadprivate			{ if (omp) return(newtoken(OMP_THREADPRIVATE));       else return(mk_identifier()); }
+
+untied				{ if (omp) return(newtoken(OMP_UNTIED));              else return(mk_identifier()); }
+
+update				{ if (omp) return(newtoken(OMP_UPDATE));              else return(mk_identifier()); }
+
+write				{ if (omp) return(newtoken(OMP_WRITE));               else return(mk_identifier()); }
+
+omp				{ if (pragma) { omp = 1; return(newtoken(OMP)); }     else return(mk_identifier()); }
+
+clock				{ if (fpgac) return(newtoken(FPGAC_CLOCK));           else return(mk_identifier()); }
+
+charbits			{ if (fpgac) return(newtoken(FPGAC_CHARBITS));        else return(mk_identifier()); }
+
+intbits				{ if (fpgac) return(newtoken(FPGAC_INTBITS));         else return(mk_identifier()); }
+
+shortbits			{ if (fpgac) return(newtoken(FPGAC_SHORTBITS));       else return(mk_identifier()); }
+
+longbits			{ if (fpgac) return(newtoken(FPGAC_LONGBITS));        else return(mk_identifier()); }
+
+longlongbits			{ if (fpgac) return(newtoken(FPGAC_LONGLONGBITS));    else return(mk_identifier()); }
+
+floatbits			{ if (fpgac) return(newtoken(FPGAC_FLOATBITS));       else return(mk_identifier()); }
+
+doublebits			{ if (fpgac) return(newtoken(FPGAC_DOUBLEBITS));      else return(mk_identifier()); }
+
+longdoublebits			{ if (fpgac) return(newtoken(FPGAC_LONGDOUBLEBITS));  else return(mk_identifier()); }
+
+fpgac				{ if (pragma) { fpgac = 1; return(newtoken(FPGAC)); } else return(mk_identifier()); }
+
+^[ \t]+#+[ \t]+"pragma"		{ pragma=1; return(newtoken(PRAGMA)); }
+
+^#[ \t]+[0-9]+[ \t]+"$pragma"	{
 				    /* DEC and SGI cpps do this to #pragma */
 				    sscanf(yytext, "# %d ", &inputlineno);
 				    inputlineno -= 2;
-				    return(newtoken(INTBITS));
+				    pragma=1;
+				    return(newtoken(PRAGMA));
 				}
 
 ^#[ \t]*[0-9]+[ \t]+\"[^\"]*\".*\n	{
@@ -495,7 +603,7 @@ return				return(newtoken(RETURN));
 
 [ \t]				; /* Skip white space */
 
-\n				{ inputlineno++; }
+\n				{if(omp){pragma=fpgac=omp=0; inputlineno++; return(newtoken(NEW_LINE));} else { pragma=fpgac=omp=0; inputlineno++;}}
 
 .				return(newtoken(ILLEGAL));
 %%
