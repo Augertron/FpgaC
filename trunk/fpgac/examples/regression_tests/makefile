@@ -1,4 +1,4 @@
-tests: loops ioports initializers enum volatile sixtyfourbit expr cond regression
+tests: loops ioports initializers enum volatile sixtyfourbit expr cond regression struct switch
 
 clean:
 	rm -f *.cnf *.xnf *.ucf test.c
@@ -94,6 +94,32 @@ cond2:	cond_2.c
 cond3:	cond_3.c
 	-fpgac -target cnf cond_3.c
 
+struct: struct1
+
+struct1: struct_1.c struct_2.c
+	cp struct_1.c test.c; fpgac -target cnf test.c; mv test.cnf struct_1.cnf
+	cp struct_2.c test.c; fpgac -target cnf test.c; mv test.cnf struct_2.cnf
+	rm -f test.c
+	-diff -c -I "^\/\/ fpgac," struct_[12].cnf
+
+
+switch: switch1 switch2 switch3 switch4 switch5
+
+switch1:	switch_1.c
+	-fpgac -target cnf switch_1.c
+
+switch2:	switch_2.c
+	-fpgac -target cnf switch_2.c
+
+switch3:	switch_3.c
+	-fpgac -target cnf switch_3.c
+
+switch4:	switch_4.c
+	-fpgac -target cnf switch_4.c
+
+switch5:	switch_5.c
+	-fpgac -target cnf switch_5.c
+
 regression:
 	-diff -c -I "^\/\/ fpgac," loops_4_for.cnf loops_4_for.cnf.ref
 	-diff -c -I "^\/\/ fpgac," loops_4_while.cnf loops_4_while.cnf.ref
@@ -120,6 +146,13 @@ regression:
 	-diff -c -I "^\/\/ fpgac," cond_1.cnf cond_1.cnf.ref
 	-diff -c -I "^\/\/ fpgac," cond_2.cnf cond_2.cnf.ref
 	-diff -c -I "^\/\/ fpgac," cond_3.cnf cond_3.cnf.ref
+	-diff -c -I "^\/\/ fpgac," struct_1.cnf struct_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," struct_2.cnf struct_2.cnf.ref
+	-diff -c -I "^\/\/ fpgac," switch_1.cnf switch_1.cnf.ref
+	-diff -c -I "^\/\/ fpgac," switch_2.cnf switch_2.cnf.ref
+	-diff -c -I "^\/\/ fpgac," switch_3.cnf switch_3.cnf.ref
+	-diff -c -I "^\/\/ fpgac," switch_4.cnf switch_4.cnf.ref
+	-diff -c -I "^\/\/ fpgac," switch_5.cnf switch_5.cnf.ref
 
 ref:  tests
 	mv loops_4_for.cnf loops_4_for.cnf.ref
@@ -147,3 +180,10 @@ ref:  tests
 	mv cond_1.cnf cond_1.cnf.ref
 	mv cond_2.cnf cond_2.cnf.ref
 	mv cond_3.cnf cond_3.cnf.ref
+	mv struct_1.cnf struct_1.cnf.ref
+	mv struct_2.cnf struct_2.cnf.ref
+	mv switch_1.cnf switch_1.cnf.ref
+	mv switch_2.cnf switch_2.cnf.ref
+	mv switch_3.cnf switch_3.cnf.ref
+	mv switch_4.cnf switch_4.cnf.ref
+	mv switch_5.cnf switch_5.cnf.ref
