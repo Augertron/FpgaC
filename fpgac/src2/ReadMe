@@ -1,0 +1,21 @@
+This is the beginnings for an FpgaC rewrite based on current C and OpenMP standards.
+
+I think we have reached the limits of the original FpgaC architecture and implementation.
+It had been a great starting point to learn about the design issues for creating a
+standards compliant C subset to FPGA netlist compiler. There is a lot more to learn,
+during this rewrite, about efficiently creating a compiler and runtime model that will
+execute C based algorithms at near optimal speeds in FPGA logic.
+
+Research to be done during this rewrite is to explore other internal representations,
+logic engines, FPGA mapping algorithms, and multiple execution threads that do not have
+the limitations of the state machine sequencier and Boolean Truth Table design that was
+inherited from the TMCC design. Part of the goal here is to allow interfacing to other
+research projects which have been doing FPGA optimization and mapping, as new backends
+for FpgaC.
+
+While the FpgaC project has largely been my own personal research for the last 10 years,
+others are more than welcome to contribute at any level.
+
+Have fun,
+John Bass
+DMS Design
