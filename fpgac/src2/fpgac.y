@@ -1,14 +1,20 @@
 /*
- * Initial Grammar for an FpgaC re-write is taken directly from a combination
- * of the current standards draft for C1X and from the recient OpenMP 3.0
- * standard documents which we morph into Lex/Yacc syntax, and add productions
- * to forming the front end of a new C1X/OpenMP3 compiler subset.
+ * Initial Grammar for this FpgaC re-write is taken directly from a
+ * combination of the current C1X draft standard and from the
+ * recient OpenMP 3.1 standard document, which are then morphed into
+ * Lex/Yacc syntax, with productions added to form the front end for
+ * the new FpgaC C1X/OpenMP3 compiler subset.
  *
- * Copyright John Bass, DMS Design, and Sourceforge FpgaC team 2011
+ * Copyright John Bass, DMS Design, and Sourceforge FpgaC team
  */
 
 /*
+ * The initial core C grammar is taken directly from Annex A:
  * ISO/IEC 9899:201x Committee Draft -- April 12, 2011 N1570
+ * http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf
+ */
+
+/*
  * A.1 Lexical grammar
  * A.1.1 Lexical elements
  * (6.4)
@@ -1237,256 +1243,271 @@ new-line:
 
 
 /*
- * Rules from the OpenMP 3.1 standard
+ * The initial core OpenMP grammar is taken directly from Appendix C:
+ * OpenMP Application Program Interface -- Version 3.1 July 2011
+ * http://www.openmp.org/mp-documents/OpenMP3.1.pdf
  */
 
-statement:
-	        /* standard statements */
-	     |  openmp_construct
+openmp_statement:
+		  statement
+		| openmp_construct
 
+/*
+ * (2.1)
+ * OpenMP directive's and constructs are pragma's in C1X syntax
+ * each is prefaced as "#pragma omp"
+ */
 openmp_construct:
-	        parallel_construct
-	     |  for_construct
-	     |  sections_construct
-	     |  single_construct
-	     |  parallel_for_construct
-	     |  parallel_sections_construct
-	     |  task_construct
-	     |  master_construct
-	     |  critical_construct
-	     |  atomic_construct
-	     |  ordered_construct
+		  parallel_construct
+		| for_construct
+		| sections_construct
+		| single_construct
+		| parallel_for_construct
+		| parallel_sections_construct
+		| task_construct
+		| master_construct
+		| critical_construct
+		| atomic_construct
+		| ordered_construct
 
 openmp_directive:
-	        barrier_directive
-	     |  taskwait_directive
-	     |  taskyield_directive
-	     |  flush_directive
+		  barrier_directive
+		| taskwait_directive
+		| taskyield_directive
+		| flush_directive
 
 structured_block:
-	        statement
+		  openmp_statement
 
+/*
+ * (2.4)
+ */
 parallel_construct:
-	        parallel_directive structured_block
+		  parallel_directive structured_block
 
 parallel_directive:
-	        PRAGMA OMP OMP_PARALLEL parallel_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_PARALLEL opt_parallel_clause NEW_LINE
+
+opt_parallel_clause:
+		/* empty */
+		| parallel_clause
+		| opt_parallel_clause ',' parallel_clause
 
 parallel_clause:
-	        unique_parallel_clause
-	     |  data_default_clause
-	     |  data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  data_sharing_clause
-	     |  data_reduction_clause
+		  unique_parallel_clause
+		| data_default_clause
+		| data_privatization_clause
+		| data_privatization_in_clause
+		| data_sharing_clause
+		| data_reduction_clause
 
 unique_parallel_clause:
-	        OMP_IF LEFT_PAREN expression RIGHT_PAREN
-	     |  OMP_NUM_THREADS LEFT_PAREN expression RIGHT_PAREN
-	     |  OMP_COPYIN LEFT_PAREN variable_list RIGHT_PAREN
+		  OMP_IF '(' expression ')'
+		| OMP_NUM_THREADS '(' expression ')'
+		| OMP_COPYIN '(' variable_list ')'
 
 for_construct:
-	        for_directive iteration_statement
+		  for_directive iteration_statement
 
 for_directive:
-	        PRAGMA OMP OMP_FOR for_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_FOR for_clause optseq NEW_LINE
 
 for_clause:
-	        unique_for_clause
-	     |  data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  data_privatization_out_clause
-	     |  data_reduction_clause
-	     |  OMP_NOWAIT
+		  unique_for_clause
+		| data_privatization_clause
+		| data_privatization_in_clause
+		| data_privatization_out_clause
+		| data_reduction_clause
+		| OMP_NOWAIT
 
 unique_for_clause:
-	        OMP_ORDERED
-	     |  OMP_SCHEDULE LEFT_PAREN schedule_kind RIGHT_PAREN
-	     |  OMP_SCHEDULE LEFT_PAREN schedule_kind COMMA expression RIGHT_PAREN
-	     |  OMP_COLLAPSE LEFT_PAREN expression RIGHT_PAREN
+		  OMP_ORDERED
+		| OMP_SCHEDULE '(' schedule_kind ')'
+		| OMP_SCHEDULE '(' schedule_kind ',' expression ')'
+		| OMP_COLLAPSE '(' expression ')'
 
 schedule_kind:
-	        OMP_STATIC
-	     |  OMP_DYNAMIC
-	     |  OMP_GUIDED
-	     |  OMP_AUTO
-	     |  OMP_RUNTIME
+		  OMP_STATIC
+		| OMP_DYNAMIC
+		| OMP_GUIDED
+		| OMP_AUTO
+		| OMP_RUNTIME
 
 sections_construct:
-	        sections_directive section_scope
+		  sections_directive section_scope
 
 sections_directive:
-	        PRAGMA OMP OMP_SECTIONS sections_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_SECTIONS sections_clause optseq NEW_LINE
 
 sections_clause:
-	        data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  data_privatization_out_clause
-	     |  data_reduction_clause
-	     |  OMP_NOWAIT
+		  data_privatization_clause
+		| data_privatization_in_clause
+		| data_privatization_out_clause
+		| data_reduction_clause
+		| OMP_NOWAIT
 
 section_scope:
-	        LEFTCURLY section_sequence RIGHTCURLY
+		  LEFTCURLY section_sequence RIGHTCURLY
 
 section_sequence:
-	        section_directive opt structured_block
-	     |  section_sequence section_directive structured_block
+		  section_directive opt structured_block
+		| section_sequence section_directive structured_block
 
 section_directive:
-	        PRAGMA OMP OMP_SECTION NEW_LINE
+		  PRAGMA OMP OMP_SECTION NEW_LINE
 
 single_construct:
-	        single_directive structured_block
+		  single_directive structured_block
 
 single_directive:
-	        PRAGMA OMP OMP_SINGLE single_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_SINGLE single_clause optseq NEW_LINE
 
 single_clause:
-	        unique_single_clause
-	     |  data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  OMP_NOWAIT
+		  unique_single_clause
+		| data_privatization_clause
+		| data_privatization_in_clause
+		| OMP_NOWAIT
 
 unique_single_clause:
-	        copyprivate LEFT_PAREN variable_list RIGHT_PAREN
+		  copyprivate '(' variable_list ')'
 
 task_construct:
-	        task_directive structured_block
+		  task_directive structured_block
 
 task_directive:
-	        PRAGMA OMP OMP_TASK task_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_TASK task_clause optseq NEW_LINE
 
 task_clause:
-	        unique_task_clause
-	     |  data_default_clause
-	     |  data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  data_sharing_clause
+		  unique_task_clause
+		| data_default_clause
+		| data_privatization_clause
+		| data_privatization_in_clause
+		| data_sharing_clause
 
 unique_task_clause:
-	        OMP_IF LEFT_PAREN scalar_expression RIGHT_PAREN
-	     |  OMP_FINAL LEFT_PAREN scalar_expression RIGHT_PAREN
-	     |  OMP_UNTIED
-	     |  OMP_MERGEABLE
+		  OMP_IF '(' scalar_expression ')'
+		| OMP_FINAL '(' scalar_expression ')'
+		| OMP_UNTIED
+		| OMP_MERGEABLE
 
 parallel_for_construct:
-	        parallel_for_directive iteration_statement
+		  parallel_for_directive iteration_statement
 
 parallel_for_directive:
-	        PRAGMA OMP OMP_PARALLEL for parallel_for_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_PARALLEL for parallel_for_clause optseq NEW_LINE
 
 parallel_for_clause:
-	        unique_parallel_clause
-	     |  unique_for_clause
-	     |  data_default_clause
-	     |  data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  data_privatization_out_clause
-	     |  data_sharing_clause
-	     |  data_reduction_clause
+		  unique_parallel_clause
+		| unique_for_clause
+		| data_default_clause
+		| data_privatization_clause
+		| data_privatization_in_clause
+		| data_privatization_out_clause
+		| data_sharing_clause
+		| data_reduction_clause
 
 parallel_sections_construct:
-	        parallel_sections_directive section_scope
+		  parallel_sections_directive section_scope
 
 parallel_sections_directive:
-	        PRAGMA OMP OMP_PARALLEL sections parallel_sections_clause optseq NEW_LINE
+		  PRAGMA OMP OMP_PARALLEL sections parallel_sections_clause optseq NEW_LINE
 
 parallel_sections_clause:
-	        unique_parallel_clause
-	     |  data_default_clause
-	     |  data_privatization_clause
-	     |  data_privatization_in_clause
-	     |  data_privatization_out_clause
-	     |  data_sharing_clause
-	     |  data_reduction_clause
+		  unique_parallel_clause
+		| data_default_clause
+		| data_privatization_clause
+		| data_privatization_in_clause
+		| data_privatization_out_clause
+		| data_sharing_clause
+		| data_reduction_clause
 
 master_construct:
-	        master_directive structured_block
+		  master_directive structured_block
 
 master_directive:
-	        PRAGMA OMP OMP_MASTER NEW_LINE
+		  PRAGMA OMP OMP_MASTER NEW_LINE
 
 critical_construct:
-	        critical_directive structured_block
-	     |  PRAGMA OMP OMP_CRITICAL region_phrase opt NEW_LINE
+		  critical_directive structured_block
+		| PRAGMA OMP OMP_CRITICAL region_phrase opt NEW_LINE
 
 region_phrase:
-	        LEFT_PAREN identifier RIGHT_PAREN
+		  '(' identifier ')'
 
 barrier_directive:
-	        PRAGMA OMP OMP_BARRIER NEW_LINE
+		  PRAGMA OMP OMP_BARRIER NEW_LINE
 
 taskwait_directive:
-	        PRAGMA OMP OMP_TASKWAIT NEW_LINE
+		  PRAGMA OMP OMP_TASKWAIT NEW_LINE
 
 taskyield_directive:
-	        PRAGMA OMP OMP_TASKYIELD NEW_LINE
+		  PRAGMA OMP OMP_TASKYIELD NEW_LINE
 
 atomic_construct:
-	        atomic_directive expression_statement
-	     |  atomic_directive structured block
+		  atomic_directive expression_statement
+		| atomic_directive structured block
 
 atomic_directive:
-	        PRAGMA OMP OMP_ATOMIC atomic_clause opt NEW_LINE
+		  PRAGMA OMP OMP_ATOMIC atomic_clause opt NEW_LINE
 
 atomic_clause:
-	        OMP_READ
-	     |  OMP_WRITE
-	     |  OMP_UPDATE
-	     |  OMP_CAPTURE
+		  OMP_READ
+		| OMP_WRITE
+		| OMP_UPDATE
+		| OMP_CAPTURE
 
 flush_directive:
-	        PRAGMA OMP OMP_FLUSH flush_vars opt NEW_LINE
+		  PRAGMA OMP OMP_FLUSH flush_vars opt NEW_LINE
 
 flush_vars:
-	        LEFT_PAREN variable_list RIGHT_PAREN
+		  '(' variable_list ')'
 
 ordered_construct:
-	        ordered_directive structured_block
+		  ordered_directive structured_block
 
 ordered_directive:
-	        PRAGMA OMP OMP_ORDERED NEW_LINE
+		  PRAGMA OMP OMP_ORDERED NEW_LINE
 
-declaration:
-	        /* standard declarations */
-	     |  threadprivate_directive
+openmp_declaration:
+		  declaration
+		| threadprivate_directive
 
 threadprivate_directive:
-	        PRAGMA OMP OMP_THREADPRIVATE LEFT_PAREN variable_list RIGHT_PAREN NEW_LINE
+		  PRAGMA OMP OMP_THREADPRIVATE '(' variable_list ')' NEW_LINE
 
 data_default_clause:
-	        OMP_DEFAULT LEFT_PAREN OMP_SHARED RIGHT_PAREN
-	     |  OMP_DEFAULT LEFT_PAREN OMP_NONE RIGHT_PAREN
+		  OMP_DEFAULT '(' OMP_SHARED ')'
+		| OMP_DEFAULT '(' OMP_NONE ')'
 
 data_privatization_clause:
-	        OMP_PRIVATE LEFT_PAREN variable_list RIGHT_PAREN
+		  OMP_PRIVATE '(' variable_list ')'
 
 data_privatization_in_clause:
-	        OMP_FIRSTPRIVATE LEFT_PAREN variable_list RIGHT_PAREN
+		  OMP_FIRSTPRIVATE '(' variable_list ')'
 
 data_privatization_out_clause:
-	        OMP_LASTPRIVATE LEFT_PAREN variable_list RIGHT_PAREN
+		  OMP_LASTPRIVATE '(' variable_list ')'
 
 data_sharing_clause:
-	        OMP_SHARED LEFT_PAREN variable_list RIGHT_PAREN
+		  OMP_SHARED '(' variable_list ')'
 
 data_reduction_clause:
 
-		OMP_REDUCTION LEFTPAREN reduction_operator COLON variable_list RIGHTPAREN
+		OMP_REDUCTION '(' reduction_operator ':' variable_list ')'
 
 reduction_operator:
-		+
-	      | -
-	      | *
-	      | /
-	      | &
-	      | |
-	      | ^
-	      | &&
-	      | ||
+		'+'
+	      | '-'
+	      | '*'
+	      | '/'
+	      | '&'
+	      | '|'
+	      | '^'
+	      | '&&'
+	      | '||'
 	      | max
 	      | min
 
 variable_list:
-	        identifier
-	     |  variable_list COMMA identifier
+		  identifier
+		| variable_list ',' identifier
